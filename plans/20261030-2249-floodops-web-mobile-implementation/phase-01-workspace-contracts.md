@@ -5,6 +5,7 @@
 - [architecture.md](specs/architecture.md) · [feature-implementation-guide.md](specs/feature-implementation-guide.md) · [api-conventions-security.md](specs/api-conventions-security.md)
 
 ## Overview
+- AM-AI02/AM-M01 integration: M1 chỉ functional web core; campaign/student và native parity thuộc M2, calibration claims M3. Student US-40/US-41/T22..T24 dùng deterministic MissionClassification, không model publishing gate; US-39/T21 forecast là extension độc lập. Legacy contracts/phase/DAG chưa đồng bộ không tự mở implementation hoặc mark gate pass.
 - Status: pending. Priority: P1 implementation phase (khác US product priorities).
 - Dependencies: Không có. Không có ước lượng hoặc phân bổ thời gian.
 - Primary agent: [ContractsClient](worktree-execution/roles/01-contracts-client.md). Deliverable paths dưới đây; write authority theo [ownership](worktree-execution/ownership.md), central manifests/lock/config do IntegrationLead bootstrap và commit.
@@ -21,6 +22,20 @@
 ## Architecture
 - [Feature-based layering](specs/architecture.md) là chuẩn. Shared schema/domain/data authority không fork cho web/native.
 - Phase này không tự đổi API/role/revision contract; interface change phải sửa OpenAPI + client + tests trước consumers.
+
+
+## AM-C01 - Contract delta trước triển khai contributor
+- User đã chốt [campaigns/missions/ranking/benefits](specs/contributor-campaigns.md); baseline 66 operations/8 tools chưa có DTO hoặc operations tương ứng. Phase 01 cần review/freeze delta thay vì đoán endpoint hoặc nhét field lạ vào strict schema.
+- Candidate M2 bổ sung DataRequest/version, MissionClassification, ReviewResult, Campaign/Mission S-F/Completion, versioned Award/ranking/prize; update access/events/Reset/errors/examples/client/tests cùng lần. Code derive S-F/rationale/rule IDs từ bound request/urgency/impact/deadline/freshness và input/policy hashes; không model/client grade/points/budget.
+- Bind ReviewResult với report/request/mission/generation/review ID/version/decision/reasons/validated facts; reward chỉ nhận current human result. Classification enum S-F/rule IDs/current request-policy binding, thiếu rules/threshold/config hoặc stale thì draft/recompute, không default/manual bypass. 66 API/8 tools là legacy pending AM-AI02/AM-M01/AM-C01/AM-C02 cutover; US-30/IR riêng.
+- Producer 05/07, web/native 09/10 và QA 11 dùng cùng contract SHA/hash mới; migration/rollback hoặc new-session cutover được ghi rõ. Current scope sau AM-C02 là 41 US/T01..T24/IR-01..IR-12, phải map trước release.
+- Historical plan-published/contract-index/receipts chưa chứng minh delta đã được freeze. Lead publish amendment/resync và ownership của phần mới trước worker launch; tài liệu này không tự cấp grant hoặc đổi protected metadata.
+
+## AM-C02 - Contract delta student demo
+- [Student volunteer demo](specs/student-volunteer-demo.md) thêm mode campaign, server fixture StudentDemoEnrollment/profile/academic period/allowed campaign, canonical activity/attendance confirmation, recognition status/ledger/counters/campus projection. Baseline vẫn 66 API/8 tools; chưa có operationId hoặc DTO mới trong docs task.
+- Freeze student-recognition-demo-v1 (+2/+3/+5, campaign caps4/6/10 và period caps6/9/15), hai điều kiện >=120 fixture minutes + accepted quality report/ReviewResult, key unique độc lập policy version và backing-report reuse guard; aggregate trần kỳ xuyên campaign.
+- Mode-based access/publish/evaluation tách general bounty/voucher với DemoRecognitionEngine. Student publish cần valid classification/config mode, không general reward TBD hoặc trường duyệt; client không chọn arbitrary enrollment/profile/kỳ, ghi attendance/credits hoặc có role mới.
+- Cùng SHA/hash cho fixture producer03 (ownership hiện có), report05, recognition07, web09/native10/QA11, schemas/errors/events/Reset/client/tests và migration. Giữ US-30/IR/vision metadata riêng; contract cutover còn pending, không sửa receipts/baselines cũ hoặc launch owners.
 
 ## Related code files
 - Create/modify `package.json; bunfig.toml; tsconfig.base.json; eslint.config.js (root workspace/import rules)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
@@ -51,7 +66,7 @@
 - Client retry lost response preserves key; 412/410 stops command and exposes rejoin/replan path.
 
 ## Risk assessment
-- Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.
+- Scope drift / missing source: đọc PRD v0.5, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.
 - Race / platform difference: dùng same authoritative API and deterministic fixtures; no client-authorized safety decisions.
 
 ## Security considerations

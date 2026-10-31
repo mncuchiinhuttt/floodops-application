@@ -5,6 +5,7 @@
 - [domain-model.md](specs/domain-model.md) · [policy-rules.md](specs/policy-rules.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [cloudflare-deployment.md](specs/cloudflare-deployment.md) · [ai-assisted-image-review.md](specs/ai-assisted-image-review.md)
 
 ## Overview
+- AM-AI02/AM-M01 integration: M1 chỉ functional web core; campaign/student và native parity thuộc M2, calibration claims M3. Student US-40/US-41/T22..T24 dùng deterministic MissionClassification, không model publishing gate; US-39/T21 forecast là extension độc lập. Legacy contracts/phase/DAG chưa đồng bộ không tự mở implementation hoặc mark gate pass.
 - Status: pending. Priority: P1 implementation phase (khác US product priorities).
 - Dependencies: Phase 03, Phase 04. Không có ước lượng hoặc phân bổ thời gian.
 - Primary agent: [SourcesMedia](worktree-execution/roles/05-sources-media.md). Exclude reports/review và knowledge/conflict-review của ReviewRewards; actual writer theo [ownership](worktree-execution/ownership.md).
@@ -37,6 +38,21 @@
 6. Expose graph/source/knowledge/report owner-projected reads and a server-only authorized normalized-image/digest/readiness port for ReviewRewards; return only verified normalized derivative access, never raw staging/R2 URL. Domain conflict transitions preserve closure and gaps.
 7. Record unavailable providers rather than no-op mocks called live adapters. Source catalog data is replay input only.
 
+
+## AM-C01 - Report gắn nhiệm vụ
+- Dispatcher tạo DataRequest đã kiểm scope/session generation/region/segment/vehicle/epoch; gap hoặc expiry chỉ gợi ý request. Report mission bind request/version và valid published mission từ policy classification, không tự mở mission hoặc tự chọn S-F. Report tự do giữ đường gửi riêng.
+- Sau contract cutover ở [contributor campaigns](specs/contributor-campaigns.md), kiểm mission/campaign/region/session/epoch/vehicle/window và pin grade/reward policy version lúc nhận report hoàn chỉnh; client không tự sửa các giá trị này.
+- Dùng cùng upload/private media và duplicate normalization cho collect/verify/update. Report tự do vẫn có đường gửi; report mission chỉ thuộc một mission/campaign/region, không tự tạo điểm hoặc data need.
+- Trả liên kết và reason để ReviewRewards xét completion/award; không award ở phase 05, không biến accepted/low-confidence thành quyền đi đường. Draft offline refresh mission trước explicit send, Reset không gắn ảnh/report cũ sang campaign mới.
+- Deterministic checks/evidence facts được truyền tới DispatcherReviewService; sau manual review mới tạo typed ReviewResult cho ContributorRewardEngine. Raw input/upload hoặc quality score advice không là reward result. Contributor response không lộ private order/driver context dùng cho classification.
+- T16..T18/T20 kiểm invalid/paused/closed mission, mismatched scope, old policy/draft, media duplicate và expiry; phụ thuộc typed contract mới, không mock DTO chưa tồn tại.
+
+## AM-C02 - Binding report và volunteer activity
+- Consume synthetic enrollment/profile/kỳ và canonical nonoverlap activity/attendance fixture từ phase03 sau same-version cutover ở [AM-C02](specs/student-volunteer-demo.md); không thu MSSV/ID/email/SSO hoặc tạo trường thật duyệt.
+- Validate contributor capability/enrollment/allowed student campaign, mode, activity, request/mission/report/session generation và pinned policy trước nhận report. Client không tự khai đủ120 phút, đổi school/period/mode để né cap hoặc dùng backing report cho activity khác.
+- Giữ media/quality/duplicate checks hiện có; accepted quality report/validated completion phải có ReviewResult đúng binding trước recognition. Phase05 không grant ĐRL hoặc normal bounty kép. US-30 image quality score không là ngưỡng; valid-but-redundant về bounty không đồng nghĩa report lỗi.
+- T22..T24 kiểm enrollment/activity sai scope, report/attendance reuse, old generation/offline draft. Attendance120 phút là recognition fixture metric, không mutate operational clock/physics/D04 hoặc bắt chờ thật.
+
 ## Todo list
 - [ ] Step 05.01: Implement fixture adapters weather/tide/river/traffic/camera/driver/community with common envelope, source context/observation/restriction roles and provenance labels.
 - [ ] Step 05.02: Normalize units/datum/time/geography
@@ -53,7 +69,7 @@
 - The image-review port reports server-derived normalized digest and readiness for pending reports; it never exposes unverified raw media or grants review/reward authority.
 
 ## Risk assessment
-- Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.
+- Scope drift / missing source: đọc PRD v0.5, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.
 - Race / platform difference: dùng same authoritative API and deterministic fixtures; no client-authorized safety decisions.
 
 ## Security considerations
