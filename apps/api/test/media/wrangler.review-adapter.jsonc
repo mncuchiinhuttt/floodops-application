@@ -1,0 +1,19 @@
+{
+  "name": "floodops-source-review-adapter-test",
+  "main": "./review-adapter-worker.ts",
+  "compatibility_date": "2026-10-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": { "bindings": [{ "name": "SESSIONS", "class_name": "SessionDO" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SessionDO"] }],
+  "r2_buckets": [
+    { "binding": "REPORT_MEDIA", "bucket_name": "source-review-private-test-media", "remote": false },
+    { "binding": "SCENARIO_ASSETS", "bucket_name": "source-review-private-test-assets", "remote": false }
+  ],
+  "images": { "binding": "IMAGES", "remote": false },
+  "vars": {
+    "APP_ENV": "test", "WEB_ORIGIN": "https://floodops.test",
+    "SESSION_LOCATOR_KEY": "synthetic-source-review-test-locator-never-use-remotely",
+    "CAPABILITY_SEAL_KEY_ACTIVE": "synthetic-source-review-test-seal-never-use-remotely",
+    "CAPABILITY_SEAL_KEY_ID": "source-review-test-v1"
+  }
+}
