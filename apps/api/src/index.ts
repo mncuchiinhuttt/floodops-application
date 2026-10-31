@@ -1,16 +1,18 @@
 import { createHash } from "node:crypto";
+import { parseSchema } from "@floodops/contracts";
+import { deriveUsefulCoverage } from "@floodops/domain/rewards";
 import { createRun, loadScenario, type ScenarioManifest, type SimulationRun } from "@floodops/simulation";
 import { freezeValue } from "@floodops/domain/operations";
 import type { ScenarioReference, SimulationPersistence } from "@floodops/domain/public-ports";
 import manifest from "../../../data/scenarios/functional-v2/manifest.json";
 import legacyManifest from "../../../data/scenarios/functional-v1/manifest.json";
 import { createApp } from "./app/index";
-import { fail, type SessionSeed, type RuntimeRegistry } from "./shared/index";
+import { fail, type SessionSeed, type RuntimeRegistry, type TransitionContext } from "./shared/index";
 import { createSimulationRuntime } from "./features/simulation/index";
-import { createResultsRouter, createResultsView, RESULTS_VIEW } from "./features/results/index";
+import { createResultsRouter, createResultsView, createWorkspaceViews, RESULTS_VIEW, type WorkspacePlanning } from "./features/results/index";
 import { createSourcesFeature } from "./features/sources/index";
 import { createPlanningRuntime, DEFAULT_SEARCH_LIMITS } from "./features/planning/index";
-import { createReviewSeed } from "./features/reports/review/index";
+import { createReviewSeed, createSourceBackedReviewRuntime, reconcileReviewGaps } from "./features/reports/review/index";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
 const legacyScenario = loadScenario(legacyManifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
@@ -46,7 +48,7 @@ export const simulationPersistence: SimulationPersistence<SimulationRun, RunStat
     return { ...values, simulation: { reference: scenarioReference, state: structuredClone(state) } };
   }
 };
-export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> {
+function sessionSeed(id: string, version: string): SessionSeed {
   if (id !== scenarioReference.scenario_id || version !== scenarioReference.scenario_version) fail(404, "NOT_FOUND");
   scenarioCatalog.get(id, version);
   const run = createRun(scenario, "run_initial");
@@ -66,14 +68,42 @@ export async function loadSessionScenario(id: string, version: string): Promise<
     values: simulationPersistence.write({ runtime_contract: { serialization: "m1-v1", version: "0.5.0-m1" }, reviewRewardsSeed }, run)
   };
 }
+export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> { return sessionSeed(id, version); }
+const ports = { scenarioCatalog, simulationPersistence };
+const sources = createSourcesFeature(ports);
+// Missing numeric reward policy remains pending_config; missing vision provider stays unavailable.
+const review = createSourceBackedReviewRuntime(ports, {});
+function coverageInput(context: TransitionContext) {
+  const state = review.source.read(context);
+  return { scope: state.relevantScope, knowledge: state.knowledge, observations: state.evidence.observations,
+    sources: state.evidence.sources, now_sim_minute: context.snapshot.meta.sim_minute };
+}
+function projected(registry: RuntimeRegistry, name: string, context: TransitionContext) {
+  const view = registry.views?.[name]; if (!view) fail(503, "CONFIG_INCOMPLETE"); return view.project(context);
+}
 // Genuine bounded deterministic runtime; no provider/key/model transport is injected.
 const planning = createPlanningRuntime({ persistence: simulationPersistence, search: DEFAULT_SEARCH_LIMITS });
-const simulation = createSimulationRuntime({ persistence: simulationPersistence, committedPolicy: planning.committedPolicy });
-const sources = createSourcesFeature({ scenarioCatalog, simulationPersistence });
+const simulation = createSimulationRuntime({ persistence: simulationPersistence, committedPolicy: planning.committedPolicy,
+  afterAdvance: ({ context, values }) => ({ ...values, reviewRewards: reconcileReviewGaps(context, coverageInput(context)) }) });
+const workspaces = createWorkspaceViews({ persistence: simulationPersistence,
+  clock: context => parseSchema("SimulationClock", projected(simulation.registry, "simulation.clock", context)),
+  knowledge: context => parseSchema("Knowledge", projected(sources.registry, "source-knowledge", context)),
+  operations: context => parseSchema("Operations", projected(planning.registry, "planning.operations", context)),
+  impact: context => parseSchema("Impact", projected(planning.registry, "planning.impact", context)),
+  planning: context => projected(planning.registry, "planning.state", context) as WorkspacePlanning,
+  routes(context) {
+    const rows = projected(planning.registry, "planning.routes", context); if (!Array.isArray(rows)) fail(503, "CONFIG_INCOMPLETE");
+    return rows.map(row => parseSchema("Route", row));
+  },
+  reports: context => review.source.read(context).reports.map(report => ({ generation: context.snapshot.meta.generation, report })),
+  coverage: context => deriveUsefulCoverage(coverageInput(context)).coverage
+});
 const registry: RuntimeRegistry = {
   ...simulation.registry,
-  commands: { ...sources.registry.commands, ...simulation.registry.commands, ...planning.registry.commands },
-  views: { ...sources.registry.views, ...simulation.registry.views, ...planning.registry.views, [RESULTS_VIEW]: createResultsView(simulationPersistence) },
+  ...review.registry, serialization: "m1-v1", seedForReset: previous => sessionSeed(previous.scenario_id, previous.scenario_version),
+  commands: { ...sources.registry.commands, ...simulation.registry.commands, ...planning.registry.commands, ...review.registry.commands },
+  views: { ...sources.registry.views, ...simulation.registry.views, ...planning.registry.views, ...review.registry.views,
+    ...workspaces, [RESULTS_VIEW]: createResultsView(simulationPersistence) },
   onLeaseExpired(snapshot, lease, now) {
     let values = snapshot.values;
     for (const feature of [sources, simulation, planning]) {
@@ -85,5 +115,5 @@ const registry: RuntimeRegistry = {
 // Preserve media recovery intents/table/alarm around the full combined registry.
 const RegisteredSessionDO = sources.createSessionObject(registry);
 export class SessionDO extends RegisteredSessionDO {}
-export default createApp([...sources.routers, planning.router, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
+export default createApp([...sources.routers, planning.router, review.router, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
 
