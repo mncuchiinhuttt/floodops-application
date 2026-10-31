@@ -25,4 +25,4 @@ export function createSimulationRuntime<State>(options: SimulationRuntimeOptions
 export type { RuntimeDispatch } from "./advance-service";
 export { driveAdvance } from "./advance-service";
 export { ADVANCE_START, ADVANCE_CHUNK, CLOCK_VIEW, JOBS_VIEW } from "./runtime-types";
-export type { SimulationRuntimeOptions, AdvanceMaterial, AdvanceReservation, ChunkInput } from "./runtime-types";
+export type { AfterAdvanceInput, SimulationRuntimeOptions, AdvanceMaterial, AdvanceReservation, ChunkInput } from "./runtime-types";

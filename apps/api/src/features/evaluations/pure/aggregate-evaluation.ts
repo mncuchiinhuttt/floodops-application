@@ -4,8 +4,8 @@ import type { EvaluationRun, EvaluationTrial } from "@floodops/contracts";
 export interface EvaluationAggregationInput {
   evaluationId: string;
   kind: EvaluationRun["kind"];
-  isRealModel: boolean;
-  modelConfigHash: string;
+  isRealModel: false;
+  plannerConfigHash: string;
   trials: readonly EvaluationTrial[];
 }
 
@@ -24,11 +24,11 @@ export function nearestRankP95(latencies: readonly (number | null)[]): number | 
 /** Completes aggregation, not product acceptance or proof that a real model ran. */
 export function aggregateEvaluation(input: EvaluationAggregationInput): EvaluationRun {
   if (input.trials.length !== 10) throw new Error("Exactly ten independent first-proposal trials are required.");
-  if (!input.modelConfigHash.trim()) throw new Error("A frozen model configuration hash is required.");
+  if (!input.plannerConfigHash.trim()) throw new Error("A frozen planner configuration hash is required.");
   const trials = [...input.trials].map(trial => EvaluationTrialSchema.parse(trial)).sort((a, b) => a.trial - b.trial);
   if (new Set(trials.map(trial => trial.trial)).size !== 10) throw new Error("Duplicate or missing evaluation trial.");
   for (const trial of trials) {
-    if (trial.model_config_hash !== input.modelConfigHash) throw new Error("Evaluation model configuration changed.");
+    if (trial.planner_config_hash !== input.plannerConfigHash) throw new Error("Evaluation planner configuration changed.");
     if (!trial.failed && trial.error_code !== null) throw new Error("An execution error requires a failed trial.");
     if (trial.first_proposal_valid && (trial.failed || trial.error_code !== null || trial.plan_id === null)) {
       throw new Error("A valid first proposal requires a successful plan without an error.");

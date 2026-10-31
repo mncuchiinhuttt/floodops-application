@@ -14,7 +14,7 @@ export const auth = (f: Fixture, extra: Record<string, string> = {}) => ({ Autho
 export async function create(): Promise<Fixture> {
   const response = await request("/sessions", { method: "POST", headers: { "Content-Type": "application/json",
     "Idempotency-Key": key(), "X-Client-Request-Scope": key() },
-    body: JSON.stringify({ scenario_id: "scn_functional1", scenario_version: "1", client_type: "native" }) });
+    body: JSON.stringify({ scenario_id: "scn_functional1", scenario_version: "2", client_type: "native" }) });
   if (response.status !== 201) throw new Error(`Create failed: ${response.status}`);
   return fixture(parseSchema("SessionCreatedResponse", await response.json()).data!);
 }
@@ -56,9 +56,9 @@ export async function finish(f: Fixture, reserved: Reply): Promise<Reply> {
   throw new Error("Fixture boundary budget exhausted");
 }
 export const persistedRun = async (f: Fixture) => simulationPersistence.read((await snapshot(f)).values);
-export async function invite(f: Fixture, role: "driver" | "contributor" | "viewer"): Promise<Fixture> {
+export async function invite(f: Fixture, role: "driver" | "contributor" | "viewer", boundDriver = "drv_moto01"): Promise<Fixture> {
   const response = await request(`/sessions/${f.id}/invitations`, { method: "POST", headers: auth(f, { "Content-Type": "application/json", "Idempotency-Key": key() }),
-    body: JSON.stringify({ role, bound_entity_id: role === "driver" ? "drv_moto01" : role === "contributor" ? "contributor_functional1" : null, expires_in_seconds: 900 }) });
+    body: JSON.stringify({ role, bound_entity_id: role === "driver" ? boundDriver : role === "contributor" ? "contributor_functional1" : null, expires_in_seconds: 900 }) });
   const claim = parseSchema("InviteResponse", await response.json()).data!;
   const joined = await request("/session-claims", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": key() },
     body: JSON.stringify({ session_id: f.id, claim_token: claim.claim_token, client_type: "native" }) });

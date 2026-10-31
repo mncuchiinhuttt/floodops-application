@@ -1,3 +1,4 @@
+import { reconcileAfterAdvance } from "./after-advance";
 import { createHash } from "node:crypto";
 import { AdvanceJobSchema, parseSchema } from "@floodops/contracts";
 import { advanceRun } from "@floodops/simulation";
@@ -31,10 +32,17 @@ export function continueAdvance<State>(options: ResolvedOptions<State>): Reducer
       const revision = snapshot.meta.revision + 1, reached = millisecondsToMinutes(advanced.run.nowMs);
       const job = AdvanceJobSchema.parse({ ...record.job, reached_sim_minute: reached, revision,
         status: advanced.complete ? "completed" : "running", lease_expires_at: advanced.complete ? null : record.job.lease_expires_at });
-      return { data: job, values: options.persistence.write(saveAdvance(snapshot.values, { ...record, job }), advanced.run),
+      const values = options.persistence.write(saveAdvance(snapshot.values, { ...record, job }), advanced.run);
+      const nextLease = { ...lease, revision, status: advanced.complete ? "completed" as const : "active" as const };
+      const nextPointers = { ...snapshot.pointers, active_advance_job_id: advanced.complete ? null : value.job_id };
+      const status = advanced.complete ? "active" as const : "advancing" as const;
+      const reconciled = reconcileAfterAdvance(options, { values, run: advanced.run,
+        context: { ...context, snapshot: { ...snapshot, values, pointers: nextPointers,
+          leases: { ...snapshot.leases, [lease.lease_id]: nextLease }, meta: { ...snapshot.meta, revision, sim_minute: reached, status } } } });
+      return { data: job, values: reconciled,
         simMinute: reached, status: advanced.complete ? "active" : "advancing",
         pointers: { active_advance_job_id: advanced.complete ? null : value.job_id },
-        leases: [{ ...lease, revision, status: advanced.complete ? "completed" : "active" }],
+        leases: [nextLease],
         events: [{ type: "advance_changed", resource_ids: [value.job_id] }] };
     }
   };
