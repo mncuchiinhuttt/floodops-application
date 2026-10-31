@@ -8,7 +8,7 @@ export function createApp(featureRouters: Hono<AppEnv>[], ports: PlatformPorts):
   const app = new Hono<AppEnv>();
   app.use("*", async (c, next) => {
     c.set("requestId", randomId("request"));
-    c.header("Cache-Control", "no-store"); c.header("X-Content-Type-Options", "nosniff");
+    c.header("Cache-Control", "no-store, no-transform"); c.header("X-Content-Type-Options", "nosniff");
     c.header("Referrer-Policy", "no-referrer"); c.header("X-Request-ID", c.get("requestId"));
     c.header("Content-Security-Policy", "default-src 'self'; frame-ancestors 'none'; object-src 'none'");
     const origin = c.req.header("Origin");

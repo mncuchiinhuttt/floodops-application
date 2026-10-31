@@ -38,7 +38,8 @@ export async function invoke(c: AppContext, call: Call): Promise<Reply> {
 }
 export async function send(c: AppContext, reply: Reply, operation?: OperationId): Promise<Response> {
   const body = structuredClone(reply.body);
-  const headers = new Headers({ "Cache-Control": "no-store", "X-Request-ID": String(body.meta.request_id) });
+  // no-transform: the Cloudflare edge otherwise compresses and weakens the strong ETag that If-Match relies on.
+  const headers = new Headers({ "Cache-Control": "no-store, no-transform", "X-Request-ID": String(body.meta.request_id) });
   if (reply.status !== 204) headers.set("Content-Type", "application/json");
   if (reply.credential) {
     const secret = await open<{ token: string; csrf: string | null }>(c.env, reply.credential.box, reply.credential.aad);

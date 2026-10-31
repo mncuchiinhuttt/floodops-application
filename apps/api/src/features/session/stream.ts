@@ -64,5 +64,5 @@ export async function streamEvents(c: AppContext): Promise<Response> {
     },
     cancel() { close(); },
   });
-  return c.newResponse(body, { headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-store", "X-Accel-Buffering": "no", "X-Request-ID": c.get("requestId") } });
+  return c.newResponse(body, { headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-store, no-transform", "X-Accel-Buffering": "no", "X-Request-ID": c.get("requestId") } });
 }

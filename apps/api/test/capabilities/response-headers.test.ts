@@ -9,7 +9,7 @@ afterEach(reset);
 function security(response: Response): void {
   expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
   expect(response.headers.get("Referrer-Policy")).toBe("no-referrer");
-  expect(response.headers.get("Cache-Control")).toBe("no-store");
+  expect(response.headers.get("Cache-Control")).toBe("no-store, no-transform");
   expect(response.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'none'");
   expect(response.headers.get("Content-Security-Policy")).toContain("object-src 'none'");
   expect(Boolean(response.headers.get("X-Request-ID"))).toBe(true);
