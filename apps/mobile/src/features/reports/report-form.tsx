@@ -9,7 +9,13 @@ export interface ReportFormProps {
   context: MobileContext; initialDraft: ReportDraft; photoPort?: PhotoPort; draftPort?: DraftPort;
   onSubmit?: (input: CitizenReportInput | DriverReportInput) => Promise<void>;
 }
-export function ReportForm({ context, initialDraft, photoPort, draftPort, onSubmit }: ReportFormProps) {
+export function ReportForm(props: ReportFormProps) {
+  if (props.initialDraft.participantId !== props.context.participant.participant_id) return <ScreenFrame title="Report draft unavailable" context={props.context}>
+    <Alert title="Private draft">This draft belongs to another principal. It remains privately retained; rejoin its owner to review it.</Alert>
+  </ScreenFrame>;
+  return <OwnedReportForm key={props.context.participant.participant_id} {...props} />;
+}
+function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit }: ReportFormProps) {
   const [draft, setDraft] = useState(initialDraft);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -77,7 +83,7 @@ export function ReportForm({ context, initialDraft, photoPort, draftPort, onSubm
       <TextField label="Capture simulation minute" value={draft.simMinute} editable={!busy} onChangeText={value => field("simMinute", value)} keyboardType="decimal-pad" />
       <TextArea label="Description" value={draft.description} editable={!busy} onChangeText={value => field("description", value)} maxLength={2000} />
       <View style={screenStyles.group}><Text>Vehicle scope: {draft.vehicles.join(", ") || "Unknown"}</Text>
-        {(["motorbike", "car"] as const).map(type => <Button key={type} label={`Toggle ${type}`} {...(busy ? { disabled: true, disabledReason: "Wait for the current action." } : { disabled: false })} accessibilityState={{ selected: draft.vehicles.includes(type) }} onPress={() => vehicle(type)} />)}
+        {(["motorbike", "car", "truck"] as const).map(type => <Button key={type} label={`Toggle ${type}`} {...(busy ? { disabled: true, disabledReason: "Wait for the current action." } : { disabled: false })} accessibilityState={{ selected: draft.vehicles.includes(type) }} onPress={() => vehicle(type)} />)}
       </View>
       {draft.kind === "driver" && <View style={screenStyles.group}>
         <Text>Quick condition: {draft.quick ?? "Text report"}</Text>

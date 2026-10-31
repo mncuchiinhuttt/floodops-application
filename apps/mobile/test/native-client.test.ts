@@ -40,3 +40,13 @@ test("credential adapter requires a supplied native port and performs no persist
   const client = createNativeApi("https://fixture.invalid/api/v1", { readToken });
   expect(client).toBeInstanceOf(ApiClient); expect(readToken).not.toHaveBeenCalled();
 });
+
+test("old client invalidation targets its immutable scope and live principal clearing blocks new commands", async () => {
+  const { api, request } = instrument(); const cancel = jest.spyOn(api, "cancelSession");
+  const initial = { ...fixtureContext(), online: true }; let current: typeof initial | null = initial;
+  const client = new NativeSessionClient(api, initial, () => current);
+  current = null;
+  await expect(client.requestImageReview("rep_fixture01", "late-after-leave-001")).rejects.toThrow(/Rejoin/);
+  current = { ...initial, session: { ...initial.session, session_id: "ses_other001" } };
+  client.invalidate(); expect(cancel).toHaveBeenCalledWith(initial.session.session_id); expect(request).not.toHaveBeenCalled();
+});

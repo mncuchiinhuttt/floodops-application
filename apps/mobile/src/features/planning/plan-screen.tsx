@@ -1,25 +1,26 @@
+import { groupClosure } from "./group-selection";
 import { useState } from "react";
 import { Text } from "react-native";
-import { Alert, Card, TextArea } from "@floodops/ui-native";
+import { Alert, Button, Card, TextArea } from "@floodops/ui-native";
 import type { CandidateInput, Plan, PlanDecisionInput } from "@floodops/contracts";
 import { accessReason, commandReason, sameSession, type MobileContext } from "../../shared/session-context";
 import { CommandButton, ScreenFrame } from "../../shared/screen-frame";
-export function PlanScreen({ context, plan, currentPlan, onDecide, onExecute, pending = false }: {
+function PlanContent({ context, plan, currentPlan, onDecide, onExecute, pending = false }: {
   context: MobileContext; plan: Plan | null; currentPlan: { planId: string; planningJobId: string } | null; pending?: boolean;
   onDecide?: (input: PlanDecisionInput) => void; onExecute?: (input: CandidateInput) => void;
 }) {
   const [reasonText, setReasonText] = useState("");
+  const [selected, setSelected] = useState<string[]>([]);
   const denied = accessReason(context, "operations:read", ["dispatcher"]);
   const stale = plan && (!sameSession(context.session, plan) || plan.input_revision !== context.session.revision ||
     !currentPlan || currentPlan.planId !== plan.plan_id || currentPlan.planningJobId !== plan.planning_job_id);
   const decideReason = commandReason(context, "planning:decide", ["dispatcher"]) ??
     (stale ? "Needs replan. The proposal revision is stale." : !plan || !["proposed", "pending_approval", "ready"].includes(plan.status)
       ? "No current proposal available for a decision." : !reasonText.trim() ? "Enter a decision reason." : !onDecide ? "Decision adapter unavailable." : null);
-  const readyGroups = plan?.groups.filter(group => group.action_ids.every(id => plan.actions.some(action => action.action_id === id && action.status === "ready"))) ?? [];
-  const groupsReady = readyGroups.length === plan?.groups.length && readyGroups.every(group => group.depends_on_group_ids.every(id => readyGroups.some(item => item.group_id === id)));
+  const closure = plan ? groupClosure(plan, selected) : null;
   const executeReason = commandReason(context, "planning:execute", ["dispatcher"]) ??
-    (stale ? "Needs replan. Refresh and request a new proposal." : plan?.status !== "ready" ? "Only a current Ready plan may be sent for server Execute."
-      : !plan.groups.length || !groupsReady ? "Dependency groups contain blocked, pending or missing actions." : !onExecute ? "Execute adapter unavailable." : null);
+    (stale ? "Needs replan. Refresh and request a new proposal." : !plan || ["executed", "rejected", "needs_replan"].includes(plan.status) ? "No current executable plan is available."
+      : !selected.length || !closure?.length ? "Select an independently eligible dependency group." : !onExecute ? "Execute adapter unavailable." : null);
   const actionIds = plan?.actions.filter(action => ["proposed", "pending_approval", "ready"].includes(action.status)).map(action => action.action_id) ?? [];
   return <ScreenFrame title="Plan and execution" context={context}>
     {denied ? <Alert title="Plan unavailable">{denied}</Alert> : !plan ? <Text>No server proposal available.</Text> : <>
@@ -34,15 +35,30 @@ export function PlanScreen({ context, plan, currentPlan, onDecide, onExecute, pe
         <Text>Evidence: {action.evidence_ids.join(", ") || "None"}</Text>
         {action.rule_results.map((rule, index) => <Text key={index}>{rule.rule_id}: {rule.outcome} · {rule.reason}</Text>)}
       </Card>)}
-      {plan.groups.map(group => <Text key={group.group_id}>Group {group.group_id} · Requires {group.depends_on_group_ids.join(", ") || "No other groups"}</Text>)}
+      {plan.groups.map(group => {
+        const eligible = groupClosure(plan, [group.group_id]) !== null;
+        return <Card key={group.group_id} title={`Group ${group.group_id}`}>
+          <Text>Requires: {group.depends_on_group_ids.join(", ") || "No other groups"}</Text>
+          <Button label={`Select group ${group.group_id}`} accessibilityState={{ selected: selected.includes(group.group_id) }}
+            {...(!eligible || pending ? { disabled: true, disabledReason: pending ? "Wait for the current command." : "This closure contains unavailable or blocked actions." } : { disabled: false })}
+            onPress={() => setSelected(current => current.includes(group.group_id) ? current.filter(id => id !== group.group_id) : [...current, group.group_id])} />
+        </Card>;
+      })}
+      <Text>Selected closure: {closure?.join(", ") || "None"}</Text>
       <TextArea label="Plan decision reason" value={reasonText} onChangeText={setReasonText} maxLength={2000} />
       <CommandButton label="Approve actions" reason={decideReason ?? (!actionIds.length ? "No actions available for a decision." : null)} pending={pending}
         onPress={() => onDecide?.({ action_ids: actionIds, decision: "approve", reason: reasonText })} />
       <CommandButton label="Reject actions" reason={decideReason ?? (!actionIds.length ? "No actions available for a decision." : null)} pending={pending}
         onPress={() => onDecide?.({ action_ids: actionIds, decision: "reject", reason: reasonText })} />
       <CommandButton label="Execute plan" reason={executeReason} pending={pending}
-        onPress={() => onExecute?.({ group_ids: plan.groups.map(group => group.group_id) })} />
+        onPress={() => onExecute?.({ group_ids: closure ?? [] })} />
       <Text>Committed driver assignments and ETAs remain in the authorized driver dashboard until successful Execute and refresh.</Text>
     </>}
   </ScreenFrame>;
+}
+
+type PlanScreenProps = Parameters<typeof PlanContent>[0];
+export function PlanScreen(props: PlanScreenProps) {
+  const plan = props.plan;
+  return <PlanContent key={`${props.context.participant.participant_id}:${props.context.session.session_id}:${props.context.session.generation}:${plan?.plan_id}:${plan?.planning_job_id}:${plan?.input_revision}`} {...props} />;
 }

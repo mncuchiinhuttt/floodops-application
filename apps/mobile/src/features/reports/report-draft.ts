@@ -27,6 +27,7 @@ export function draftNeedsRelink(draft: ReportDraft, context: MobileContext): bo
 }
 /** Called only after explicit user review; original capture/photo metadata is retained. */
 export function relinkDraft(draft: ReportDraft, context: MobileContext): ReportDraft {
+  if (draft.participantId !== context.participant.participant_id) throw new Error("Draft belongs to another principal. Owner continuity is required.");
   const expected = context.participant.role === "driver" ? "driver" : context.participant.role === "contributor" ? "citizen" : null;
   if (draft.kind !== expected) throw new Error("Draft kind is outside the new server capability.");
   return { ...draft, session_id: context.session.session_id, generation: context.session.generation,

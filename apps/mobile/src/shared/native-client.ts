@@ -1,5 +1,5 @@
 import { ApiClient, ApiError, TransportError, RequestScope, nativeCredentials, type FetchAdapter } from "@floodops/api-client";
-import { formatEtag, operations, type OperationId, type OperationInputs, type OperationOutputs, type Permission } from "@floodops/contracts";
+import { formatEtag, operations, type OperationId, type OperationInputs, type OperationOutputs, type Permission, type SessionMeta } from "@floodops/contracts";
 import { accessReason, commandReason, type MobileContext } from "./session-context";
 export interface NativeCredentialPort { readToken(sessionId: string): Promise<string | null> }
 /** SecureStore is supplied by the future native bootstrap, never replaced by local storage here. */
@@ -12,8 +12,13 @@ export class NativeSessionClient {
   readonly scope: RequestScope;
   private active = true;
   private requiresRefresh = false;
-  constructor(private readonly api: ApiClient, readonly context: MobileContext) {
-    this.scope = new RequestScope(context.session.session_id, context.session.generation);
+  constructor(private readonly api: ApiClient, private readonly initial: MobileContext, private readonly current?: () => MobileContext | null) {
+    this.scope = new RequestScope(initial.session.session_id, initial.session.generation);
+  }
+  get context(): MobileContext { return this.current?.() ?? this.initial; }
+  acknowledgeRefresh(session: SessionMeta): void {
+    if (session.session_id !== this.scope.sessionId || session.generation !== this.scope.generation) throw new NativeAccessError("Wrong refresh scope");
+    this.requiresRefresh = false;
   }
   private async read<I extends OperationId>(operation: I, input: OperationInputs[I], permission: Permission) {
     this.guard(operation, permission, false);
@@ -75,10 +80,12 @@ export class NativeSessionClient {
     return this.read("getReportImageReview", { path: { ...this.path, report_id: reportId } }, "reports:review");
   }
   invalidate(): void {
-    this.active = false; this.scope.cancel(); this.api.cancelSession(this.context.session.session_id);
+    this.active = false; this.scope.cancel(); this.api.cancelSession(this.scope.sessionId);
   }
   private get path() { return { session_id: this.context.session.session_id }; }
   private guard<I extends OperationId>(id: I, permission: Permission, mutation: boolean): void {
+    if (this.current && (!this.current() || this.current()!.participant.participant_id !== this.initial.participant.participant_id ||
+      this.current()!.session.session_id !== this.initial.session.session_id || this.current()!.session.generation !== this.initial.session.generation)) throw new NativeAccessError("Rejoin the current principal.");
     if (!this.active) throw new NativeAccessError("Rejoin the session before sending.");
     if (mutation && this.requiresRefresh) throw new NativeAccessError("Refresh authoritative state before a new command; the previous outcome must be inspected.");
     const operation = operations[id];

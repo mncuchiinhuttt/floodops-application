@@ -1,47 +1,40 @@
-# FloodOps native screen foundations
+# FloodOps native runtime
 
-This receipt-authorized partial slice contains actual React Native feature screens and forms. It does not provide the Expo Router application bootstrap or an installable binary. One future app uses server-issued capabilities to expose driver, contributor and dispatcher workspaces.
+One Expo58/React Native0.88 app uses Expo Router and server-issued capabilities for driver, contributor and dispatcher workspaces. `app/_layout.tsx` mounts the native runtime, safe-area provider and a read-only TanStack query cache. No web renderer or alternate router is used.
 
-## Public feature surfaces
+## Actual routes and platform adapters
 
-- `src/features/session/workspace-screen.tsx`: capability-filtered navigation descriptors through `onNavigate`, without a local role grant or alternate router.
-- `src/features/driver/driver-screen.tsx`: own committed orders, stops, server route references, ETA and reports from `DriverDashboard`.
-- `src/features/rewards/contributor-screen.tsx`: own report status/reasons and server-recorded simulated points/awards from `ContributorDashboard`.
-- `src/features/reports/report-form.tsx`: driver text/quick reports and contributor photo metadata, manual location/capture fields, injected photo/draft/submission ports, explicit offline draft send/relink.
-- `src/features/reports/review-screen.tsx`: manual typed review form plus a separate advisory AI card. Pending/failed/invalid/stale advice has no fabricated score; manual decisions remain independent.
-- `src/features/planning/plan-screen.tsx`: projected diffs/evidence/rules/dependency groups and separate decision/Execute callbacks. Consumers must supply the current authoritative plan/job pointer; same-revision supersession disables the old plan.
-- `src/features/operations-map/overview-screen.tsx`: scoped impact and proportional native SVG graph plus a text alternative using server lengths and vehicle-specific knowledge.
-- `src/features/sources/sources-screen.tsx`, `results/results-screen.tsx`, `simulation/timeline-screen.tsx`: provenance/conflict/coverage, raw measured metrics and nullable rates, online clock/explicit Reset confirmation bound to session/generation/revision.
+- `/`: real scenario discovery, explicit server-validated scenario creation, invitation claim and explicit secure rejoin. An unavailable catalog stays visible; a user can enter a known scenario ID/version without fixture fallback. Invitation codes stay in memory during the request and are never route parameters.
+- `/sessions/[sessionId]`: capability-filtered workspace navigation. Dynamic workspace/report routes validate current session and permissions before privileged reads.
+- Driver: own committed dashboard/orders/stops/route references/ETA. Contributor: own report states/reasons and server-recorded simulated points. Dispatcher: snapshot/map, selected plan closure/decisions/Execute, sources, timeline/clock/Reset, results, manual review and advisory AI card. API errors remain actual errors while business composition is unfinished.
+- `src/shared/native/secure-store.ts` supplies the real SecureStore adapter with `WHEN_UNLOCKED_THIS_DEVICE_ONLY`. The serialized vault has no plaintext/memory credential fallback. It persists a validated native credential envelope before exposing identity; unavailable/corrupt/failed persistence closes access. Cancellation guards prevent an old join from restoring credentials after Leave.
+- `src/features/reports/data/file-draft-store.ts` uses modern FileSystem async copy/write and immutable save files under principal/session/generation directories. Interrupted/corrupt newer saves preserve older valid captures. Loading another principal’s fields/media is denied synchronously. Same-owner old-session drafts require explicit review/relink/send; matching role/entity never grants ownership. A changed participant ID requires verified continuity that the canonical identity does not otherwise provide.
+- `native-photo-port.ts` uses ImagePicker permission/selection and actual JPEG/PNG byte/size validation. Reserve → binary typed PUT → completion uses private IDs, never arbitrary upload URLs or FormData. Only a normalized server-ready media ID can enter a report. Picker `exif:false` does not itself prove metadata removal. Private normalized review images use authenticated `getMedia` and principal-scoped cache files.
+- Foreground network/AppState controls cancel subscriptions/requests on background, identity change or Reset. Shared `watchEvents` consumes cursor-scoped SSE with a foreground polling fallback. Commands stay stale until authorized identity refresh after reconnect. Query keys include session/generation/principal; foreign cached views are removed. No operational mutation is registered, persisted or queued; there is no operational command outbox.
 
-All screen frames show Simulation, calibration and simulation time. Shared UI/token/icon packages are consumed through their pinned public entrypoints. This slice does not change shared schemas, safety rules or UI primitives.
+Session screens show Simulation, calibration and simulation time. Assignment/ETA/points remain server-derived. Approval does not Execute. A user selects independently eligible groups; dependency closure includes required groups and excludes blocked unrelated siblings. The server still recomputes combined safety/atomicity. Cached/refetching plan pointers cannot enable a superseded plan.
 
-## Native host integration contract
+AI remains advisory. The local report input equality key covers photo/fixture, description, location, capture fields, vehicle scope and status; it is not a server digest or a new wire field. Input changes hide old advice immediately, including A→B→A transitions until a fresh ticket. Same-revision job events apply; unrelated global revision/event progress does not invalidate valid input-matched advice. Manual review remains independent of AI pending/failure.
 
-1. Obtain a current authorized identity and session via the canonical shared API. Construct `MobileContext` with that participant, session, current injected wall-clock value, connection state and freshness. Refresh `nowMs`; never populate capability permissions from a persona selector. Server authorization remains authoritative.
-2. Inject a real native `NativeCredentialPort` into `createNativeApi`. The deferred host supplies SecureStore; this slice has no substitute credential storage, credential URL, public environment token or in-memory credential fixture fallback.
-3. Construct `NativeSessionClient` per refreshed context. It binds cancellation to session/generation, fixes permissions per explicit operation, uses C1 ETags/idempotency fields and never queues mutations. A revision mutation requires an authoritative refresh before another command. Invalidate the client on Reset/rejoin/revocation; recreate it from the next authorized snapshot. Preserve an attempted command's key for outcome inspection; never retry an uncertain command automatically.
-4. Drive `initialQuery` / `reduceQuery` using the matching fetch ticket and authoritative session metadata. Older tickets, revisions, event sequences and generations cannot replace the current view. Reset clears authority and requires rejoin.
-5. Drive `initialAdvice`, `beginAdvice`, `adviceEvent`, `receiveAdvice` from authorized current-report refetches. Job/digest bindings come from server responses, never event payload assumptions. `image_review_changed` at the same revision invalidates advice by event sequence. Manual report changes also clear it. A new server-authorized current job/input binding is supplied to `beginAdvice`; obsolete tickets and mismatched report/job/digest/generation results are discarded.
-6. Pass typed callbacks to screens. Approval and failed Execute do not alter committed driver state. Replace that state only with the refreshed authoritative dashboard after successful Execute. `TimelineScreen.clockSession` must accompany the matching clock response.
-7. Inject `PhotoPort` / `DraftPort` only when reviewed native adapters exist. A selected local image is not submitted or accepted. `PhotoPort.prepare` must perform the authorized upload/verification and return the server media ID. Missing/denied/cancelled ports preserve input and show unavailable; drafts retain capture metadata and require explicit review/relink after session changes. Only app-private reports/images may persist; there is no operational command outbox.
+## Local commands
 
-## Focused local verification
-
-From this worktree root, with the already supplied Bun 1.4.0 frozen dependencies:
+Use supplied Bun1.4.0 frozen dependencies. Wrangler and Expo CLI use the repository-authorized Node runtime exception; the API still executes in real Workerd.
 
 ```sh
 bun run --cwd apps/mobile typecheck
-bun run --cwd apps/mobile test --watchman=false --modulePaths=./node_modules
-bun apps/mobile/test/client-transport-smoke.ts
-bun --bun run eslint apps/mobile/src apps/mobile/preview apps/mobile/test --max-warnings=0
+bun run --cwd apps/mobile test
+bun --bun run eslint apps/mobile/src apps/mobile/app apps/mobile/preview apps/mobile/test apps/mobile/app.config.ts apps/mobile/metro.config.cjs --max-warnings=0
+bun run --cwd apps/mobile start:local
+bun run --cwd apps/mobile bundle:ios
+bun run --cwd apps/mobile bundle:android
 ```
 
-The command-line overrides avoid this host’s unavailable Watchman socket and resolve the mobile-local Babel runtime for transformed workspace packages. Lead should integrate the module path into the central Jest configuration in a continuation; no central config is changed here.
+`EXPO_PUBLIC_FLOODOPS_API_BASE_URL` may contain only a non-secret HTTPS base URL or explicit loopback development URL. Default: `http://127.0.0.1:8790/api/v1`. No bearer/cookie/provider key belongs in public configuration, query, fragment or route parameters. Metro binds localhost8082; no LAN/tunnel or device mapping is created.
 
-Native render/interaction tests use the supplied Expo/Jest/RNTL preset and current matcher surface. The public-client smoke validates C1 requests/responses against a disclosed synthetic transport, including native credential injection and cancellation. These are focused code checks; they are not real backend E2E, device, screen-reader, model or calibration evidence.
+For the authorized local session smoke, start the supplied synthetic local API config under Node with `--local --ip 127.0.0.1 --port 8790` and isolated persistence, then run `bun apps/mobile/test/session-http-smoke.ts`. This exercises real Workerd HTTP using a disclosed test-only SecurePort; it does not exercise device Keychain. The pinned server currently leaves catalog discovery unmounted (404), exposes session/invitation/identity flows, and fails unfinished snapshot views with503 CONFIG_INCOMPLETE. These limitations are observed and displayed, not replaced by fixtures.
 
-`preview/native-fixture-preview.tsx` is a separate renderable fixture surface. Its prominent disconnected banner, synthetic provenance and disabled operational actions remain visible. Production feature modules do not import preview/test data.
+The separate `preview/` surfaces are prominently marked disconnected synthetic fixtures; production runtime does not import them. Unit/render tests mock platform hardware/filesystem only in `test/`. Native JS exports and a Metro launch prove bundling/serving, not installation, native hardware, VoiceOver/TalkBack, full cross-client business E2E or calibration. No prebuild, EAS, device, store, deploy, paid/provider/model, account/resource/key action is part of this continuation.
 
-## Continuation boundaries
+## Integration continuation
 
-A fresh receipt is required for Expo Router/app entrypoint, SecureStore, real photo/file persistence, foreground SSE/device wiring, Metro/runtime/deep links and binary builds. Full predecessor gates, backend composition, current UI continuation, iOS/Android installation, VoiceOver/TalkBack and cross-client flows remain pending. Existing dependency advisory/release blockers belong to the central owners. No remote build, prebuild, provider call, push, deployment or store action is authorized by this slice.
+Lead owns central manifests/lock/EAS/API composition/plan/gates. Full Sources/Planner/Review/Results routes and final backend gates remain pending. After their integrated receipts, run real mobile report→web review→mobile status/points and mobile Execute→web/driver flows on the actual backend. iOS/Android binary installation, hardware persistence/photo permissions, screen readers, approved device access and release/advisory gates require their own evidence and authorization.

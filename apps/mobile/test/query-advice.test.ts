@@ -1,6 +1,7 @@
+import { reportInputKey } from "../src/features/reports/report-input-key";
 import { initialQuery, reduceQuery } from "../src/shared/query-state";
 import { adviceEvent, beginAdvice, initialAdvice, receiveAdvice } from "../src/features/reports/image-review-state";
-import { fixtureEvent, fixtureJob, fixtureSession } from "../preview/fixture-data";
+import { fixtureEvent, fixtureJob, fixtureReport, fixtureSession } from "../preview/fixture-data";
 test("query fences overlapping reads, older sequence and Reset generation", () => {
   let view = initialQuery<string>(fixtureSession);
   view = reduceQuery(view, { type: "begin" });
@@ -23,7 +24,7 @@ test("offline invalidates in-flight reads; rejoin clears cached authority", () =
 });
 test("AI same-revision event invalidates score and obsolete fetch tickets immediately", () => {
   const job = fixtureJob();
-  const binding = { session_id: job.session_id, generation: job.generation, reportId: job.report_id, jobId: null, inputDigest: null };
+  const binding = { session_id: job.session_id, generation: job.generation, reportId: job.report_id, jobId: null, inputDigest: null, reportInput: reportInputKey(fixtureReport()) };
   let view = initialAdvice(binding, 5);
   view = receiveAdvice(view, binding, { report_id: job.report_id, job }, fixtureSession, 0);
   expect(view.binding.jobId).toBe(job.job_id); expect(view.job?.result?.quality_score).toBe(75);
@@ -36,7 +37,7 @@ test("AI same-revision event invalidates score and obsolete fetch tickets immedi
 });
 test("AI refuses wrong digest/job/report/generation and cannot revive after manual decision or Reset", () => {
   const job = fixtureJob();
-  const binding = { session_id: job.session_id, generation: 1, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest };
+  const binding = { session_id: job.session_id, generation: 1, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest, reportInput: reportInputKey(fixtureReport()) };
   const view = initialAdvice(binding, 5);
   for (const patch of [{ input_digest: "b".repeat(64) }, { job_id: "irj_other001" }, { report_id: "rep_other001" }, { generation: 2 }]) {
     expect(receiveAdvice(view, binding, { report_id: job.report_id, job: { ...job, ...patch } }, fixtureSession, 0)).toBe(view);
@@ -47,4 +48,13 @@ test("AI refuses wrong digest/job/report/generation and cannot revive after manu
   const reset = adviceEvent(populated, fixtureEvent("session_reset")).view;
   expect(reset.invalidated).toBe(true); expect(beginAdvice(reset)).toBe(reset);
   expect(receiveAdvice(reset, binding, { report_id: job.report_id, job }, { ...fixtureSession, event_sequence: 7 }, reset.request)).toBe(reset);
+});
+
+test("unrelated event progress during a deferred advice GET does not discard an exact-input result", () => {
+  const job = fixtureJob();
+  const binding = { session_id: job.session_id, generation: job.generation, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest, reportInput: reportInputKey(fixtureReport()) };
+  let view = initialAdvice(binding, 5); view = beginAdvice(view);
+  view = adviceEvent(view, { ...fixtureEvent("state_changed", 6), resource_ids: [] }).view;
+  const result = receiveAdvice(view, binding, { report_id: job.report_id, job }, fixtureSession, view.request);
+  expect(result.job).toBe(job); expect(result.sequence).toBe(6); expect(result.loading).toBe(false);
 });
