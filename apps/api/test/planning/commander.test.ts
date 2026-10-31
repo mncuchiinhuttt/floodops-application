@@ -3,13 +3,14 @@ import { getToolDefinitions } from "@floodops/contracts";
 import { createResponsesProvider, ModelFailure } from "../../src/integrations/openai/index";
 import { runCommander } from "../../src/features/planning/commander";
 import { createToolSession } from "../../src/features/planning/tool-session";
+import { DEFAULT_SEARCH_LIMITS } from "../../src/features/planning/deterministic-types";
 import type { CommanderProvider, ResolvedPlanningOptions } from "../../src/features/planning/runtime-types";
 import { runFixture } from "./planning-context.ts";
 import { runtimeContext } from "./runtime-unit-context";
 function fixture(provider: CommanderProvider) {
   const run = runFixture(), context = runtimeContext(run);
   const reference = { scenario_id: context.snapshot.meta.scenario_id, scenario_version: context.snapshot.meta.scenario_version, bundle_hash: run.scenario.bundleHash };
-  const options: ResolvedPlanningOptions<unknown> = { persistence: { reference, read: () => run,
+  const options: ResolvedPlanningOptions<unknown> = { limits: { ...DEFAULT_SEARCH_LIMITS }, persistence: { reference, read: () => run,
     write: (values, state) => ({ ...values, simulation: { reference, state } }) },
     provider, model: "declared-test-model", modelConfigHash: "test-config", deadlineMs: 20, maxTurns: 2, maxToolCalls: 2,
     material: () => ({ jobId: "job_fixture1", leaseId: "lease_fixture1", planId: "plan_fixture1", nonce: "n".repeat(32) }) };

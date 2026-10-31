@@ -8,7 +8,7 @@ export function jobAuthority(raw: unknown): JobAuthority {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) fail(422, "INVALID_SCHEMA");
   const v = raw as Record<string, unknown>;
   if (["job_id", "lease_id", "nonce", "attempt_id"].some(key => typeof v[key] !== "string")
-    || Object.keys(v).some(key => !["job_id", "lease_id", "nonce", "attempt_id", "proposal", "error_code"].includes(key))) fail(422, "INVALID_SCHEMA");
+    || Object.keys(v).some(key => !["job_id", "lease_id", "nonce", "attempt_id", "proposal", "error_code", "search"].includes(key))) fail(422, "INVALID_SCHEMA");
   return v as unknown as JobAuthority;
 }
 export function assertJobAuthority(context: TransitionContext, record: PlanningRecord, input: JobAuthority): DurableLease {

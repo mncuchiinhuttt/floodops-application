@@ -10,7 +10,7 @@ async function call(path: string, body?: unknown, id = key(), expected = 200) {
   if (response.status !== expected) throw new Error("Runtime smoke HTTP status " + response.status + " at " + path.replace(sessionId, "<session>"));
   return response;
 }
-const createdResponse = await call("/sessions", { scenario_id: "scn_functional1", scenario_version: "1", client_type: "native" }, key(), 201);
+const createdResponse = await call("/sessions", { scenario_id: "scn_functional1", scenario_version: "2", client_type: "native" }, key(), 201);
 const created = parseSchema("SessionCreatedResponse", await createdResponse.json()).data!;
 token = created.credential.access_token!; sessionId = created.session.session_id; etag = createdResponse.headers.get("ETag")!;
 const prefix = "/sessions/" + sessionId;
@@ -19,19 +19,24 @@ const job = parseSchema("PlanningJobResponse", await reserved.json()).data!;
 let planId: string | null = null;
 for (let i = 0; i < 100 && !planId; i++) {
   const current = parseSchema("PlanningJobResponse", await (await call(prefix + "/planning-jobs/" + job.job_id)).json()).data!;
-  if (current.status === "failed") throw new Error("Runtime smoke model fixture failed:" + current.error_code);
+  if (current.status === "failed") throw new Error("Runtime smoke planner failed:" + current.error_code);
   planId = current.plan_id; if (!planId) await new Promise(resolve => setTimeout(resolve, 20));
 }
 if (!planId) throw new Error("Runtime smoke job deadline exceeded.");
 const plan = parseSchema("PlanResponse", await (await call(prefix + "/plans/" + planId)).json()).data!;
 await call(prefix + "/plans/" + planId + "/decisions", { action_ids: plan.actions.map(a => a.action_id), decision: "approve", reason: "Local MVP smoke exact approval" });
+const dry = parseSchema("DryRunResultResponse", await (await call(prefix + "/plans/" + planId + "/dry-runs",
+  { group_ids: plan.groups.map(g => g.group_id) })).json()).data!;
+const expectedCritical = dry.projected_branches.find(b => b.branch_id === "floodops")!.orders.find(o => o.order_id === "ord_order1")!.eta_minute;
+if (!dry.feasible || expectedCritical === null || !Number.isFinite(expectedCritical) || expectedCritical <= 0) throw new Error("Expected genuine feasible projected critical ETA.");
+const target = expectedCritical + 0.1;
 const body = { group_ids: plan.groups.map(g => g.group_id) }, executeKey = key();
 const firstResponse = await call(prefix + "/plans/" + planId + "/executions", body, executeKey, 201);
 const execution = parseSchema("ExecutionResponse", await firstResponse.json()).data!;
 const replay = parseSchema("ExecutionResponse", await (await call(prefix + "/plans/" + planId + "/executions", body, executeKey, 201)).json()).data!;
 if (execution.execution_id !== replay.execution_id || execution.after_revision !== 1) throw new Error("Runtime smoke idempotency failed.");
 etag = firstResponse.headers.get("ETag")!;
-await call(prefix + "/simulation/advances", { target_sim_minute: 2.9 }, key(), 202);
+await call(prefix + "/simulation/advances", { target_sim_minute: target }, key(), 202);
 let now = 0;
 for (let i = 0; i < 100; i++) {
   const clock = parseSchema("SimulationClockResponse", await (await call(prefix + "/simulation")).json()).data!;
@@ -40,12 +45,12 @@ for (let i = 0; i < 100; i++) {
 }
 const operations = parseSchema("OperationsResponse", await (await call(prefix + "/operations")).json()).data!;
 const order = operations.branches.find(b => b.branch_id === "floodops")!.orders.find(o => o.order_id === "ord_order1")!;
-if (now !== 2.9 || order.delivered_at_minute !== 2.75) throw new Error("Runtime smoke actual movement failed.");
+if (now !== target || order.delivered_at_minute !== expectedCritical) throw new Error("Runtime smoke actual movement failed.");
 const incidentResponse = await call(prefix + "/incidents", { cause: "combined", fixture_incident_id: "inc_combined1" }, key(), 201);
 const incident = parseSchema("IncidentResponse", await incidentResponse.json()).data!;
 parseSchema("ImpactResponse", await (await call(prefix + "/impact")).json());
 parseSchema("IncidentListResponse", await (await call(prefix + "/incidents")).json());
-console.log(JSON.stringify({ incidentRecorded: incident.incident_id.length > 0, runtime: "actual local Hono/SQLite DO HTTP", providerTransport: "declared deterministic test transport",
+console.log(JSON.stringify({ incidentRecorded: incident.incident_id.length > 0, runtime: "actual local Hono/SQLite DO HTTP", planner: "actual deterministic bounded search; no model transport",
   jobStatus: "completed", proposalStatus: plan.status, executeReplaySameId: true,
-  executeRevision: execution.after_revision, advancedTo: now, actualCriticalCompletion: order.delivered_at_minute,
-  qualification: "Local MVP smoke; no real model, production, device or full-source integration gate." }, null, 2));
+  executeRevision: execution.after_revision, advancedTo: now, predictedCriticalCompletion: expectedCritical, actualCriticalCompletion: order.delivered_at_minute,
+  qualification: "Local deterministic M1 core smoke; public M1 refreeze/full web acceptance remain separate." }, null, 2));
