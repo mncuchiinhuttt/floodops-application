@@ -1,0 +1,163 @@
+{
+  "work_item_id": "design-system-foundations-v1",
+  "role_id": "design-system",
+  "base_sha": "5934510f1ed03fea4d6bdaba46a3c01cebe225c7",
+  "observed_launch_sha": "1c5ab1a4b5763783a8581068407580d8e60330d7",
+  "status": "blocked",
+  "contract_sha256": "622eb981f6be6e2169af0292a06f4e757292372b5d9f1430fd02bef4e664e818",
+  "changed_paths": [
+    "packages/design-tokens/README.md",
+    "packages/design-tokens/scripts/generate.ts",
+    "packages/design-tokens/src/index.ts",
+    "packages/design-tokens/src/resolve-tokens.ts",
+    "packages/design-tokens/src/tokens.css",
+    "packages/design-tokens/src/tokens.native.ts",
+    "packages/design-tokens/test/contrast.test.ts",
+    "packages/design-tokens/test/token-parity.test.ts",
+    "packages/design-tokens/tokens.json",
+    "packages/icons/LICENSE.assets",
+    "packages/icons/README.md",
+    "packages/icons/dev/serve-gallery.ts",
+    "packages/icons/scripts/generate.ts",
+    "packages/icons/src/assets/isometric/arrow.svg",
+    "packages/icons/src/assets/isometric/asset-manifest.json",
+    "packages/icons/src/assets/isometric/blocked.svg",
+    "packages/icons/src/assets/isometric/car.svg",
+    "packages/icons/src/assets/isometric/check.svg",
+    "packages/icons/src/assets/isometric/clock.svg",
+    "packages/icons/src/assets/isometric/close.svg",
+    "packages/icons/src/assets/isometric/help.svg",
+    "packages/icons/src/assets/isometric/hub.svg",
+    "packages/icons/src/assets/isometric/motorbike.svg",
+    "packages/icons/src/assets/isometric/parcel.svg",
+    "packages/icons/src/assets/isometric/refresh.svg",
+    "packages/icons/src/assets/isometric/source.svg",
+    "packages/icons/src/assets/isometric/warning.svg",
+    "packages/icons/src/assets/isometric/water.svg",
+    "packages/icons/src/geometry.ts",
+    "packages/icons/src/icon-props.ts",
+    "packages/icons/src/native/index.tsx",
+    "packages/icons/src/web/index.ts",
+    "packages/icons/test/platform-entrypoints.test.ts",
+    "packages/ui-native/README.md",
+    "packages/ui-native/src/foundations-gallery.tsx",
+    "packages/ui-native/src/index.ts",
+    "packages/ui-native/src/primitives/badge.tsx",
+    "packages/ui-native/src/primitives/button.tsx",
+    "packages/ui-native/src/primitives/content.tsx",
+    "packages/ui-native/src/primitives/styles.ts",
+    "packages/ui-native/src/primitives/text-field.tsx",
+    "packages/ui-web/README.md",
+    "packages/ui-web/dev/main.tsx",
+    "packages/ui-web/dev/serve-gallery.ts",
+    "packages/ui-web/src/foundations-gallery.tsx",
+    "packages/ui-web/src/index.ts",
+    "packages/ui-web/src/primitives/badge.tsx",
+    "packages/ui-web/src/primitives/button.tsx",
+    "packages/ui-web/src/primitives/content.tsx",
+    "packages/ui-web/src/primitives/control-name.ts",
+    "packages/ui-web/src/primitives/link-button.tsx",
+    "packages/ui-web/src/primitives/text-field.tsx",
+    "packages/ui-web/src/styles.css",
+    "packages/ui-web/test/control-name.test.ts"
+  ],
+  "checks": [
+    {
+      "command": "bun install --frozen-lockfile --ignore-scripts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun test packages/design-tokens/test packages/icons/test packages/ui-web/test",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun --bun run tsc -p packages/design-tokens/tsconfig.json",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun --bun run eslint packages/design-tokens packages/icons packages/ui-web packages/ui-native --max-warnings=0",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun build packages/ui-web/dev/main.tsx packages/ui-native/src/foundations-gallery.tsx packages/icons/src/web/index.ts packages/icons/src/native/index.tsx --outdir /tmp/floodops-design-system-transpile --external react --external react-dom/client --external react/jsx-runtime --external react-native --external react-native-svg --external @floodops/design-tokens --external @floodops/icons/web --external @floodops/icons/native",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun --bun run tsc -p packages/ui-web/tsconfig.json --pretty false",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "fail",
+      "evidence_path": null
+    },
+    {
+      "command": "bun packages/ui-web/dev/serve-gallery.ts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "fail",
+      "evidence_path": null
+    },
+    {
+      "command": "git diff --cached --check (before source commit)",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "ownership matcher + real-path + under-200-line code checks on all 55 new files before source commit",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "git log -1 --format=%G? (source signature verification)",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    }
+  ],
+  "smoke": [
+    {
+      "scenario": "Original generated SVG and token gallery via Bun loopback 127.0.0.1:6006, actual in-app browser at 1280 and 320 widths",
+      "observed_result": "All 14 SVG images loaded with naturalWidth > 0 and alt labels. Keyboard Enter on Skip to assets navigated to #assets. At 320px document clientWidth and scrollWidth were both 320; screenshot inspection showed two-column asset reflow. Browser screenshot/AX evidence is in execution trace; no committed screenshot artifact. Server stopped and viewport/tab cleaned up. This does not render React/native adapters.",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "scenario": "Actual generic React primitives and native SVG/components",
+      "observed_result": "Not exercised: reviewed package dependencies, exports and JSX config absent. Real React gallery runner fails closed on ancestor dependency discovery. No mock renderer or duplicate component implementation used as evidence.",
+      "result": "unavailable",
+      "evidence_path": null
+    }
+  ],
+  "public_exports": [
+    "Proposed @floodops/design-tokens: tokens, SemanticTokens, StatusTone, ProvenanceTone, PriorityTone; /styles.css",
+    "Proposed @floodops/icons/web and /native: Icon, IconName, IconProps",
+    "Proposed @floodops/ui-web: Button, IconButton, LinkButton, TextField, TextArea, StatusBadge, ProvenanceBadge, PriorityBadge, Card, Alert, Skeleton and public props; /styles.css; gallery subpath FoundationsGallery",
+    "Proposed @floodops/ui-native: Button, IconButton, LinkButton, TextField, TextArea, StatusBadge, ProvenanceBadge, PriorityBadge, Card, Alert, Skeleton and public props; gallery subpath FoundationsGallery"
+  ],
+  "integration_requests": [
+    "Lead to review/pin React, React DOM, React types, Expo-compatible React Native and react-native-svg; add platform-specific workspace dependencies in the four protected manifests and frozen bun.lock. No worker manifest/lock edits.",
+    "Lead to publish design-tokens root and /styles.css exports; icons /web and /native exports; ui-web and ui-native roots plus gallery subpaths; ui-web /styles.css. Symbol details below.",
+    "Lead to add jsx: react-jsx and src/**/*.tsx include to affected protected TypeScript configs. packages/icons/tsconfig.json currently excludes native/index.tsx. Add reviewed workspace typecheck/render scripts.",
+    "Send approved baseline-amendment/resume receipt after central config commit; preserve this source history. Then run actual React gallery interaction/axe and native renderer + platform SVG checks before any UI gate.",
+    "Project-owner approval remains needed before external artwork distribution/licensing. Internal-only original artwork metadata is explicit; no third-party licence claimed."
+  ],
+  "blocked_prerequisites": [
+    "PENDING (not denied): actual React/web primitive render and interaction. Target protected React/workspace dependencies, export maps and JSX configs. tsc exits 2 with missing React types, @floodops exports and jsx flag. Gallery exits 1 because reviewed workspace-local React is unavailable; it intentionally refuses ancestor/user node_modules. Syntax bundling externalized dependencies is not a render pass.",
+    "PENDING (not denied): native adapter/component typecheck, RN renderer, iOS/Android SVG and VoiceOver/TalkBack/large-type evidence. Target Lead-owned Expo-compatible dependencies/config and later operator/device setup. No native runtime/device claims made.",
+    "Full phase 02, shadcn/Radix advanced components, Storybook, feature patterns and ui-libraries-ready are outside this independent partial receipt and require follow-up scope/contracts-ready."
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false,
+  "source_sha": "2ebe737cc5aac158a26879a9e2bbbe53b6720f9a",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "delivery_sha": "fd8b4434188b61beb2fa66f4d2676a3433ec3650"
+}

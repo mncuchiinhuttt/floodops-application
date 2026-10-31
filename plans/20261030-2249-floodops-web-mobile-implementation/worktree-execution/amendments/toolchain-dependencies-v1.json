@@ -1,0 +1,59 @@
+{
+  "amendment_id": "toolchain-dependencies-v1",
+  "status": "authorized",
+  "scope": "Lead-owned dependency/JSX/export baseline and full wave-2 continuations after actual contracts-ready; no wire/PRD or permission change.",
+  "dependency_commits": [
+    "6da9e6b35851ee2cb734dbfe2b857d296b5efec6",
+    "6fc66cf7d5515728f9bb5e1994082118268d5fec"
+  ],
+  "contracts_gate_publication": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca",
+  "pins": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-svg": "15.16.0",
+    "expo": "58.0.21",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "hono": "4.13.14",
+    "vitest": "4.1.12",
+    "@cloudflare/vitest-plugin": "1.4.11",
+    "jsdom": "30.1.3",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react-native": "14.1.0",
+    "jest": "30.5.2",
+    "jest-expo": "58.0.13",
+    "@react-native/jest-preset": "0.88.1",
+    "test-renderer": "1.3.0",
+    "babel-jest": "30.5.2",
+    "babel-preset-expo": "58.0.22",
+    "@babel/core": "7.29.7",
+    "@babel/runtime": "7.29.7",
+    "@types/jest": "30.0.0"
+  },
+  "lock_sha256": "8fd61bf2172c41a859459209f9e2b1ae3d5221d5100d4248688d915d8d50fc8d",
+  "node_exceptions": "Bun 1.4.0 installs/scripts; Vitest/Jest/Expo tools retain Node shebangs (observed Node 26.8.1); prebuild/native builds still require supported LTS/toolchains and authorization. No global Node change.",
+  "cloudflare_change": "Use @cloudflare/vitest-plugin 1.4.11 cloudflareTest() + vitest/config defineConfig(); old plan pool/defineWorkersConfig references superseded. Vitest 4.1.12; plugin's Wrangler exactly matches 4.156.0. Local Hono->SQLite DO diagnostic passed.",
+  "checks": {
+    "ui_dependency_smokes": "React DOM/jsdom render+click passed; Jest-Expo/RNTL native render+press passed (mocked native bridges, not device).",
+    "package_typechecks": "tokens/icons/ui-native pass; ui-web source error at primitives/button.tsx:30 must be fixed by DesignSystem",
+    "audit": "NOT CLEAN: 1 high (Expo CLI Zod 3.25.76), 1 low (deepmerge 4.3.1 via Expo/Jest). No compatible patched v3/deepmerge release found. App contracts Zod4.6.7 and plugin Zod4.6.6 are outside affected range. Glob >=9 scoped override14.0.3 removed the moderate advisory without replacing glob7."
+  },
+  "security_disposition": "Implementation/local trusted-workspace use only. Do not expose Expo tooling to untrusted projects/configs or claim security/release clearance. Known upstream audit findings remain explicit release/QA blockers; no force-major Zod override, production/device/provider authorization or advisory waiver is granted.",
+  "sources": [
+    "https://docs.expo.dev/versions/v58.0.0/",
+    "https://docs.expo.dev/develop/unit-testing/",
+    "https://docs.expo.dev/guides/using-bun/",
+    "https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/",
+    "https://bun.sh/docs/pm/overrides",
+    "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+    "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+    "https://github.com/advisories/GHSA-3g3m-2fjr-6pw4"
+  ],
+  "continuation_rules": [
+    "Parent starts/resumes exactly one writer per role using new receipt and exact launch SHA; no worker branch edits by Lead.",
+    "Completed foundation workers verify clean signed R checkpoint, merge exact new launch preserving history, verify new refs, frozen install --ignore-scripts and acknowledge before further writes.",
+    "Full role scope now allowed only through fresh contracts-ready receipts. No backend/UI/simulation-ready or D04/device/model claim from foundation merges."
+  ]
+}

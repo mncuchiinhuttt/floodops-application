@@ -23,7 +23,7 @@ No D1, KV, or Queues in the MVP. DO SQLite supplies per-session transactional st
 | `apps/api/src/features/scenario-assets/` | Read-only feature access to approved immutable fixture assets. |
 | `apps/api/src/session-runtime/session-object.ts` | SQLite DO owner; synchronous transaction boundary, schema initialization, alarms, reset tombstone, expiry. |
 | `apps/api/src/session-runtime/schema.ts` | Application schema-version tracking and forward-only per-object SQL migrations. |
-| `apps/api/vitest.config.ts` | `defineWorkersConfig` with `@cloudflare/vitest-pool-workers` and the local Wrangler config. |
+| `apps/api/vitest.config.ts` | `defineConfig + cloudflareTest` with `@cloudflare/vitest-plugin` and the local Wrangler config. |
 | `apps/api/test/` | DO/API/R2 integration tests in Workers runtime; exact cases in §8. |
 | `apps/api/package.json` | Wrangler `dev`, `build`, `preview`, `test`, `types`, `deploy:preview`, `deploy:production` scripts. |
 | `apps/web/package.json` | Vite `dev`, `build`, and `preview` scripts, each binding host to `127.0.0.1`. |
@@ -149,7 +149,7 @@ Web and Expo native consume SSE through `fetch` response-body streaming. The off
 - `deploy:preview`: `bun run --filter @floodops/web build && wrangler deploy --env preview`
 - `deploy:production`: `bun run --filter @floodops/web build && wrangler deploy --env production`
 
-`apps/api/vitest.config.ts` phase04 dùng `defineWorkersConfig` với `wrangler.configPath: "./wrangler.test.jsonc"` và injected real Hono/SessionDO harness. Phase08 tạo full `src/index.ts` + `wrangler.api-local.jsonc` trước UI. Phase11 tạo `wrangler.jsonc` assets/env và kiểm built-web+API cùng production entrypoint; phase12 chỉ deploy artifacts đã test. Không phụ thuộc late deployment config để chạy early feature tests; không mock DO/R2 thay integration.
+`apps/api/vitest.config.ts` phase04 dùng `defineConfig + cloudflareTest` với `wrangler.configPath: "./wrangler.test.jsonc"` và injected real Hono/SessionDO harness. Phase08 tạo full `src/index.ts` + `wrangler.api-local.jsonc` trước UI. Phase11 tạo `wrangler.jsonc` assets/env và kiểm built-web+API cùng production entrypoint; phase12 chỉ deploy artifacts đã test. Không phụ thuộc late deployment config để chạy early feature tests; không mock DO/R2 thay integration.
 
 Operator setup/deploy commands:
 ```sh
@@ -202,3 +202,6 @@ A Worker rollback changes Worker version, not DO rows, R2 objects, class migrati
 - Worker rollback does not roll back data. No provider, Worker, R2, or EAS availability guarantee is asserted.
 
 This file documents a proposed release path only; it is not evidence of a Worker/EAS deployment, paid provider call, or provider retention setting.
+
+## Executed toolchain amendment (toolchain-dependencies-v1)
+Use `import { defineConfig } from "vitest/config"` and `import { cloudflareTest } from "@cloudflare/vitest-plugin"`, with `plugins: [cloudflareTest({ wrangler: { configPath: "./wrangler.test.jsonc" } })]`. Include `@cloudflare/vitest-plugin/types` in test type configuration. Pins: plugin 1.4.11 / Vitest 4.1.12 / Wrangler 4.156.0. See the committed dependency amendment for actual smoke and non-clean audit qualifications. This supersedes legacy pool configuration names only; SessionPlatform still owns the real application harness.
