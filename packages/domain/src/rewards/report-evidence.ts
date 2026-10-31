@@ -1,4 +1,4 @@
-import { IdSchema, ReportSchema, AwardSchema, validate } from "@floodops/contracts";
+import { IdSchema, ReportSchema, AwardSchema, RewardPolicyRefSchema, validate } from "@floodops/contracts";
 import type { Report } from "@floodops/contracts";
 import type { CoverageInput, RewardInput, UsefulPair } from "./types.ts";
 import { RewardProposalError } from "./types.ts";
@@ -8,15 +8,24 @@ import { currentScopeEvidence } from "./current-evidence.ts";
 
 export function validateRewardInput(input: RewardInput): void {
   const config = input.config;
-  if (!config || !Number.isSafeInteger(config.points_per_report) || config.points_per_report < 1
-    || !Array.isArray(config.eligible_source_ids)) {
-    throw new RewardProposalError("CONFIG_INCOMPLETE", "Explicit award points and eligible source IDs required.");
+  if (config) {
+    if (!Number.isSafeInteger(config.points_per_report) || config.points_per_report < 1 || !Array.isArray(config.eligible_source_ids)) {
+      throw new RewardProposalError("CONFIG_INCOMPLETE", "Explicit per-report points and eligible source IDs required.");
+    }
+    validate(RewardPolicyRefSchema, config.policy, "RewardConfig.policy");
+    const receipt = input.report.reward.policy;
+    if (!receipt || config.policy.policy_id !== receipt.policy_id || config.policy.version !== receipt.version || config.policy.config_hash !== receipt.config_hash) {
+      throw new RewardProposalError("INVALID_CONTEXT", "Reward policy differs from immutable receipt.");
+    }
+    unique(config.eligible_source_ids, "eligible source");
+    for (const id of config.eligible_source_ids) validate(IdSchema, id, "RewardConfig.eligible_source_ids");
   }
-  unique(config.eligible_source_ids, "eligible source");
-  for (const id of config.eligible_source_ids) validate(IdSchema, id, "RewardConfig.eligible_source_ids");
   validate(ReportSchema, input.report, "RewardInput.report");
   validate(IdSchema, input.context.award_id, "RewardInput.award_id");
   validate(AwardSchema.shape.awarded_at, input.context.awarded_at, "RewardInput.awarded_at");
+  if (input.report.status === "accepted" && input.report.reviewed_at !== input.context.awarded_at) {
+    throw new RewardProposalError("INVALID_CONTEXT", "Award must use the canonical human review time.");
+  }
   assertCoverageTransition(input.before, input.after);
   unique(input.report.observation_ids, "report observation"); unique(input.report.vehicle_types, "report vehicle");
 }

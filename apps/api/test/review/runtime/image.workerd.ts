@@ -3,8 +3,10 @@ import { reset, evictDurableObject } from "cloudflare:test";
 import { parseSchema } from "@floodops/contracts";
 import { deriveImageReviewAdvice } from "../../../src/features/reports/review/rubric/index";
 import { begin, create, domain, expireImageDeadline, invite, key, reserve, review, rpc, snapshot, stub } from "./runtime-fixtures";
-import { reportA, imageConfig, syntheticImageBytes } from "./source-fixture";
+import { reportA, imageConfig } from "./source-fixture";
 import { createResponsesImageReviewPort, runImageReview } from "../../../src/features/reports/review/index";
+import { createSourceImageReviewMediaPort } from "../../../src/features/reports/index";
+import { imageContextKey, prepareImageReviewBinding } from "../../../src/features/reports/review/index";
 import { createSessionRuntimeClient } from "../../../src/shared/index";
 import { bindings } from "./runtime-fixtures";
 
@@ -61,18 +63,18 @@ it("forbidden or inconsistent derived model fields never publish advice; manual 
   expect(parseSchema("ImageReviewState", (await rpc(owner, { kind: "image-read", name: reportA })).body.data).job?.result).toBeNull();
   expect((await review(owner)).response.status).toBe(200);
 });
-it("queued pre-provider failure remains an explicit platform limitation, without a fake started call", async () => {
+it("queued pre-provider failure persists failed/null without a fake started call or provider budget", async () => {
   const owner = await create(), queued = await reserve(owner); expect(queued.status).toBe(202);
   const job = parseSchema("ImageReviewJob", queued.body.data), payload = { job_id: job.job_id, lease: queued.effect!.lease, error_code: "STORAGE_UNAVAILABLE" };
-  expect((await rpc(owner, { kind: "image-complete", name: reportA, payload })).status).toBe(409);
-  expect(parseSchema("ImageReviewState", (await rpc(owner, { kind: "image-read", name: reportA })).body.data).job?.status).toBe("queued");
+  expect((await rpc(owner, { kind: "image-fail-queued", name: reportA, payload })).status).toBe(200);
+  expect(parseSchema("ImageReviewState", (await rpc(owner, { kind: "image-read", name: reportA })).body.data).job?.status).toBe("failed");
   expect((await snapshot(owner)).meta.revision).toBe(0);
 });
 
 it("actual image service uses real durable metadata and exactly one explicit fake Responses transport", async () => {
   const owner = await create(), before = await snapshot(owner), reserved = await reserve(owner);
   expect(reserved.status).toBe(202); const job = parseSchema("ImageReviewJob", reserved.body.data);
-  const original = domain(before).source, metadata = original.images[reportA]!, report = original.reports.find(item => item.report_id === reportA)!;
+  const original = domain(await snapshot(owner)).source, metadata = original.images[reportA]!, report = original.reports.find(item => item.report_id === reportA)!;
   let calls = 0;
   const provider = createResponsesImageReviewPort({ enabled: true, apiKey: "synthetic-no-network-key", model: imageConfig.model,
     maxOutputTokens: 1000, maxImageBytes: 1024, maxResponseBytes: 8192, timeoutMs: 5000 }, async (endpoint, init) => {
@@ -85,11 +87,7 @@ it("actual image service uses real durable metadata and exactly one explicit fak
       content: [{ type: "output_text", text: JSON.stringify(modelOutput) }] }] });
   });
   const result = await runImageReview({ metadata: createSessionRuntimeClient(bindings).imageReview, provider,
-    media: { async read(context, expected) {
-      expect(context.sessionId).toBe(owner.id); expect(expected.report_id).toBe(reportA);
-      return { input_digest: job.input_digest, normalized_hash: metadata.normalized_hash, content_type: "image/png",
-        bytes: syntheticImageBytes(), description: report.description };
-    } } }, { sessionId: owner.id, requestId: key(), auth: { token: owner.token, transport: "bearer", origin: null, csrf: null } },
+    media: createSourceImageReviewMediaPort(bindings, { config: imageConfig, prepare: prepareImageReviewBinding, contextKey: imageContextKey }) }, { sessionId: owner.id, requestId: key(), auth: { token: owner.token, transport: "bearer", origin: null, csrf: null } },
   job, reserved.effect!.lease, { normalized_hash: metadata.normalized_hash, description: report.description });
   expect(result).toBe("completed"); expect(calls).toBe(1);
   const completed = parseSchema("ImageReviewState", (await rpc(owner, { kind: "image-read", name: reportA })).body.data).job!;

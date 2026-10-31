@@ -35,15 +35,15 @@ export function proposeReportReward(ledger: RewardLedger, input: RewardInput): R
   const filled = hasReportConflict(input) ? [] : after.pairs.filter(pair => pair.covered && before.pairs.some(previous =>
     scopeKey(previous.scope) === scopeKey(pair.scope) && !previous.covered) && reportEvidence(report, pair, input.after).length > 0);
   const filledGaps = ledger.gaps.filter(gap => gap.status === "open" && filled.some(pair => scopeKey(pair.scope) === scopeKey(gap)));
-  const rewardedGaps = isCitizenPhoto ? filledGaps.filter(gap => filled.some(pair => scopeKey(pair.scope) === scopeKey(gap)
+  const rewardedGaps = isCitizenPhoto && config && report.reward.policy ? filledGaps.filter(gap => filled.some(pair => scopeKey(pair.scope) === scopeKey(gap)
     && reportEvidence(report, pair, input.after).some(observation => config.eligible_source_ids.includes(observation.source_id)
       && input.after.sources.some(source => source.source_id === observation.source_id && source.source_type === "community")))) : [];
   let new_award: Award | null = null;
-  if (!existingAward && rewardedGaps.length) {
+  if (!existingAward && rewardedGaps.length && config && report.review_result_id) {
     if (ledger.awards.some(item => item.award_id === context.award_id)) throw new RewardProposalError("INVALID_CONTEXT", "Award ID already allocated.");
     new_award = validate(AwardSchema, { award_id: context.award_id, report_id: report.report_id, contributor_id: report.reporter_entity_id,
       filled_gap_ids: rewardedGaps.map(gap => gap.gap_id), points: config.points_per_report, event_sequence: context.event_sequence,
-      awarded_at: context.awarded_at, is_simulated: true }, "RewardProposal.award");
+      awarded_at: context.awarded_at, reward_policy: config.policy, review_result_id: report.review_result_id, is_simulated: true }, "RewardProposal.award");
   }
   const award = new_award;
   const gaps = ledger.gaps.map(gap => filledGaps.includes(gap) ? { ...gap, status: "filled" as const,
@@ -53,7 +53,7 @@ export function proposeReportReward(ledger: RewardLedger, input: RewardInput): R
     awards: new_award ? [...ledger.awards, new_award] : ledger.awards }, context) : immutable(ledger);
   const reason: RewardReason = new_award ? "AWARDED" : existingAward ? "ALREADY_AWARDED"
     : hasReportConflict(input) ? "CONFLICT" : isReportExpired(input) ? "EXPIRED"
-    : !isCitizenPhoto || config.eligible_source_ids.length === 0 || (filledGaps.length > 0 && rewardedGaps.length === 0) ? "NOT_ELIGIBLE"
+    : !config ? "POLICY_NOT_CONFIGURED" : !isCitizenPhoto || config.eligible_source_ids.length === 0 || (filledGaps.length > 0 && rewardedGaps.length === 0) ? "NOT_ELIGIBLE"
     : "VALID_BUT_REDUNDANT";
   return immutable({ ledger: next, new_award, filled_gap_ids: filledGaps.map(gap => gap.gap_id), reason });
 }

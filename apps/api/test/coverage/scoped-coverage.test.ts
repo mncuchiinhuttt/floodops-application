@@ -3,7 +3,7 @@ import { deriveUsefulCoverage, createRewardLedger, proposeGapOpenings, proposeRe
 import type { CoverageInput } from "@floodops/domain/rewards";
 import { applyKnowledgeTransition, createRun, loadScenario, sealScenarioDraft } from "@floodops/simulation";
 import { deriveKnowledgeSnapshot } from "@floodops/domain/knowledge";
-import { context, hashA, report, unknownKnowledge } from "../rewards/fixtures.ts";
+import { context, hashA, report, unknownKnowledge, testRewardConfig } from "../rewards/fixtures.ts";
 import { advanceScopedRun, contraryId, coverageInput, evidenceContext, hash, reportId, resolveScopedRun, scopedFixture, scopedRun, sharedId } from "./scoped-evidence-fixture.ts";
 
 function beforeInput(after: CoverageInput): CoverageInput {
@@ -18,7 +18,7 @@ function rewardFor(after: CoverageInput, vehicles: ("motorbike" | "car")[]) {
     report: report({ report_id: reportId, captured_at: "2026-10-31T00:00:00Z", received_at: "2026-10-31T00:00:00Z", captured_sim_minute: 0,
       vehicle_types: vehicles, observation_ids: [sharedId] }),
     photo: { report_id: reportId, normalized_hash: hashA, ready: true },
-    config: { points_per_report: 7, eligible_source_ids: ["src_citizen1"] },
+    config: testRewardConfig,
     context: { ...context, awarded_at: "2026-10-31T00:00:00Z" } };
 }
 for (const reversed of [false, true]) test(`public source/simulator consumer keeps car coverage for bike-only contradiction; reversed=${reversed}`, () => {

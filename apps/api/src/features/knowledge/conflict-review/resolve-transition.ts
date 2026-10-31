@@ -6,6 +6,8 @@ import { fail } from "../../../shared/index";
 type EventInput = NonNullable<Transition["events"]>[number];
 import type { Transition, TransitionContext } from "../../../shared/index";
 import type { ReviewOptions } from "../../reports/review/runtime-types";
+import { resolvePinnedReward } from "../../rewards/reward-policy";
+import { attachAward, humanReview } from "../../reports/review/review-result";
 import { coverageState, openCurrentGaps, readReviewStore, reviewId, sourceFailure } from "../../reports/review/state";
 
 export function resolveConflictTransition(options: ReviewOptions, context: TransitionContext, conflictId: string, input: ConflictResolutionInput): Transition {
@@ -26,12 +28,14 @@ export function resolveConflictTransition(options: ReviewOptions, context: Trans
       .sort((a, b) => a.report_id < b.report_id ? -1 : a.report_id > b.report_id ? 1 : 0);
     for (const report of affected) {
       const media = options.source.image(context.snapshot, report);
-      const reward = proposeReportReward(ledger, { before, after, report,
+      const reviewed = report.award_id ? report : humanReview(report, "accepted", id("review"), new Date(context.now).toISOString());
+      const reward = proposeReportReward(ledger, { before, after, report: reviewed,
         photo: media ? { report_id: report.report_id, normalized_hash: media.normalized_hash, ready: media.ready && !media.duplicate } : null,
-        config: options.rewards, context: { session_id: context.snapshot.meta.session_id, generation: context.snapshot.meta.generation,
-          event_sequence: context.snapshot.meta.event_sequence + events.length + 1, award_id: id("award"), awarded_at: new Date(context.now).toISOString() } });
+        config: resolvePinnedReward(options, report.reward.policy), context: { session_id: context.snapshot.meta.session_id, generation: context.snapshot.meta.generation,
+          event_sequence: context.snapshot.meta.event_sequence + events.length + 1, award_id: id("award"), awarded_at: reviewed.reviewed_at! } });
       ledger = reward.ledger; filled.push(...reward.filled_gap_ids);
-      if (reward.new_award) { awards.push(reward.new_award); report.award_id = reward.new_award.award_id; }
+      if (reward.new_award) awards.push(reward.new_award);
+      Object.assign(report, attachAward(report, reviewed, reward.new_award));
       events.push({ type: reward.new_award ? "award_created" : "report_changed", resource_ids: [report.report_id],
         audience: ["dispatcher"], participantIds: [report.participant_id] });
     }
