@@ -6,11 +6,13 @@ import { createReportCases } from "@floodops/test-fixtures";
 import { advanceRun } from "@floodops/simulation";
 import { sourceState } from "@floodops/domain/reporting";
 import type { TransitionContext } from "../../src/shared/index.ts";
-import type { SourceReviewPort } from "../../src/features/reports/review/index.ts";
+import type { ReviewStore, SourceReviewPort } from "../../src/features/reports/review/index.ts";
 
 // Loader shim only: these tests never construct a DO, dispatch RPC, or claim platform coverage.
 // Every report below comes from the actual Sources feature command reducer.
-mock.module("cloudflare:workers", () => ({ DurableObject: class {} }));
+mock.module("cloudflare:workers", () => ({ DurableObject: class {}, env: {} }));
+// Load after the shim so Bun resolves the Worker-only module boundary.
+const { createReviewRuntime } = await import("../../src/features/reports/review/index.ts");
 const { scenarioCatalog, simulationPersistence, loadSessionScenario } = await import("../../src/index.ts");
 const { createSourcesFeature } = await import("../../src/features/sources/index.ts");
 const { createSourceReviewPort } = await import("../../src/features/reports/index.ts");
@@ -45,7 +47,15 @@ async function submitted(mode: "text" | "quick" = "text"): Promise<TransitionCon
   const input = { ...createReportCases().conflictingDriver, input_mode: mode,
     quick_condition: mode === "quick" ? "impassable" as const : null };
   const proposed = command(context, "source-submit-report", { input, reportId: "report_guard001", fixtureDigest: null });
-  expect(source.report(proposed.snapshot, "report_guard001")?.status).toBe(mode === "quick" ? "accepted" : "needs_clarification");
+  const report = source.report(proposed.snapshot, "report_guard001");
+  expect(report?.status).toBe(mode === "quick" ? "pending_review" : "needs_clarification");
+  if (mode === "quick") {
+    expect(report?.review_result_id).toBeNull(); expect(report?.reviewed_at).toBeNull();
+    expect(report?.observation_ids).toEqual([]); expect(report?.award_id).toBeNull();
+    const afterSubmit = simulationPersistence.read(proposed.snapshot.values);
+    expect(afterSubmit.knowledge).toEqual(run.knowledge);
+    expect(afterSubmit.sourceSnapshot.observations).toEqual(run.sourceSnapshot.observations);
+  }
   return { ...proposed, actor: { participant: parseSchema("Participant", { participant_id: "participant_review1", role: "dispatcher",
     bound_entity_id: null, expires_at: participant.expires_at, is_owner: true,
     permissions: ["session:read", "reports:review", "knowledge:resolve", "media:write", "media:read"] }) } };
@@ -79,9 +89,23 @@ describe("canonical Sources review persistence guards", () => {
     expect(() => source.apply(context, { ...change, knowledge })).toThrow("STATE_CONFLICT");
     expect(context.snapshot).toEqual(before);
   });
-  test("stable conflicts come from a genuine quick report and survive persistence", async () => {
-    const context = await submitted("quick"), before = structuredClone(context.snapshot);
-    const first = source.read(context), second = source.read(context);
+  test("manual review creates stable conflicts from a genuine quick report", async () => {
+    const pending = await submitted("quick"), runtime = createReviewRuntime({ source });
+    const accept = runtime.registry.commands?.["review:accept"];
+    if (!accept) throw new Error("Actual Review acceptance command required");
+    const transition = accept.reduce(pending, accept.validate({ report_id: "report_guard001", input: {
+      decision: "accept", reason: "Manual review required after quick submission", mapped_segment_id: "seg_edge27",
+      vehicle_types: ["motorbike"], condition: "impassable",
+    } }));
+    if (!transition.values) throw new Error("Actual Review acceptance values required");
+    const context = { ...pending, snapshot: { ...pending.snapshot, values: transition.values } };
+    const reviewed = source.report(context.snapshot, "report_guard001");
+    expect(reviewed?.status).toBe("accepted");
+    expect(reviewed?.review_result_id).toBeTruthy(); expect(reviewed?.reviewed_at).toBeTruthy();
+    expect(reviewed?.observation_ids).toHaveLength(1); expect(reviewed?.award_id).toBeNull();
+    const store = context.snapshot.values.reviewRewards as ReviewStore | undefined;
+    expect(store?.ledger.awards).toEqual([]);
+    const before = structuredClone(context.snapshot), first = source.read(context), second = source.read(context);
     const conflict = first.conflicts.find(item => item.segment_id === "seg_edge27" && item.vehicle_type === "motorbike");
     expect(conflict).toBeDefined();
     expect(conflict?.status).toBe("unresolved");
