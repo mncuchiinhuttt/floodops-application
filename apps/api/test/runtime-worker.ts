@@ -3,7 +3,8 @@ import { parseSchema, type Role } from "@floodops/contracts";
 import { createApp, invoke, jsonBody, runtimeCall, send } from "../src/app";
 import { createSessionObject } from "../src/session-runtime";
 import { fail, errorReply } from "../src/shared/platform-error";
-import type { AppEnv, RuntimeRegistry, SessionSeed } from "../src/shared/platform-types";
+import type { AppEnv, RuntimeRegistry, SessionSeed, PlatformBindings } from "../src/shared/platform-types";
+import { versionedSeed, versionedRegistry } from "./commands/versioned-registry";
 export const testSeed: SessionSeed = { scenario_id: "scenario_platform01", scenario_version: "1", horizon_minute: 120,
   calibration_status: "incomplete", entities: { driver: ["driver_driver01"], contributor: ["contributor_person01"] },
   values: { counter: 0, report: { pending: true, digest: "a".repeat(64) } } };
@@ -51,8 +52,15 @@ export const registry: RuntimeRegistry = {
 };
 const RegisteredSessionDO = createSessionObject(registry);
 export class SessionDO extends RegisteredSessionDO {
+  constructor(ctx: DurableObjectState, env: PlatformBindings) {
+    super(ctx, env);
+    const row = ctx.storage.sql.exec<{ value: string }>("SELECT value FROM documents WHERE collection='runtime' AND id='snapshot'").toArray()[0];
+    const seed = row ? JSON.parse(row.value).seed as SessionSeed : undefined;
+    if (seed?.values.test_serialization_registry) this.registry = versionedRegistry(registry, seed);
+  }
   override async install(serialized: string): Promise<string> {
     const input = JSON.parse(serialized);
+    if (input.seed.values.test_serialization_registry) this.registry = versionedRegistry(registry, input.seed);
     // Test-only fault at the real cross-DO initialization boundary, before any target snapshot exists.
     if (input.generation > 0 && input.seed.values.test_reset_fail_once && !await this.ctx.storage.get("test_reset_fault_seen")) {
       await this.ctx.storage.put("test_reset_fault_seen", true);
@@ -66,6 +74,7 @@ commands.post("/sessions/:session_id/test-commands/:name", async c => send(c, aw
   name: c.req.param("name"), payload: await jsonBody(c.req.raw) }))));
 commands.get("/sessions/:session_id/test-counter", async c => send(c, await invoke(c, runtimeCall(c, "view", { name: "counter" }))));
 const app = createApp([commands], { loadScenario: async (id, version) => {
+  if (id === "scenario_versioned01" && version === "1") return versionedSeed(testSeed);
   if (id !== testSeed.scenario_id || version !== testSeed.scenario_version) fail(404, "NOT_FOUND");
   return structuredClone(testSeed);
 }, clientAddress: () => "127.0.0.1" });

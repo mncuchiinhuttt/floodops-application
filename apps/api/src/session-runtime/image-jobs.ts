@@ -7,6 +7,7 @@ import { appendEvents } from "./events";
 import { rateLimit } from "./quotas";
 import { parseQueuedImageFailure } from "./queued-image-failure";
 import { Store } from "./store";
+import { matchesSerialization, requireSerialization } from "./serialization";
 function matches(record: ImageRecord, current: ImageBinding | null | undefined, snapshot: Snapshot): boolean {
   const j = record.job;
   return !!current?.pending && current.report_id === j.report_id && current.input_digest === j.input_digest &&
@@ -20,7 +21,7 @@ function save(store: Store, snapshot: Snapshot, record: ImageRecord, now: number
 }
 export function reconcileImages(store: Store, registry: RuntimeRegistry, now: number): void {
   const snapshot = store.get<Snapshot>("runtime", "snapshot");
-  if (!snapshot) return;
+  if (!snapshot || !matchesSerialization(snapshot.seed, registry)) return;
   for (const record of store.list<ImageRecord>("image_jobs")) {
     if (["superseded", "failed"].includes(record.job.status)) continue;
     const currentId = store.get<string>("image_current", record.job.report_id);
@@ -39,6 +40,7 @@ export function imageCall(store: Store, registry: RuntimeRegistry, env: Platform
   const snapshot = store.snapshot();
   const actor = authenticate(store, snapshot, proof, env, now, call.kind !== "image-read", "reports:review");
   if (call.kind === "image-fail-queued" && actor.participant.role !== "dispatcher") fail(403, "FORBIDDEN");
+  requireSerialization(snapshot, registry);
   const reportId = call.name!;
   const current = registry.imageBinding?.(snapshot, reportId);
   if (!registry.imageBinding) fail(503, "CONFIG_INCOMPLETE");
