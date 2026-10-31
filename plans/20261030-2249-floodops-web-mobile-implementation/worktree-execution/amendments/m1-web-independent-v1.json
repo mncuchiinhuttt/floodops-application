@@ -1,0 +1,22 @@
+{
+  "amendment_id": "m1-web-independent-v1",
+  "status": "authorized",
+  "authority": "Parent directs Lead to prepare independently implementable M1 Web continuation while Contracts and backend owners are active; user requested new PRD and rapid correct M1.",
+  "work_items": [
+    {
+      "role_id": "web-console",
+      "work_item_id": "web-console-m1-media-map-v3",
+      "include_prefixes": [
+        "apps/web/src/",
+        "apps/web/test/"
+      ],
+      "include_files": [],
+      "scope": "Implement TWO genuinely independent M1 Web gaps now on the frozen existing media/graph wire; no v0.5 reward/planner DTO adoption yet. (1) Real accessible browser PNG/JPEG file control -> existing reserveMediaUpload/uploadMediaContent/completeMediaUpload typed APIs -> server media_id -> existing citizen free-report form. The current ReportSubmitRoute only lists fixture choices, which cannot substitute actual user upload; do not seed/fake ready media. Client can precheck size/type for UX but server normalization/hash/dimensions/private ownership remain authoritative. Show upload/normalizing/failure/ready state, exactly one bound valid media selection, stable per-step idempotency on network retry. Abort and clear upload/input/media state/blob URLs on session generation/principal change/Reset/logout/unmount; late completion cannot populate another session, no raw bytes/capabilities in logs/localStorage or offline command queue. Keep fixture choice optional and explicitly labeled, no raw upload served as safe image. (2) Minimal dispatcher graph/map view using actual getSessionGraph geometry + current vehicle-scoped knowledge and available committed operations. Render real provided WGS84 geometry with consistent metric scale, fit/zoom/pan/legend, nodes/segments and actual available hubs/drivers/orders/routes, not invented coordinates/lengths or hardcoded fleet/KPI. No external tile/SaaS/new package needed; SVG DOM is okay in web-owned app, do not edit shared icon/UI libs. Distinguish Simulation/reference provenance/calibration incomplete; unknown/context does not imply safety, source geometry does not prove licensed/calibrated real HCMC coverage. Missing backend operations/snapshot displayed unavailable; do not paint mock fleet as live. Components can take strict public DTOs and disclosed fixtures for rendering tests, actual API integration must remain honest. Preserve role capabilities, dispatcher-only fields and contributor/driver-own views. No campaign/student/native/forecast/AI Commander or new wire. Existing optional photo advice remains manual-trigger advisory. Build/strict types/lint/component interaction tests plus actual local upload/report HTTP+browser as reachable, report exact first blocker; no acceptance claims for unexecuted backend/model/device. C1 refreeze currently in another owner: do not adopt its WIP/movingHEAD; Lead will provide new exact receipt for new semantics. Return source C and report-only R plus actual screenshots/test evidence and minimal remaining M1 UI gaps."
+    }
+  ],
+  "rules": [
+    "Original ownership/protected files/exclusions unchanged. One existing Web writer; parent resumes sol/ultra/fast, no duplicate.",
+    "Partial media/graph wire-compatible scope does not fake backend-ready/newM1contracts-ready/web-ready. New M1 schema adoption requires later producer receipt.",
+    "No source/backend/sharedUI/contract/manifests/lock edits, no production/account/paid/provider/device/credential/remote push actions."
+  ]
+}
