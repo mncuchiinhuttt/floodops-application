@@ -1,6 +1,7 @@
+import { DispatcherMapRoute } from "./dispatcher-map-route";
 import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Card } from "@floodops/ui-web";
+import { Card } from "@floodops/ui-web";
 import { ContributorWorkspace, DriverWorkspace } from "../features";
 import { useRuntime, useRuntimeSnapshot } from "./context";
 import { readOptions, resourceOf } from "./queries";
@@ -20,16 +21,7 @@ export function ContributorRoute() {
   const dashboard = useQuery(readOptions(runtime, "getOwnContributorDashboard", "contributor:self:read", "contributor", { path: { session_id: context.identity.session.session_id } }));
   return <ContributorWorkspace context={context} resource={resourceOf(dashboard)} />;
 }
-export function DispatcherRoute() {
-  const runtime = useRuntime(); useRuntimeSnapshot(); const { session } = runtime.context().identity;
-  const snapshot = useQuery(readOptions(runtime, "getSessionSnapshot", "operations:read", "dispatcher", { path: { session_id: session.session_id } }));
-  return <main><h1>Điều phối</h1><ResourceView resource={resourceOf(snapshot)}>{data => <>
-    <Card title="Trạng thái vận hành server"><p>Phút {data.clock.now_minute} · Graph {data.graph_hash}</p>
-      {data.operations.branches.map(branch => <p key={branch.branch_id}>{branch.branch_id}: {branch.orders.length} đơn · {branch.drivers.length} xe</p>)}
-      <p>Kế hoạch mới nhất: {data.latest_plan ? <Link to={`../plans/${data.latest_plan.plan_id}`}>{data.latest_plan.plan_id}</Link> : "Chưa có"}</p>
-    </Card><Alert title="Dữ liệu server">Màn này hiện snapshot theo quyền. Bản đồ và luồng business đầy đủ cần kiểm chứng tiếp trên backend đã tích hợp.</Alert>
-  </>}</ResourceView></main>;
-}
+export function DispatcherRoute() { return <DispatcherMapRoute />; }
 export function PlanListRoute() {
   const runtime = useRuntime(); useRuntimeSnapshot(); const { session } = runtime.context().identity;
   const query = useQuery(readOptions(runtime, "listPlans", "operations:read", "dispatcher", { path: { session_id: session.session_id } }));

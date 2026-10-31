@@ -1,19 +1,20 @@
 import { parseSchema } from "@floodops/contracts";
 import { hash, randomId, stable } from "../shared/crypto";
 import { fail, success } from "../shared/platform-error";
-import type { Call, PlatformBindings, Proof, Reply, Snapshot, StoredParticipant } from "../shared/platform-types";
+import type { Call, PlatformBindings, Proof, Reply, RuntimeRegistry, Snapshot, StoredParticipant } from "../shared/platform-types";
 import { authenticate, credentialCheck, MAX_AGE_MS, requireCas } from "./auth";
 import { created, issueCredentials } from "./credentials";
 import { appendEvents } from "./events";
 import { supersedeImages } from "./lifecycle";
 import type { Initialization } from "./initialize";
 import { Store } from "./store";
+import { seedForReset } from "./serialization";
 export interface ResetRecord {
   key: string; digest: string; stage: "allocated" | "initialized" | "tombstoned";
   original: StoredParticipant; replacement: StoredParticipant; replayUntil: number;
   initialization: Initialization; reply: Reply;
 }
-export async function resetSession(store: Store, env: PlatformBindings, call: Call, proof: Proof | undefined, digest: string): Promise<Reply> {
+export async function resetSession(store: Store, env: PlatformBindings, call: Call, proof: Proof | undefined, digest: string, registry: RuntimeRegistry = {}): Promise<Reply> {
   const input = parseSchema("ResetInput", call.payload);
   const now = Date.now();
   // Material is prepared before the transaction; the first committed intent owns the target.
@@ -36,9 +37,10 @@ export async function resetSession(store: Store, env: PlatformBindings, call: Ca
     const actor = authenticate(store, current, proof, env, now, true, "simulation:reset");
     store.replay(actor.participant.participant_id, call.key!, digest);
     requireCas(current, call.ifMatch);
+    const seed = seedForReset(current, registry);
     credentials.record.participant.is_owner = actor.participant.is_owner;
     credentials.record.participant.permissions = [...actor.participant.permissions];
-    const initialization: Initialization = { sessionId: targetId, generation: current.meta.generation + 1, seed: current.seed,
+    const initialization: Initialization = { sessionId: targetId, generation: current.meta.generation + 1, seed,
       credentials, key: call.key!, digest, marker, requestId: call.requestId, now };
     const replacementSnapshot: Snapshot = { ...current, meta: { ...current.meta, session_id: targetId, generation: current.meta.generation + 1,
       revision: 0, event_sequence: 0, sim_minute: 0, status: "active", created_at: new Date(now).toISOString(), expires_at: new Date(now + 3600000).toISOString() } };

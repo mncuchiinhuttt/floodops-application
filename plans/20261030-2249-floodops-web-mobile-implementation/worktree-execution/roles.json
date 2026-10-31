@@ -15,6 +15,7 @@
     ],
     "protected_files": [
       ".gitignore",
+      ".env.example",
       ".bun-version",
       ".gitattributes",
       "AGENTS.md",
@@ -289,6 +290,7 @@
       ],
       "include_files": [
         ".gitignore",
+        ".env.example",
         ".bun-version",
         ".gitattributes",
         "AGENTS.md",

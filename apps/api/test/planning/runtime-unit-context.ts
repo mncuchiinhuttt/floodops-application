@@ -8,7 +8,7 @@ export function runtimeContext(run: SimulationRun): TransitionContext {
     sim_minute: run.nowMs / 60000, horizon_minute: config.horizon_minute, status: "active", calibration_status: "incomplete",
     created_at: "2026-10-31T00:00:00Z", expires_at: "2026-10-31T01:00:00Z" });
   const reference = { scenario_id: meta.scenario_id, scenario_version: meta.scenario_version, bundle_hash: run.scenario.bundleHash };
-  const values = { simulation: { reference, state: {} } };
+  const values = { runtime_contract: { serialization: "m1-v1", version: "0.5.0-m1" }, simulation: { reference, state: {} } };
   return { snapshot: { meta, values, seed: { scenario_id: meta.scenario_id, scenario_version: meta.scenario_version,
     horizon_minute: meta.horizon_minute, calibration_status: meta.calibration_status,
     entities: { driver: run.scenario.manifest.initial.drivers.map(d => d.driver_id), contributor: [] }, values },

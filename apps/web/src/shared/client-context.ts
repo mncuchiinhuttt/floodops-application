@@ -1,6 +1,6 @@
 import { IdentitySchema, formatEtag, operations, type OperationId, type Permission, type Role } from "@floodops/contracts";
 import { ApiClient, ApiError, RequestScope, type OperationInputs } from "@floodops/api-client";
-import { accessReason, sameVersion, type AccessContext } from "./access";
+import { accessReason, sameSession, sameVersion, type AccessContext } from "./access";
 
 export interface ClientContext extends AccessContext { scope: RequestScope }
 export class FeatureAccessError extends Error {}
@@ -29,15 +29,16 @@ export function createBoundClient(client: ApiClient, readContext: () => ClientCo
       if (!operations[id].roles.some(value => value === role)) throw new FeatureAccessError("Operation không thuộc role này.");
       const request = client.prepare(id, input(captured));
       let invalidated = false;
-      return { operationId: request.operationId, idempotencyKey: request.idempotencyKey, send: async () => {
+      return { operationId: request.operationId, idempotencyKey: request.idempotencyKey, send: async (options: { signal?: AbortSignal } = {}) => {
         if (invalidated) throw new FeatureAccessError("Needs replan — lệnh cũ bị vô hiệu. Làm mới và xem lại.");
         const current = snapshot(permission, role, true);
-        if (current.scope !== captured.scope || !sameVersion(current.identity.session, captured.identity.session) ||
+        if (current.scope !== captured.scope || !sameSession(current.identity.session, captured.identity.session) ||
+          (operations[id].requiresRevision && !sameVersion(current.identity.session, captured.identity.session)) ||
           current.identity.participant.participant_id !== captured.identity.participant.participant_id ||
           current.identity.participant.bound_entity_id !== captured.identity.participant.bound_entity_id ||
           current.identity.participant.role !== captured.identity.participant.role)
           throw new FeatureAccessError("Lệnh cũ. Làm mới và xem lại trước khi gửi.");
-        try { return await request.send({ scope: captured.scope }); }
+        try { return await request.send({ scope: captured.scope, signal: options.signal }); }
         catch (error) {
           if (error instanceof ApiError && [401, 403, 410, 412].includes(error.status)) {
             invalidated = true; if (error.status !== 412) onAuthorityFailure?.(captured);

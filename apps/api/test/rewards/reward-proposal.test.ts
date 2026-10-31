@@ -2,14 +2,15 @@ import { expect, test } from "bun:test";
 import { AwardSchema, ContractValidationError } from "@floodops/contracts";
 import { proposeReportReward, RewardProposalError } from "@floodops/domain/rewards";
 import type { RewardConfig } from "@floodops/domain/rewards";
-import { bike, car, context, coverage, freeze, hashA, known, lowObservation, openedLedger, report, rewardInput, source, unknownKnowledge } from "./fixtures.ts";
+import { bike, car, context, coverage, freeze, hashA, known, lowObservation, openedLedger, report, rewardInput, source, unknownKnowledge, testRewardConfig, testRewardConfig17, testDisabledRewardConfig, testRewardPolicy } from "./fixtures.ts";
 
 test("accepted fresh low-confidence citizen photo proposes one configured award with isolated immutable ledger", () => {
   const ledger = freeze(openedLedger()), input = freeze(rewardInput()), oldLedger = structuredClone(ledger), oldInput = structuredClone(input);
   const result = proposeReportReward(ledger, input);
   expect(result.reason).toBe("AWARDED"); expect(result.new_award).toEqual({ award_id: context.award_id,
     report_id: input.report.report_id, contributor_id: input.report.reporter_entity_id, filled_gap_ids: ["gap_bike001"],
-    points: 7, event_sequence: 2, awarded_at: context.awarded_at, is_simulated: true });
+    points: 7, event_sequence: 2, awarded_at: context.awarded_at, is_simulated: true,
+    reward_policy: testRewardPolicy, review_result_id: input.report.review_result_id! });
   expect(AwardSchema.parse(result.new_award)).toEqual(result.new_award!);
   expect(result.ledger.gaps.find(gap => gap.vehicle_type === "car")?.status).toBe("open");
   expect(result.ledger.gaps.find(gap => gap.vehicle_type === "motorbike")?.first_award_id).toBe(context.award_id);
@@ -78,14 +79,17 @@ test("redundant or unattributed accepted evidence does not fill or earn; stored 
   expect(proposeReportReward(openedLedger(), rewardInput({ after: coverage({ observations: [wrongEvidence], knowledge: [known(wrongEvidence)] }) })).new_award).toBeNull();
 });
 test("essential points/config never default; explicit disabled source eligibility gives zero awards", () => {
-  for (const config of [undefined, {}, { points_per_report: 10 }, { points_per_report: 0, eligible_source_ids: [] },
-    { points_per_report: 1.5, eligible_source_ids: [] }, { points_per_report: Infinity, eligible_source_ids: [] }]) {
+  for (const config of [{}, { points_per_report: 10 }, { ...testRewardConfig, points_per_report: 0 },
+    { ...testRewardConfig, points_per_report: 1.5 }, { ...testRewardConfig, points_per_report: Infinity }]) {
     try { proposeReportReward(openedLedger(), rewardInput({ config: config as RewardConfig })); throw new Error("Expected config failure"); }
     catch (error) { expect(error).toBeInstanceOf(RewardProposalError); expect((error as RewardProposalError).code).toBe("CONFIG_INCOMPLETE"); }
   }
-  const result = proposeReportReward(openedLedger(), rewardInput({ config: { points_per_report: 17, eligible_source_ids: [] } }));
+  const missing = proposeReportReward(openedLedger(), rewardInput({ config: null }));
+  expect(missing.new_award).toBeNull(); expect(missing.ledger.awards).toEqual([]);
+  expect(missing.reason).toBe("POLICY_NOT_CONFIGURED"); expect(missing.filled_gap_ids).toEqual(["gap_bike001"]);
+  const result = proposeReportReward(openedLedger(), rewardInput({ config: testDisabledRewardConfig, report: report({ reward: { status: "ineligible", policy: testDisabledRewardConfig.policy, reason_code: "NOT_ELIGIBLE", award_id: null } }) }));
   expect(result.reason).toBe("NOT_ELIGIBLE"); expect(result.new_award).toBeNull();
-  expect(proposeReportReward(openedLedger(), rewardInput({ config: { points_per_report: 17, eligible_source_ids: [source.source_id] } })).new_award?.points).toBe(17);
+  expect(proposeReportReward(openedLedger(), rewardInput({ config: testRewardConfig17, report: report({ reward: { status: "ineligible", policy: testRewardConfig17.policy, reason_code: "NOT_ELIGIBLE", award_id: null } }) })).new_award?.points).toBe(17);
 });
 test("bindings, frozen transition clock/scope, and strict report fields fail closed", () => {
   const ledger = openedLedger(), input = rewardInput();

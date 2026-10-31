@@ -25,6 +25,8 @@ export function parseSelection(text: string): { action_ids: string[]; route_ids:
 }
 export async function runCommander<State>(session: ReturnType<typeof createToolSession<State>>,
   options: ResolvedPlanningOptions<State>, deadline: number, current: () => Promise<boolean>) {
+  // The canonical M1 registry refuses operational model tools before timers or transport.
+  const definitions = getToolDefinitions(), names = new Set(definitions.map(t => t.name)); let count = 0;
   if (!options.provider) throw new ModelFailure("MODEL_UNAVAILABLE");
   const abort = new AbortController(), remaining = Math.min(options.deadlineMs, deadline - Date.now());
   if (remaining <= 0) throw new ModelFailure("MODEL_TIMEOUT");
@@ -32,7 +34,6 @@ export async function runCommander<State>(session: ReturnType<typeof createToolS
   const timeout = new Promise<never>((_resolve, reject) => { timer = setTimeout(() => {
     abort.abort(); reject(new ModelFailure("MODEL_TIMEOUT")); }, remaining); });
   const input: unknown[] = [{ role: "user", content: "Inspect the captured incident state, compute a feasible proposal, and return the selected server-issued IDs." }];
-  const definitions = getToolDefinitions(), names = new Set(definitions.map(t => t.name)); let count = 0;
   try {
     for (let turn = 0; turn < options.maxTurns; turn++) {
       if (!await current()) throw new ModelFailure("MODEL_INVALID_OUTPUT");

@@ -1,4 +1,4 @@
-import type { Award, Coverage, Gap, Observation, Report, ScopePair, SegmentKnowledge, Source } from "@floodops/contracts";
+import type { Award, Coverage, Gap, Observation, Report, RewardPolicyRef, ScopePair, SegmentKnowledge, Source } from "@floodops/contracts";
 
 /** Private server inputs/proposals, not wire DTOs or authorization grants. */
 export interface CoverageScope extends ScopePair { knowledge_epoch: number }
@@ -31,6 +31,7 @@ export interface TransitionContext {
 }
 export interface GapIdentity extends CoverageScope { readonly gap_id: string }
 export interface RewardConfig {
+  readonly policy: RewardPolicyRef;
   readonly points_per_report: number;
   readonly eligible_source_ids: readonly string[];
 }
@@ -41,11 +42,11 @@ export interface RewardInput {
   readonly after: CoverageInput;
   readonly report: Report;
   readonly photo: VerifiedPhoto | null;
-  readonly config: RewardConfig;
+  readonly config: RewardConfig | null;
   readonly context: TransitionContext & { readonly award_id: string; readonly awarded_at: string };
 }
 export type RewardReason = "AWARDED" | "ALREADY_AWARDED" | "DUPLICATE_IMAGE" | "NOT_ACCEPTED"
-  | "MEDIA_NOT_READY" | "NOT_ELIGIBLE" | "CONFLICT" | "EXPIRED" | "VALID_BUT_REDUNDANT";
+  | "POLICY_NOT_CONFIGURED" | "MEDIA_NOT_READY" | "NOT_ELIGIBLE" | "CONFLICT" | "EXPIRED" | "VALID_BUT_REDUNDANT";
 export interface RewardProposal {
   readonly ledger: RewardLedger;
   readonly new_award: Award | null;

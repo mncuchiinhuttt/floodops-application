@@ -1,5 +1,5 @@
-import { parseSchema, parseToolInput, parseToolOutput } from "@floodops/contracts";
-import type { Notification, Observation, PlanAction, Route, ToolName, ToolInput, ToolOutput } from "@floodops/contracts";
+import { parseSchema, parseInternalServiceInput, parseInternalServiceOutput } from "@floodops/contracts";
+import type { Notification, Observation, PlanAction, Route, InternalServiceName, InternalServiceInput, InternalServiceOutput } from "@floodops/contracts";
 import { canonicalJson, computeRoute } from "@floodops/simulation";
 import type { SimulationRun } from "@floodops/simulation";
 import { createPlanningPolicy } from "@floodops/domain/planning";
@@ -39,8 +39,8 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
       dependency_group_id: id("group", targets), depends_on_action_ids: [], reason, evidence_ids: evidenceIds,
       rule_results: [], status: "proposed" }); actions[result.action_id] = result; return result;
   }
-  async function invoke<N extends ToolName>(name: N, raw: ToolInput<N>, allowPending = true): Promise<ToolOutput<N>> {
-    const input = parseToolInput(name, raw);
+  async function invoke<N extends InternalServiceName>(name: N, raw: InternalServiceInput<N>, allowPending = true): Promise<InternalServiceOutput<N>> {
+    const input = parseInternalServiceInput(name, raw);
     let output: unknown;
     switch (name) {
       case "get_incident_state": output = capturedSessionSnapshot(context, run); break;
@@ -50,7 +50,7 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
         output = calculateImpact(run, state.incidents.filter(i => value.incident_ids.includes(i.incident_id)), policy); break;
       }
       case "compute_route": {
-        const value = parseToolInput("compute_route", raw), candidate = candidateForRoute(run, value, text => id("stop", text));
+        const value = parseInternalServiceInput("compute_route", raw), candidate = candidateForRoute(run, value, text => id("stop", text));
         const routeId = id("route", value);
         const result = computeRoute(run, candidate, value.driver_id, proposalPolicy(value.driver_id, allowPending), { routeId, inputRevision: identity.input_revision, hash: hashText });
         routes[result.route_id] = result; related[result.route_id] = [];
@@ -62,20 +62,20 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
         output = result; break;
       }
       case "propose_assignment_change": {
-        const value = parseToolInput("propose_assignment_change", raw), route = routes[value.route_id];
+        const value = parseInternalServiceInput("propose_assignment_change", raw), route = routes[value.route_id];
         if (!route || route.driver_id !== value.driver_id || !run.branches.floodops!.operations.orders.some(o => o.order_id === value.order_id)
           || !route.assignment_overrides.some(a => a.order_id === value.order_id && a.driver_id === value.driver_id && a.pickup_hub_id === value.pickup_hub_id)) fail(422, "UNKNOWN_ENTITY");
         output = action(value.pickup_hub_id ? "change_hub" : "reassign", { order_id: value.order_id, driver_id: value.driver_id,
           hub_id: value.pickup_hub_id, route_id: value.route_id, defer_minute: null }, value.reason, value.evidence_ids); break;
       }
       case "propose_order_deferral": {
-        const value = parseToolInput("propose_order_deferral", raw);
+        const value = parseInternalServiceInput("propose_order_deferral", raw);
         if (!run.branches.floodops!.operations.orders.some(o => o.order_id === value.order_id)) fail(422, "UNKNOWN_ENTITY");
         output = action("defer", { order_id: value.order_id, driver_id: null, hub_id: null, route_id: null,
           defer_minute: value.defer_minute }, value.reason, value.evidence_ids); break;
       }
       case "test_reassignment": {
-        const value = parseToolInput("test_reassignment", raw);
+        const value = parseInternalServiceInput("test_reassignment", raw);
         if (value.actions.some(a => !actions[a.action_id] || canonicalJson(actions[a.action_id]) !== canonicalJson(a))) fail(422, "UNKNOWN_ENTITY");
         const bundle = finalize({ action_ids: value.actions.map(a => a.action_id), route_ids: [] });
         const selectedRoutes = bundle.routes, plan = bundle.plan;
@@ -84,7 +84,7 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
           latest_plan_id: planId, latest_requested_job_id: jobId } } }, run, working, plan, plan.groups.map(g => g.group_id)); break;
       }
       case "draft_customer_notification": {
-        const value = parseToolInput("draft_customer_notification", raw);
+        const value = parseInternalServiceInput("draft_customer_notification", raw);
         const order = run.branches.floodops!.operations.orders.find(o => o.order_id === value.order_id);
         if (!order || value.committed_revision !== identity.input_revision) fail(422, "UNKNOWN_ENTITY");
         output = { notification_id: id("notification", value), order_id: order.order_id, committed_revision: identity.input_revision,
@@ -92,7 +92,7 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
           is_preview_only: true, is_simulated: true } satisfies Notification; break;
       }
       case "record_road_observation": {
-        const value = parseToolInput("record_road_observation", raw); evidence(value.evidence_ids);
+        const value = parseInternalServiceInput("record_road_observation", raw); evidence(value.evidence_ids);
         if (!options.observationProposal) fail(503, "CONFIG_INCOMPLETE");
         output = parseSchema("Observation", options.observationProposal(context, run, value));
         const proposal = output as Observation;
@@ -101,7 +101,7 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
           || !proposal.evidence_ids.includes(value.report_id)) fail(422, "INVALID_SCHEMA"); break;
       }
     }
-    return parseToolOutput(name, output);
+    return parseInternalServiceOutput(name, output);
   }
   function finalize(selection: { action_ids: string[]; route_ids: string[] }) {
     if (selection.action_ids.some(a => !actions[a]) || selection.route_ids.some(r => !routes[r])) fail(422, "UNKNOWN_ENTITY");
@@ -118,13 +118,13 @@ export function createPlanningServices<State>(context: TransitionContext, run: S
   }
   return {
     getIncidentState: () => invoke("get_incident_state", {}),
-    getAffectedOrders: (input: ToolInput<"get_affected_orders">) => invoke("get_affected_orders", input),
-    computeRoute: (input: ToolInput<"compute_route">, allowPending = true) => invoke("compute_route", input, allowPending),
-    proposeAssignmentChange: (input: ToolInput<"propose_assignment_change">) => invoke("propose_assignment_change", input),
-    proposeOrderDeferral: (input: ToolInput<"propose_order_deferral">) => invoke("propose_order_deferral", input),
-    testReassignment: (input: ToolInput<"test_reassignment">) => invoke("test_reassignment", input),
-    draftCustomerNotification: (input: ToolInput<"draft_customer_notification">) => invoke("draft_customer_notification", input),
-    recordRoadObservation: (input: ToolInput<"record_road_observation">) => invoke("record_road_observation", input),
+    getAffectedOrders: (input: InternalServiceInput<"get_affected_orders">) => invoke("get_affected_orders", input),
+    computeRoute: (input: InternalServiceInput<"compute_route">, allowPending = true) => invoke("compute_route", input, allowPending),
+    proposeAssignmentChange: (input: InternalServiceInput<"propose_assignment_change">) => invoke("propose_assignment_change", input),
+    proposeOrderDeferral: (input: InternalServiceInput<"propose_order_deferral">) => invoke("propose_order_deferral", input),
+    testReassignment: (input: InternalServiceInput<"test_reassignment">) => invoke("test_reassignment", input),
+    draftCustomerNotification: (input: InternalServiceInput<"draft_customer_notification">) => invoke("draft_customer_notification", input),
+    recordRoadObservation: (input: InternalServiceInput<"record_road_observation">) => invoke("record_road_observation", input),
     finalize
   };
 }

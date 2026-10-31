@@ -1,4 +1,4 @@
-import type { FixtureAsset, Participant, VehicleType } from "@floodops/contracts";
+import type { FixtureAsset, Participant, RewardPolicyRef, VehicleType } from "@floodops/contracts";
 import type { SourceEnvironment } from "../sources/source-types.ts";
 import type { KnowledgePair } from "../knowledge/current-evidence.ts";
 
@@ -13,6 +13,8 @@ export interface ReportContext extends SourceEnvironment {
   readonly reportId: string;
   readonly inputRevision: number;
   readonly receivedAt: string;
+  /** Immutable server policy at receipt; missing configuration is never backfilled. */
+  readonly receiptRewardPolicy?: RewardPolicyRef | null;
   /** Immutable epoch snapshot retained at submission/capture; never replace with newer acceptance epochs. */
   readonly epochs: readonly KnowledgePair[];
   readonly fixtureAssets: readonly FixtureAsset[];

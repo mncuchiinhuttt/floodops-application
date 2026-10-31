@@ -3,6 +3,7 @@ import { fail } from "../shared/platform-error";
 import type { Call, RuntimeRegistry, Snapshot, Transition } from "../shared/platform-types";
 import { appendEvents } from "./events";
 import { Store } from "./store";
+import { matchesSerialization } from "./serialization";
 export function assertFence(snapshot: Snapshot, call: Call, now: number, nonceDigest?: string): void {
   for (const [name, value] of Object.entries(call.expectedPointers ?? {})) if ((snapshot.pointers[name] ?? null) !== value) fail(409, "STALE_PROPOSAL", snapshot);
   if (!call.fence) return;
@@ -30,7 +31,7 @@ export function updateLeases(snapshot: Snapshot, transition: Transition, registr
 }
 export function reconcileLeases(store: Store, registry: RuntimeRegistry, now: number): void {
   const snapshot = store.get<Snapshot>("runtime", "snapshot");
-  if (!snapshot?.leases) return;
+  if (!snapshot?.leases || !matchesSerialization(snapshot.seed, registry)) return;
   for (const lease of Object.values(snapshot.leases)) {
     if (lease.status !== "active") continue;
     const stale = ["resetting", "reset", "expired"].includes(snapshot.meta.status) || lease.generation !== snapshot.meta.generation ||

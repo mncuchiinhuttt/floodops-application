@@ -29,7 +29,7 @@ it("coalescing, cancellation and expired planning lease never create operations 
   const next = (await reserve(f)).body.data as PlanningReservation;
   await mutate(f, s => { s.leases[next.execution!.leaseId]!.expires_at = Date.now() - 1; });
   const job = await get(f, "/planning-jobs/" + next.job.job_id);
-  expect(parseSchema("PlanningJobResponse", await job.json()).data).toMatchObject({ status: "failed", error_code: "MODEL_TIMEOUT" });
+  expect(parseSchema("PlanningJobResponse", await job.json()).data).toMatchObject({ status: "failed", error_code: "PLANNER_TIMEOUT" });
   expect((await snapshot(f)).meta.revision).toBe(0); expect((await run(f)).branches).toEqual(before.branches);
 });
 it("P1 hub change uses actual tools/DO Execute and runner pickup at the new hub without changing SLA", async () => {
