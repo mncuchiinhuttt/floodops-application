@@ -7,6 +7,11 @@ import type { AppEnv, PlatformPorts } from "../../shared/platform-types";
 import { issueCredentials } from "../../session-runtime/credentials";
 import { MAX_AGE_MS } from "../../session-runtime/auth";
 import { jsonBody, key, send } from "../../app/http";
+/** Sessions one client address may create per hour; `CREATE_LIMIT_PER_HOUR` overrides the default of 10 within 1..1000. */
+export function createLimit(configured: string | undefined): number {
+  const value = Number(configured);
+  return configured !== undefined && Number.isInteger(value) && value >= 1 && value <= 1000 ? value : 10;
+}
 export function createCreationRouter(ports: PlatformPorts): Hono<AppEnv> {
   const router = new Hono<AppEnv>();
   router.post("/sessions", async c => {
@@ -23,7 +28,7 @@ export function createCreationRouter(ports: PlatformPorts): Hono<AppEnv> {
     const limiterId = await hmac(c.env.SESSION_LOCATOR_KEY, ["create-limit", c.env.APP_ENV, address, bucket]);
     const limiter = c.env.SESSIONS.get(c.env.SESSIONS.idFromName(`create_${limiterId}`));
     const retryAfter = Math.ceil((3600000 - now % 3600000) / 1000);
-    if (!await limiter.limitCreate(bucket, locator, retryAfter)) throw new PlatformError(429, "RATE_LIMITED", "Session creation limit", undefined, retryAfter);
+    if (!await limiter.limitCreate(bucket, locator, retryAfter, createLimit(c.env.CREATE_LIMIT_PER_HOUR))) throw new PlatformError(429, "RATE_LIMITED", "Session creation limit", undefined, retryAfter);
     const seed = await ports.loadScenario(input.scenario_id, input.scenario_version);
     if (seed.scenario_id !== input.scenario_id || seed.scenario_version !== input.scenario_version) fail(503, "CONFIG_INCOMPLETE");
     const digest = await hash(stable(input));

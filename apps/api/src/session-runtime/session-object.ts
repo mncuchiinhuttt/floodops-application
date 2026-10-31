@@ -30,10 +30,10 @@ export class SessionDO extends DurableObject<PlatformBindings> {
       await this.schedule(); return JSON.stringify(reply);
     } catch (error) { return JSON.stringify(errorReply(error, input.requestId)); }
   }
-  async limitCreate(bucket: string, requestDigest: string, retryAfter: number): Promise<boolean> {
+  async limitCreate(bucket: string, requestDigest: string, retryAfter: number, limit = 10): Promise<boolean> {
     const allowed = this.ctx.storage.transactionSync(() => {
       if (this.store.get<boolean>("create_requests", requestDigest)) return true;
-      if (!this.store.consume("create", bucket, 10)) return false;
+      if (!this.store.consume("create", bucket, limit)) return false;
       this.store.put("create_requests", requestDigest, true); return true;
     });
     await this.ctx.storage.setAlarm(Date.now() + retryAfter * 1000);

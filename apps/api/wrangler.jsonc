@@ -26,6 +26,7 @@
   "vars": {
     "APP_ENV": "production",
     "WEB_ORIGIN": "https://floodops-api.vominhlongbentre.workers.dev,https://floodops.mncuchiinhuttt.dev",
+    "CREATE_LIMIT_PER_HOUR": "200",
     "CAPABILITY_SEAL_KEY_ID": "prod-v1"
   },
   "env": {

@@ -6,6 +6,8 @@ export interface PlatformBindings {
   REPORT_MEDIA?: R2Bucket;
   WEB_ORIGIN: string;
   APP_ENV: string;
+  /** Sessions one client address may create per hour. Integer 1..1000, default 10; raise it for demos. */
+  CREATE_LIMIT_PER_HOUR?: string;
   OPENAI_API_KEY?: string;
   OPENAI_IMAGE_REVIEW_MODEL?: string;
   OPENAI_IMAGE_REVIEW_ENABLED?: string;
