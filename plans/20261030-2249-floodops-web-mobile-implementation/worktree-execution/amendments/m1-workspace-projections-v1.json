@@ -1,0 +1,25 @@
+{
+  "amendment_id": "m1-workspace-projections-v1",
+  "status": "authorized",
+  "authority": "Parent directs Lead to prepare independently implementable Results M1 continuation and correct rapid runnable backend; original user authorizes current plan implementation and current M1 PRD.",
+  "work_items": [
+    {
+      "role_id": "results-evaluation",
+      "work_item_id": "results-evaluation-m1-projections-v3",
+      "include_prefixes": [
+        "apps/api/src/features/results/",
+        "apps/api/src/features/simulation/",
+        "apps/api/test/metrics/",
+        "apps/api/test/simulation/"
+      ],
+      "include_files": [],
+      "scope": "Implement real independent M1 projection/composition helpers in owned results/simulation feature scope now; do not add or change public schemas/endpoints before Contracts v0.5 refreeze. Three already-contracted workspace views currently503: dispatcher snapshot, dispatcher/viewer overview, driver-own dashboard. Export createWorkspaceViews (or precise equivalent) returning actual RuntimeRegistry.views for keys snapshot/overview/driver-dashboard. Inject explicitly typed synchronous PUBLIC producer projections/ports (scenario,clock,knowledge,operations,impact,plans/jobs/routes,reports,coverage,results), or use existing public pure simulator/reporting facades; no private-state deep imports or cloned business rules. Parse exact current SessionSnapshot/ViewerOverview/DriverDashboard DTOs; derive from real persisted same-generation/time/revision state. Driver bound_entity_id comes only from authenticated participant; return own driver/committed assigned orders/routes/report participant only, never full fleet/other reports/proposed assignment. Viewer overview excludes dispatcher/private context, points and report images. Missing real required producer port fails503CONFIG_INCOMPLETE, no fake empty/default data. Existing actual snapshot seed/no latest plan or job must correctly return null based on persisted pointers, not alwaysnull. SourceReviewPort is being implemented by Sources owner, not permission to consume sibling WIP; adapter injection and disclosed unit fixtures are okay, but real integration proof must use actual available public producer facades/DO and mark any pending producer explicitly. Do not edit contributor dashboard/reward semantics owned Review. Also supply optional afterAdvance reconciliation hook on SimulationRuntimeOptions and call it synchronously INSIDE genuine chunk reducer using the proposed advanced run/values and coherent advanced sim-minute context, before atomic commit. Root Lead will later inject Source/Review expiry-gap reconciliation when those public ports arrive. No network/await/async reducer, no loss of simulation checkpoint/job/pointers/lease/other-owner namespace or double revision. Hook throw aborts same transaction; absent hook preserves existing unchanged wire runtime behavior. Test real Workerd successful chunk/hook atomicity and hook-failure rollback/Reset/retry; no fabricated model/provider proof. Preserve current committedPolicy required fail-closed behavior; current createCommittedMovementPolicy is public from integrated Planner checkpoint958afd3/ba77af7, reusable for tests but do not activate obsolete AI Commander. Focus M1 observed results, sameH/config/seed/independent branches/null ratios/calibration incomplete; do NOT spend time on old10-model-run evaluation, campaign/student/forecast/M2 comparisons. Need actual minimal executable composition proving projections from persisted source/simulator/operations and role403/dataisolation, not source-text checks. Existing test fixtures that hardcode v1 against production loader need v2 adaptation in OWN tests, v1 fixture bytes remain immutable. No central entrypoint/manifests/config or other role source edits. Return public constructor/types/hook signature and exact root wiring request EARLY; sourceC then report-only childR. This independent legacy-compatible helper slice is not newM1wire/fullbackend-ready."
+    }
+  ],
+  "rules": [
+    "Only unchanged strict existing projection wire and new internal post-advance hook; new DTO semantics/gates remain pending.",
+    "Server capability/isolation/CAS/idempotency/atomicity/Reset/expiry unchanged; no mock production state or missing-port success.",
+    "Original ownership/protected/exclusions apply; no original session/Planner/Source/Review code edit or central entrypoint/config.",
+    "Parent resumes same Results owner sol/ultra/fast; no duplicate writer, model/provider/evaluation10runs/production/EAS/paid/account/device grant."
+  ]
+}
