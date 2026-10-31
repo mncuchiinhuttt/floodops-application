@@ -8,5 +8,6 @@ export const testReassignment = {
   "actions": z.array(PlanActionSchema).refine(v => v.length <= 100, "Too many items"),
 }),
   output: DryRunResultSchema,
+  modelCallable: false, milestone: "M1",
   sideEffect: "dry_run_only",
 } as const;

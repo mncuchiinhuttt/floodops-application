@@ -1,3 +1,5 @@
+> M1 contract refreeze (PRD v0.5): 66 operations / 61 paths / 197 schemas; eight typed internal services, zero model-callable Commander tools. API operationIds and paths remain unchanged. `PlanningJob.planner` replaces model/config fields; report/review/award payloads include immutable receipt-policy feedback. See [M1 cutover](m1-cutover.md). Historical operation listings below retain roadmap endpoints; feature gates do not imply M2 implementation.
+
 # Endpoint inventory — contract chuẩn
 
 Base `/api/v1`; contract inventory: **66 operations / 61 paths** (the existing64 operations/59 paths are preserved, plus the two image-review paths). CAS=If-Match; Key=Idempotency-Key. Metadata-only changes do not increase operational revision.

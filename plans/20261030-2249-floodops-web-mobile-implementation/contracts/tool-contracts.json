@@ -1,7 +1,6 @@
 {
-  "contract_version": "1.0.0-plan",
-  "openai_runtime": "Responses API",
-  "snapshot_context": "Server-injected session/generation/input_revision/participant scope. Resolve external references then compile supported strict tool schema before registration.",
+  "contract_version": "0.5.0-m1",
+  "snapshot_context": "Server-injected immutable session/generation/input revision/participant scope. Internal typed service validation; no model-callable registrations.",
   "tools": [
     {
       "name": "get_incident_state",
@@ -16,7 +15,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/SessionSnapshot"
       },
-      "side_effect": "read_only"
+      "side_effect": "read_only",
+      "model_callable": false,
+      "milestone": "M1"
     },
     {
       "name": "get_affected_orders",
@@ -42,7 +43,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/Impact"
       },
-      "side_effect": "read_only"
+      "side_effect": "read_only",
+      "model_callable": false,
+      "milestone": "M1"
     },
     {
       "name": "compute_route",
@@ -88,7 +91,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/Route"
       },
-      "side_effect": "read_only"
+      "side_effect": "read_only",
+      "model_callable": false,
+      "milestone": "M1"
     },
     {
       "name": "test_reassignment",
@@ -113,7 +118,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/DryRunResult"
       },
-      "side_effect": "dry_run_only"
+      "side_effect": "dry_run_only",
+      "model_callable": false,
+      "milestone": "M1"
     },
     {
       "name": "propose_assignment_change",
@@ -176,7 +183,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/PlanAction"
       },
-      "side_effect": "proposal_only"
+      "side_effect": "proposal_only",
+      "model_callable": false,
+      "milestone": "M1"
     },
     {
       "name": "propose_order_deferral",
@@ -219,7 +228,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/PlanAction"
       },
-      "side_effect": "proposal_only"
+      "side_effect": "proposal_only",
+      "model_callable": false,
+      "milestone": "M2"
     },
     {
       "name": "draft_customer_notification",
@@ -247,7 +258,9 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/Notification"
       },
-      "side_effect": "preview_only"
+      "side_effect": "preview_only",
+      "model_callable": false,
+      "milestone": "M1"
     },
     {
       "name": "record_road_observation",
@@ -299,7 +312,10 @@
       "output_schema": {
         "$ref": "openapi.json#/components/schemas/Observation"
       },
-      "side_effect": "validated_transition_proposal_only"
+      "side_effect": "validated_transition_proposal_only",
+      "model_callable": false,
+      "milestone": "M1"
     }
-  ]
+  ],
+  "runtime": "deterministic-internal-only"
 }
