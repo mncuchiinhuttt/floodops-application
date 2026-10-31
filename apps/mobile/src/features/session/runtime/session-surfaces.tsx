@@ -43,6 +43,7 @@ function DispatchSnapshot({ context, surface }: { context: MobileContext; surfac
     {command.error && <Alert title="Command status">{command.error}</Alert>}
     {surface === "overview" ? <OverviewScreen context={context} graph={graph} vehicle="motorbike" query={{ ...query, data: snapshot }} />
       : <PlanScreen context={commandContext(context, query)} plan={snapshot.latest_plan} currentPlan={snapshot.latest_plan ? { planId: snapshot.latest_plan.plan_id, planningJobId: snapshot.latest_plan.planning_job_id } : null}
+        job={snapshot.active_job} onReplan={() => void command.run(() => runtime.client!.requestPlan(nativeKey()))}
         pending={command.pending} onDecide={input => void command.run(() => runtime.client!.decidePlan(snapshot.latest_plan!.plan_id, input, nativeKey()))}
         onExecute={input => void command.run(() => runtime.client!.executePlan(snapshot.latest_plan!.plan_id, input, nativeKey()))} />}
   </>}</ResourceBoundary>;

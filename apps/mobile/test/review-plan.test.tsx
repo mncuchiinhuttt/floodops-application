@@ -32,7 +32,7 @@ test("current completed advice shows rubric semantics and never preselects a man
 test("manual decision, invalidation or different report removes old AI score; role denial hides private data", async () => {
   const context = { ...fixtureContext(), online: true }; const report = fixtureReport(); const currentAdvice = advice();
   await render(<ReviewScreen context={context} report={report} advice={currentAdvice} />);
-  await screen.rerender(<ReviewScreen context={context} report={{ ...report, status: "accepted" }} advice={currentAdvice} />);
+  await screen.rerender(<ReviewScreen context={context} report={{ ...report, status: "accepted", review_result_id: "rev_fixture01", reviewed_at: "2026-10-31T00:12:00Z" }} advice={currentAdvice} />);
   expect(screen.queryByText(/Chất lượng ảnh:/)).toBeNull();
   await screen.rerender(<ReviewScreen context={context} report={report} advice={{ ...currentAdvice, loading: true, job: null }} />);
   expect(screen.queryByText(/Chất lượng ảnh:/)).toBeNull();

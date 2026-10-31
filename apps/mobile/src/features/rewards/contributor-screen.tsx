@@ -13,7 +13,8 @@ export function ContributorScreen({ context, query }: { context: MobileContext; 
           <Text>Accepted reports, useful coverage and awards are separate outcomes.</Text></Card>
         <OwnReportList reports={dashboard.own_reports} participantId={context.participant.participant_id} />
         {dashboard.awards.filter(award => award.contributor_id === dashboard.contributor_id).map(award => <Card key={award.award_id} title={`Simulated award ${award.award_id}`}>
-          <Text>{award.points} points · Report {award.report_id}</Text><Text>Filled gaps: {award.filled_gap_ids.join(", ")}</Text>
+          <Text>{award.points} points · Report {award.report_id}</Text>
+          <Text>Review result: {award.review_result_id} · Policy {award.reward_policy.policy_id} · {award.reward_policy.version}</Text><Text>Filled gaps: {award.filled_gap_ids.join(", ")}</Text>
         </Card>)}
       </>}
   </DataScreen>;

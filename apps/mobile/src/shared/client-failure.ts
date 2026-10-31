@@ -1,6 +1,9 @@
 import { ApiError, RequestCancelledError, TransportError } from "@floodops/api-client";
+import { ContractValidationError } from "@floodops/contracts";
 export interface ClientFailure { message: string; next: "rejoin" | "refresh" | "replan" | "correct" | "retry-explicitly" | "inspect" }
 export function clientFailure(error: unknown): ClientFailure {
+  if (error instanceof ContractValidationError && error.boundary.endsWith(".request")) return { message: "Check the report or command fields before sending explicitly.", next: "correct" };
+  if (error instanceof ContractValidationError) return { message: "Server data does not match the M1 contract. Inspect the outcome; legacy data requires a new session or explicit Reset. No data was upgraded locally.", next: "inspect" };
   if (error instanceof RequestCancelledError) return { message: "Request cancelled. Refresh the current session.", next: "refresh" };
   if (error instanceof TransportError) return { message: "Connection interrupted. The command outcome is uncertain; inspect server state before sending again.", next: "inspect" };
   if (error instanceof ApiError) {

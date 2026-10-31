@@ -1,3 +1,4 @@
+import { ReportRewardFeedback } from "./report-reward-feedback";
 import { useRef } from "react";
 import { reportInputKey } from "./report-input-key";
 import { Text } from "react-native";
@@ -29,6 +30,7 @@ export function ReviewScreen({ context, report, advice, onReview, onAiRequest, p
         <Text>{report.description}</Text><Text>Segment: {report.segment_id ?? "Unmapped"} · Vehicle: {report.vehicle_types.join(", ") || "Unknown"}</Text>
         <Text>Captured {report.captured_at} · Simulation minute {report.captured_sim_minute}</Text>
         <Text>Reasons: {report.reason_codes.join(", ") || "None"}</Text>
+        <ReportRewardFeedback report={report} />
         <Text>{report.media_id ? `Private media reference: ${report.media_id}` : "No normalized media available"}</Text>
       </Card>
       <ImageReviewCard job={boundJob} reason={command ?? (!photoReady || report.status !== "pending_review" ? "AI requires a pending citizen report with a normalized photo." : null)} onRequest={onAiRequest} />

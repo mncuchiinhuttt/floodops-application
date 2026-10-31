@@ -1,3 +1,4 @@
+import { ContractValidationError } from "@floodops/contracts";
 import { ApiClient } from "@floodops/api-client";
 import { NativeSessionClient, createNativeApi } from "../src/shared/native-client";
 import { fixtureContext } from "../preview/fixture-data";
@@ -49,4 +50,32 @@ test("old client invalidation targets its immutable scope and live principal cle
   await expect(client.requestImageReview("rep_fixture01", "late-after-leave-001")).rejects.toThrow(/Rejoin/);
   current = { ...initial, session: { ...initial.session, session_id: "ses_other001" } };
   client.invalidate(); expect(cancel).toHaveBeenCalledWith(initial.session.session_id); expect(request).not.toHaveBeenCalled();
+});
+
+
+test("deterministic planning uses current CAS and capability; offline or revoked requests are never queued", async () => {
+  const { api, request } = instrument(); const context = { ...fixtureContext(), online: true };
+  const client = new NativeSessionClient(api, context);
+  await client.requestPlan("native-plan-key-0001");
+  expect(request).toHaveBeenLastCalledWith("createPlanningJob", { path: { session_id: context.session.session_id },
+    body: { cause: "manual", cause_entity_ids: [] }, headers: { "If-Match": '"s:ses_fixture01:g:1:r:3"', "Idempotency-Key": "native-plan-key-0001" } }, { scope: client.scope });
+  await expect(client.requestPlan("native-plan-key-0002")).rejects.toThrow(/Refresh authoritative/);
+  const offline = new NativeSessionClient(api, { ...context, online: false });
+  await expect(offline.requestPlan("native-plan-key-0003")).rejects.toThrow(/Connection required/);
+  const revoked = new NativeSessionClient(api, { ...context, participant: { ...context.participant, permissions: ["operations:read"] } });
+  await expect(revoked.requestPlan("native-plan-key-0004")).rejects.toThrow(/planning:request/);
+  expect(request).toHaveBeenCalledTimes(1);
+});
+
+
+test("a malformed mutation response may follow a server commit and fences another command until explicit refresh", async () => {
+  const { api, request } = instrument(); const context = { ...fixtureContext(), online: true };
+  const client = new NativeSessionClient(api, context);
+  request.mockRejectedValueOnce(new ContractValidationError("createPlanningJob.response", [{ path: "data.planner", code: "missing" }]));
+  await expect(client.requestPlan("native-invalid-key-01")).rejects.toBeInstanceOf(ContractValidationError);
+  await expect(client.requestPlan("native-duplicate-key2")).rejects.toThrow(/Refresh authoritative/);
+  expect(request).toHaveBeenCalledTimes(1);
+  client.acknowledgeRefresh(context.session);
+  await client.requestPlan("native-reviewed-key3");
+  expect(request).toHaveBeenCalledTimes(2);
 });
