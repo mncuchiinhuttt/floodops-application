@@ -2,7 +2,8 @@ import { createHash } from "node:crypto";
 import { createRun, loadScenario, type ScenarioManifest, type SimulationRun } from "@floodops/simulation";
 import { freezeValue } from "@floodops/domain/operations";
 import type { ScenarioReference, SimulationPersistence } from "@floodops/domain/public-ports";
-import manifest from "../../../data/scenarios/functional-v1/manifest.json";
+import manifest from "../../../data/scenarios/functional-v2/manifest.json";
+import legacyManifest from "../../../data/scenarios/functional-v1/manifest.json";
 import { createApp } from "./app/index";
 import { fail, type SessionSeed, type RuntimeRegistry } from "./shared/index";
 import { createSimulationRuntime } from "./features/simulation/index";
@@ -10,6 +11,7 @@ import { createResultsRouter, createResultsView, RESULTS_VIEW } from "./features
 import { createSourcesFeature } from "./features/sources/index";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
+const legacyScenario = loadScenario(legacyManifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
 export const scenarioReference: ScenarioReference = Object.freeze({
   scenario_id: scenario.manifest.config.scenario.scenario_id,
   scenario_version: scenario.manifest.config.scenario.version,
@@ -19,6 +21,8 @@ export const scenarioReference: ScenarioReference = Object.freeze({
 export const scenarioCatalog = {
   list: () => [scenario] as const,
   get(id: string, version: string) {
+    // Retain the immutable historical bundle for explicit read-only/fixture consumers.
+    if (id === legacyScenario.manifest.config.scenario.scenario_id && version === legacyScenario.manifest.config.scenario.version) return legacyScenario;
     if (id !== scenarioReference.scenario_id || version !== scenarioReference.scenario_version) fail(404, "NOT_FOUND");
     return scenario;
   }
@@ -41,6 +45,7 @@ export const simulationPersistence: SimulationPersistence<SimulationRun, RunStat
   }
 };
 export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> {
+  if (id !== scenarioReference.scenario_id || version !== scenarioReference.scenario_version) fail(404, "NOT_FOUND");
   scenarioCatalog.get(id, version);
   return {
     scenario_id: id, scenario_version: version,

@@ -33,7 +33,7 @@ it("loads the real immutable synthetic bundle and persists only its reference pl
     const row = state.storage.sql.exec<{ value: string }>("SELECT value FROM documents WHERE collection='runtime' AND id='snapshot'").one();
     const snapshot = JSON.parse(row.value) as Snapshot;
     const run = simulationPersistence.read(snapshot.values);
-    expect(run.scenario.bundleHash).toBe("42d25cad85adb3e11939b8496469f0b2ba7891003ae89d0be5049dd54fb7ec46");
+    expect(run.scenario.bundleHash).toBe("31d727d39d3add5f9cdc3078f704cdc69bfdaf700465a21cbee557aa8a0bc72c");
     expect(run.branches.floodops?.operations.drivers).toHaveLength(2);
     expect(run.branches.floodops?.operations.orders).toHaveLength(3);
     expect(snapshot.meta.calibration_status).toBe("incomplete");
@@ -82,7 +82,7 @@ it("resets into a fresh real seed with generation fencing, never fabricated feat
 });
 it("rejects unknown bundle/version and tampered checkpoint fingerprints", async () => {
   await expect(loadSessionScenario("scn_missing1", "1")).rejects.toMatchObject({ code: "NOT_FOUND" });
-  await expect(loadSessionScenario(scenarioReference.scenario_id, "2")).rejects.toMatchObject({ code: "NOT_FOUND" });
+  await expect(loadSessionScenario(scenarioReference.scenario_id, "1")).rejects.toMatchObject({ code: "NOT_FOUND" });
   const seed = await loadSessionScenario(scenarioReference.scenario_id, scenarioReference.scenario_version);
   const bad = structuredClone(seed.values);
   (bad.simulation as { reference: { bundle_hash: string } }).reference.bundle_hash = "changed";

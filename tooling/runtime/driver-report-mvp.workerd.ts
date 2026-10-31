@@ -1,0 +1,41 @@
+import { afterEach, expect, it } from "vitest";
+import { env, reset, runInDurableObject, SELF } from "cloudflare:test";
+import { parseSchema } from "@floodops/contracts";
+import type { PlatformBindings, Snapshot } from "../../apps/api/src/shared/index";
+import { scenarioReference, simulationPersistence } from "../../apps/api/src/index";
+afterEach(reset);
+const key = () => crypto.randomUUID();
+const request = (path: string, init?: RequestInit) => SELF.fetch("https://floodops.test/api/v1" + path, init);
+it("v2 actual bound driver quick report accepts low bike evidence without AI, award or assignment mutation", async () => {
+  expect(scenarioReference.scenario_version).toBe("2");
+  const created = await request("/sessions", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": key(), "X-Client-Request-Scope": key(), "CF-Connecting-IP": "192.0.2.51" }, body: JSON.stringify({ scenario_id: scenarioReference.scenario_id, scenario_version: "2", client_type: "native" }) });
+  expect(created.status).toBe(201);
+  const owner = parseSchema("SessionCreatedResponse", await created.json()).data;
+  const prefix = "/sessions/" + owner.session.session_id, auth = { Authorization: "Bearer " + owner.credential.access_token };
+  const invitation = await request(prefix + "/invitations", { method: "POST", headers: { ...auth, "Content-Type": "application/json", "Idempotency-Key": key() }, body: JSON.stringify({ role: "driver", bound_entity_id: "drv_moto01", expires_in_seconds: 60 }) });
+  expect(invitation.status).toBe(201);
+  const invite = parseSchema("InviteResponse", await invitation.json()).data;
+  const claimed = await request("/session-claims", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": key() }, body: JSON.stringify({ session_id: owner.session.session_id, claim_token: invite.claim_token, client_type: "native" }) });
+  expect(claimed.status).toBe(201);
+  const driver = parseSchema("SessionCreatedResponse", await claimed.json()).data;
+  const bindings = env as unknown as PlatformBindings;
+  const operations = () => runInDurableObject(bindings.SESSIONS.get(bindings.SESSIONS.idFromName(owner.session.session_id)), (_instance, state) => {
+    const row = state.storage.sql.exec<{ value: string }>("SELECT value FROM documents WHERE collection='runtime' AND id='snapshot'").one();
+    const snapshot = JSON.parse(row.value) as Snapshot;
+    return JSON.stringify(Object.fromEntries(Object.entries(simulationPersistence.read(snapshot.values).branches)
+      .map(([id, branch]) => [id, branch.operations])));
+  });
+  const before = await operations();
+  const config = parseSchema("ScenarioConfigResponse", await (await request(prefix + "/configuration", { headers: auth })).json()).data;
+  const submitted = await request(prefix + "/reports", { method: "POST", headers: { Authorization: "Bearer " + driver.credential.access_token, "Content-Type": "application/json", "Idempotency-Key": key(), "If-Match": claimed.headers.get("ETag")! }, body: JSON.stringify({ kind: "driver", input_mode: "quick", quick_condition: "normal", segment_id: "seg_edge27", coordinate: [106.701, 10.7705], captured_at: config.t0, captured_sim_minute: 0, vehicle_types: ["motorbike"], description: "Synthetic MVP driver quick report" }) });
+  expect(submitted.status).toBe(201);
+  const report = parseSchema("ReportResponse", await submitted.json()).data;
+  expect(report.status).toBe("accepted");
+  expect(report.award_id).toBeNull();
+  expect(report.observation_ids.length).toBeGreaterThan(0);
+  const knowledge = parseSchema("KnowledgeResponse", await (await request(prefix + "/knowledge", { headers: auth })).json()).data;
+  const observations = knowledge.observations.filter(item => report.observation_ids.includes(item.observation_id));
+  expect(observations.length).toBeGreaterThan(0);
+  expect(observations.every(item => item.source_id === "src_driver01" && item.confidence_band === "low" && item.vehicle_types.join() === "motorbike" && item.expires_sim_minute === 3)).toBe(true);
+  expect(await operations()).toBe(before);
+});
