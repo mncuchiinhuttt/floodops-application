@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
+    ".": "./src/index.ts",
     "./functional/graph": "./src/functional/graph/index.ts"
   },
   "scripts": {

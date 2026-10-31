@@ -69,10 +69,16 @@
     "packages/domain": {
       "name": "@floodops/domain",
       "version": "0.0.0",
+      "dependencies": {
+        "@floodops/contracts": "workspace:*",
+      },
     },
     "packages/icons": {
       "name": "@floodops/icons",
       "version": "0.0.0",
+      "dependencies": {
+        "@floodops/design-tokens": "workspace:*",
+      },
       "devDependencies": {
         "@types/react": "19.3.0",
         "react": "19.3.0",
@@ -94,6 +100,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@floodops/contracts": "workspace:*",
+        "@floodops/domain": "workspace:*",
       },
     },
     "packages/test-fixtures": {

@@ -2,6 +2,12 @@
   "name": "@floodops/domain",
   "private": true,
   "version": "0.0.0",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@floodops/contracts": "workspace:*"
+  },
+  "exports": {
+    "./operations": "./src/operations/index.ts"
+  }
 }
 

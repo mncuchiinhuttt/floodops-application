@@ -31,5 +31,8 @@
     "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
     "generate": "bun scripts/generate.ts",
     "test": "bun test test"
+  },
+  "dependencies": {
+    "@floodops/design-tokens": "workspace:*"
   }
 }
