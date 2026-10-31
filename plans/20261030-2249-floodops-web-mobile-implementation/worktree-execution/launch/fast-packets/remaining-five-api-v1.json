@@ -1,0 +1,23 @@
+{
+  "base_sha": "9e35d20bcae0a1b648c9b4392056f6f0168a43e4",
+  "launch_sha": "Containingmetadatacommit suppliedoutofband",
+  "contract_sha256": "8a5905c6bd87b17221535759d1339a82923c56931f88c527bd76f2352714dc1d",
+  "workers": [
+    {
+      "role_id": "review-rewards",
+      "work_item": "review-rewards-five-read-v6",
+      "existing_thread_id": "01a19064-77ea-75c7-a498-357c523c30d1",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/review-rewards/review-rewards-five-read-v6.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/review-rewards-five-read-v6.md"
+    },
+    {
+      "role_id": "results-evaluation",
+      "work_item": "results-evaluation-five-api-v4",
+      "existing_thread_id": "01a19067-7930-716f-ae49-5f01c568f0f8",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/results-evaluation/results-evaluation-five-api-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/results-evaluation-five-api-v4.md"
+    }
+  ],
+  "concurrency_warning": "At packet publication unexpected active Review edits were observed in Integration worktree: runtime-types.ts,rewards/pagination.ts,rewards/views.ts. They are NOT in frozen launch and were preserved. Parent must resolve writer ownership BEFORE resuming Review; do not create a duplicate Review writer or overwrite WIP. Results isolated worktree remains independently ready.",
+  "parent_action": "Resume SAME Results immediately. Review only after parent confirms existing Integration Review writer is quiesced/handed off. Root Lead integrates factories, runs actual5endpointsmoke and exactinventory; no allprojectgate or UIpolish. External agent owns Cloudflaredeployment; no deploy here. Native LAN HTTP relaxation remains unapproved."
+}
