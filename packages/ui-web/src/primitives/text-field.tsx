@@ -5,6 +5,7 @@ type FieldDetails = { label: string; hint?: string; error?: string };
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & FieldDetails;
 export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & FieldDetails;
 function useField(details: FieldDetails & { id?: string; "aria-describedby"?: string }) {
+  if (!details.label.trim()) throw new Error("Fields require a non-empty visible label.");
   const generated = useId();
   const id = details.id ?? generated;
   return { id, hintId: `${id}-hint`, errorId: `${id}-error`,

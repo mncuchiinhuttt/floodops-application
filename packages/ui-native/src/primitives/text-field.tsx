@@ -5,6 +5,7 @@ import { styles } from "./styles";
 
 export type TextFieldProps = TextInputProps & { label: string; hint?: string; error?: string; required?: boolean };
 export function TextField({ label, hint, error, required, onFocus, onBlur, accessibilityHint, ...props }: TextFieldProps) {
+  if (!label.trim()) throw new Error("Fields require a non-empty visible label.");
   const id = useId();
   const [focused, setFocused] = useState(false);
   return <View style={styles.group}>
