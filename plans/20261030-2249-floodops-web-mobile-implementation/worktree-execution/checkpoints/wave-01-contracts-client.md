@@ -11,3 +11,12 @@ Parent accepted init baseline `4978532efe8c262def9f6f7bdc5439825e63826c` and aut
 - Lead prepares ownership/receipt verification and central dependency/export changes while worker implements its slice.
 
 Only local implementation/checks and private-repo pushes are authorized. No production, paid resources, external model calls or new credentials. Model helpers, if useful within role scope: gpt-6-luna/max or gpt-6.1-terra/max. Main remains at the init baseline until later promotion authority.
+
+## Controlled dependency amendment
+
+- Actual native agent ID for recovery: `01a19003-3235-7780-bc5f-a0e0f3e95023`; model/effort remains gpt-6.1-sol/max.
+- Worker quiesced and checkpointed 5 owned files at signed `fcef135e3f809378704150653d0676c029bb26d1`; worktree clean.
+- Lead committed the reviewed Zod 4.6.7, package exports/typecheck and workspace dependency request at `a0b869d985a6402b84dbcf5348675dbae7a2b76e`.
+- New active work item: `contracts-client-phase-01-v2`, amendment `contracts-client-dependencies-v2`; original design artifact hash unchanged. The v1 work item is superseded for further source writes.
+- Resume only after merging the exact new receipt launch SHA through the preserving-history amendment protocol; no contract-ready claim yet.
+- Remote integration backup reached `01420ab` before this dependency amendment; CI list was empty (no workflow/run configured yet), not a CI pass.
