@@ -1,11 +1,12 @@
 import type { Plan, Route } from "@floodops/contracts";
 import { deferOrder, freezeValue, OperationError } from "@floodops/domain/operations";
 import { canonicalJson, compareObjectives, computeRoute, projectCandidate, projectCurrent } from "@floodops/simulation";
-import type { HashText, Projection, SimulationRun } from "@floodops/simulation";
+import type { HashText, Projection, SimulationPolicy, SimulationRun } from "@floodops/simulation";
 import { compileCandidate } from "./compile-candidate.ts";
 import type { CompiledCandidate } from "./compile-candidate.ts";
 import { selectDependencyGroups } from "./dependency-groups.ts";
 import type { GroupSelection } from "./dependency-groups.ts";
+import { createCurrentPolicy } from "./current-policy.ts";
 import { createPlanningPolicy } from "./road-policy.ts";
 import { checkProposalIdentity } from "./proposal-identity.ts";
 import type { PlanningAuthority, PolicyDecision, Readiness } from "./planning-types.ts";
@@ -13,7 +14,7 @@ import { decision } from "./planning-types.ts";
 
 export interface CandidateEvaluationInput {
   run: SimulationRun; plan: Plan; routes: readonly Route[]; selectedGroupIds: readonly string[];
-  authority: PlanningAuthority; deferLimitMinute: number | null; hash: HashText;
+  authority: PlanningAuthority; currentPolicy: SimulationPolicy; deferLimitMinute: number | null; hash: HashText;
 }
 export interface CandidateEvaluation {
   status: Readiness; is_projected: true; issues: PolicyDecision[]; selection: GroupSelection | null;
@@ -41,7 +42,11 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
     .some(key => input.authority.identity[key] !== input.plan[key])) {
     return freezeValue({ ...output, issues: [decision("blocked", "POL-03", "AUTHORITY_BINDING_MISMATCH")] });
   }
+  if (!input.currentPolicy || typeof input.currentPolicy.authorizeEntry !== "function") {
+    return freezeValue({ ...output, issues: [decision("blocked", "POL-03", "CONFIG_INCOMPLETE")] });
+  }
   try {
+    const currentPolicy = createCurrentPolicy(input.run, input.currentPolicy);
     const readiness: Record<string, Readiness> = {};
     // Wire statuses and model-produced rule_results do not grant readiness.
     for (const action of input.plan.actions) {
@@ -51,7 +56,7 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
     }
     const physical = (selection: GroupSelection) => {
       const compiled = compileCandidate(input.plan, selection, input.routes, input.run), run = deferredRun(input, compiled);
-      const policy = createPlanningPolicy(run, input.authority, compiled.actionIdsByDriver);
+      const policy = createPlanningPolicy(run, input.authority, compiled.actionIdsByDriver, currentPolicy);
       projectCandidate(run, compiled.candidate, policy);
       return { compiled, run };
     };
@@ -74,7 +79,7 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
       selection = selectDependencyGroups(input.plan.actions, input.plan.groups, input.selectedGroupIds, readiness);
     }
     const { compiled: all, run } = physical(selection);
-    const seen: PolicyDecision[] = [], strict = createPlanningPolicy(run, input.authority, all.actionIdsByDriver, false, d => seen.push(d));
+    const seen: PolicyDecision[] = [], strict = createPlanningPolicy(run, input.authority, all.actionIdsByDriver, currentPolicy, false, d => seen.push(d));
     const contextFor = (driverId: string, compiled: CompiledCandidate) => {
       const digest = input.hash(canonicalJson({ identity: input.authority.identity, driverId, candidate: compiled,
         snapshot: input.run.scenario.bundleHash, atMs: input.run.nowMs,
@@ -87,7 +92,7 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
       seen.length = 0;
       const route = computeRoute(run, all.candidate, driverId, strict, context);
       if (route.status === "candidate") continue;
-      const soft = createPlanningPolicy(run, input.authority, all.actionIdsByDriver, true);
+      const soft = createPlanningPolicy(run, input.authority, all.actionIdsByDriver, currentPolicy, true);
       const pending = computeRoute(run, all.candidate, driverId, soft, context).status === "candidate";
       const stale = seen.find(d => d.status === "needs_replan");
       const issue = pending ? decision("pending_approval", "POL-02", "EXACT_APPROVAL_REQUIRED", all.actionIdsByDriver[driverId], true)
@@ -103,8 +108,8 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
       return freezeValue(output);
     }
     const compiled = compileCandidate(input.plan, selection, input.routes, input.run), finalRun = deferredRun(input, compiled);
-    const policy = createPlanningPolicy(finalRun, input.authority, compiled.actionIdsByDriver);
-    const before = projectCurrent(input.run, policy), after = projectCandidate(finalRun, compiled.candidate, policy);
+    const policy = createPlanningPolicy(finalRun, input.authority, compiled.actionIdsByDriver, currentPolicy);
+    const before = projectCurrent(input.run, currentPolicy), after = projectCandidate(finalRun, compiled.candidate, policy);
     if (compareObjectives(after.objective, before.objective) > 0) {
       output.issues.push(decision("blocked", "POL-05", "OBJECTIVE_WORSENED"));
       return freezeValue(output);

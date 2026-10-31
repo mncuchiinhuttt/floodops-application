@@ -1,16 +1,20 @@
 # Pure planning foundations
 
-Work item: planner-safety-domain-foundations-v1. This module is a deterministic proposal evaluator,
+Work items: planner-safety-domain-foundations-v1 and planner-safety-domain-correction-v2. This module is a deterministic proposal evaluator,
 not a dispatcher authorization boundary or durable Executor.
 
-Public entrypoint: `packages/domain/src/planning/index.ts`.
+Public entrypoint: `@floodops/domain/planning` (`packages/domain/src/planning/index.ts`).
 
 - `checkProposalIdentity(plan, current)` compares session, generation, revision and both latest IDs.
 - `evaluateRoadEntry(input)` checks canonical vehicle/epoch knowledge, expiry, hard rules and
   exact server-owned action+plan+revision decisions. A successful soft decision remains uncertain.
-- `createPlanningPolicy(run, authority, actionIdsByDriver, allowPending?, observe?)` adapts the
-  predicate to the simulator. Only proposal feasibility may allow pending soft risk. Captured expiry
-  and conflict guards survive the simulator's normalization to ordinary unknown.
+- `createCurrentPolicy(run, committedPolicy)` preserves captured hard/conflict/expiry/epoch guards,
+  then delegates branch/driver-specific committed entry grants. It reads no proposal identity/approval.
+- `createPlanningPolicy(run, authority, actionIdsByDriver, currentPolicy, allowPending?, observe?)`
+  applies proposal authority only to selected physical-action drivers in FloodOps. Other branches and
+  untouched FloodOps drivers delegate to currentPolicy before any proposal identity/approval check.
+  Pending feasibility allowances never spread to those delegated paths. Captured expiry and conflict
+  guards survive the simulator's normalization to ordinary unknown.
 - `selectDependencyGroups(actions, groups, requested, readiness)` validates both DAGs and unique
   ownership, computes closure, and excludes unavailable groups plus their dependents.
 - `compileCandidate(plan, selection, routes, run)` creates one assignment/stop/defer candidate.
@@ -19,7 +23,9 @@ Public entrypoint: `packages/domain/src/planning/index.ts`.
 - `evaluateCandidate(input)` uses the actual public simulator and operation validators for combined
   pickup/custody/load/hub/defer physics and lexicographic objective. It recomputes selected routes.
   Intrinsically invalid group closures may be excluded while valid independent groups survive;
-  individually feasible but inconsistent combined candidates are rejected together.
+  individually feasible but inconsistent combined candidates are rejected together. Input currentPolicy
+  is required: before uses only committed/current authority, while after composes that authority for
+  untouched drivers with selected proposal authority. Missing currentPolicy fails CONFIG_INCOMPLETE.
 
 All authority/config/clock inputs must be captured by the server. In particular, canonical
 SegmentKnowledge must already be produced from validated accepted observations/restrictions:
@@ -44,19 +50,21 @@ The candidate result may therefore carry POL-04/NO_FEASIBLE_ROUTE; the standalon
 retains precise POL-01/closure/impassable and POL-03/conflict diagnostics. Full planning composition
 should request a public simulator route-failure trace rather than inspect private implementation.
 
-Central integration requests:
+Integration contract:
 
-1. Add `"@floodops/simulation": "workspace:*"` to `packages/domain/package.json` dependencies,
-   and map `"./planning": "./src/planning/index.ts"` in its exports. Lead owns manifest/lock changes.
-   The import graph remains planning -> public simulator -> operations; operations never imports planning.
-2. API consumers should depend on the public domain planning and simulator entrypoints. This slice's
-   tests import their own planning entrypoint relatively until Lead publishes the package export.
-3. Future factory composition must supply a captured run, validated Plan/Route registry, current pointer
-   identity, authorized human decisions, epoch registry, explicit defer limit and SHA256 function.
-   Producer-validated DTOs are mandatory; do not pass model output directly as server authority.
-4. Exact route failure traces are an optional public simulator seam request for full phase06 diagnostics.
+1. Lead supplied the public planning export and simulation workspace dependency in correction v2.
+   Standard domain typecheck and focused tests require no temporary path mapping.
+2. Future factory composition must supply a captured run, validated Plan/Route registry, current pointer
+   identity, authorized proposal decisions, epoch registry, explicit defer limit, SHA256 and a separately
+   captured committed/current SimulationPolicy. That policy owns branch/driver-specific existing grants;
+   it must never be derived from new proposal approvals. No permissive default exists.
+3. Current authority must survive unrelated proposal revisions/supersession. Committed route entry still
+   rechecks hard evidence, vehicle, epoch and expiry; committed grants are not latest-plan approvals.
+   Reuse one snapshot/physics/H for before/after, with the correct distinct authority in each projection.
+4. Exact route failure traces remain an optional public simulator seam request for full phase06 diagnostics.
 
-Focused tests live under `apps/api/test/planning` and `apps/api/test/policy`. Until request 1 lands,
-standard domain typecheck remains unresolved at the missing declared dependency. Evidence records
-temporary public-index path mapping separately; that check is not an integrated package gate.
-No phase06/planner-ready, durable Execute, calibration, real-model or client acceptance is implied.
+Focused tests live under `apps/api/test/planning` and `apps/api/test/policy`; scoped test tsconfig is
+`apps/api/test/planning/tsconfig.json`. CLI `authority-smoke.ts` exercises branch entry logs and the
+critical-loss/approval-invariance case through actual public simulator paths. `planning-smoke.ts`
+retains original-event-fixture hub pickup/projection proof. Neither is a durable Execute proof.
+No phase06/planner-ready, calibration, real-model or client acceptance is implied.

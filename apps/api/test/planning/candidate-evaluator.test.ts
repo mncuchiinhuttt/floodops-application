@@ -1,9 +1,9 @@
 import { expect, test } from "bun:test";
 import { evaluateCandidate } from "../../../../packages/domain/src/planning/index.ts";
-import { approval, authority, car, critical, food, hash, makeAction, makePlan, makeRoute, moto, runFixture } from "./planning-context.ts";
+import { approval, authority, car, critical, food, highOnly, hash, makeAction, makePlan, makeRoute, moto, runFixture } from "./planning-context.ts";
 function context() {
   const run = runFixture(), plan = makePlan(), routes = [makeRoute(run)];
-  return { run, plan, routes, selectedGroupIds: plan.groups.map(g => g.group_id), authority: authority(run, plan), deferLimitMinute: 3 as number | null, hash };
+  return { run, plan, routes, selectedGroupIds: plan.groups.map(g => g.group_id), authority: authority(run, plan), currentPolicy: highOnly, deferLimitMinute: 3 as number | null, hash };
 }
 test("canonical functional fixture uses real route/projection and leaves committed state unchanged", () => {
   const input = context(), before = JSON.stringify(input), result = evaluateCandidate(input);

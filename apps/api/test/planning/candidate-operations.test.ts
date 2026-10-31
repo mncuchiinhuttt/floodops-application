@@ -1,10 +1,10 @@
 import { expect, test } from "bun:test";
 import type { CandidateAssignment, PlanAction } from "@floodops/contracts";
 import { evaluateCandidate } from "../../../../packages/domain/src/planning/index.ts";
-import { authority, car, critical, food, hash, makeAction, makePlan, makeRoute, moto, runFixture, standard, stopsFor } from "./planning-context.ts";
+import { authority, car, critical, food, highOnly, hash, makeAction, makePlan, makeRoute, moto, runFixture, standard, stopsFor } from "./planning-context.ts";
 function context() {
   const run = runFixture(), plan = makePlan(), routes = [makeRoute(run)];
-  return { run, plan, routes, selectedGroupIds: plan.groups.map(g => g.group_id), authority: authority(run, plan), deferLimitMinute: 3 as number | null, hash };
+  return { run, plan, routes, selectedGroupIds: plan.groups.map(g => g.group_id), authority: authority(run, plan), currentPolicy: highOnly, deferLimitMinute: 3 as number | null, hash };
 }
 function assignmentCase(orderId = standard, hubId: string | null = null) {
   const input = context(), order = input.run.branches.floodops!.operations.orders.find(o => o.order_id === orderId)!;
