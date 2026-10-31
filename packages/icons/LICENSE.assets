@@ -1,0 +1,7 @@
+LicenseRef-FloodOps-Internal
+
+Original vector geometry created for this private FloodOps implementation.
+No third-party artwork is included. This notice records internal project use;
+it does not grant public distribution or third-party relicensing rights.
+External distribution/licensing requires the project owner's approval.
+This notice applies only to the artwork in src/assets/isometric and geometry.ts.

@@ -1,0 +1,45 @@
+/* Load @floodops/design-tokens/styles.css once in the app before this stylesheet. */
+.fo-button, .fo-input, .fo-card, .fo-badge, .fo-alert { box-sizing: border-box; }
+.fo-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--fo-space-2);
+  min-width: var(--fo-target-web); min-height: var(--fo-target-web); max-width: 100%;
+  padding: var(--fo-space-2) var(--fo-space-4); border: var(--fo-stroke-default) solid transparent;
+  border-radius: var(--fo-radius-sm); font: inherit; font-weight: var(--fo-type-weight-medium);
+  color: var(--fo-semantic-action-primary-fg); background: var(--fo-semantic-action-primary-bg);
+  text-align: center; white-space: normal; overflow-wrap: anywhere; cursor: pointer;
+}
+.fo-button:hover:not(:disabled) { background: var(--fo-semantic-action-primary-hover); }
+.fo-button[data-variant="secondary"] { color: var(--fo-semantic-action-secondary-fg); background: var(--fo-semantic-action-secondary-bg); border-color: var(--fo-semantic-action-secondary-border); }
+.fo-button[data-variant="secondary"]:hover { background: var(--fo-semantic-surface-canvas); }
+.fo-button[data-variant="danger"] { color: var(--fo-semantic-action-danger-fg); background: var(--fo-semantic-action-danger-bg); }
+.fo-button[data-variant="danger"]:hover { background: var(--fo-semantic-action-danger-bg); }
+.fo-button:disabled { color: var(--fo-semantic-action-disabled-fg); background: var(--fo-semantic-action-disabled-bg); border-color: var(--fo-semantic-action-disabled-border); cursor: not-allowed; }
+.fo-button:focus-visible, .fo-input:focus-visible {
+  outline: var(--fo-stroke-focus) solid var(--fo-semantic-focus-ring); outline-offset: var(--fo-stroke-focus-offset);
+  box-shadow: 0 0 0 var(--fo-stroke-focus-offset) var(--fo-semantic-surface-panel);
+}
+.fo-control-group, .fo-field { display: inline-flex; flex-direction: column; gap: var(--fo-space-2); max-width: 100%; min-width: 0; }
+.fo-field { display: flex; width: 100%; }
+.fo-input {
+  width: 100%; max-width: 100%; min-width: 0; min-height: var(--fo-target-web); padding: var(--fo-space-3);
+  font: inherit; color: var(--fo-semantic-text-primary); background: var(--fo-semantic-surface-panel);
+  border: var(--fo-stroke-default) solid var(--fo-semantic-border-default); border-radius: var(--fo-radius-sm);
+}
+textarea.fo-input { min-height: calc(var(--fo-target-web) * 2); resize: vertical; }
+.fo-input[aria-invalid="true"] { border-color: var(--fo-semantic-status-blocked-border); }
+.fo-hint { color: var(--fo-semantic-text-secondary); font-size: var(--fo-type-size-sm); overflow-wrap: anywhere; }
+.fo-error { color: var(--fo-semantic-status-blocked-fg); overflow-wrap: anywhere; }
+.fo-badge {
+  display: inline-flex; gap: var(--fo-space-1); align-items: center; max-width: 100%; padding: var(--fo-space-1) var(--fo-space-2);
+  border: var(--fo-stroke-default) solid; border-radius: var(--fo-radius-sm); font-size: var(--fo-type-size-sm); overflow-wrap: anywhere;
+}
+.fo-badge[data-pattern="dashed"] { border-style: dashed; }
+.fo-badge[data-pattern="dotted"] { border-style: dotted; }
+.fo-badge[data-pattern="double"] { border-style: double; }
+.fo-badge[data-pattern="crosshatch"] { border-width: var(--fo-stroke-focus); }
+.fo-card { min-width: 0; padding: var(--fo-space-4); background: var(--fo-semantic-surface-panel); border: var(--fo-stroke-default) solid var(--fo-semantic-border-default); border-radius: var(--fo-radius-md); overflow-wrap: anywhere; }
+.fo-card h2 { margin-top: 0; font-size: var(--fo-type-size-title); line-height: var(--fo-type-line-height-heading); }
+.fo-alert { padding: var(--fo-space-4); color: var(--fo-semantic-status-replan-fg); background: var(--fo-semantic-status-replan-bg); border: var(--fo-stroke-default) solid var(--fo-semantic-status-replan-border); border-radius: var(--fo-radius-sm); }
+.fo-alert[role="alert"] { color: var(--fo-semantic-status-blocked-fg); background: var(--fo-semantic-status-blocked-bg); border-color: var(--fo-semantic-status-blocked-border); }
+.fo-skeleton { min-height: var(--fo-target-web); background: var(--fo-semantic-surface-canvas); border: var(--fo-stroke-default) solid var(--fo-semantic-border-default); border-radius: var(--fo-radius-sm); }
+.fo-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
