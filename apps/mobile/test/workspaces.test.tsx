@@ -1,3 +1,4 @@
+import { OwnReportsScreen } from "../src/features/reports/own-reports-screen";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { WorkspaceScreen } from "../src/features/session/workspace-screen";
 import { DriverScreen } from "../src/features/driver/driver-screen";
@@ -38,4 +39,12 @@ test("fixture public render path is visibly disconnected and disables operationa
   expect(screen.getByText("Chất lượng ảnh: 75/100")).toBeOnTheScreen();
   expect(screen.getByRole("button", { name: "AI nhận xét" })).toBeDisabled();
   expect(screen.getByRole("button", { name: "Accept report" })).toBeDisabled();
+});
+
+test("real own-report view remains usable without inventing assignment or points projections", async () => {
+  const context = fixtureContext("contributor"); const own = fixtureReport();
+  await render(<OwnReportsScreen context={context} query={{ ...initialQuery(context.session), status: "ready", data: [own, { ...own, participant_id: "par_someone1", description: "Foreign private report" }] }} />);
+  expect(screen.getByText(own.description)).toBeOnTheScreen(); expect(screen.queryByText("Foreign private report")).toBeNull();
+  expect(screen.getByText("Assignment and points projections remain separate server views.")).toBeOnTheScreen();
+  expect(screen.queryByText(/Server-recorded total:/)).toBeNull();
 });
