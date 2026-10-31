@@ -1,4 +1,4 @@
-import { parseSchema } from "@floodops/contracts";
+import { assertReceiptRewardPolicyUnchanged, parseSchema } from "@floodops/contracts";
 import { sourceState } from "@floodops/domain/reporting";
 import { reconcileEvidence } from "@floodops/domain/knowledge";
 import { applyKnowledgeTransition } from "@floodops/simulation";
@@ -20,9 +20,14 @@ export function applySourceReview(ports: SourcesPorts, context: TransitionContex
     const stored = state.reports[report.report_id];
     if (!stored || stored.generation !== context.snapshot.meta.generation) fail(409, "STATE_CONFLICT");
     const immutable = (item: typeof report) => {
-      const { status: _s, segment_id: _g, vehicle_types: _v, observation_candidates: _c, observation_ids: _o, award_id: _a, reason_codes: _r, ...facts } = item;
-      void _s; void _g; void _v; void _c; void _o; void _a; void _r; return facts;
+      const { status: _s, segment_id: _g, vehicle_types: _v, observation_candidates: _c, observation_ids: _o, award_id: _a, reason_codes: _r, reward: _w, review_result_id: _i, reviewed_at: _t, ...facts } = item;
+      void _s; void _g; void _v; void _c; void _o; void _a; void _r; void _w; void _i; void _t; return facts;
     };
+    try { assertReceiptRewardPolicyUnchanged(stored.report.reward, report.reward); } catch { fail(409, "STATE_CONFLICT"); }
+    if (report.award_id !== report.reward.award_id || (stored.report.review_result_id !== null
+      && (report.review_result_id !== stored.report.review_result_id || report.reviewed_at !== stored.report.reviewed_at))) fail(409, "STATE_CONFLICT");
+    if (stored.report.reward.policy === null && !same(stored.report.reward, report.reward)) fail(409, "STATE_CONFLICT");
+    if (report.kind === "driver" && report.reward.status === "committed") fail(409, "STATE_CONFLICT");
     if (!same(immutable(stored.report), immutable(report))) fail(409, "STATE_CONFLICT");
     if (["accepted", "rejected"].includes(stored.report.status) && (report.status !== stored.report.status
       || report.segment_id !== stored.report.segment_id || !same(report.vehicle_types, stored.report.vehicle_types))) fail(409, "STATE_CONFLICT");

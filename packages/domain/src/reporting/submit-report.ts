@@ -1,6 +1,7 @@
 import { SubmitReportInputSchema, ReportSchema } from "@floodops/contracts";
 import type { Report } from "@floodops/contracts";
 import { fail } from "../sources/source-types.ts";
+import { receiptReward } from "./receipt-reward.ts";
 import { bindReportIdentity } from "./report-identity.ts";
 import { validateReportEvidence } from "./report-validation.ts";
 import type { ReportContext } from "./report-types.ts";
@@ -17,7 +18,8 @@ export function submitReport(raw: unknown, context: ReportContext): Report {
     media_id: input.kind === "citizen" ? input.media_id : null, fixture_photo_id: input.kind === "citizen" ? input.fixture_photo_id : null,
     status: "pending_review", reason_codes: [], observation_ids: [], award_id: null, input_revision: context.inputRevision,
     observation_candidates: [], input_mode: input.kind === "driver" ? input.input_mode : "photo",
-    quick_condition: input.kind === "driver" ? input.quick_condition : null, reporter_entity_id: entityId };
+    quick_condition: input.kind === "driver" ? input.quick_condition : null, reporter_entity_id: entityId,
+    reward: receiptReward(input.kind, context.receiptRewardPolicy), review_result_id: null, reviewed_at: null };
   const validation = validateReportEvidence(report, context);
   report.segment_id = validation.segmentId;
   report.reason_codes = validation.reasons;
