@@ -1,0 +1,78 @@
+import { useId, useState } from "react";
+import { DriverReportInputSchema, CitizenReportInputSchema, type SubmitReportInput } from "@floodops/contracts";
+import { Alert, Button, Form, SelectField, TextArea, TextField, type FormError } from "@floodops/ui-web";
+import { accessReason, type AccessContext } from "../../shared/access";
+import { Denied, SimulationBanner } from "../../shared/feature-state";
+import { useCommand } from "../../shared/use-command";
+
+export interface ReportMediaChoice { id: string; kind: "media" | "fixture"; label: string }
+export interface ReportFormProps {
+  kind: "driver" | "citizen"; context: AccessContext;
+  mediaChoices?: readonly ReportMediaChoice[];
+  onSubmit: (input: SubmitReportInput) => Promise<unknown>;
+}
+export function ReportForm(props: ReportFormProps) {
+  const { session, participant } = props.context.identity;
+  return <ReportFormDetail key={`${session.session_id}:${session.generation}:${participant.participant_id}:${props.kind}`} {...props} />;
+}
+function ReportFormDetail({ kind, context, mediaChoices = [], onSubmit }: ReportFormProps) {
+  const prefix = useId();
+  const [description, setDescription] = useState("");
+  const [segment, setSegment] = useState("");
+  const [capturedAt, setCapturedAt] = useState("");
+  const [minute, setMinute] = useState(String(context.identity.session.sim_minute));
+  const [mode, setMode] = useState("text");
+  const [condition, setCondition] = useState("unknown");
+  const [vehicle, setVehicle] = useState("");
+  const [mediaKey, setMediaKey] = useState("");
+  const [errors, setErrors] = useState<FormError[]>([]);
+  const [attempt, setAttempt] = useState(0);
+  const command = useCommand(`${context.identity.session.session_id}:${context.identity.session.generation}:${kind}`);
+  const role = kind === "driver" ? "driver" : "contributor";
+  const denied = accessReason(context, "reports:submit", role);
+  const blocked = accessReason(context, "reports:submit", role, true);
+  if (denied) return <Denied reason={denied} />;
+  function submit() {
+    const media = mediaChoices.find(choice => `${choice.kind}:${choice.id}` === mediaKey);
+    const candidate = { kind, segment_id: segment.trim() || null, coordinate: null, captured_at: capturedAt,
+      captured_sim_minute: minute.trim() ? Number(minute) : NaN, vehicle_types: vehicle ? [vehicle] : [], description,
+      ...(kind === "driver" ? { input_mode: mode, quick_condition: mode === "quick" ? condition : null }
+        : { media_id: mediaKey && media?.kind === "media" ? media.id : null, fixture_photo_id: mediaKey && media?.kind === "fixture" ? media.id : null }),
+    };
+    const result = (kind === "driver" ? DriverReportInputSchema : CitizenReportInputSchema).safeParse(candidate);
+    const next: FormError[] = [];
+    if (!segment.trim()) next.push({ fieldId: `${prefix}-segment`, message: "Chọn đoạn đường thủ công." });
+    if (kind === "citizen" && (!mediaKey || !media)) next.push({ fieldId: `${prefix}-media`, message: "Chọn ảnh đã được server cấp hoặc fixture cho phép." });
+    if (!result.success) for (const issue of result.error.issues) {
+      const name = String(issue.path[0]);
+      const fields: Record<string, string> = { captured_at: "capture", captured_sim_minute: "minute", description: "description", segment_id: "segment", vehicle_types: "vehicle" };
+      const messages: Record<string, string> = { captured_at: "Thời gian ghi nhận cần đúng RFC3339.", captured_sim_minute: "Phút mô phỏng cần là số không âm.", description: "Mô tả dài tối đa 2000 ký tự.", segment_id: "Nhập ID đoạn đường hợp lệ trong phiên.", vehicle_types: "Chọn loại xe quan sát hợp lệ." };
+      next.push({ fieldId: `${prefix}-${fields[name] ?? "description"}`, message: messages[name] ?? "Kiểm tra nội dung báo cáo." });
+    }
+    setErrors([...new Map(next.map(error => [error.fieldId, error])).values()]); setAttempt(value => value + 1);
+    if (!blocked && result.success && !next.length) void command.run(() => onSubmit(result.data));
+  }
+  const fieldError = (name: string) => errors.find(error => error.fieldId === `${prefix}-${name}`)?.message;
+  return <section><SimulationBanner session={context.identity.session} provenance={context.provenance} />
+    <h1>{kind === "driver" ? "Báo cáo đường" : "Gửi báo cáo ảnh"}</h1>
+    <p>Chưa gửi. Server quyết định validation/review; ảnh và báo cáo chưa cấp quyền mở đường hoặc cộng điểm.</p>
+    <Form aria-label="Gửi báo cáo" errors={errors} submissionKey={attempt} onSubmit={submit}>
+      <TextField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onChange={event => setSegment(event.target.value)} required />
+      <TextField id={`${prefix}-capture`} label="Thời gian chụp RFC3339" error={fieldError("capture")} hint="Ví dụ định dạng: YYYY-MM-DDTHH:mm:ssZ" value={capturedAt} onChange={event => setCapturedAt(event.target.value)} required />
+      <TextField id={`${prefix}-minute`} label="Phút mô phỏng lúc ghi nhận" error={fieldError("minute")} type="number" min="0" step="any" value={minute} onChange={event => setMinute(event.target.value)} required />
+      <SelectField id={`${prefix}-vehicle`} label="Loại xe quan sát" error={fieldError("vehicle")} value={vehicle} onChange={event => setVehicle(event.target.value)} options={[
+        { value: "", label: "Chưa xác định" }, { value: "motorbike", label: "Xe máy" }, { value: "car", label: "Ô tô" }, { value: "truck", label: "Xe tải" },
+      ]} />
+      {kind === "driver" ? <>
+        <SelectField label="Cách báo cáo" value={mode} onChange={event => setMode(event.target.value)} options={[{ value: "text", label: "Văn bản" }, { value: "quick", label: "Báo nhanh" }]} />
+        {mode === "quick" && <SelectField label="Tình trạng quan sát" value={condition} onChange={event => setCondition(event.target.value)} options={[
+          { value: "unknown", label: "Chưa rõ" }, { value: "normal", label: "Khô / đi được" }, { value: "caution", label: "Cần thận trọng" }, { value: "impassable", label: "Nước sâu / không đi được" },
+        ]} />}
+      </> : <SelectField id={`${prefix}-media`} label="Ảnh được phép" error={fieldError("media")} value={mediaKey} onChange={event => setMediaKey(event.target.value)} options={[
+        { value: "", label: "Chọn ảnh" }, ...mediaChoices.map(media => ({ value: `${media.kind}:${media.id}`, label: `${media.label} (${media.kind})` })),
+      ]} />}
+      <TextArea id={`${prefix}-description`} label="Mô tả" error={fieldError("description")} maxLength={2000} value={description} onChange={event => setDescription(event.target.value)} />
+      <Button type="submit" pending={command.pending} pendingLabel="Đang gửi báo cáo…" {...(blocked ? { disabled: true, disabledReason: blocked } : { disabled: false })}>Gửi báo cáo</Button>
+    </Form>{command.message && <Alert title="Kết quả gửi">{command.message}</Alert>}
+  </section>;
+}
