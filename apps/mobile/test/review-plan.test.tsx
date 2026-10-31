@@ -1,3 +1,4 @@
+import { reportInputKey } from "../src/features/reports/report-input-key";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { ReviewScreen } from "../src/features/reports/review-screen";
 import { initialAdvice, receiveAdvice } from "../src/features/reports/image-review-state";
@@ -5,7 +6,7 @@ import { PlanScreen } from "../src/features/planning/plan-screen";
 import { fixtureContext, fixtureJob, fixturePlan, fixtureReport } from "../preview/fixture-data";
 function advice(status: Parameters<typeof fixtureJob>[0] = "completed") {
   const job = fixtureJob(status); const context = fixtureContext();
-  const binding = { session_id: job.session_id, generation: 1, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest };
+  const binding = { session_id: job.session_id, generation: 1, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest, reportInput: reportInputKey(fixtureReport()) };
   return receiveAdvice(initialAdvice(binding, 5), binding, { report_id: job.report_id, job }, context.session, 0);
 }
 test.each(["running", "failed"] as const)("AI %s has no score while manual review remains independent", async status => {
@@ -46,6 +47,7 @@ test("Approve does not Execute or change committed work; offline and superseded 
   await fireEvent.press(screen.getByRole("button", { name: "Approve actions" }));
   expect(decide).toHaveBeenCalledWith({ action_ids: ["act_fixture01"], decision: "approve", reason: "Reviewed evidence" });
   expect(execute).not.toHaveBeenCalled(); expect(plan.diff[0]?.after_eta_minute).toBe(25);
+  await fireEvent.press(screen.getByRole("button", { name: "Select group grp_fixture01" }));
   await fireEvent.press(screen.getByRole("button", { name: "Execute plan" }));
   expect(execute).toHaveBeenCalledWith({ group_ids: ["grp_fixture01"] });
   await screen.rerender(<PlanScreen context={context} plan={plan} currentPlan={{ ...currentPlan, planId: "pln_replaced1" }} onExecute={execute} />);

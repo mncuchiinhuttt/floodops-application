@@ -25,7 +25,7 @@ export function ManualReviewForm({ context, report, onReview, pending }: {
     <Text>Confirmed condition: {condition ?? "Use normalized candidate; server checks ambiguity"}</Text>
     {(["normal", "caution", "impassable", "unknown"] as const).map(value => <Button key={value} label={`Confirm ${value}`} {...(pending ? { disabled: true, disabledReason: "A manual review is pending." } : { disabled: false })} onPress={() => setCondition(value)} />)}
     <Text>Confirmed vehicle scope: {vehicles.join(", ") || "Unknown"}</Text>
-    {(["motorbike", "car"] as const).map(value => <Button key={value} label={`Review ${value}`} {...(pending ? { disabled: true, disabledReason: "A manual review is pending." } : { disabled: false })} accessibilityState={{ selected: vehicles.includes(value) }}
+    {(["motorbike", "car", "truck"] as const).map(value => <Button key={value} label={`Review ${value}`} {...(pending ? { disabled: true, disabledReason: "A manual review is pending." } : { disabled: false })} accessibilityState={{ selected: vehicles.includes(value) }}
       onPress={() => setVehicles(current => current.includes(value) ? current.filter(item => item !== value) : [...current, value])} />)}
     {error && <Text accessibilityRole="alert">{error}</Text>}
     <CommandButton label="Accept report" reason={disabled} pending={pending} onPress={() => submit("accept")} />

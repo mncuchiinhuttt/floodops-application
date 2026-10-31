@@ -1,3 +1,4 @@
+import { reportInputKey } from "../src/features/reports/report-input-key";
 import { Text, View } from "react-native";
 import { DriverScreen } from "../src/features/driver/driver-screen";
 import { ContributorScreen } from "../src/features/rewards/contributor-screen";
@@ -15,7 +16,7 @@ export function NativeFixturePreview({ surface }: { surface: "driver" | "contrib
   const context = fixtureContext(role);
   const plan = fixturePlan();
   const job = fixtureJob();
-  const binding = { session_id: job.session_id, generation: job.generation, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest };
+  const binding = { session_id: job.session_id, generation: job.generation, reportId: job.report_id, jobId: job.job_id, inputDigest: job.input_digest, reportInput: reportInputKey(fixtureReport()) };
   const advice = receiveAdvice(initialAdvice(binding, context.session.event_sequence), binding, { report_id: job.report_id, job }, context.session, 0);
   const query = <T,>(data: T) => ({ ...initialQuery<T>(context.session), status: "ready" as const, data });
   return <View><Text accessibilityRole="header">Fixture preview — not connected to live backend</Text>
