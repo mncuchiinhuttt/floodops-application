@@ -1,0 +1,16 @@
+{
+  "amendment_id": "contracts-client-dependencies-v2",
+  "role_id": "contracts-client",
+  "supersedes_work_item_id": "contracts-client-phase-01-v1",
+  "new_work_item_id": "contracts-client-phase-01-v2",
+  "previous_launch_sha": "b71764ed6277ded6e54138b659b85ca09ec99128",
+  "worker_checkpoint_sha": "fcef135e3f809378704150653d0676c029bb26d1",
+  "new_base_sha": "a0b869d985a6402b84dbcf5348675dbae7a2b76e",
+  "reason": "Worker requested pinned Zod, workspace dependency, public exports and typecheck scripts; central files remain Lead-owned.",
+  "changes": ["packages/contracts/package.json", "packages/api-client/package.json", "bun.lock"],
+  "validation": ["Zod 4.6.7 MIT registry metadata, no lifecycle scripts", "Bun strict/finite/unknown-key dependency smoke passed", "bun audit: no vulnerabilities, 190 packages checked"],
+  "wire_contract_change": false,
+  "contract_authoring_continues": "Use the same original bootstrap design index and phase01 requirements; no public wire/API semantic change is granted by this dependency amendment.",
+  "authorized_sync": "After Lead supplies the exact new launch SHA, merge it into the clean checkpointed worker branch with --no-ff, preserving the checkpoint and all ancestry. No rebase/reset or sibling merge.",
+  "status": "authorized"
+}
