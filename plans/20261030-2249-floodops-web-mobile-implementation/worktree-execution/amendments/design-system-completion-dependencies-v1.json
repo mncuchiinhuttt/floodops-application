@@ -1,0 +1,214 @@
+{
+  "amendment_id": "design-system-completion-dependencies-v1",
+  "status": "authorized",
+  "scope": "DesignSystem phase02 continuation only; no wire/schema/permission change, no ui-libraries-ready and no baseline update for active SimulationData/SessionPlatform.",
+  "dependency_code_sha": "e3cbf508d11615afce8320cfe7da588619ef7053",
+  "accepted_checkpoint": {
+    "source_sha": "3b1b49c725ca92840ac7550e91fd6fa6d2f23903",
+    "delivery_sha": "4e06b82065aa18abec897af00eae35889d7aed60",
+    "merge_sha": "69c637e7556c8ff352ea6397694aee3e07c1598e",
+    "status": "integrated-checkpoint-still-blocked"
+  },
+  "superseded_work_item": "design-system-phase-02-v2",
+  "next_work_item": "design-system-phase-02-v3",
+  "pins": {
+    "@babel/runtime": "7.29.7",
+    "@radix-ui/react-dialog": "1.3.1",
+    "@radix-ui/react-tabs": "1.2.1",
+    "@radix-ui/react-tooltip": "1.4.1",
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "vite": "8.3.5",
+    "storybook": "10.6.5",
+    "@storybook/cli": "10.6.5",
+    "@storybook/react-vite": "10.6.5",
+    "@storybook/addon-a11y": "10.6.5",
+    "axe-core": "4.14.0"
+  },
+  "reviewed_package_metadata": [
+    {
+      "name": "@babel/runtime",
+      "version": "7.29.7",
+      "license": "MIT",
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "peerDependencies": {},
+      "install_lifecycle": []
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "version": "1.3.1",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "version": "1.2.1",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "version": "1.4.1",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "react": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc",
+        "@types/react": "*",
+        "@types/react-dom": "*"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "@storybook/addon-a11y",
+      "version": "10.6.5",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "storybook": "^10.6.5"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "@storybook/cli",
+      "version": "10.6.5",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {},
+      "install_lifecycle": []
+    },
+    {
+      "name": "@storybook/react-vite",
+      "version": "10.6.5",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0",
+        "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+        "storybook": "^10.6.5",
+        "typescript": ">= 4.9.x"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "@tailwindcss/vite",
+      "version": "4.3.3",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "vite": "^5.2.0 || ^6 || ^7 || ^8"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "axe-core",
+      "version": "4.14.0",
+      "license": "MPL-2.0",
+      "engines": {
+        "node": ">=4"
+      },
+      "peerDependencies": {},
+      "install_lifecycle": []
+    },
+    {
+      "name": "storybook",
+      "version": "10.6.5",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {
+        "prettier": "^2 || ^3",
+        "vite-plus": "^0.1.15 || ^0.2.0",
+        "@types/react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+      },
+      "install_lifecycle": []
+    },
+    {
+      "name": "tailwindcss",
+      "version": "4.3.3",
+      "license": "MIT",
+      "engines": null,
+      "peerDependencies": {},
+      "install_lifecycle": []
+    },
+    {
+      "name": "vite",
+      "version": "8.3.5",
+      "license": "MIT",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peerDependencies": {
+        "tsx": "^4.8.1",
+        "jiti": ">=1.21.0",
+        "less": "^4.0.0",
+        "sass": "^1.70.0",
+        "yaml": "^2.4.2",
+        "stylus": ">=0.54.8",
+        "terser": "^5.16.0",
+        "esbuild": "^0.27.0 || ^0.28.0",
+        "sugarss": "^5.0.0",
+        "@types/node": "^20.19.0 || >=22.12.0",
+        "sass-embedded": "^1.70.0",
+        "@vitejs/devtools": "^0.7.1 || ^0.8.0"
+      },
+      "install_lifecycle": []
+    }
+  ],
+  "licence_qualification": "axe-core MPL-2.0 is unmodified dev/test tooling; remaining added packages MIT. Preserve required notices and do not infer external artwork/distribution approval.",
+  "lock_sha256": "d953b2eb0cd45c393b12c93a5328727e335e821225df85a5de1f001fad6a0cef",
+  "tooling_rules": [
+    "Frozen Bun1.4.0 install --ignore-scripts; Node shebang exceptions retained; no global runtime/config changes.",
+    "Only reviewed central icons/ui-web/ui-native manifests and bun.lock changed. No Role source edits by Lead.",
+    "ui-native/gallery points to the owner-created internal gallery, not a production-root export.",
+    "Storybook dev/build use local pinned stack with telemetry disabled and loopback6006. CLI10.6.5 explicitly pinned after observing --version dispatcher delegation; do not run init/create/skills/tools or unreviewed remote generators."
+  ],
+  "actual_checks": {
+    "native": "Original missing runtime load blocker resolved; 2 suites now execute9 tests:6 pass,3 fail. No native/device pass claimed.",
+    "native_failures": [
+      {
+        "path": "packages/ui-native/test/patterns.test.tsx:33",
+        "error": "toHaveAccessibilityState is not a function"
+      },
+      {
+        "path": "packages/ui-native/test/primitives.test.tsx:16",
+        "error": "toHaveAccessibilityState is not a function"
+      },
+      {
+        "path": "packages/ui-native/test/primitives.test.tsx:41",
+        "error": "getByLabelText('Example name, required') cannot resolve gallery TextInput; inspect accessibilityLabelledBy versus explicit label without weakening accessibility/retained-draft assertions"
+      }
+    ],
+    "web": "13 React DOM tests pass; token/icon26 tests424 assertions pass; all4 package typechecks, web test compile and scoped ESLint pass.",
+    "compiler": "Vite8.3.5 + Tailwind4.3.3 actual fixture build pass;10066-byte CSS includes p-4,bg-amber-500 and shared --fo tokens.",
+    "dependency_smokes": "Three Radix Root exports resolve; Storybook CLI10.6.5 runs; axe4.14 button-name negative/correction diagnostic passes. These do not prove full Storybook/a11y or browser/native device acceptance.",
+    "audit": "Still non-clean: existing high Expo CLI Zod3 and low deepmerge only. No audit ignore/force-major or release waiver."
+  },
+  "remaining_owner_work": [
+    "Fix3 actually executed native test failures preserving semantic assertions, no icon mock or dependency borrowing.",
+    "Complete Radix Dialog/Sheet/Tabs/Tooltip wrappers, remaining phase02 shared presentation states/patterns and usage docs.",
+    "Owner creates package-local Storybook/stories/Tailwind Vite config; build Storybook and exercise actual keyboard/focus/reflow/a11y. Existing manifests supply complete requested tools; do not let CLIs mutate consumer/root manifests.",
+    "Maintain sourceC->own reportR, return exact delivery; Lead reviews and publishes UI gate only after actual proof."
+  ],
+  "sources": [
+    "https://tailwindcss.com/docs/installation/using-vite",
+    "https://storybook.js.org/docs/get-started/frameworks/react-vite",
+    "https://www.radix-ui.com/primitives/docs/components/dialog"
+  ]
+}

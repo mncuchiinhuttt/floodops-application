@@ -1,0 +1,160 @@
+{
+  "work_item_id": "design-system-phase-02-v2",
+  "role_id": "design-system",
+  "base_sha": "f0c6dc019dc63df89eb8c479de2cd00310123f54",
+  "observed_launch_sha": "c17ef2531904f2d94b39e074677cdd212db7d0cc",
+  "status": "blocked",
+  "contract_sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e",
+  "changed_paths": [
+    "packages/design-tokens/README.md",
+    "packages/icons/README.md",
+    "packages/ui-native/README.md",
+    "packages/ui-native/src/foundations-gallery.tsx",
+    "packages/ui-native/src/index.ts",
+    "packages/ui-native/src/patterns/accessible-list.tsx",
+    "packages/ui-native/src/patterns/form.tsx",
+    "packages/ui-native/src/primitives/badge.tsx",
+    "packages/ui-native/src/primitives/button.tsx",
+    "packages/ui-native/src/primitives/content.tsx",
+    "packages/ui-native/src/primitives/dialog.tsx",
+    "packages/ui-native/src/primitives/select-field.tsx",
+    "packages/ui-native/src/primitives/tabs.tsx",
+    "packages/ui-native/src/primitives/tooltip.tsx",
+    "packages/ui-native/test/patterns.test.tsx",
+    "packages/ui-native/test/primitives.test.tsx",
+    "packages/ui-web/README.md",
+    "packages/ui-web/src/foundations-gallery.tsx",
+    "packages/ui-web/src/index.ts",
+    "packages/ui-web/src/patterns/data-table.tsx",
+    "packages/ui-web/src/patterns/form.tsx",
+    "packages/ui-web/src/primitives/badge.tsx",
+    "packages/ui-web/src/primitives/button.tsx",
+    "packages/ui-web/src/primitives/content.tsx",
+    "packages/ui-web/src/primitives/select-field.tsx",
+    "packages/ui-web/src/styles.css",
+    "packages/ui-web/test/button-types.tsx",
+    "packages/ui-web/test/control-name.test.ts",
+    "packages/ui-web/test/patterns.test.tsx",
+    "packages/ui-web/test/primitives.test.tsx",
+    "packages/ui-web/test/tsconfig.json"
+  ],
+  "checks": [
+    {
+      "command": "bun install --frozen-lockfile --ignore-scripts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun test packages/design-tokens/test packages/icons/test",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun run --cwd packages/ui-web test",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun run --cwd packages/design-tokens typecheck",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun run --cwd packages/icons typecheck",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun run --cwd packages/ui-web typecheck",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun run --cwd packages/ui-native typecheck",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun --bun run tsc -p packages/ui-web/test/tsconfig.json",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun --bun run eslint packages/design-tokens packages/icons packages/ui-web packages/ui-native --max-warnings=0",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "bun run --cwd packages/ui-native test --watchman=false --json --outputFile=/tmp/floodops-design-native-3b1b49c.json",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "fail",
+      "evidence_path": "/tmp/floodops-design-native-3b1b49c.json"
+    },
+    {
+      "command": "manifest ownership matcher + real-path + code size check before source commit",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "command": "git diff --cached --check before source commit",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "result": "pass",
+      "evidence_path": null
+    }
+  ],
+  "smoke": [
+    {
+      "scenario": "Actual React gallery: keyboard action and invalid submit/error link/correction/select",
+      "observed_result": "Keyboard Enter increments local example counter; invalid submit focuses alert Check the form; error link focuses example-name. Corrected browser draft retained, aria-invalid=false, density becomes Compact. Real production components; no API connection or authoritative operation. Screenshots/AX/DOM evidence in execution trace.",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "scenario": "Final single-tree responsive table at 1280 and 320 CSS px",
+      "observed_result": "One semantic table retains caption/column headers. At 320 clientWidth=scrollWidth=320, two rows/four cells, Example one rendered once. Screenshot shows labelled card rows without clipping; no duplicate cell subtree. Preview stopped, viewport reset and tabs closed.",
+      "result": "pass",
+      "evidence_path": null
+    },
+    {
+      "scenario": "Native components through Jest-expo/RNTL",
+      "observed_result": "Unavailable: both suites fail during load before any test executes.9 tests are authored, 0 are claimed passed. No mock-out of icons or dependency borrowing used.",
+      "result": "unavailable",
+      "evidence_path": "/tmp/floodops-design-native-3b1b49c.json"
+    }
+  ],
+  "public_exports": [
+    "Existing token/icon APIs preserved.",
+    "@floodops/ui-web adds SelectField/SelectOption/SelectFieldProps; Form/ErrorSummary/FormProps/FormError; DataTable/KeyValueList/TableColumn/DataTableProps. Button and IconButton preserve disabled/reason discrimination; Button refs point to actual button. Alert adds semantic tone.",
+    "@floodops/ui-native adds Dialog/Sheet/DialogProps; Tabs/TabItem; Tooltip; SelectField/SelectOption/SelectFieldProps; Form/ErrorSummary/FormError; AccessibleList/KeyValueList/ListColumn/AccessibleListProps. Native Button supports a typed host ref.",
+    "Both internal FoundationsGallery modules exercise production components; no production-root gallery export."
+  ],
+  "integration_requests": [
+    "Priority: Lead add @babel/runtime@7.29.7 as runtime dependency to packages/icons/package.json and update bun.lock; it is declared by ui-native only. Publish approved dependency baseline/launch and resume. No sibling dependency workaround.",
+    "Lead review/pin/add ui-web runtime @radix-ui/react-dialog (Dialog+Sheet), @radix-ui/react-tabs, @radix-ui/react-tooltip; reviewed React 19.3 peers/licences/advisories. Worker will implement wrappers only after baseline.",
+    "Lead review/pin ui-web dev Tailwind CSS v4, @tailwindcss/vite and compatible Vite, Storybook + @storybook/react-vite + @storybook/addon-a11y, axe-core. Central manifests/lock only; no generator mutations to consumer apps.",
+    "Lead publish ui-native /gallery export -> ./src/foundations-gallery.tsx for ExpoMobile dev-screen adapter. Gallery intentionally excluded from production roots; web dev runner imports its own internal gallery.",
+    "After dependency amendment: finish remaining full phase02 web advanced primitives, Storybook/a11y and shared presentation patterns from design spec; exercise native suites and then Lead reviews/integrates before any UI gate."
+  ],
+  "blocked_prerequisites": [
+    "PENDING, not denied: native render/interaction. At exact source C, Jest with Watchman disabled reports 2 suites failed / 0 tests executed because icons native transform cannot resolve @babel/runtime/helpers/interopRequireWildcard. Fix requires Lead-owned icons manifest+lock update.",
+    "PENDING, not denied: advanced web Dialog/Sheet/Tabs/Tooltip wrappers, Tailwind compilation, Storybook+a11y/axe and remaining full-phase presentation patterns. Required advanced dependencies are absent; no fake placeholder components or full phase/ui-libraries-ready claim.",
+    "Native bridge render tests cannot prove device behavior. iOS/Android SVG, VoiceOver/TalkBack, enlarged-text/keyboard/safe-area checks remain unrun and require later device/operator setup. ExpoMobile owns the gallery screen adapter.",
+    "Baseline audit qualification remains: high Expo CLI Zod 3.25.76 and low deepmerge 4.3.1. No force-major override, advisory waiver, QA/security/release clearance, provider or device action authorized.",
+    "Original SVGs remain internal project artwork; external distribution/licensing approval is not claimed."
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false,
+  "source_sha": "3b1b49c725ca92840ac7550e91fd6fa6d2f23903",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "delivery_sha": "4e06b82065aa18abec897af00eae35889d7aed60"
+}
