@@ -1,4 +1,4 @@
-import type { Conflict, Observation, Report, SegmentKnowledge } from "@floodops/contracts";
+import type { Conflict, Observation, Report, RewardPolicyRef, SegmentKnowledge } from "@floodops/contracts";
 import type { KnowledgePair } from "@floodops/domain/knowledge";
 import type { EvidenceContext } from "@floodops/domain/sources";
 import type { ReportContext } from "@floodops/domain/reporting";
@@ -28,7 +28,7 @@ export interface ReviewAudit { report_id: string; decision: "accept" | "reject";
 export interface ReviewStore { ledger: RewardLedger; audit: readonly ReviewAudit[] }
 export interface ReviewOptions {
   source: SourceReviewPort;
-  rewards: RewardConfig;
+  resolveRewardPolicy?: (receipt: RewardPolicyRef) => RewardConfig | null;
   imageConfig?: ImageConfig;
   id?: (prefix: string) => string;
 }

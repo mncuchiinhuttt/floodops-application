@@ -16,7 +16,7 @@ it("real HTTP acceptance atomically persists report, per-vehicle knowledge, gap,
   expect(state.rewards?.ledger.awards).toHaveLength(1); expect(state.rewards?.audit).toHaveLength(1);
   console.info("review-runtime-smoke", JSON.stringify({ report_status: result.report.status,
     revision_delta: committed.meta.revision - before.meta.revision, awards: state.rewards?.ledger.awards.length,
-    points: result.award?.points, filled_gaps: result.filled_gap_ids.length, fixture: "synthetic-source-adapter-real-sqlite-do" }));
+    points: result.award?.points, filled_gaps: result.filled_gap_ids.length, fixture: "genuine-source-adapter-arranged-m1-records-real-sqlite-do" }));
   expect(state.source.reports.find(report => report.report_id === reportA)?.award_id).toBe(result.award?.award_id);
   expect(state.source.run.knowledge.find(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type === "motorbike")?.state).toBe("known");
   expect(state.source.run.knowledge.find(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type === "car")?.state).toBe("ordinary_unknown");
@@ -59,10 +59,16 @@ it("field roles cannot review/read awards; contributor dashboards include only t
   expect(dashboardA.points_total).toBe(7); expect(dashboardA.own_reports.map(report => report.report_id)).toEqual([reportA]);
   expect(dashboardB.points_total).toBe(0); expect(dashboardB.own_reports.map(report => report.report_id)).toEqual([reportB]);
 });
-it("reject is explicitly fail-closed until metadata CAS hook exists, with no review/ledger mutation", async () => {
-  const owner = await create(), before = await snapshot(owner), denied = await review(owner, reportA, { decision: "reject" });
-  expect(denied.response.status).toBe(503); expect(parseSchema("ErrorResponse", denied.body).error?.code).toBe("CONFIG_INCOMPLETE");
-  expect((await snapshot(owner)).values).toEqual(before.values); expect((await snapshot(owner)).meta.revision).toBe(before.meta.revision);
+it("metadata-only Reject requires CAS, preserves revision and exact replay, and grants no award", async () => {
+  const owner = await create(), before = await snapshot(owner), requestKey = key();
+  const rejected = await review(owner, reportA, { key: requestKey, decision: "reject" });
+  expect(rejected.response.status).toBe(200);
+  const result = parseSchema("ReportReviewResultResponse", rejected.body).data!;
+  expect(result.report.status).toBe("rejected"); expect(result.report.review_result_id).not.toBeNull(); expect(result.award).toBeNull();
+  const after = await snapshot(owner); expect(after.meta.revision).toBe(before.meta.revision);
+  expect(domain(after).source.run).toEqual(domain(before).source.run);
+  const replay = await review(owner, reportA, { key: requestKey, decision: "reject" });
+  expect(replay.body).toEqual(rejected.body);
 });
 it("real Reset fences old review/capability and initializes fresh generation with empty reward ledger", async () => {
   const owner = await create(), accepted = await review(owner); expect(accepted.response.status).toBe(200);

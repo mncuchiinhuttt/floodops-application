@@ -10,7 +10,7 @@ export interface ImageReviewServiceOptions {
   failQueued?: QueuedImageFailurePort;
 }
 export async function runImageReview(options: ImageReviewServiceOptions, context: SessionRequestContext, job: ImageReviewJob,
-  lease: string, expected: { normalized_hash: string; description: string }): Promise<"completed" | "discarded" | "queued-failure-port-unavailable"> {
+  lease: string, expected: { normalized_hash: string; description: string }): Promise<"completed" | "discarded"> {
   const controller = new AbortController();
   const remaining = Date.parse(job.deadline_at) - Date.now();
   if (remaining <= 0) return "discarded";
@@ -19,8 +19,7 @@ export async function runImageReview(options: ImageReviewServiceOptions, context
   const completeFailure = async (code: ImageReviewFailure) => {
     try {
       if (started) await options.metadata.complete(context, job.report_id, job.job_id, lease, { error_code: code });
-      else if (options.failQueued) await options.failQueued(context, job.report_id, job.job_id, lease, code);
-      else return "queued-failure-port-unavailable" as const;
+      else await (options.failQueued ?? options.metadata.failQueued)(context, job.report_id, job.job_id, lease, code);
     } catch { /* Persisted deadlines reconcile an unreachable/stale completion; never retry the provider. */ }
     return "discarded" as const;
   };
