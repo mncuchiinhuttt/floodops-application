@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "bootstrap-complete-awaiting-parent-handoff",
+  "status": "wave-01-contracts-client-running",
   "plan_directory": "plans/20261030-2249-floodops-web-mobile-implementation",
   "repository_path": "/Users/vominhlong/seahackathon/floodops-application",
   "worktree_root": "/Users/vominhlong/seahackathon-worktrees",
@@ -1194,7 +1194,7 @@
     "worker_must_not_self_amend_policy": true
   },
   "execution_hold": {
-    "implementation_agents_started": false,
-    "reason": "Init-only handoff. Parent reviews the new baseline and issues committed launch receipts before launching roles."
+    "implementation_agents_started": true,
+    "reason": "Parent accepted init and authorized role waves. Launch each worker only from its committed receipt; production remains separately unauthorized."
   }
 }
