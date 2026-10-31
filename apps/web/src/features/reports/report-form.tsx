@@ -70,8 +70,11 @@ function ReportFormDetail({ kind, context, mediaChoices = [], preferredMediaId, 
     <Form aria-label="Gửi báo cáo" errors={errors} submissionKey={attempt} onSubmit={submit} className="rounded-xl border bg-card p-4 sm:p-5">
       {simulatedSubmit && <TextField id={`${prefix}-reporter`} label="Contributor giả lập (theo scenario)" hint="Simulation submit-as; backend giữ nguyên participant thực đã gửi." error={fieldError("reporter")} value={reporterEntity} onChange={event => setReporterEntity(event.target.value)} required />}
       {graph && <LocationPicker graph={graph} segmentId={segment} longitude={longitude} latitude={latitude} disabled={!!blocked}
-        onPick={picked => { setLongitude(String(picked.longitude)); setLatitude(String(picked.latitude)); setCapturedAt(value => value || new Date().toISOString()); if (picked.segmentId) setSegment(picked.segmentId); }} />}
-      {graph ? <SelectField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onValueChange={setSegment} required
+        onStreet={name => setDescription(value => value.trim() ? value : `Vị trí: ${name}`)}
+        onPick={picked => { setLongitude(String(picked.longitude)); setLatitude(String(picked.latitude)); setCapturedAt(value => value || new Date().toISOString());
+          if (picked.segmentId) setSegment(picked.segmentId); setErrors(list => list.filter(error => !/-(segment|coordinate|capture)$/.test(error.fieldId))); }} />}
+      {graph ? <SelectField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} required
+        onValueChange={value => { setSegment(value); setErrors(list => list.filter(error => !error.fieldId.endsWith("-segment"))); }}
         hint="Tự điền khi bạn chọn trên bản đồ; có thể đổi tay." options={[{ value: "", label: "Chọn đoạn đường" },
           ...graph.segments.map(item => ({ value: item.segment_id, label: `${item.segment_id} · ${Math.round(item.length_m)} m` }))]} />
         : <TextField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onChange={event => setSegment(event.target.value)} required />}

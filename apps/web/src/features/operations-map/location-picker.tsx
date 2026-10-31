@@ -9,10 +9,12 @@ import { streetNameAt } from "./street-name";
 export interface PickedLocation { longitude: number; latitude: number; segmentId: string | null }
 export interface LocationPickerProps {
   graph: Graph; longitude: string; latitude: string; segmentId: string; onPick: (picked: PickedLocation) => void; disabled?: boolean;
+  /** Called with the OpenStreetMap street name of the picked point once it resolves. */
+  onStreet?: (name: string) => void;
 }
 /** Beyond this the pick is still assigned to the nearest simulated segment, with a note that it lies outside the scenario area. */
 const NEAR_METERS = 60;
-export function LocationPicker({ graph, longitude, latitude, segmentId, onPick, disabled }: LocationPickerProps) {
+export function LocationPicker({ graph, longitude, latitude, segmentId, onPick, onStreet, disabled }: LocationPickerProps) {
   const [note, setNote] = useState(""), [street, setStreet] = useState(""), [locating, setLocating] = useState(false);
   const lookup = useRef<AbortController | null>(null);
   const base = mapLineStyle({ state: { tone: "unknown", label: "Chưa chọn" } });
@@ -26,7 +28,7 @@ export function LocationPicker({ graph, longitude, latitude, segmentId, onPick, 
     setNote(!snapped ? "Graph chưa có hình học đường." : far ? `Gán vào đoạn mô phỏng gần nhất ${snapped} (cách ${Math.round(hit!.meters)} m, ngoài vùng mô phỏng).` : `Đoạn mô phỏng ${snapped}.`);
     onPick({ longitude: Number(at[0].toFixed(6)), latitude: Number(at[1].toFixed(6)), segmentId: snapped });
     lookup.current?.abort(); const controller = new AbortController(); lookup.current = controller; setStreet("");
-    void streetNameAt(at, controller.signal).then(name => { if (!controller.signal.aborted) setStreet(name ?? ""); });
+    void streetNameAt(at, controller.signal).then(name => { if (controller.signal.aborted) return; setStreet(name ?? ""); if (name) onStreet?.(name); });
   }
   function locate() {
     if (!("geolocation" in navigator)) { setNote("Trình duyệt không hỗ trợ định vị. Chọn vị trí trên bản đồ."); return; }
