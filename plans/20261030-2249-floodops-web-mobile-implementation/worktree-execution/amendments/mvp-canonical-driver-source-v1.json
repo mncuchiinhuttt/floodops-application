@@ -1,0 +1,35 @@
+{
+  "amendment_id": "mvp-canonical-driver-source-v1",
+  "status": "authorized",
+  "authority": "User requests a correct working MVP quickly. Parent explicitly requested this canonical driver fixture correction after Sources delivery.",
+  "work_items": [
+    {
+      "role_id": "simulation-data",
+      "work_item_id": "simulation-data-driver-source-v4",
+      "include_prefixes": [
+        "data/scenarios/functional-v2/",
+        "packages/test-fixtures/src/functional/scenario/",
+        "packages/simulation/test/scenario/"
+      ],
+      "include_files": [
+        "packages/test-fixtures/src/index.ts",
+        "packages/test-fixtures/README.md",
+        "packages/simulation/README.md"
+      ],
+      "scope": "Narrow MVP canonical driver Source/profile+parameter fixture correction only, no algorithm/schema/physics/other-role edits. Preserve frozen v1; publish version2 with explicit functional provenance, sealed hashes and public fixture accessor."
+    }
+  ],
+  "diagnosis": "Current scn_functional1/v1 sourceSnapshot has camera/community/authority/weather/tide only. reportContext requires exactly one driver observation Source and a valid configured profile/parameters, so canonical quick-driver submission503CONFIG_INCOMPLETE. Configured custom Source scenario passes actual tests. Do not replace missing config with a permissive server fallback.",
+  "minimal_fix": "Add functional-v2 sibling preserving original v1 bytes/version. Keep scenario IDscn_functional1 with version2, same geometry/operations/physical parameters/events/H/calibration incomplete, adding exactly one simulated available driver observation Source and explicit low-confidence non-authority profile with TTL/location parameter provenance. For this disclosed functional fixture, use low/3sim-min/10m matching existing low policy assumptions, explicit driver profile/parameter keys; no real calibrated/safety claim. Reseal config/seed/graph/bundle with public sealing helper, no manual hash spoofing. Export a public v2 fixture accessor without replacing legacy v1 tests. Lead alone switches app catalog/default import and version-specific negative tests after verified delivery.",
+  "checks": [
+    "Load/seal new v2; v1 bytes unchanged, all profiles reference declared parameters/provenance",
+    "Public real Sources driver quick report -> accepted fresh low evidence for own vehicle; no AI dependency, no points, no assignment/route commit, car does not inherit bike",
+    "Existing relevant simulator/source safety tests + targeted types/lint + focused public runtime smoke; no exhaustive optional matrix",
+    "Return exact manifest path/version/exports/config-seed-graph-bundle hashes and Source constructor requirements for immediate Lead HTTP cutover"
+  ],
+  "rules": [
+    "Original global ownership/protected files unchanged. Do not edit appindex/API features/manifests/lock/contracts/source/v1 or unrelated fixture implementations.",
+    "No promotion of Source/full backend/device/model/calibration/production gate; no new paid/provider/account/key/resource/browser-invitation/EAS actions.",
+    "Existing active workers keep their receipts; Lead reissues affected baseline at safe checkpoints after v2 is integrated."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "work_item_id": "session-platform-reset-stream-v4",
+  "role_id": "session-platform",
+  "base_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe",
+  "observed_launch_sha": "2364a58e271a738790fe2a70fd47f67ad0befb52",
+  "delivery_sha": "1a4a7ccf8509350c3aa8d5b107708da6b7d1a696",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "bda263b1d21bfa26994d857da94f97b8974a3cfee08059e805e889f765202527",
+  "source_sha": "695e850849b649d87570858f0944bdbd06772d00",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/src/features/session/stream.ts",
+    "apps/api/src/session-runtime/README.md",
+    "apps/api/src/session-runtime/lifecycle.ts",
+    "apps/api/src/session-runtime/reads.ts",
+    "apps/api/src/session-runtime/session-object.ts",
+    "apps/api/src/session-runtime/terminal-stream.ts",
+    "apps/api/test/capabilities/tsconfig.json",
+    "apps/api/test/replay/reset-stream-fixtures.ts",
+    "apps/api/test/replay/reset-stream-guards.test.ts",
+    "apps/api/test/replay/reset-stream-state.ts",
+    "apps/api/test/replay/reset-stream.test.ts",
+    "plans/reports/worktree-session-platform-session-platform-reset-stream-v4.md"
+  ],
+  "checks": [
+    {
+      "command": "101 actual platform tests,types/lint; integrated established9 composition tests pass; exact signed12path delivery reviewed",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-session-platform-session-platform-reset-stream-v4.md"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [],
+  "integration_requests": [],
+  "blocked_prerequisites": [],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}
