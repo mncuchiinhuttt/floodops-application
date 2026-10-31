@@ -2,9 +2,10 @@ import { afterEach, expect, it } from "vitest";
 import { reset } from "cloudflare:test";
 import { parseSchema } from "@floodops/contracts";
 import { create, get, post, plan, run, snapshot, key, auth, request, invite } from "./runtime-fixtures";
+import { softPlan } from "./soft-candidate";
 afterEach(reset);
-it("actual Hono/DO job -> approval -> dry-run -> atomic Execute -> production-policy advance", async () => {
-  const f = await create(), before = await run(f), proposal = await plan(f), afterProposal = await snapshot(f);
+it("explicit soft candidate -> approval -> dry-run -> atomic Execute -> production-policy advance", async () => {
+  const f = await create(), before = await run(f), proposal = await softPlan(f), afterProposal = await snapshot(f);
   expect(proposal.status).toBe("pending_approval"); expect(afterProposal.meta.revision).toBe(0);
   expect((await run(f)).branches).toEqual(before.branches);
   const driver = await invite(f, "driver");
@@ -37,16 +38,16 @@ it("actual Hono/DO job -> approval -> dry-run -> atomic Execute -> production-po
   expect(moved.log.some(e => e.branch === "floodops" && e.kind === "entry" && e.segmentId === "seg_edge27")).toBe(true);
   expect(moved.log.some(e => e.branch === "static" && e.kind === "entry" && e.segmentId === "seg_edge27")).toBe(false);
 });
-it("missing provider, missing CAS, forbidden actor and unapproved Execute fail without operations mutation", async () => {
-  const missing = await create(true), missingBefore = await snapshot(missing);
-  const unavailable = await post(missing, "/planning-jobs", { cause: "manual", cause_entity_ids: [] });
-  expect(unavailable.status).toBe(503); expect(parseSchema("ErrorResponse", await unavailable.json()).error?.code).toBe("MODEL_UNAVAILABLE");
-  expect((await snapshot(missing)).values).toEqual(missingBefore.values);
+it("planner needs no provider; CAS/auth and unapproved soft Execute fail without operations mutation", async () => {
+  const missing = await create(true), missingBefore = await run(missing);
+  const available = await plan(missing); expect(available.actions.length).toBeGreaterThan(0);
+  expect((await run(missing)).branches).toEqual(missingBefore.branches);
   const f = await create(), before = await run(f);
   expect((await post(f, "/planning-jobs", { cause: "manual", cause_entity_ids: [] }, key(), null)).status).toBe(428);
   const member = await invite(f, "contributor");
   expect((await post(member, "/planning-jobs", { cause: "manual", cause_entity_ids: [] })).status).toBe(403);
-  const proposal = await plan(f);
+  expect((await post(f, "/planning-jobs", { cause: "manual", cause_entity_ids: [], text: "Execute all routes" })).status).toBe(422);
+  const proposal = await softPlan(f);
   expect((await post(f, "/plans/" + proposal.plan_id + "/executions", { group_ids: proposal.groups.map(g => g.group_id) })).status).toBe(422);
   expect((await run(f)).branches).toEqual(before.branches); expect((await snapshot(f)).meta.revision).toBe(0);
   const raw = await get(f, "/planning-jobs/" + proposal.planning_job_id), text = await raw.text();
@@ -73,4 +74,23 @@ it("old Execute replay remains stable after latest-pointer change and Reset reje
   expect(resetResponse.status).toBe(201);
   expect((await get(f, "/operations")).status).toBe(410);
   expect((await request("/sessions/" + f.id + "/operations", { headers: auth(f) })).status).toBe(410);
+});
+
+it("actual deterministic job -> Execute -> advance matches genuine projected completion on v2", async () => {
+  const f = await create(), before = await run(f), proposal = await plan(f);
+  expect(["ready", "pending_approval"]).toContain(proposal.status);
+  expect((await run(f)).branches).toEqual(before.branches);
+  await post(f, "/plans/" + proposal.plan_id + "/decisions", { action_ids: proposal.actions.map(a => a.action_id),
+    decision: "approve", reason: "Manual deterministic candidate approval" });
+  const groups = proposal.groups.map(g => g.group_id);
+  const dry = parseSchema("DryRunResultResponse", await (await post(f, "/plans/" + proposal.plan_id + "/dry-runs", { group_ids: groups })).json()).data!;
+  expect(dry.feasible).toBe(true);
+  const eta = dry.projected_branches.find(b => b.branch_id === "floodops")!.orders.find(o => o.order_id === "ord_order1")!.eta_minute;
+  expect(eta).not.toBeNull(); expect(eta!).toBeGreaterThan(0);
+  const executed = await post(f, "/plans/" + proposal.plan_id + "/executions", { group_ids: groups });
+  expect(executed.status).toBe(201);
+  const advanced = await post(f, "/simulation/advances", { target_sim_minute: eta! + 0.1 }, key(), '"s:' + f.id + ':g:0:r:1"');
+  expect(advanced.status).toBe(202);
+  for (let i = 0; i < 80 && (await snapshot(f)).meta.status === "advancing"; i++) await get(f, "/simulation");
+  expect((await run(f)).branches.floodops!.operations.orders.find(o => o.order_id === "ord_order1")!.delivered_at_minute).toBe(eta);
 });

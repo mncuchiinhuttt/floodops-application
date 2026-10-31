@@ -54,11 +54,14 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
         && a.input_revision === input.plan.input_revision && a.action_id === action.action_id && a.decision === "reject");
       readiness[action.action_id] = rejected ? "blocked" : "ready";
     }
+    const physicalCache = new Map<string, { compiled: CompiledCandidate; run: SimulationRun }>();
     const physical = (selection: GroupSelection) => {
+      const key = canonicalJson(selection), existing = physicalCache.get(key);
+      if (existing) return existing;
       const compiled = compileCandidate(input.plan, selection, input.routes, input.run), run = deferredRun(input, compiled);
       const policy = createPlanningPolicy(run, input.authority, compiled.actionIdsByDriver, currentPolicy);
       projectCandidate(run, compiled.candidate, policy);
-      return { compiled, run };
+      const result = { compiled, run }; physicalCache.set(key, result); return result;
     };
     let selection = selectDependencyGroups(input.plan.actions, input.plan.groups, input.selectedGroupIds, readiness);
     try { physical(selection); } catch (combinedError) {

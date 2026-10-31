@@ -1,4 +1,4 @@
-import type { CommanderProvider } from "../../src/features/planning/index";
+import type { CommanderProvider } from "../../src/features/planning/runtime-types";
 import type { SessionSnapshot, Route } from "@floodops/contracts";
 /** Declared deterministic transport exercises the real tool/controller path; never a production fallback. */
 export const testProvider: CommanderProvider = { async respond(request) {

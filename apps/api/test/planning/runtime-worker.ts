@@ -4,8 +4,7 @@ import type { PlatformBindings, RuntimeRegistry } from "../../src/shared/index";
 import { loadSessionScenario, simulationPersistence } from "../../src/index";
 import { createPlanningRuntime } from "../../src/features/planning/index";
 import { createSimulationRuntime } from "../../src/features/simulation/index";
-import { testProvider } from "./test-provider";
-const planning = createPlanningRuntime({ persistence: simulationPersistence, provider: testProvider, model: "declared-test-commander" });
+const planning = createPlanningRuntime({ persistence: simulationPersistence, provider: { respond: async () => { throw new Error("M1 must never call a provider."); } } });
 const missing = createPlanningRuntime({ persistence: simulationPersistence });
 const simulation = createSimulationRuntime({ persistence: simulationPersistence, committedPolicy: planning.committedPolicy });
 function registry(feature: typeof planning): RuntimeRegistry {
