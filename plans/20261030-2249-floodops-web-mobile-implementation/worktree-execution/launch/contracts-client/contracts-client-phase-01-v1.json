@@ -1,0 +1,28 @@
+{
+  "work_item_id": "contracts-client-phase-01-v1",
+  "role_id": "contracts-client",
+  "phase_ids": [1],
+  "base_sha": "4978532efe8c262def9f6f7bdc5439825e63826c",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/bootstrap-contract-index.json",
+    "commit_sha": "4978532efe8c262def9f6f7bdc5439825e63826c",
+    "sha256": "7cf65e1c4775ab8d790247ff4b6356eeac6dd785a2c8bd6c425ba2c9462b910f"
+  },
+  "required_gates": [
+    {"gate_id": "plan-published", "commit_sha": "097daad8d137b9e3fcec40a0033c6e89131701eb"},
+    {"gate_id": "workspace-bootstrap", "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"}
+  ],
+  "expected_branch": "feat/floodops-contracts-client",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/01-contracts-client",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "bootstrap-authoring",
+  "amendment_id": null,
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}
