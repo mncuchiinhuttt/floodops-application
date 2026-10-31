@@ -1,0 +1,119 @@
+{
+  "work_item_id": "simulation-data-foundations-v1",
+  "role_id": "simulation-data",
+  "base_sha": "5934510f1ed03fea4d6bdaba46a3c01cebe225c7",
+  "observed_launch_sha": "1c5ab1a4b5763783a8581068407580d8e60330d7",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "6d2399ef5c6b805f463bbcaeb304dbf1b692a30c7b60359234f8f8183b286c86",
+  "changed_paths": [
+    "packages/simulation/README.md",
+    "packages/simulation/src/clock/event-clock.ts",
+    "packages/simulation/src/clock/index.ts",
+    "packages/simulation/src/clock/simulation-time.ts",
+    "packages/simulation/src/graph/create-graph.ts",
+    "packages/simulation/src/graph/find-route.ts",
+    "packages/simulation/src/graph/geometry.ts",
+    "packages/simulation/src/graph/graph-types.ts",
+    "packages/simulation/src/graph/index.ts",
+    "packages/simulation/src/graph/travel-profile.ts",
+    "packages/simulation/test/clock/event-clock.test.ts",
+    "packages/simulation/test/graph/find-route.test.ts",
+    "packages/simulation/test/graph/foundation-smoke.ts",
+    "packages/simulation/test/graph/geometry-profile.test.ts",
+    "packages/simulation/test/graph/graph-builder.ts",
+    "packages/simulation/test/graph/graph-validation.test.ts",
+    "packages/test-fixtures/src/functional/graph/index.ts",
+    "packages/test-fixtures/src/functional/graph/turn-aware.ts",
+    "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+  ],
+  "checks": [
+    {
+      "command": "bun install --frozen-lockfile --ignore-scripts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "bun test packages/simulation/test/graph packages/simulation/test/clock",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "bun --bun run tsc -p packages/simulation/tsconfig.json",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "bun --bun run tsc -p packages/test-fixtures/tsconfig.json",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "bun --bun run tsc --noEmit --strict --noUncheckedIndexedAccess --moduleResolution Bundler --allowImportingTsExtensions --module ESNext --target ES2022 --skipLibCheck --types bun packages/simulation/test/graph/*.ts packages/simulation/test/clock/*.ts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "bun --bun run eslint packages/simulation/src packages/simulation/test packages/test-fixtures/src/functional/graph --max-warnings=0",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "bun --bun run eslint packages/simulation/test/clock/event-clock.test.ts --max-warnings=0",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "git diff --cached --check",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "command": "git verify-commit d3ba3f76ba9589dcba7b526dbd664e627683a540",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    }
+  ],
+  "smoke": [
+    {
+      "scenario": "bun packages/simulation/test/graph/foundation-smoke.ts",
+      "observed_result": "Synthetic car AC,CB,BD arrival 5ms; motorbike AD-bike arrival 1ms; reverse route null. Event order closure,expiry,entry. Final clock20ms; original0ms.",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    },
+    {
+      "scenario": "bun --eval 'import {createGraph,findRoute} from \"./packages/simulation/src/graph/index.ts\"; import {createTurnAwareFixture} from \"./packages/test-fixtures/src/functional/graph/index.ts\"; const fixture=createTurnAwareFixture(); const graph=createGraph(fixture.graph); const car=findRoute(graph,{from:\"A\",to:\"D\",vehicle:\"car\",departureMs:0}); const bike=findRoute(graph,{from:\"A\",to:\"D\",vehicle:\"motorbike\",departureMs:0}); if(car?.arrivalMs!==5000 || bike?.arrivalMs!==500) throw new Error(\"Synthetic fixture smoke failed\"); console.log(JSON.stringify({metadata:fixture.metadata,carRoute:car.edgeIds,bikeRoute:bike.edgeIds,carArrivalMs:car.arrivalMs,bikeArrivalMs:bike.arrivalMs,fixtureSha256:new Bun.CryptoHasher(\"sha256\").update(JSON.stringify(fixture)).digest(\"hex\")}));'",
+      "observed_result": "Actual reusable synthetic fixture: car AC,CB,BD arrival5000ms; bike AD-bike arrival500ms; calibration incomplete; fixture JSON SHA25626797adc061a498dfbbe5a192e3fea2ab2309ac60c3fced9f721669aab95cca0.",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-simulation-data-simulation-data-foundations-v1.md"
+    }
+  ],
+  "public_exports": [
+    "Planned @floodops/simulation/graph: createGraph, findRoute, distanceMeters, polylineLengthMeters, validateTravelProfile, travelDurationMs; internal Coordinate/Vehicle/GraphInput/RoutingGraph/RouteQuery/Route and related types.",
+    "Planned @floodops/simulation/clock: createEventClock, advanceEventClock, EVENT_PHASES, minutesToMilliseconds, millisecondsToMinutes; internal event/clock types.",
+    "Planned @floodops/test-fixtures/functional/graph: createTurnAwareFixture. Export maps pending Lead; source index entrypoints exist."
+  ],
+  "integration_requests": [
+    "IntegrationLead: add package export subpaths @floodops/simulation/graph -> ./src/graph/index.ts and @floodops/simulation/clock -> ./src/clock/index.ts in protected packages/simulation/package.json; add focused test/typecheck scripts when composing the package.",
+    "IntegrationLead: add @floodops/test-fixtures/functional/graph -> ./src/functional/graph/index.ts and focused typecheck script in protected packages/test-fixtures/package.json. No new dependencies required. Do not introduce production deep imports to source files.",
+    "IntegrationLead: review/merge exact delivery, then issue fresh contracts-ready and a follow-up SimulationData receipt before scenario loader/movement/assignment/projection/metrics/calibration work. This partial delivery must not emit simulation-ready."
+  ],
+  "blocked_prerequisites": [
+    "Deferred dependent work has no contracts-ready in this receipt and requires a follow-up launch receipt; movement, scenario loading, assignment, metrics and domain operations were not attempted.",
+    "D04 real dataset/licence/provenance/independent holdout and calibration tolerances are unavailable; synthetic fixtures remain calibration incomplete.",
+    "Cross-package consumers await Lead-owned export maps; source-level CLI smoke is owner validation only. No application/Worker/native/model/release gate claimed."
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false,
+  "source_sha": "d3ba3f76ba9589dcba7b526dbd664e627683a540",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "delivery_sha": "3646fa0ac1b837c30a1c3705a7ec9f1f70bfdefe"
+}

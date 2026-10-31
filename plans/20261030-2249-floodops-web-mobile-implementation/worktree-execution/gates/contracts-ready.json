@@ -1,0 +1,22 @@
+{
+  "gate_id": "contracts-ready",
+  "status": "passed",
+  "writer": "integration-lead",
+  "commit_sha": "d0b6117e925f87cc82de05ca11ecb54253d10f2c",
+  "producer_source_sha": "8607a6b0b1be10c01c07dd4442a06cb4c5b79ed2",
+  "producer_delivery_sha": "b59ecdd821ac4e6504a569347dc8e44decdfabd9",
+  "producer_merge_sha": "b28bd2c01c924ab7a1a34089b55a387840a35100",
+  "contract_index": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/contracts-ready-v1-index.json",
+    "sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e"
+  },
+  "checks": [
+    "Pinned delivery verifier and valid signatures",
+    "Focused integrated suite: 93 pass / 5782 assertions (75 contracts/client + 18 simulation)",
+    "Generator --check: 194 schemas, 66 operations, 8 tools; no drift",
+    "Contracts/client/simulation/fixtures typecheck and scoped ESLint pass",
+    "In-process client smoke and graph/clock CLI smoke pass",
+    "Frozen Bun install passed; no worker central edits"
+  ],
+  "qualification": "Contract/transport readiness only. No backend authorization/DO/provider/vision/device/D04/application acceptance or simulation-ready claim."
+}
