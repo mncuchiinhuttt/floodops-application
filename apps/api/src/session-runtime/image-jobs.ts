@@ -5,6 +5,7 @@ import type { Call, ImageBinding, ImageRecord, PlatformBindings, Proof, Reply, R
 import { authenticate, touch } from "./auth";
 import { appendEvents } from "./events";
 import { rateLimit } from "./quotas";
+import { parseQueuedImageFailure } from "./queued-image-failure";
 import { Store } from "./store";
 function matches(record: ImageRecord, current: ImageBinding | null | undefined, snapshot: Snapshot): boolean {
   const j = record.job;
@@ -37,6 +38,7 @@ export function imageCall(store: Store, registry: RuntimeRegistry, env: Platform
   digest: string, now: number, lease: string, leaseDigest: string): Reply {
   const snapshot = store.snapshot();
   const actor = authenticate(store, snapshot, proof, env, now, call.kind !== "image-read", "reports:review");
+  if (call.kind === "image-fail-queued" && actor.participant.role !== "dispatcher") fail(403, "FORBIDDEN");
   const reportId = call.name!;
   const current = registry.imageBinding?.(snapshot, reportId);
   if (!registry.imageBinding) fail(503, "CONFIG_INCOMPLETE");
@@ -71,7 +73,12 @@ export function imageCall(store: Store, registry: RuntimeRegistry, env: Platform
   if (!record || record.job.report_id !== reportId) fail(404, "NOT_FOUND");
   if (record.leaseDigest !== leaseDigest || record.job.job_id !== currentId || !matches(record, current, snapshot)) fail(409, "STATE_CONFLICT");
   if (!["queued", "running"].includes(record.job.status) || now >= record.leaseExpires) fail(409, "STATE_CONFLICT");
-  if (call.kind === "image-start") {
+  if (call.kind === "image-fail-queued") {
+    const failure = parseQueuedImageFailure(call.payload);
+    const deadline = Date.parse(record.job.deadline_at);
+    if (record.job.status !== "queued" || record.started || !Number.isFinite(record.leaseExpires) || !Number.isFinite(deadline) || now >= deadline) fail(409, "STATE_CONFLICT");
+    record.job = { ...record.job, status: "failed", result: null, error_code: failure.error_code, completed_at: new Date(now).toISOString() };
+  } else if (call.kind === "image-start") {
     if (record.started) fail(409, "STATE_CONFLICT");
     const calls = store.get<number>("runtime", "image_calls") ?? 0;
     if (calls >= 50) fail(429, "RATE_LIMITED");

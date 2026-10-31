@@ -13,7 +13,6 @@ export function startPlanning<State>(options: ResolvedPlanningOptions<State>): R
   }, reduce(context, raw) {
     const request = raw as { input: PlanningJobInput; etag: string | null };
     metadataCas(context, request); idle(context);
-    if (!options.provider || !options.model || !options.modelConfigHash) fail(503, "MODEL_UNAVAILABLE");
     const state = readPlanningState(context.snapshot), run = runtimeRun(context, options), { snapshot, now } = context;
     if (request.input.cause === "incident" && (!request.input.cause_entity_ids.length
       || request.input.cause_entity_ids.some(id => !state.incidents.some(i => i.incident_id === id)))) fail(422, "UNKNOWN_ENTITY");

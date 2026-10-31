@@ -1,4 +1,4 @@
-import definitions from "./generated/provider-tools.json";
+import internalDefinitions from "./generated/internal-services.json";
 import imageReviewOutput from "./generated/image-review-model-output.json";
 
 export class UnsupportedToolSchemaError extends Error {
@@ -25,11 +25,19 @@ export function assertStrictToolSchema(value: unknown, allowedKeywords: Readonly
   if (schema.items) assertStrictToolSchema(schema.items, allowedKeywords);
   if (schema.anyOf) (schema.anyOf as unknown[]).forEach(s => assertStrictToolSchema(s, allowedKeywords));
 }
-/** The caller may supply the verified provider/model dialect; constraints are never removed. */
-export function getToolDefinitions(allowedKeywords?: ReadonlySet<string>): typeof definitions {
-  const copy = JSON.parse(JSON.stringify(definitions)) as typeof definitions;
-  copy.forEach(tool => assertStrictToolSchema(tool.parameters, allowedKeywords));
-  return copy;
+export class RuntimeCommanderDisabledError extends Error {
+  override readonly name = "RuntimeCommanderDisabledError";
+  constructor() { super("M1 has no runtime Commander or model-callable operational tools"); }
+}
+interface LegacyToolDefinition { type: "function"; name: string; description: string; strict: true; parameters: unknown }
+/** @deprecated PRD v0.5 permits internal deterministic services only. Always fails closed. */
+export function getToolDefinitions(allowedKeywords?: ReadonlySet<string>): LegacyToolDefinition[] {
+  void allowedKeywords;
+  throw new RuntimeCommanderDisabledError();
+}
+/** Typed deterministic service contracts; these are never provider tool registrations. */
+export function getInternalServiceDefinitions(): typeof internalDefinitions {
+  return JSON.parse(JSON.stringify(internalDefinitions)) as typeof internalDefinitions;
 }
 
 /** Send only the model-output schema to vision providers, never Job/Advice authority. */

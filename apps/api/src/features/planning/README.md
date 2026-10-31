@@ -1,79 +1,80 @@
-# Planner MVP runtime
+# Deterministic M1 planning core
 
-Public constructor: `createPlanningRuntime<State>(options)` from this directory's `index.ts`.
-It returns `{ registry, router, committedPolicy }`; the policy callback is also independently exported as
-`createCommittedMovementPolicy(context: TransitionContext, run: Readonly<SimulationRun>): SimulationPolicy`.
+Public constructor: `createPlanningRuntime<State>({persistence, search?, deadlineMs?, observationProposal?, validateCause?})`.
+Returns `{registry, router, committedPolicy}`. No model/provider/key is needed. Legacy provider/model
+options are ignored; the public planning entrypoint does not import/export the OpenAI adapter or Commander.
+Historical controller/provider tests remain isolated regressions, not an M1 runtime path.
 
-Composition owned by IntegrationLead:
+IntegrationLead composition:
 
 ```ts
-const planning = createPlanningRuntime({
-  persistence: simulationPersistence,
-  provider: reviewedServerProvider, // createResponsesProvider({apiKey: server secret}); no default transport success
-  model: reviewedModel,
-  modelConfigHash: reviewedCompleteProviderConfigHash,
-  // Optional synchronous public Source adapters:
-  observationProposal: sourceObservationProposal,
-  validateCause: sourceCauseValidator
-});
+const planning = createPlanningRuntime({ persistence: simulationPersistence });
 const simulation = createSimulationRuntime({
   persistence: simulationPersistence,
   committedPolicy: planning.committedPolicy
 });
-const registry = {
-  commands: { ...simulation.registry.commands, ...planning.registry.commands },
-  views: { ...simulation.registry.views, ...planning.registry.views },
-  onLeaseExpired(snapshot, lease, now) {
-    const values = simulation.registry.onLeaseExpired!(snapshot, lease, now);
-    return planning.registry.onLeaseExpired!({...snapshot, values}, lease, now);
-  }
-};
+// Merge registry commands/views and compose both onLeaseExpired hooks.
 // createSessionObject(registry); createApp([planning.router, simulation.router, ...], ports)
 ```
 
-No central index/config/manifest was edited by this owner. Mounting this router supplies the15 frozen
-incident/impact/planning/job/decision/dry-run/Execute/operations/route/execution/notification operations.
-The registry uses planning.start/begin/complete/cancel/decide/dry-run/execute and planning.incident.trigger;
-views are planning.state, planning.operations, planning.incidents, planning.impact, planning.routes.
-Preserve other owners' views/hooks when merging.
+The genuine factory remains independently exported:
+`createCommittedMovementPolicy(context: TransitionContext, run: Readonly<SimulationRun>): SimulationPolicy`.
+It validates canonical Sources facts plus persisted execution/action/route grants. Proposed/approved
+actions never authorize movement before Execute. Branch/driver/route/path/segment/vehicle/epoch/evidence/
+expiry binding and hard/conflict guards remain. Static/reroute branches inherit no FloodOps soft grant.
 
-The persistence port is the public SimulationPersistence. Current movement authority is derived from
-canonical Sources facts and persisted committed execution/action grants, with exact session/generation,
-branch/driver/route/runtime path/segment/vehicle/epoch/evidence/expiry checks. A new proposal/approval never
-modifies it. Static/reroute branches have no inherited FloodOps grants. Unknown grants expire at the
-existing scenario H; low evidence grants expire at min(evidence expiry,H). No road probability is inferred.
+## Search
 
-All proposal tools/gates normalize a detached cache from canonical source facts. Cached high confidence
-cannot override an accepted conflict. Metadata decisions/dry-runs do not change revision or operations.
-Execute rechecks selected dependency closure/latest IDs/physics/objective inside the actual DO transaction,
-then writes route/assignment/defer/ETA/grants/previews/execution together with one revision increment.
+`runDeterministicPlanner(context,run,jobId,planId,options,limits,{deadline,current,signal?})`
+is independently usable; `createPlanningServices` exposes typed direct route/assignment/impact/feasibility/
+snapshot/notification/observation services. No model-selected service invocation or driver text parser.
+The legacy tool-session adapter is not imported by the M1 job.
 
-The platform currently checks CAS only for operational reducers. Metadata wire If-Match is therefore
-carried in a private server-generated RPC envelope and compared inside the transaction after replay.
-It is not a new HTTP body field. Exact retries retain the original If-Match; a changed header changes
-the internal request digest. An orthogonal platform requireCas flag can replace this adapter later.
+Default bounds:16 evaluated candidate variants,8 drivers,16 unpicked orders,12 stops/driver.
+Default durable deadline30s (hard cap60s). Hard caps:128 candidates,16 drivers,32 orders,24 stops. Bounds are validated and config-hashed with
+algorithm version `deterministic-bounded-v1`, deadline and current contract version.
+This is a finite rule search, not a global optimizer.
 
-A durable job reserves authority before asynchronous work. One persisted attempt claims it; duplicate
-HTTP starts do not rerun the provider. Nonce/generation/revision/current-job/deadline fence completion.
-Cancellation/watchdog never applies operations; an in-flight transport is bounded by its deadline and
-cannot publish after cancellation/supersession. No automatic retry of external calls or auto Execute.
+Drivers sort by stable ID; orders by tier, actual projected lateness descending, then stable ID.
+Search considers existing-stop reroutes (combined and per-driver) and single unpicked-order
+reassignment, without hub changes/defer. Three pickup-before-delivery insertion patterns cover append,
+prepend and shared pickup/delivery work. Each variant evaluates strict and human-approval-risk routes.
+Old-driver cleanup stays in the same dependency group. Whole-candidate physical/objective checks
+apply; individually good routes are never merged without the combined gate.
 
-The strict controller exposes exactly C1's8 tools; final selection references only server-issued IDs.
-It derives IDs/groups/stops/metrics/status from captured server state, not model assertions. Missing
-model/provider fails MODEL_UNAVAILABLE; no canned production plan. Resource defaults20s/6turns/12calls,
-caps60s/12turns/64calls. Supply a full reviewed modelConfigHash for real provider parameters; the default
-covers model/runtime budgets/contract. The fixed Responses adapter uses store:false, bounded body/output
-and AbortController. It makes no request until explicitly called by the configured service.
+Rank by actual lexicographic objective, then Ready before pending at equal objective, fewer actions,
+then canonical source order/driver/stop/assignment IDs. Random job/route/action IDs never break ties.
+Pending candidates use the server's actual soft projection and must satisfy POL05 without fabricated
+approvals. A best soft candidate stays pending. No report means no automatic unknown-road authority.
 
-Source boundary: pure normalization/knowledge/reporting is integrated. record_road_observation requires
-the typed observationProposal adapter and returns only a proposal; no report acceptance/award occurs.
-conflict_resolved cause requires validateCause. Missing adapters fail explicitly. Full Source HTTP/media
-composition still needs the producer's published port and fresh baseline. Incidents only trigger frozen
-road events at/after their configured simulation time; cause/weather alone grants no road authority.
-Rerouting a moving/servicing driver waits for a valid node boundary.
+Check durable currentness/cancellation/deadline between bounded evaluations and again before publication.
+The single-attempt lease, generation/revision/current-pointer fence and atomic completion remain.
+Internal SearchEvidence records selected structural key, evaluated count, bounds and truncation,
+including driver/order/stop scope limits. Outcomes distinguish candidate, no_feasible_plan and no_change
+(all work delivered). Neither empty outcome applies operations.
 
-Verification:103 Bun tests (includes preserved domain coverage),7 actual Hono/SQLite DO Workerd tests,
-standard domain/scoped runtime types+lint, and executable HTTP smoke at127.0.0.1:8786. The owned test
-worker uses an explicitly declared deterministic provider transport, never a production fallback.
-No actual model/vision/paid provider/device/calibration/full-source or full backend gate is implied.
-The newer main PRD mentioned by parent has not been adopted; this source stays on the exact v3 receipt.
+## Compatibility and safety
+
+This receipt authorizes the internal algorithm before Contracts M1 refreeze. No new public DTO/status/
+event field was invented. Current strict Plan/PlanningJob wire remains valid: empty results are represented
+by a completed job with an empty blocked proposal; precise no_change/no_feasible_plan is retained in
+private server search metadata until its new typed wire is published. Historical required job
+model/model_config_hash fields hold algorithm version/config hash. Historical MODEL_TIMEOUT/
+MODEL_INVALID_OUTPUT literals remain wire-compatible failure codes; no model is called.
+Lead must adapt these fields/outcomes only after the new Contracts receipt.
+
+Human decisions/dry-run are metadata-only. Execute rechecks current/latest/revision/closure/evidence/
+physical/objective constraints inside the genuine DO transaction and writes assignments, routes, ETA,
+grants, execution and notification previews atomically with one revision increment. Exact idempotency
+replay precedes new eligibility checks. Retry metadata requests with the original If-Match because
+the current private CAS envelope participates in the request digest. Driver reads expose own committed
+routes only. Source normalization prevents stale high caches from masking accepted conflict facts.
+
+Optional observationProposal/validateCause are real typed Source boundaries; missing producers fail
+explicitly. Observation proposes only and never accepts/awards. Incident trigger uses effective frozen
+road events only. Hub/defer regressions are retained as historical M2 coverage, not M1 search features.
+
+Owned Workerd harness explicitly creates frozen functional-v2; immutable v1 remains in domain fixtures.
+Tests separately exercise deterministic search (no transport), explicit unknown/low approval/Execute
+guards, conflict, real movement, CAS/auth, supersession, replay and Reset. Central wiring and new public
+M1 contract/browser acceptance remain IntegrationLead/Contracts/QA gates.

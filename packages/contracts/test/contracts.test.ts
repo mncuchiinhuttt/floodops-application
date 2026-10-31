@@ -1,9 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import { schemas, operations, tools, parseSchema, parseToolInput, parseOperationInput,
-  parseEtag, formatEtag, getToolDefinitions, getImageReviewModelOutputSchema, UnsupportedToolSchemaError } from "../src";
-import definition from "../definition/contract-definition.json";
+  parseEtag, formatEtag, getToolDefinitions, getInternalServiceDefinitions, RuntimeCommanderDisabledError, getImageReviewModelOutputSchema, UnsupportedToolSchemaError } from "../src";
+import contractExamples from "../../../plans/20261030-2249-floodops-web-mobile-implementation/contracts/contract-examples.json";
+import toolExamples from "../../../plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-examples.json";
 
-const cases = definition["contract-examples.json"].examples;
+const cases = contractExamples.examples;
 for (const example of cases) {
   test(`wire example: ${example.name}`, () => {
     const parse = () => parseSchema(example.schema as keyof typeof schemas, example.payload);
@@ -11,7 +12,7 @@ for (const example of cases) {
     else expect(parse).toThrow();
   });
 }
-for (const example of definition["tool-examples.json"].examples) {
+for (const example of toolExamples.examples) {
   test(`Commander example: ${example.name}`, () => {
     const parse = () => parseToolInput(example.tool as keyof typeof tools, example.payload);
     if (example.valid) expect(parse).not.toThrow();
@@ -20,7 +21,7 @@ for (const example of definition["tool-examples.json"].examples) {
 }
 describe("contract boundary", () => {
   test("complete inventory and dispatcher-only advisory operations", () => {
-    expect(Object.keys(schemas)).toHaveLength(194);
+    expect(Object.keys(schemas)).toHaveLength(197);
     expect(Object.keys(operations)).toHaveLength(66);
     expect(Object.keys(tools)).toHaveLength(8);
     expect(operations.createReportImageReview.roles).toEqual(["dispatcher"]);
@@ -58,7 +59,9 @@ describe("contract boundary", () => {
     expect(model.properties.quality_ratings.additionalProperties).toBe(false);
     const text = JSON.stringify(model);
     for (const forbidden of ['"$ref"', '"quality_score"', '"recommendation"', '"execute"']) expect(text).not.toContain(forbidden);
-    expect(getToolDefinitions()).toHaveLength(8);
+    expect(() => getToolDefinitions()).toThrow(RuntimeCommanderDisabledError);
+    expect(getInternalServiceDefinitions()).toHaveLength(8);
+    expect(getInternalServiceDefinitions().every(s => s.model_callable === false)).toBe(true);
     expect(() => getImageReviewModelOutputSchema(new Set(["type"])) ).toThrow(UnsupportedToolSchemaError);
     model.required.length = 0;
     expect(getImageReviewModelOutputSchema().required).toHaveLength(5);

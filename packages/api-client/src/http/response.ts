@@ -1,4 +1,4 @@
-import { operations, ErrorResponseSchema, parseOperationResponse, parseEtag, validate, ContractValidationError, type Meta, type OperationId, type OperationOutputs } from "@floodops/contracts";
+import { operations, ErrorResponseSchema, parseM1ReviewResult, parseOperationResponse, parseEtag, validate, ContractValidationError, type Meta, type OperationId, type OperationOutputs } from "@floodops/contracts";
 import { ApiError, TransportError } from "./errors";
 import { parseRetryAfter } from "./retry";
 import type { ClientResponse } from "./types";
@@ -25,6 +25,10 @@ export async function decodeResponse<I extends OperationId>(id: I, response: Res
       throw new ApiError(response.status, error, retryAfterMs);
     }
     body = parseOperationResponse(id, response.status, value);
+    if (id === "reviewReport") {
+      const envelope = body as { data: unknown };
+      body = { ...envelope, data: parseM1ReviewResult(envelope.data) };
+    }
     meta = (body as { meta: Meta }).meta;
   } else if (operation.responseKind === "empty") {
     if (response.body !== null) malformed(id, "body");

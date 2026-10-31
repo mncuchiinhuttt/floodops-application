@@ -1,0 +1,12 @@
+{
+  "base_sha": "56b1c0fb9f9d61f3a62ac3adc766e7565fec2e09",
+  "launch_sha": "Containing metadata commit supplied out-of-band",
+  "contract_sha256": "10e11e6e1c6bc4c834ab15a52bc9af82677ac12bffaef28981d03429a10c2b46",
+  "role_id": "expo-mobile",
+  "work_item": "expo-mobile-native-local-v3",
+  "existing_thread_id": "01a19067-c8ea-7435-9e24-fdaea01120e0",
+  "worktree": "/Users/vominhlong/seahackathon-worktrees/10-expo-mobile",
+  "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/expo-mobile/expo-mobile-native-local-v3.json",
+  "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/expo-mobile-native-local-v3.md",
+  "parent_action": "Resume SAME existing native owner now; do not wait for Web/fullM1/Contracts for compatible local startup/session/photo slice. Changed public DTO adoption still waits proper refreeze; no unsupported device/EAS claim."
+}

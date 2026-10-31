@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "types": ["@cloudflare/workers-types", "@cloudflare/vitest-plugin/types", "node", "bun"] },
+  "include": ["../../src/session-runtime/**/*.ts", "../../src/shared/**/*.ts", "../runtime-worker.ts", "../capabilities/**/*.ts", "./*.ts", "../replay/**/*.ts", "../reset/**/*.ts", "../expiry/**/*.ts"]
+}

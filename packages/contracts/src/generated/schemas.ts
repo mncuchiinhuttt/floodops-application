@@ -192,3 +192,6 @@ export { CursorFrameSchema, type CursorFrame } from "./schemas/cursor-frame";
 export { CandidateAssignmentSchema, type CandidateAssignment } from "./schemas/candidate-assignment";
 export { StopReferenceSchema, type StopReference } from "./schemas/stop-reference";
 export { PermissionSchema, type Permission } from "./schemas/permission";
+export { RewardPolicyRefSchema, type RewardPolicyRef } from "./schemas/reward-policy-ref";
+export { ReportRewardSchema, type ReportReward } from "./schemas/report-reward";
+export { DeterministicPlannerMetadataSchema, type DeterministicPlannerMetadata } from "./schemas/deterministic-planner-metadata";

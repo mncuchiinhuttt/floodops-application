@@ -9,6 +9,7 @@ import { initialize, type Initialization } from "./initialize";
 import { claim, membership, type InvitationMaterial, type StoredInvite } from "./membership";
 import { issueCredentials } from "./credentials";
 import { housekeeping, drainCleanup, compactClosedSession } from "./lifecycle";
+import { parseQueuedImageFailure } from "./queued-image-failure";
 import { imageCall, reconcileImages } from "./image-jobs";
 import { resetSession } from "./reset";
 import { reconcileLeases } from "./leases";
@@ -73,6 +74,7 @@ export class SessionDO extends DurableObject<PlatformBindings> {
         });
       }
       let lease = randomToken();
+      if (call.kind === "image-fail-queued") lease = parseQueuedImageFailure(call.payload).lease;
       if (call.kind === "image-start" || call.kind === "image-complete") lease = (call.payload as { lease: string }).lease;
       const leaseDigest = await hash(lease);
       const fenceDigest = call.fence ? await hash(call.fence.nonce) : undefined;

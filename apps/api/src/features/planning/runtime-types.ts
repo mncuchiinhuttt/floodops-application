@@ -1,4 +1,5 @@
 import type { Approval, Execution, Incident, Notification, Plan, PlanningJob, PlanningJobInput, Route, SessionMeta, ToolInput, Observation, VehicleType } from "@floodops/contracts";
+import type { SearchLimits, SearchEvidence } from "./deterministic-types";
 import type { BranchId, SimulationRun } from "@floodops/simulation";
 import type { SimulationPersistence } from "@floodops/domain/public-ports";
 import type { TransitionContext } from "../../shared/index";
@@ -8,7 +9,7 @@ export interface CommittedMovementGrant {
   knowledge_epoch: number; evidence_ids: string[]; basis: "ordinary_unknown" | "low"; expires_sim_minute: number;
 }
 export interface PlanningRecord {
-  job: PlanningJob; leaseId: string; planId: string; capturedMeta: SessionMeta; attemptId?: string; capturedValues: Record<string, unknown>; input: PlanningJobInput;
+  job: PlanningJob; leaseId: string; planId: string; capturedMeta: SessionMeta; attemptId?: string; capturedValues: Record<string, unknown>; input: PlanningJobInput; search?: SearchEvidence;
 }
 export interface PlanningState {
   version: 1; session_id: string; generation: number;
@@ -19,8 +20,10 @@ export interface PlanningState {
 export interface PlanningMaterial { jobId: string; leaseId: string; planId: string; nonce: string }
 export interface PlanningRuntimeOptions<State> {
   persistence: SimulationPersistence<SimulationRun, State>;
+  /** Legacy compatibility only; ignored by the deterministic M1 runtime. */
   provider?: CommanderProvider;
   model?: string; modelConfigHash?: string;
+  search?: Partial<SearchLimits>;
   material?: () => PlanningMaterial;
   deadlineMs?: number; maxTurns?: number; maxToolCalls?: number;
   observationProposal?: (context: TransitionContext, run: SimulationRun, input: ToolInput<"record_road_observation">) => Observation;
@@ -29,7 +32,7 @@ export interface PlanningRuntimeOptions<State> {
 export interface CommanderRequest { model: string; instructions: string; input: unknown[]; tools: unknown[]; signal: AbortSignal }
 export interface CommanderProvider { respond(request: CommanderRequest): Promise<unknown> }
 export interface ResolvedPlanningOptions<State> extends PlanningRuntimeOptions<State> {
-  model: string; modelConfigHash: string; material: () => PlanningMaterial;
+  limits: SearchLimits; model: string; modelConfigHash: string; material: () => PlanningMaterial;
   deadlineMs: number; maxTurns: number; maxToolCalls: number;
 }
 export const PLANNING_KEY = "planning_runtime";

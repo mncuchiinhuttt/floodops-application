@@ -14,7 +14,7 @@ Public server image seam: `createNormalizedImagePort(env).read(SessionRequestCon
 
 ## Known integration prerequisites
 
-- The canonical scn_functional1/v1 bundle has no configured driver source. Actual canonical quick report fails503CONFIG_INCOMPLETE. SimulationData/Lead must publish a driver observation Source in the frozen registry, referencing an explicitly justified low-confidence TTL/location profile, then update hashes/receipt before adoption. The separate test-authored scn_drivercase1 proves quick/text/scoped-reopening/delayed-capture behavior without modifying canonical data or claiming calibration.
+- Exact M1 launch b686741 integrates frozen scn_functional1/v2 with a real configured driver Source. The new actual source-review Workerd harness proves genuine v2 deterministic quick acceptance, citizen contradiction and explicit human resolution. Historical v1 remains immutable and lacks the driver Source; no calibration is claimed.
 - The v2 baseline integrates the exact SimulationData per-vehicle correction; source consumer tests cover shared flags, real bike conflict, known car, closure, explicit resolution and expiry without route/award effects. The temporary guard was removed only after this receipt cutover.
 - Lead owns central router/class composition, config, manifests and gate publication. No feature gate, production Images entitlement, real provider/model/device, D04/calibration or release/security acceptance is asserted here.
 
@@ -27,3 +27,5 @@ Public server image seam: `createNormalizedImagePort(env).read(SessionRequestCon
 `bun --bun run tsc --noEmit -p apps/api/test/media/tsconfig.json`
 
 The media harness uses real local Workerd, SQLite DO, separate private R2 bindings and local Images. Its synthetic test credentials/images are never production configuration. Tests inject controlled failures/history states for races; those do not claim another role's missing endpoint is implemented.
+
+M1 review adapter: consume `createSourceReviewPort` and the authenticated image preparation/media factories from `reports/index`; see `../reports/README.md`. Full canonical source receipts are used, with atomic Review-owned ledger/audit commit and unchanged wire.

@@ -1,3 +1,4 @@
+/** Legacy-only adapter regression. Not imported by the M1 planning entrypoint or job. */
 import { getToolDefinitions, parseSchema } from "@floodops/contracts";
 import type { ToolName } from "@floodops/contracts";
 import { PlatformError } from "../../shared/index";

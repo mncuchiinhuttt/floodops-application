@@ -1,0 +1,119 @@
+{
+  "amendment_id": "m1-wire-rollout-v2",
+  "status": "authorized",
+  "authority": "User latest PRDimplementation/backend+web/nativeE2Escaffoldpriority; Lead reviewed integratedM1Contracts and issues controlledaffectedownercutover.",
+  "work_items": [
+    {
+      "role_id": "sources-media",
+      "work_item_id": "sources-media-m1-receipt-v4",
+      "include_prefixes": [
+        "packages/domain/src/reporting/",
+        "apps/api/src/features/scenario/",
+        "apps/api/src/features/sources/",
+        "apps/api/src/features/reports/",
+        "apps/api/src/features/media/",
+        "apps/api/src/features/knowledge/",
+        "apps/api/test/sources/",
+        "apps/api/test/observations/",
+        "apps/api/test/media/"
+      ],
+      "include_files": [],
+      "scope": "SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. Finish preserved genuine SourceReviewPort adapter from prior scope and adopt M1 Report producer now. Compiler submit-report.ts:14 missing reward/review_result_id/reviewed_at. Pin immutable server RewardPolicyRef(config hash/version) AT receipt from explicitly supplied real demo config, not review-time/global latest. No config => reward pending_config,policy null,POLICY_NOT_CONFIGURED,awardnull; never block submission/manual knowledge review, invent zero/default numeric points, auto-pin later config or require mission. For configured eligible citizen report use pending_review until human result, driver reports never mint community awards. Every report serializer/fixture/runtime path must produce current fields, capture canonical null review identity until human decision. Expose minimal optional receipt-policy provider and exact required Root seed/config API early; numeric amount not supplied by current canonical scenario, do not invent it. Test missing→laterconfig remainsnull and configured policy immutable, original submitter/mapping/epochs/normalizeddigest retained. Public adapter read/report/reportContext/image/apply must preserve namespaces/checkpoint and no award side effect; real media readiness/private digest only. Do not edit reports/review or knowledge/conflict-review subtrees. Complete reachable real report→source/review-port tests now; missing hook/provider remains explicit and final root composition Lead."
+    },
+    {
+      "role_id": "planner-safety",
+      "work_item_id": "planner-safety-m1-runtime-v5",
+      "include_prefixes": [
+        "packages/domain/src/planning/",
+        "apps/api/src/features/incidents/",
+        "apps/api/src/features/planning/",
+        "apps/api/src/features/operations/",
+        "apps/api/src/integrations/openai/",
+        "apps/api/test/planning/",
+        "apps/api/test/execution/",
+        "apps/api/test/policy/"
+      ],
+      "include_files": [],
+      "scope": "SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. Preserve v4 bounded deterministic algorithm WIP and finish genuine M1 jobs/services/routers now against new DTO. PlanningJob requires planner{kind:deterministic,algorithm_version,config_hash,search_limit}, no model/model_config_hash. Explicit stable server config/search budget and reproducible tie-break; no invented global-optimum claim. job-leases.ts:28 and job-transitions.ts:33 oldMODEL_TIMEOUT become PLANNER_TIMEOUT; NO_FEASIBLE_PLAN means bounded search exhausted with failed/nullplan/time, not model failure. getToolDefinitions now deliberately THROWS RuntimeCommanderDisabledError; remove all runtime Commander/provider dependency, migrate internal calls to public internalServices/getInternalServiceDefinitions and retain atomic evaluator/Approve/Execute/committed movement policy. No test-provider disguised production planner/canned proposal. Remove or keep unreachable obsolete own provider modules only as appropriate, no runtime model callable operational tool. Current 7oldWorkerd fail create404 duev1 fixture requesting productionv2 loader; fix OWN harness to canonicalv2, preserve immutablev1. Actual WorkerdHTTP deterministicjob→approval(noassignmentchange)→dryrun→Execute/replay→policyadvance with varied inputs, same-revision supersession/Reset/closedvehicle/epochconflict/capacity/tier rules. Return public constructors/algorithmconfig early for Lead composition. M2hubdefer/P2/modelrun benchmarks not current blocker."
+    },
+    {
+      "role_id": "review-rewards",
+      "work_item_id": "review-rewards-m1-reward-v5",
+      "include_prefixes": [
+        "packages/domain/src/rewards/",
+        "apps/api/src/features/reports/review/",
+        "apps/api/src/features/knowledge/conflict-review/",
+        "apps/api/src/features/rewards/",
+        "apps/api/test/review/",
+        "apps/api/test/rewards/",
+        "apps/api/test/coverage/"
+      ],
+      "include_files": [],
+      "scope": "SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. Implement M1 manual ReviewResult/reward serialization and semantics now; earlier TS2367fix alreadyintegrated. Report requires reward/review_result_id/reviewed_at; canonical humanreviewidentity/time must bind each result and Award.reward_policy/review_result_id. Use parseM1ReviewResult and assertReceiptRewardPolicyUnchanged as boundary validation, not eligibilityauthority. Immutable null receipt policy remains pending_config/nullaward after accepted/rejected human decision; NO missing reward config error may roll back otherwise valid knowledge/manual review. Separate accepted evidence/gap updates from optional award; missing config grants no fake0 or retroaward. Configured award uses EXACT pinned policy payload/version/hash, positivepoints, citizen contributor/report/currenthumanreview/firstusefulfill normalizeddigest/vehicle/epoch uniqueness in SAME DO commit, not Source then secondaward. Change legacy required ReviewOptions.rewards as needed to injected policy resolver keyed by receipt; no latestpolicy fallback. Preserve gap history/no doubleaward, original reporter not reviewer, driver/system noaward. Real Source adapter and platformhooks are integrated in this v2 launch: implement reachable M1 accept/reward now, send exactpublictype request early; wire Reject with operational:false plus requireCas:true, and adapt actual imageReview.failQueued directly; no fake flags/casts or movingHEAD. No runtimevisioncalls; old imagequality schema unchanged and manual independent. Genuine Workerd tests for missing-config acceptknowledge, policyimmutability, exactlyonce/duplicate/expiry/Reset and declared configured testpolicy; no invented production numeric config. Return minimal Root seed/Source/policy composition requests."
+    },
+    {
+      "role_id": "results-evaluation",
+      "work_item_id": "results-evaluation-m1-projections-v3",
+      "include_prefixes": [
+        "apps/api/src/features/results/",
+        "apps/api/src/features/simulation/",
+        "apps/api/src/features/evaluations/",
+        "apps/api/test/metrics/",
+        "apps/api/test/simulation/",
+        "apps/api/test/evaluations/"
+      ],
+      "include_files": [],
+      "scope": "SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. Immediate compilefix aggregate-evaluation.ts:31 model_config_hash→planner_config_hash, model_quality→deterministic_replay and is_real_model false; migrate exact ownedfixtures/tests/APIhelpers, no model10run/pilot/forecast scope. IMPLEMENT real workspace projections in owned results folder: factory RuntimeRegistry.views snapshot(dispatcher),overview(dispatcher/viewer),driver-dashboard(bounddriver only), matching new unchanged SessionSnapshot/ViewerOverview/DriverDashboard schemas from actual persisted samegeneration/time/revision public projections (scenario,clock,knowledge,operations,impact,plans/jobs/routes,reports,coverage,results). Inject typed PUBLIC synchronous producer ports or pure facades, no private-state businesscopy. Missing true required port fail503, no hardcoded empty fleets or alwaysnull latest plan/job. Driver only own committed orders/routes/participantreports, viewer no dispatcher/private context; contributor dashboard Review-owned untouched. Also optional synchronous afterAdvance reconciliation hook in SimulationRuntimeOptions/chunk reducer accepts coherent proposed advancedrun/values/context before atomiccommit; Root laterinjects genuine Source/Reviewexpiry-gap reconciliation. Hook cannot drop checkpoint/job/pointers/lease/other namespaces, increment revisiontwice or await/network; hookthrow aborts transaction. Tests genuine Workerd context/projections/403/atomic success+failure/Reset/retry using real available source/simulator/planner facade; disclose unavailable producerintegration rather than pretending mocksproveit. Public committed movement factory is integrated958afd3/ba77af7; do not activate old Commander. Return constructors/hook/types/rootwiring EARLY. Skip unlaunched old independent workspace-projections-v1 draft; THIS exact v0.5 receipt is authority."
+    },
+    {
+      "role_id": "session-platform",
+      "work_item_id": "session-platform-m1-version-v6",
+      "include_prefixes": [
+        "apps/api/src/session-runtime/",
+        "apps/api/src/shared/",
+        "apps/api/test/capabilities/",
+        "apps/api/test/commands/",
+        "apps/api/test/replay/",
+        "apps/api/test/reset/",
+        "apps/api/test/expiry/"
+      ],
+      "include_files": [
+        "apps/api/test/runtime-worker.ts"
+      ],
+      "scope": "V5 CAS/failQueued delivery is already verified/integrated here; reuse it, no repeat hook implementation. SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. FIRST preserve/finish existing v5 twohooks (independent requireCas without revisionincrement, queued unstarted imagefailure without providercountercharge/refund), handoff exactC/R promptly if ready; do not delay those to redo audits. New M1 public requests/photoDTO unchanged; implement minimal generic optional registry serialization fence for feature commands/views/image callbacks where appropriate, using new seed values.runtime_contract.serialization=m1-v1. Explicitly configured registry/fence only, standalone generic platform consumers not forced to domainmarker. Old serialized reports/jobs must not be interpreted as new DTOs or rewritten/auto-pinned; retain legacy evidence until expiry, explicit create/Reset produces newseed. Capability/identity/sessionmeta/expiry/Reset/replay stay safe, no leaked oldprivate data, callbacks maynot reinterpret mismatchedfeaturestate. Use existing canonical errors (no newwirefield/enum) and tell Lead exact optional registry property/constructor. Generic seed marker alreadyset Root. No automatic migration/data deletion/Reset of others; localteststateisolation preferred. Need actual realWorkerd tests oldmarker/missingmarker featurefailclosed, exactreplay beforenewCAS, newReset, hooks auth/CSRF/generation/digest/nonce/deadline/privacy/counters. Source/Planner/Review workerowned serializations are theirs, not shared runtime edits. No production/devices/provider/EAS."
+    },
+    {
+      "role_id": "web-console",
+      "work_item_id": "web-console-m1-wire-v4",
+      "include_prefixes": [
+        "apps/web/src/",
+        "apps/web/test/"
+      ],
+      "include_files": [],
+      "scope": "SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. Preserve/finalize independent real upload/map work from priorreceipt first at safe checkpoint; adopt exact M1 strict DTOs and update ownedfixtures/tests. Render report reward pending_review/pending_config/ineligible/committed and canonical reasons/ledger; accepted ≠ points, nullaward/config must not appear fake0 award. PlanningJob displays deterministic search/config/status not modelprovider; NO_FEASIBLE_PLAN/PLANNER_TIMEOUT typed failure, no AICommander controls. Maintain manualapprove vsExecute and only committed assignment/ETA afterservercommit. Functional scaffolding only, no visualpolish; parent separatelycoordinatesauthorizedClaudeCLIpolish later; do not launch/contactit yourself. Keep fileupload/media pipeline/geometrydata correctlyscoped and Reset/abort/auth/idempotency. Wire actual backend as available, explicitly show dependency503/404 until producers land, no fixturelivefallback. Real browser create/photo/report/review/plan/Execute/roleassignment/Reset after newbackend composition; current baseline sourceproducer still missingnewfields so do independent newDTOcomponent work and send exact blocker instead of pretending E2E. No externalinvitationtarget retry, deployment/model/accounts/paidactions."
+    },
+    {
+      "role_id": "expo-mobile",
+      "work_item_id": "expo-mobile-m1-wire-v4",
+      "include_prefixes": [
+        "apps/mobile/src/",
+        "apps/mobile/app/",
+        "apps/mobile/test/",
+        "apps/mobile/preview/"
+      ],
+      "include_files": [
+        "apps/mobile/README.md",
+        "apps/mobile/app.config.ts",
+        "apps/mobile/metro.config.cjs"
+      ],
+      "scope": "SourceReview adapter d1c880a/R6ca7803 AND Platformv5 C33559e/Rc3bc6b are NOW integrated in this exact v2 snapshot. Public reports/index exports createSourceReviewPort/createSourceImagePreparationRegistry/prepareSourceReviewImage/createSourceImageReviewMediaPort. Public ReducerDefinition.requireCas exists, and createSessionRuntimeClient(env).imageReview.failQueued exists. Consume these exact APIs, not syntheticfixture copies/WIP. Source v0.5 report producer and Review reward binding still require assigned migration. Native explicit userpriority remains NOW inparallel, no M2waiting. Reuse98-test Router/SecureStore/FileSystem/photo runtime, preserve ongoing native-local-v3 WIP. Adopt exact197schemaM1 Report rewardfeedback/review identity/immutablepending_config and deterministic PlanningJob fields, update ownfixtures/tests/screens/adapters without wirefork. Functional scaffold only, no polish. Existing Metro/localAPI currentlyreachable; checkcatalogcanonicalv2/createjoin/photo/report against realserver once Sourceproduceradopts newrequiredfields. Show pendingconfig/reasons/nullaward honestly, own assignments/ETA only afterExecute, manualreview independentphotoAI, Reset/principal/media/draft fencing/foregroundSSE preserved. Mac verifiedCLTonly:no fullXcode/simctl, noAndroidSDK/adb/emulator. This is toolchain blocker to deviceproof, notsourcefailure; no install/download/EAS/signing/LAN/tunnel/physicaldevice without scoped approval. ExpoGo compatibility may be researched officially/read-only but Metro/exports/render tests are not installed nativeapp proof. Continue reachable nativecode/tests/localHTTP and report exact minimal operatorruntime requirement, do not wait fullWeb or fake realmodel/deviceE2E."
+    }
+  ],
+  "rules": [
+    "Read contracts/m1-cutover.md and public197-schema source. Keep66 request signatures/auth/CSRF/CAS/idempotency/Reset unchanged. Active source is plan contracts JSON and packages/contracts/src/generated/contract-surface.json; historical packages/contracts/definition/, rootcontract-surface.json and README are NOT authoritative. Fresh serialization m1-v1/0.5.0-m1 only. Lead seed now has values.runtime_contract={serialization:m1-v1,version:0.5.0-m1}; no reinterpreting old DTOs, null→configured policy upgrade, retro-award or speculative olddata rewrite. Legacy sessions/evidence retained, explicit Reset/newsession for new data. Runtime/backend cutover NOT ready until owners integrated. Pure schema/client checks are not end-to-end. UI is functional scaffold only; user handles polish separately with Claude; do not contact/send code to Claude.",
+    "Parent controls sameowner resumes: preserve/checkpoint ownWIP/delivery before exactreceipt merge. No activeworker forcedmovingHEAD/duplicates.",
+    "No new contracts-ready/backend-ready/fullE2E/device/model claim until producer/client/runtimechecks actualpass.",
+    "Source/Review receipt-policy identity and optionalnullableunconfiguredfeedback must be implemented coherently, no forged score/points or manualreviewblock.",
+    "Existingoriginalownership/exclusions/protectedfiles remain, centralRoot/manifests/lock/gates/configLead only. No production/paid/account/provider/device/softwareinstall grants."
+  ]
+}

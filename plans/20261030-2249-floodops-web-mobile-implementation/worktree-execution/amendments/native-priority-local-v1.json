@@ -1,0 +1,29 @@
+{
+  "amendment_id": "native-priority-local-v1",
+  "status": "authorized",
+  "authority": "Latest explicit user requests React Native app now and speed; parent forwards native priority override and authorizes compatible local continuation.",
+  "work_items": [
+    {
+      "role_id": "expo-mobile",
+      "work_item_id": "expo-mobile-native-local-v3",
+      "include_prefixes": [
+        "apps/mobile/src/",
+        "apps/mobile/app/",
+        "apps/mobile/test/",
+        "apps/mobile/preview/"
+      ],
+      "include_files": [
+        "apps/mobile/README.md",
+        "apps/mobile/app.config.ts",
+        "apps/mobile/metro.config.cjs"
+      ],
+      "scope": "User explicitly restored React Native/Expo NOW in parallel with Web/backend; this overrides PRD native-M2 sequencing only, not campaign/student/forecast or security. Reuse integrated existing Router/SecureStore/FileSystem/photo/runtime C27e3ba8/R496b9f8 (98tests), do not rewrite. IMPLEMENT or verify actual LOCAL native startup/navigation/catalog/current canonical-v2 session create/join/own workspace/report basic flow against real local Worker now. Existing catalog/media/source routes are mounted, unlike old report baseline; update hardcoded v1 assumptions/docs and fix narrow local runtime defects in own scope. Exercise real typed reserve->binaryPUT->normalize->report with existing photo/file adapter; server IDs and principal/generation guards remain. Show manual-review/points/plan unavailable when current missing backend, no fake dashboards/fixture fallback. New Contracts v0.5 DTO/reward/planner adoption remains gated; use frozen compatible media/session/graph/report fields only. Maintain one RN app with server-capability dispatcher/driver/contributor workspaces, owned assignment/ETA, manual Execute only, no offline operational queue, scoped drafts/media and Reset/logout/late response cancellation. No polish/exhaustive accessibility matrix; focused strict types/lint, affected component interaction tests, offline local Metro start and iOS/Android JS exports as needed. Identify existing local iOS/Android simulator/ExpoGo capability read-only; do not download/install SDK/toolchain/ExpoGo, prebuild/sign native binaries or invoke EAS/store/real device/cloud without explicit scoped authorization. If actual installed app cannot run, state exact missing runtime/device prerequisite rather than calling Metro/export a running native app. Already available local preview may be used only within explicit authorized runtime surfaces. No production/newpaid/account/key/provider calls. Return exact minimal launch commands/API URL using own localhost8790/Metro8082, actual startup evidence, any remaining central config request EARLY; all dependencies currently present. Parent owns messaging, launches; same task only."
+    }
+  ],
+  "rules": [
+    "Latest user priority restores native parallel implementation now; M2campaign/student/forecast remain deferred.",
+    "Reuse existing runtime. Existing contracts are pinned compatible inputs, NOT refrozen v0.5. New reward/planning/advice semantics wait producer cutover.",
+    "Original central manifest/lock/EAS/API entrypoint protected files and mobile/release exclusions remain. No granting paid/EAS/signing/store/device/account/resource access.",
+    "Parent resumes same existing Expo task sol/ultra/fast, no duplicate writer."
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "base_sha": "fc747b2cfb11c5ff070d7c31077ba13e2072c32e",
+  "launch_sha": "ContainingmetadataSHA suppliedoutofband",
+  "contract_sha256": "10c382e00a31ff1aea341400c456aa22dee7a8954601fb66a4eeebcda56c85d0",
+  "workers": [
+    {
+      "role_id": "sources-media",
+      "work_item": "sources-media-m1-receipt-v4",
+      "existing_thread_id": "01a19063-dc77-760e-9f33-7534e3b6c0e3",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/sources-media/sources-media-m1-receipt-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/sources-media-m1-receipt-v4.md"
+    },
+    {
+      "role_id": "planner-safety",
+      "work_item": "planner-safety-m1-runtime-v5",
+      "existing_thread_id": "01a19064-2e3c-7691-91cf-390aad9e00d0",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/planner-safety/planner-safety-m1-runtime-v5.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/planner-safety-m1-runtime-v5.md"
+    },
+    {
+      "role_id": "review-rewards",
+      "work_item": "review-rewards-m1-reward-v5",
+      "existing_thread_id": "01a19064-77ea-75c7-a498-357c523c30d1",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/review-rewards/review-rewards-m1-reward-v5.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/review-rewards-m1-reward-v5.md"
+    },
+    {
+      "role_id": "results-evaluation",
+      "work_item": "results-evaluation-m1-projections-v3",
+      "existing_thread_id": "01a19067-7930-716f-ae49-5f01c568f0f8",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/results-evaluation/results-evaluation-m1-projections-v3.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/results-evaluation-m1-projections-v3.md"
+    },
+    {
+      "role_id": "session-platform",
+      "work_item": "session-platform-m1-version-v6",
+      "existing_thread_id": "01a19032-cee6-734a-a967-a1f593f4b0ef",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/session-platform/session-platform-m1-version-v6.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/session-platform-m1-version-v6.md"
+    },
+    {
+      "role_id": "web-console",
+      "work_item": "web-console-m1-wire-v4",
+      "existing_thread_id": "01a19068-0ad0-7386-90ae-8db6b43150cf",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/web-console/web-console-m1-wire-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/web-console-m1-wire-v4.md"
+    },
+    {
+      "role_id": "expo-mobile",
+      "work_item": "expo-mobile-m1-wire-v4",
+      "existing_thread_id": "01a19067-c8ea-7435-9e24-fdaea01120e0",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/expo-mobile/expo-mobile-m1-wire-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/expo-mobile-m1-wire-v4.md"
+    }
+  ],
+  "parent_action": "Resume idleReview/Results immediately. Otherexistingowners adopt at safecheckpoint withoutdiscardingWIP orduplicate. Sessionfinishv5hooksfirst ifready. Source/Plannerbackendmigrationscritical, Web+NativefunctionalDTOadaptationparallel; no polish, no nativeM2waiting. Supersedes unlaunched Results workspace-projections-v1 draft with this integrated197schema snapshot."
+}
