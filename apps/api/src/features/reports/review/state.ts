@@ -36,7 +36,7 @@ export function coverageState(context: TransitionContext, state: ReviewSourceSta
 export function sourceFailure(error: unknown): never {
   if (error instanceof SourceDomainError) {
     if (error.code === "FORBIDDEN") fail(403, "FORBIDDEN");
-    if (error.code === "CONFIG_INCOMPLETE" || error.code === "SOURCE_SCOPE_INCOMPATIBLE") fail(503, "CONFIG_INCOMPLETE");
+    if (error.code === "CONFIG_INCOMPLETE") fail(503, "CONFIG_INCOMPLETE");
     if (error.code === "DUPLICATE_IMAGE") fail(422, "DUPLICATE_IMAGE");
     if (error.code === "INVALID_IMAGE") fail(422, "INVALID_IMAGE");
     if (error.code === "INVALID_SCHEMA") fail(422, "INVALID_SCHEMA");
