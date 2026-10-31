@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "../lib/utils";
 
-export type ShellNavItem = { id: string; label: string; href: string; icon?: ReactNode; current?: boolean };
+export type ShellNavItem = { id: string; label: string; /** Single short word for the bottom tab bar; defaults to label. */ shortLabel?: string | undefined; href: string; icon?: ReactNode; current?: boolean };
 export type ShellLinkProps = { className: string; "aria-current"?: "page"; children: ReactNode };
 export type AppShellProps = {
   brand: ReactNode; navLabel: string; nav: readonly ShellNavItem[]; children: ReactNode;
@@ -11,9 +11,9 @@ export type AppShellProps = {
   renderLink?: (item: ShellNavItem, props: ShellLinkProps) => ReactNode;
 };
 const defaultLink = (item: ShellNavItem, props: ShellLinkProps) => <a href={item.href} {...props} />;
-const sideClass = (current?: boolean) => cn("flex min-h-10 items-center gap-2.5 rounded-lg px-3 text-sm outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/50",
+const sideClass = (current?: boolean) => cn("flex min-h-10 items-center gap-2.5 rounded-lg px-3 text-sm no-underline outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/50",
   current ? "bg-secondary font-medium text-foreground" : "text-foreground/70 hover:bg-accent hover:text-foreground");
-const tabClass = (current?: boolean) => cn("flex min-h-14 flex-col items-center justify-center gap-0.5 px-1 text-[11px] leading-tight outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/50",
+const tabClass = (current?: boolean) => cn("flex min-h-14 flex-col items-center justify-center gap-0.5 px-1 text-xs leading-tight no-underline outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-ring/50",
   current ? "font-medium text-primary" : "text-muted-foreground hover:text-foreground");
 /** Left sidebar from 1024px, bottom tab bar below (max 5 items). Content is the only scroll region. */
 export function AppShell({ brand, navLabel, nav, children, actions, sidebarFooter, renderLink = defaultLink }: AppShellProps) {
@@ -37,7 +37,7 @@ export function AppShell({ brand, navLabel, nav, children, actions, sidebarFoote
     <nav aria-label={navLabel} className="fixed inset-x-0 bottom-0 z-30 border-t bg-card pb-[env(safe-area-inset-bottom)] lg:hidden">
       <div className="mx-auto grid max-w-xl" style={{ gridTemplateColumns: `repeat(${Math.max(tabs.length, 1)}, minmax(0, 1fr))` }}>
         {tabs.map(item => <span key={item.id} className="contents">{renderLink(item, { className: tabClass(item.current), "aria-current": item.current ? "page" : undefined,
-          children: <>{item.icon}<span className="max-w-full truncate">{item.label}</span></> })}</span>)}
+          children: <>{item.icon}<span className="max-w-full truncate">{item.shortLabel ?? item.label}</span></> })}</span>)}
       </div>
     </nav>
   </div>;

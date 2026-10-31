@@ -9,6 +9,9 @@ import { followSession } from "./foreground";
 import { failureText } from "../../../app/failure";
 import { Settings } from "lucide-react";
 
+/** One short word per destination so the 5-item bottom bar never truncates. */
+const SHORT_LABELS: Record<string, string> = { driver: "Việc", "driver-report": "Báo cáo", community: "Của tôi", "community-new": "Gửi ảnh", points: "Điểm",
+  "dispatch-report": "Gửi ảnh", map: "Điều phối", plans: "Kế hoạch", review: "Duyệt", results: "Kết quả" };
 export function SessionShell() {
   const runtime = useRuntime(), state = useRuntimeSnapshot(), params = useParams(), navigate = useNavigate(), location = useLocation();
   const [visible, setVisible] = useState(document.visibilityState === "visible");
@@ -28,8 +31,8 @@ export function SessionShell() {
   const context = runtime.context(), base = `/sessions/${session!.session_id}`;
   const destinations = capabilityDestinations(context);
   const active = (path: string) => location.pathname === `${base}/${path}` || location.pathname.startsWith(`${base}/${path}/`);
-  const nav: ShellNavItem[] = [{ id: "session", label: "Phiên & quyền", href: `${base}/session`, icon: <Settings className="size-4 shrink-0" />, current: active("session") },
-    ...destinations.map(item => ({ id: item.id, label: item.label, href: `${base}/${item.path}`, icon: shellIcon(item.id), current: active(item.path) }))];
+  const nav: ShellNavItem[] = [{ id: "session", label: "Phiên & quyền", shortLabel: "Phiên", href: `${base}/session`, icon: <Settings className="size-4 shrink-0" />, current: active("session") },
+    ...destinations.map(item => ({ id: item.id, label: item.label, shortLabel: SHORT_LABELS[item.id], href: `${base}/${item.path}`, icon: shellIcon(item.id), current: active(item.path) }))];
   const clock = `Phút ${session!.sim_minute} / ${session!.horizon_minute}`;
   return <AppShell navLabel="Workspace được cấp quyền" nav={nav}
     renderLink={(item, props) => <Link to={item.href} {...props} />}
