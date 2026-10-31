@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import { AwardSchema, ContractValidationError } from "@floodops/contracts";
-import { proposeReportReward, RewardProposalError } from "../../../../packages/domain/src/rewards/index.ts";
-import type { RewardConfig } from "../../../../packages/domain/src/rewards/index.ts";
+import { proposeReportReward, RewardProposalError } from "@floodops/domain/rewards";
+import type { RewardConfig } from "@floodops/domain/rewards";
 import { bike, car, context, coverage, freeze, hashA, known, lowObservation, openedLedger, report, rewardInput, source, unknownKnowledge } from "./fixtures.ts";
 
 test("accepted fresh low-confidence citizen photo proposes one configured award with isolated immutable ledger", () => {

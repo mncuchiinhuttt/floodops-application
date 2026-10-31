@@ -7,3 +7,4 @@ export type {
   CoverageScope, CoverageInput, UsefulPair, UsefulCoverage, PhotoClaim, RewardLedger, TransitionContext,
   GapIdentity, RewardConfig, VerifiedPhoto, RewardInput, RewardReason, RewardProposal,
 } from "./types.ts";
+export { projectActiveGaps } from "./active-gaps.ts";

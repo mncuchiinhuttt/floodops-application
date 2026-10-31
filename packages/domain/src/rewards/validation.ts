@@ -1,5 +1,5 @@
-import { AwardSchema, GapSchema, IdSchema, validate } from "@floodops/contracts";
-import type { RewardLedger, TransitionContext } from "./types.ts";
+import { AwardSchema, GapSchema, IdSchema, ScopePairSchema, validate } from "@floodops/contracts";
+import type { CoverageScope, RewardLedger, TransitionContext } from "./types.ts";
 import { RewardProposalError } from "./types.ts";
 
 export const scopeKey = (value: { segment_id: string; vehicle_type: string; knowledge_epoch: number }) =>
@@ -9,6 +9,13 @@ export function integer(value: number, label: string): void {
 }
 export function unique(values: readonly string[], label: string): void {
   if (new Set(values).size !== values.length) throw new RewardProposalError("INVALID_STATE", `Duplicate ${label}.`);
+}
+export function validateCoverageScope(scope: readonly CoverageScope[]): void {
+  for (const pair of scope) {
+    validate(ScopePairSchema, { segment_id: pair.segment_id, vehicle_type: pair.vehicle_type }, "Coverage.scope");
+    integer(pair.knowledge_epoch, "knowledge epoch");
+  }
+  unique(scope.map(item => JSON.stringify([item.segment_id, item.vehicle_type])), "relevant pair");
 }
 export function assertHash(hash: string): void {
   if (!/^[a-f0-9]{64}$/.test(hash)) throw new RewardProposalError("INVALID_STATE", "Expected server-normalized SHA256.");
