@@ -85,7 +85,11 @@ it("real Reset fences old review/capability and initializes fresh generation wit
 });
 
 it("genuine driver/citizen conflict opens a new gap; HTTP resolution awards the citizen exactly once", async () => {
-  const owner = await create(), driver = await review(owner, reportDriver, { condition: "impassable" });
+  const owner = await create(), pendingDriver = domain(await snapshot(owner)).source.reports.find(report => report.report_id === reportDriver);
+  expect(pendingDriver?.status).toBe("pending_review");
+  expect(pendingDriver?.review_result_id).toBeNull(); expect(pendingDriver?.observation_ids).toEqual([]);
+  expect(pendingDriver?.award_id).toBeNull();
+  const driver = await review(owner, reportDriver, { condition: "impassable" });
   expect(driver.response.status).toBe(200);
   const driverResult = parseSchema("ReportReviewResultResponse", driver.body).data!;
   expect(driverResult.award).toBeNull(); expect(driverResult.filled_gap_ids).toHaveLength(1);
@@ -97,15 +101,22 @@ it("genuine driver/citizen conflict opens a new gap; HTTP resolution awards the 
     && item.segment_id === "seg_edge27" && item.vehicle_type === "motorbike");
   expect(conflict).toBeDefined(); expect(conflicted.rewards?.ledger.awards).toHaveLength(0);
   expect(conflicted.rewards?.ledger.gaps.some(gap => gap.status === "open" && gap.segment_id === "seg_edge27" && gap.vehicle_type === "motorbike")).toBe(true);
-  const requestKey = key(), input = { keep_observation_ids: citizenResult.observations.map(item => item.observation_id),
-    supersede_observation_ids: driverResult.observations.map(item => item.observation_id), reason: "Dispatcher keeps the synthetic citizen evidence" };
+  const requestKey = key(), driverObservationIds = driverResult.observations.map(item => item.observation_id);
+  const input = { keep_observation_ids: conflict!.observation_ids.filter(id => !driverObservationIds.includes(id)),
+    supersede_observation_ids: driverObservationIds, reason: "Dispatcher keeps the synthetic citizen evidence" };
+  expect(citizenResult.observations.every(item => input.keep_observation_ids.includes(item.observation_id))).toBe(true);
   const resolve = () => request(`/sessions/${owner.id}/conflicts/${conflict!.conflict_id}/resolutions`, { method: "POST",
     headers: auth(owner, { "Content-Type": "application/json", "Idempotency-Key": requestKey, "If-Match": responseEtag(citizen) }), body: JSON.stringify(input) });
-  const response = await resolve(); expect(response.status).toBe(200);
-  const result = parseSchema("ConflictResolutionResultResponse", await response.json()).data!;
+  const response = await resolve(), responseBody = await response.json();
+  expect(response.status, JSON.stringify(responseBody)).toBe(200);
+  const result = parseSchema("ConflictResolutionResultResponse", responseBody).data!;
   expect(result.conflict.status).toBe("resolved"); expect(result.awards).toHaveLength(1); expect(result.awards[0]?.points).toBe(7);
-  expect(result.awards[0]?.report_id).toBe(reportA); expect(result.filled_gap_ids).toHaveLength(1);
-  const committed = await snapshot(owner); expect(domain(committed).rewards?.ledger.awards).toHaveLength(1);
+  expect(result.awards[0]?.report_id).toBe(reportA); expect(result.awards[0]?.review_result_id).toBe(citizenResult.report.review_result_id);
+  expect(result.filled_gap_ids).toHaveLength(1);
+  const committed = await snapshot(owner), committedReport = domain(committed).source.reports.find(report => report.report_id === reportA);
+  expect(domain(committed).rewards?.ledger.awards).toHaveLength(1);
+  expect(committedReport?.review_result_id).toBe(citizenResult.report.review_result_id);
+  expect(committedReport?.reviewed_at).toBe(citizenResult.report.reviewed_at);
   expect(domain(committed).source.run.sourceSnapshot.observations.find(item => item.observation_id === driverResult.observations[0]?.observation_id)?.validation).toBe("superseded");
   const replay = await resolve(); expect(replay.status).toBe(200);
   expect(parseSchema("ConflictResolutionResultResponse", await replay.json()).data).toEqual(result);

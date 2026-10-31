@@ -7,7 +7,7 @@ type EventInput = NonNullable<Transition["events"]>[number];
 import type { Transition, TransitionContext } from "../../../shared/index";
 import type { ReviewOptions } from "../../reports/review/runtime-types";
 import { resolvePinnedReward } from "../../rewards/reward-policy";
-import { attachAward, humanReview } from "../../reports/review/review-result";
+import { attachAward } from "../../reports/review/review-result";
 import { coverageState, openCurrentGaps, readReviewStore, reviewId, sourceFailure } from "../../reports/review/state";
 
 export function resolveConflictTransition(options: ReviewOptions, context: TransitionContext, conflictId: string, input: ConflictResolutionInput): Transition {
@@ -28,7 +28,8 @@ export function resolveConflictTransition(options: ReviewOptions, context: Trans
       .sort((a, b) => a.report_id < b.report_id ? -1 : a.report_id > b.report_id ? 1 : 0);
     for (const report of affected) {
       const media = options.source.image(context.snapshot, report);
-      const reviewed = report.award_id ? report : humanReview(report, "accepted", id("review"), new Date(context.now).toISOString());
+      // Conflict resolution is not a second report review; retain the accepted ReviewResult and its timestamp.
+      const reviewed = report;
       const reward = proposeReportReward(ledger, { before, after, report: reviewed,
         photo: media ? { report_id: report.report_id, normalized_hash: media.normalized_hash, ready: media.ready && !media.duplicate } : null,
         config: resolvePinnedReward(options, report.reward.policy), context: { session_id: context.snapshot.meta.session_id, generation: context.snapshot.meta.generation,
