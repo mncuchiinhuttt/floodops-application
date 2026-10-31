@@ -11,12 +11,14 @@ created: 2026-10-30
 
 ## Phạm vi và quyết định
 - Toolchain amendment theo user 2026-10-31: Bun 1.4.0 workspace/package manager/scripts, một `bun.lock`; Node ngoại lệ cho Wrangler/Expo, Worker vẫn `workerd`. [Bun toolchain decision](../../docs/architecture/bun-toolchain.md) là chuẩn cho lệnh runtime/tooling.
-- Chuẩn: [PRD v0.3, mục 3.4](../../FloodOps/prd.md), toàn bộ34 US gồm P1/P2. **Hai deliverable bắt buộc:** web app trong trình duyệt và một app native Expo cài trên iOS/Android; không responsive-only, PWA hoặc reporting-only companion.
+- Chuẩn: [PRD v0.3, mục 3.4](../../FloodOps/prd.md), 34 US gốc và 4 US bổ sung qua AM-C01, tổng 38 US gồm P1/P2. **Hai deliverable bắt buộc:** web app trong trình duyệt và một app native Expo cài trên iOS/Android; không responsive-only, PWA hoặc reporting-only companion.
 - Web: React + React Router Data Mode + Tailwind CSS v4 + shadcn. Native: Expo Router/RN, shared tokens + native components + SVG isometric package adapter.
 - Backend: Hono Worker + static web assets, Session Durable Object/SQLite + private R2; không D1/KV/SaaS accounts/live provider connectors.
 - Delta prototype gốc no-DB: durable session và scoped capabilities để cross-device/reconnect an toàn, đã làm rõ trong PRD §3.4/9.1; xem [decisions](specs/decisions-prerequisites.md).
 - Theo người dùng: web ưu tiên dispatcher; mobile ưu tiên driver/contributor và vẫn có dispatcher đầy đủ. Driver đọc phân công/tuyến/ETA đã commit, không nhận cuốc/turn-by-turn; workspace theo capability, không theo tên thiết bị.
 - Cùng backend/session authority; UI/tương tác riêng theo nền tảng. Nghiệm thu phải có mobile report → web review → mobile status/points và mobile dispatcher Execute → web/driver cùng committed outcome.
+- **AM-C01, user chốt 31/10/2026:** contributor có campaign theo khu vực/kỳ, mission collect/verify/update cấp S-F, versioned points, regional ranking và benefit/prize catalog Simulated. [Đặc tả](specs/contributor-campaigns.md) quy định scope, eligibility, privacy và T16..T20; exact points/thresholds/budget/real fulfillment còn TBD.
+- **Contract cutover pending:** baseline 64 API operations/8 tools và receipts cũ chưa hỗ trợ AM-C01. Phase 01 phải refreeze schemas/client/access/events/Reset cùng producers 05/07, consumers 09/10 và QA 11; không tự thêm field vào strict DTO hoặc claim gate cũ đã pass phần mới.
 - Không phân thời gian/effort, không viết code ứng dụng hoặc deploy trong bước này. Thứ tự dưới là dependency, không lịch thi.
 
 ## Phases
@@ -28,7 +30,7 @@ created: 2026-10-30
 | 04 | [Hono session runtime, capabilities và consistency](phase-04-session-runtime-security.md) | 01 | Pending |
 | 05 | [Nguồn, observation, report và upload ảnh an toàn](phase-05-sources-observations-media.md) | 03, 04 | Pending |
 | 06 | [Commander, route tools, policy gate và Execute](phase-06-planning-safety-execution.md) | 03, 04, 05 | Pending |
-| 07 | [Review cộng đồng, conflict, gap và điểm exactly-once](phase-07-review-gaps-rewards.md) | 04, 05 | Pending |
+| 07 | [Review, campaign/mission S-F, gap, điểm, regional ranking và quyền lợi](phase-07-review-gaps-rewards.md) | 04, 05; AM-C01 contract freeze | Pending |
 | 08 | [Clock, kết quả, realtime projections và model evaluation](phase-08-simulation-results-evaluations.md) | 03, 04, 06, 07 | Pending |
 | 09 | [React Router web console đầy đủ theo feature](phase-09-react-web-console.md) | 02, 03, 04, 05, 06, 07, 08 | Pending |
 | 10 | [Expo native dispatcher, driver và contributor](phase-10-expo-mobile-application.md) | 02, 03, 04, 05, 06, 07, 08 | Pending |
@@ -40,6 +42,7 @@ created: 2026-10-30
 - [API inventory](contracts/api-index.md) · [OpenAPI3.1](contracts/openapi.json) · [8 tool contracts](contracts/tool-contracts.md) · [Examples](contracts/contract-examples.json).
 - [Domain schemas](specs/domain-model.md) · [Safety/transition rules](specs/policy-rules.md) · [Atomicity/realtime](specs/concurrency-realtime.md).
 - [Simulator/calibration](specs/simulation-calibration.md) · [Design system](specs/design-system.md) · [Web/mobile surfaces](specs/web-mobile-feature-surfaces.md).
+- [Contributor campaigns AM-C01](specs/contributor-campaigns.md): cấp S-F, collect/verify/update, ranking/quà và cutover checklist; thiết kế mới chưa là endpoint đã triển khai.
 - [API security](specs/api-conventions-security.md) · [Operational limits](specs/operational-limits.md) · [Testing matrix](specs/testing-strategy.md) · [Cloudflare/EAS release](specs/cloudflare-deployment.md).
 - [Task manifest/DAG](implementation-tasks.json) · [Platform research](research/cloudflare-hono-platform.md) · [Web/native research](research/web-expo-design-compatibility.md).
 
@@ -48,6 +51,7 @@ created: 2026-10-30
 - Runtime harness phase04; full backend composition phase08; combined config phase11; deploy phase12. Khi chạy worktree, [ownership manifest](worktree-execution/roles.json) quyết định writer: central manifests/lock/entrypoint/config chỉ IntegrationLead ghi.
 - Các implementation task đang pending; phase complete chỉ khi tests và smoke thực có evidence. Plan validation không là application verification.
 - External gates: D04 data/licence/holdout, Images entitlement, OpenAI credits, Cloudflare account/domain, EAS/iOS/Android signing. Functional fixtures không thay D04 evidence.
+- AM-C01 bổ sung configuration gates: grade/reward policy, verification slots, activity/review windows, budget/inventory/tie policy; nhà tài trợ/quà thật là prerequisite riêng, không quyền payout từ scope docs. Lead cần amendment/resync cho worker đã launch trước khi đổi contract baseline.
 
 ## Agent roles và worktrees
 - Đọc [root AGENTS.md](../../AGENTS.md), rồi [start-here exact role order](worktree-execution/start-here.md):13 roles có prompt/branch/worktree/ownership/ports/acceptance.
@@ -57,7 +61,7 @@ created: 2026-10-30
 ## Review và validation
 - Kết quả kiểm chứng plan/contracts và red-team được ghi ở [validation report](reports/plan-validation.md).
 - Root policy/role startup/injection được kiểm chứng riêng tại [strict policy validation](worktree-execution/reports/strict-policy-validation.md); không chứng minh application hoặc agent chống được injection.
-- Acceptance: all34 US, POL01–08/I1–I5/T01–T15 covered; request/response schemas resolve; dependency DAG acyclic; web/native state/parity rules nhất quán.
+- Acceptance hiện hành: 38 US, POL01..08/I1..I5/T01..T20 được map; schemas/client/server và web/native cùng phiên bản sau cutover. Report validation trước AM-C01 chỉ chứng minh baseline 34 US/T01..T15, không tự là bằng chứng phần mới.
 - Effort/time fields cố ý bỏ theo yêu cầu. Active-plan helper absent trong repo; entrypoint là file này, không tạo helper giả.
 
 ## Handoff

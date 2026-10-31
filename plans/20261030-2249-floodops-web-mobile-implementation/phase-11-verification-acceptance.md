@@ -39,6 +39,7 @@
 6. Accessibility manual and visual checks web/native; profile bounded graph/event workload, SSE reconnection/foreground/background and offline storage.
 7. Publish evidence matrix pass/fail/unavailable with command/env/config hashes; do not label full app complete while D04/physical device/account prerequisites missing.
 8. Build web/dist rồi validate combined Wrangler static routing, private media and same entrypoint; không đợi phase12 mới có runtime/config để chạy acceptance.
+9. AM-C01: kiểm 38 US/T01..T20 sau contracts/producers/web/native cùng cutover; campaign lifecycle/config, S-F version pin, collect/verify/update, bounded-slot review reordering, award/budget/rank atomic, privacy/ties/benefit và Reset. Không dùng report validation 34 US/64 operations cũ làm evidence phần mới.
 
 ## Todo list
 - [ ] Step 11.01: Hydrate acceptance coverage US/POL/I/T from manifest
@@ -49,12 +50,14 @@
 - [ ] Step 11.06: Accessibility manual and visual checks web/native
 - [ ] Step 11.07: Publish evidence matrix pass/fail/unavailable with command/env/config hashes
 - [ ] Step 11.08: Validate full static+API Wrangler configuration trước remote deployment.
+- [ ] Step 11.09: Verify AM-C01/T16..T20 trên candidate cùng contract SHA/hash, gồm cả hai client và đầy đủ configuration gates
 
 ## Success criteria
 - All enabled feature requirements have deterministic behavior proof and user-surface smoke; five invariants zero violations.
 - Full contract examples and client/server schemas consistent, no unresolved endpoint or role mismatch.
 - Security/accessibility/release blockers resolved or explicitly external evidence gated, not silently waived.
 - Chứng minh cả browser web và native iOS/Android, cộng luồng liên thiết bị ở [surface matrix](specs/web-mobile-feature-surfaces.md): report/review/feedback, native dispatcher Execute/shared committed state, stale authority/Reset. Một app hoặc screenshots responsive không thay bằng chứng hai nền tảng.
+- Campaign -> mission S-F -> report/review -> points/rank/benefit có evidence cross-device; quà chỉ Simulated nếu chưa có fulfillment scope. Các ngưỡng/points/budget chưa chốt và contract refreeze còn pending phải ghi unavailable/blocked, không tự tạo số để pass.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

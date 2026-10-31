@@ -1,6 +1,8 @@
 # Truy vết toàn bộ PRD tới feature, API và kiểm chứng
 
-[PRD v0.3](../../../FloodOps/prd.md) giữ nguyên, plan không sửa priorities để cắt scope. Full application gồm P0/P1/P2 dưới đây. P1 hub/defer thiếu parameter có căn cứ thì UI disabled đúng rule, không báo đã nghiệm thu chức năng đó. P2 reroute-only được triển khai và kiểm qua feature flag.
+[PRD v0.3](../../../FloodOps/prd.md) giữ mã US-01..US-34 và priorities; AM-C01 bổ sung US-35..US-38 P0, tổng 38 US (35 P0, 2 P1, 1 P2). Full application gồm P0/P1/P2. P1 hub/defer thiếu parameter có căn cứ thì UI disabled đúng rule, không báo đã nghiệm thu chức năng đó. P2 reroute-only được triển khai và kiểm qua feature flag.
+
+[AM-C01](contributor-campaigns.md) là target sản phẩm đã chốt, chưa thêm operation vào wire baseline 64 API/8 tools. Cột API ghi pending delta cho phần mới: cần contract refreeze/cutover producers 05/07, clients 09/10 và QA 11; không tự invent operationId hoặc đọc dispatcher ledger từ contributor. Phases là nơi phối hợp dự kiến, không tự thay ownership/receipt.
 
 | ID | Requirement | Priority PRD | Phase owner/integration | API operationId | Behavior acceptance |
 |---|---|---|---|---|---|
@@ -32,12 +34,16 @@
 | US-26 | Codex prompt log. | P0 | 08, 11, 12 | Repo evidence, not runtime API | K5 |
 | US-27 | Reroute-only baseline. | P2 | 03, 08, 09, 10 | getResults | T01, T14 |
 | US-28 | Nhiều nguồn. | P0 | 05, 09, 10 | listSources, replaySourceEvent | T08, T11 |
-| US-29 | Citizen photo. | P0 | 05, 07, 09, 10 | submitReport, reserveMediaUpload, uploadMediaContent, completeMediaUpload | T07 |
+| US-29 | Citizen photo, optional mission link/pinned policy. | P0 | 05, 07, 09, 10 | submitReport/upload baseline; task fields pending AM-C01 delta | T07, T17, T18, T20 |
 | US-30 | Validate / review. | P0 | 05, 07 | reviewReport, getMedia | T07, T12 |
-| US-31 | Points. | P0 | 07, 09, 10 | listAwards, getOwnContributorDashboard | T07 |
-| US-32 | Data gaps. | P0 | 05, 07, 09, 10 | listGaps, getCoverage | T03, T07 |
+| US-31 | Points collect/verify/update, atomic completion/budget/rank. | P0 | 07, 09, 10 | getOwnContributorDashboard; listAwards dispatcher-only; extended award/completion pending AM-C01 | T07, T18, T20 |
+| US-32 | Data gaps and mission data need. | P0 | 05, 07, 09, 10 | listGaps, getCoverage; mission links pending AM-C01 | T03, T07, T18 |
 | US-33 | Đổi hub. | P1 | 06, 09, 10 | executePlan | T05 |
 | US-34 | Mưa và triều. | P0 | 05, 09, 10 | replaySourceEvent, triggerIncident | T08, T11 |
+| US-35 | Chiến dịch theo khu vực/lifecycle/config. | P0 | 01 contract, 07, 09, 10, 11 | Pending AM-C01 Campaign/access/window delta | T16, T20 |
+| US-36 | Mission S-A-B-C-D-E-F, reason/version and eligibility. | P0 | 01 contract, 05, 07, 09, 10, 11 | Pending AM-C01 Mission/Completion/policy snapshot delta | T17, T18, T20 |
+| US-37 | Regional/campaign leaderboard and shared ties. | P0 | 01 contract, 07, 09, 10, 11 | Pending AM-C01 alias-only leaderboard projection | T18, T19, T20 |
+| US-38 | Benefit/prize catalog and simulated entitlement. | P0 | 01 contract, 07, 09, 10, 11 | Pending AM-C01 catalog/eligibility/entitlement delta; no payout API | T16, T20 |
 
 ## Mandatory rule coverage
 | Constraint | Owner | Test proof |
@@ -56,11 +62,12 @@
 | K4 | real model+UI wall latency and10 runs | model eval + web/native rehearsal, failure denominator |
 | K5 | Codex feedback trail | repo human-reviewed entries + actual checks |
 | K6 | report-driven explained ETA diff | T15 functional fixture only |
-| D01,D02,D03 | scope and ordered priorities | all34 US; full native request delta documented |
+| D01,D02,D03 | scope and ordered priorities | 34 baseline US và AM-C01 US-35..38; full native scope unchanged |
 | D04,D07 | geometry/time/workload/source licence | T14 independent calibration, blocked if external data absent |
 | D05,D06 | stack selected by user, model/access/UI proposal | implementation compatibility + secrets/EAS gates |
-| D08 | simulated-only reward | T07; no payout API |
+| D08 | prize/benefit design, simulated-only delivery | T07,T20; sponsor/budget/real fulfillment TBD, no payout API |
 | D09 | delivery evidence and provenance | release checklist, no schedule allocation in this plan |
+| D10 / AM-C01 | campaign, S-F, collect/verify/update, ranking/prize and contract cutover | T16..T20; baseline receipts/docs validation không là proof phần mới |
 
 ## Client parity gate
 Every operational US has web+native screen or background state rendering. US-26 is engineering evidence (not fake runtime UI). Server-only guards must be exercised through both clients' error/blocked states. Neither frontend locally grants route/reward authority.

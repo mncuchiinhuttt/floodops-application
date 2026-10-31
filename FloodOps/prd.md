@@ -6,10 +6,13 @@
 | Owner | Team Gay Hackers (Hung, Kai, Long, Thiên Ân) |
 | Mục tiêu | Bản thử nghiệm tối thiểu (MVP) trong 7 giờ build: 31/10/2026, 10:00–17:00, Shopee VN Office, TP.HCM |
 | Tài liệu triển khai | File này chứa phạm vi, dữ liệu, quy tắc, luồng và nghiệm thu. Mục 3.4 làm rõ hai nền tảng đã chốt trong [implementation plan](../plans/20261030-2249-floodops-web-mobile-implementation/plan.md); link ngoài chỉ là bằng chứng / tài liệu nguồn. |
-| Nguồn hợp nhất | floodops-prd@b30b808 + long-prd@7a9f3b3 + docs/hung-floodops-prd-revision@6b46e40; [đối chiếu ba bản](../plans/reports/review-261021-2211-three-prd-branches.md). |
+| Nguồn hợp nhất | floodops-prd@b30b808 + long-prd@7a9f3b3 + docs/hung-floodops-prd-revision@6b46e40; [đối chiếu ba bản trong repo planning](https://github.com/mncuchiinhuttt/seahackathon/blob/3909094f742fb4348c917c42272699c379cd2afc/plans/reports/review-261021-2211-three-prd-branches.md). |
 | Quy ước | **Đã thống nhất** = hướng được xác nhận; **Đề xuất** = cần review; **TBD** = chưa quyết định. Mọi kết quả demo là **Simulation result**. |
+| Bổ sung người đóng góp | AM-C01, ngày 31/10/2026: chiến dịch, nhiệm vụ S-A-B-C-D-E-F, bảng hạng khu vực và quyền lợi/phần thưởng. [Đặc tả và cutover](../plans/20261030-2249-floodops-web-mobile-implementation/specs/contributor-campaigns.md). |
 
 **Mức độ hoàn thiện:** đã hợp nhất phạm vi, luồng, hợp đồng triển khai, sơ đồ và cách nghiệm thu trong một file. Vẫn cần chốt khu vực / dữ liệu hiệu chuẩn D04, quyền sử dụng dữ liệu, cấu hình vận hành và lựa chọn kỹ thuật ở mục 10. Chưa có bằng chứng mô phỏng đạt tỉ lệ thực hoặc KPI; các mục Đề xuất / TBD vẫn cần quyết định.
+
+**AM-C01:** phạm vi sản phẩm thêm US-35..US-38 và T16..T20; giữ nguyên mã 34 US gốc, POL/I/K và T01..T15. API baseline 64 operations/8 tools chưa chứa phần mới; contracts, producers, web/native và tests phải cutover cùng phiên bản trước implementation. Điểm từng cấp, ngưỡng phân loại, ngân sách và quà thật còn TBD; không mặc định lịch điểm giảm dần hoặc 10 điểm/report.
 
 **Cách dùng cho AI triển khai:** đọc phạm vi mục 3, yêu cầu mục 5, hợp đồng dữ liệu / thực thi mục 6–7 và nghiệm thu mục 8. Đối chiếu quyết định mở ở mục 10 trước phần việc phụ thuộc. Không tự coi đề xuất là quyết định đã chốt. Theo D04, thông số vật lý / vận hành phải có căn cứ, đơn vị và kiểm chứng; thiếu thì ghi TBD, không tự đặt số để đạt chỉ số đánh giá (KPI). Cố định bộ thông số trước so sánh kế hoạch gốc (baseline) với FloodOps. Hiện tại chuẩn bị tài liệu; quy định build tại chỗ ở mục 9 vẫn áp dụng.
 
@@ -85,7 +88,7 @@ Tình huống mô phỏng: một nhóm tài xế và đơn bị ảnh hưởng k
 
 - Một đội giao hàng, một khu vực có ranh giới xác định tại TP.HCM và một ca gián đoạn do ngập đô thị. Mạng đường dùng tọa độ / hình học tham chiếu thực, giữ kết nối và hạn chế theo loại xe; phạm vi cụ thể TBD theo dữ liệu đủ để hiệu chuẩn D04.
 - Nhiều nguồn qua cùng pipeline. Camera là một nguồn bên cạnh báo cáo ngập / giao thông, mưa, triều / mực nước, tài xế và cộng đồng.
-- Luồng cộng đồng tối giản thuộc MVP: ảnh / fixture + vị trí + thời gian → kiểm tra / review → accepted / rejected → xét điểm giả lập → cập nhật hiểu biết → replan.
+- Luồng cộng đồng thuộc MVP: chọn chiến dịch/khu vực và nhiệm vụ S-F -> ảnh / fixture + vị trí + thời gian -> kiểm tra / review -> accepted / rejected -> completion, điểm và bảng hạng khu vực -> cập nhật hiểu biết -> replan. Report tự do vẫn được hỗ trợ; luật thưởng theo mục 6.4.
 - Dữ liệu bên ngoài được đóng gói thành snapshot / fixture có nguồn và nhãn; không cần connector live. Snapshot bản đồ / vận hành thực dùng để hiệu chuẩn, còn sự kiện dựng để kiểm luồng phải ghi giả lập. Tiền thật và xây cộng đồng ngoài đời thuộc giai đoạn sau. Danh mục API ở mục 6.6 phục vụ khảo sát.
 
 ### 3.2 Đầu ra nhìn thấy
@@ -95,7 +98,8 @@ Tình huống mô phỏng: một nhóm tài xế và đơn bị ảnh hưởng k
 | Map | Hub, tài xế, đơn, tuyến; closed / congestion / unknown; phạm vi loại xe; thước tỉ lệ và khoảng cách thực, không kéo giãn từng đoạn để đổi độ dài / ETA. |
 | Incident & Plan | Tác động, ưu tiên, kế hoạch, bằng chứng, rủi ro, trước / sau, Approve / Reject / Execute. |
 | Data & Reports | Nguồn, mưa / triều / hiện trường, độ mới, review, gap, form tài xế / cộng đồng. |
-| Points | Ledger giả lập và lý do đủ / không đủ điều kiện; không có rút tiền. |
+| Campaigns & Missions | Chiến dịch theo vùng/kỳ, nhu cầu dữ liệu, nhiệm vụ S-F, tiến độ, trạng thái và điều kiện thưởng. |
+| Points & Benefits | Điểm đã ghi nhận, bảng hạng khu vực, quyền lợi/quà mô phỏng và lý do đủ / không đủ điều kiện; không có rút tiền hoặc fulfillment thật. |
 | Timeline & Results | Trace sự kiện tới hành động, baseline / FloodOps, clock và Reset. |
 
 Có thể dùng tab / drawer cho khu vực phụ. Banner **Simulation** luôn hiện; trạng thái hiệu chuẩn D04 xem được. Phân biệt **Reference data**, **Replayed** và **Simulated** ở từng nguồn / input; điểm luôn **Simulated**. Dùng bản đồ thật không tự chứng minh toàn bộ mô phỏng đã được hiệu chuẩn.
@@ -124,7 +128,7 @@ Người dùng chính là **dispatcher / trưởng ca** ở bàn vận hành; m�
 6. **Timeline, clock và Reset:** theo dõi sự kiện → quyết định → thực thi, điều khiển phiên đúng quyền.
 7. **Kết quả:** so baseline / FloodOps từ runner, phân biệt projected và committed / measured, xem giới hạn D04.
 8. **Workspace tài xế:** xem phân công / tuyến / ETA của chính tài xế được gắn capability, gửi report nhanh / văn bản và xem report của mình.
-9. **Workspace người đóng góp:** gửi ảnh / fixture, xem lịch sử và kết quả review của mình, xem điểm giả lập.
+9. **Workspace người đóng góp:** xem chiến dịch, nhiệm vụ S-F, tiến độ và bảng hạng khu vực; gửi ảnh / fixture gắn nhiệm vụ hoặc báo cáo tự do, xem report/completion/điểm và quyền lợi của mình. Quà trong demo có nhãn Simulated.
 
 Hai workspace cuối là giao diện web cho cùng nghiệp vụ hiện trường, không biến tài xế / contributor thành dispatcher và không yêu cầu họ dùng web hằng ngày.
 
@@ -133,7 +137,7 @@ Hai workspace cuối là giao diện web cho cùng nghiệp vụ hiện trườn
 App có navigation theo capability, tối ưu thao tác chạm và đọc trên màn hình nhỏ; không phải bản thu nhỏ nguyên bố cục desktop:
 
 - **Tài xế:** màn công việc của tôi (đơn / điểm dừng / tuyến / ETA đã commit); bản đồ / chi tiết tuyến được phân; form report nhanh hoặc văn bản và trạng thái report của mình. “Nhận phân công” là thấy cập nhật sau Execute, **không** có luồng nhận / từ chối cuốc, bằng chứng giao hàng, tự đổi đơn hoặc turn-by-turn navigation. Không live GPS / tracking nền.
-- **Người đóng góp:** màn gửi ảnh / fixture kèm đoạn đường, vị trí chọn thủ công, thời gian và mô tả; danh sách / chi tiết báo cáo của tôi (pending / accepted / rejected và lý do); ledger điểm giả lập. Không xem đơn / đội xe, review người khác hoặc rút tiền.
+- **Người đóng góp:** campaign list/detail, nhiệm vụ S-F và bảng treo thưởng với lý do/điều kiện; chọn khu vực thủ công, gửi ảnh / fixture gắn đoạn đường, thời gian, vehicle scope và mô tả. Có own reports/completions/points, leaderboard region/campaign bằng bí danh và prize/eligibility detail. Không xem đơn / đội xe, ảnh/report riêng của người khác, tự review hoặc rút tiền. Cấp nhiệm vụ là độ ưu tiên dữ liệu, không phải độ nguy hiểm.
 - **Dispatcher:** đủ overview / map / impact, plan / diff / Approve / Reject / Execute, sources / coverage / conflict / review, timeline / clock / results / Reset như web. Đây là luồng điều phối đầy đủ khi rời bàn, không chỉ read-only; mọi lệnh vẫn cần online và đúng capability.
 
 Driver / contributor có thể lưu nháp report và ảnh chưa gửi khi offline; kết nối lại phải kiểm phiên và người dùng chủ động gửi. Không queue Approve, Execute, Reset, clock hoặc tự gửi ảnh nền. UI giữ nhãn `Simulation`; app native không biến mô phỏng thành dịch vụ logistics production.
@@ -141,8 +145,8 @@ Driver / contributor có thể lưu nháp report và ảnh chưa gửi khi offli
 #### 3.4.3 Luồng phối hợp và nghiệm thu hai nền tảng
 
 1. Dispatcher mở web và tạo / tham gia phiên; tài xế / contributor ghép mobile vào **cùng phiên** bằng quyền được cấp, không tự chọn role để nâng quyền.
-2. Mobile gửi report về E27; web thấy report chờ kiểm tra. Report pending chưa làm thay đổi road knowledge hoặc points.
-3. Dispatcher review; report đủ điều kiện cập nhật knowledge và được xét điểm một lần. Contributor thấy kết quả / lý do trong app.
+2. Contributor chọn chiến dịch/nhiệm vụ phù hợp rồi gửi report về E27 trên mobile; web thấy report gắn task chờ kiểm tra. Report pending chưa làm thay đổi road knowledge, điểm hoặc rank.
+3. Dispatcher review; report đủ điều kiện cập nhật knowledge và completion/award được commit một lần theo policy đã pin. Contributor thấy kết quả, lý do, điểm, hạng khu vực và quyền lợi mô phỏng cùng phiên trên web/native.
 4. AI đề xuất lại kế hoạch; dispatcher xem diff trên web **hoặc mobile**, Approve nếu cần rồi bấm Execute. Tài xế chỉ thấy phân công / tuyến / ETA mới sau commit thành công.
 
 **Nghiệm thu bắt buộc:** có web chạy trong trình duyệt và native build chạy trên iOS lẫn Android; không lấy responsive web / Expo web thay bằng chứng native. T01–T15 áp dụng cho các luồng tương ứng ở cả hai client. Kiểm thêm mobile report → web review → cập nhật trạng thái / điểm trên mobile, mobile dispatcher Execute → web / driver đọc cùng committed outcome, stale-command / Reset giữa thiết bị không commit lặp hoặc dùng quyền cũ. Người nhận hàng vẫn không có app riêng; chỉ có ETA notification preview, không gửi thật. Danh sách route / screen và test chi tiết ở [platform surfaces](../plans/20261030-2249-floodops-web-mobile-implementation/specs/web-mobile-feature-surfaces.md).
@@ -205,6 +209,7 @@ Rehearsal không sửa dữ liệu ngoài UI hoặc lược bỏ policy để đ
 - Phân biệt proposed, pending approval, blocked, executed, needs replan. Preview chưa commit luôn ghi projected.
 - Mỗi action / report có đối tượng, bằng chứng / nguồn và lý do; lỗi có đường thử lại.
 - Accepted report, eligible reward và approved route là ba kết quả riêng.
+- Với AM-C01, cấp S-F, reward policy version, pending/committed points, rank tạm thời/chốt và quyền lợi Simulated được phân biệt. Nhiệm vụ thiếu cấu hình thưởng hợp lệ phải disabled/draft kèm lý do.
 - Chọn vai trò / contributor ID là giả lập. Ảnh synthetic hoặc được phép sử dụng; không yêu cầu ảnh cá nhân thực.
 
 ### 4.5 Tra cứu từ luồng tới yêu cầu
@@ -221,6 +226,8 @@ Rehearsal không sửa dữ liệu ngoài UI hoặc lược bỏ policy để đ
 | ETA, so sánh kết quả, timeline / nhãn và bằng chứng demo | US-11, US-21, US-22, US-25, US-26; US-27 nếu bật P2 |
 | Tua đồng hồ, Reset toàn phiên | US-19, US-23 |
 | Hoãn standard / đổi hub khi bật P1 | US-12, US-33 |
+| Chiến dịch và nhiệm vụ phân cấp dữ liệu | US-35, US-36; US-29, US-32 |
+| Điểm, bảng hạng khu vực và quyền lợi theo chiến dịch | US-31, US-37, US-38 |
 
 ---
 
@@ -259,11 +266,15 @@ US là mã yêu cầu; mỗi dòng mô tả việc cần làm và cách xác nh�
 | US-17 | Conflict. | Camera / driver / community không gỡ authoritative closure. Source, freshness, trust là trường riêng; conflict chưa giải quyết → unknown / review. | P0 |
 | US-18 | Thấy thay đổi sau replan. | Diff action thêm / bỏ / đổi, lý do gắn report / evidence; fixture đạt K6 / T15. Scenario đánh giá báo đúng kể cả không đổi hoặc xấu hơn; proposal cũ không overwrite proposal mới. | P0 |
 | US-28 | Nhiều nguồn. | Source registry, camera fixture và context / report ngoài khác, gồm mưa và triều / mực nước. Hiển thị provider, type, simulated flag, time; không API live. | P0 |
-| US-29 | Citizen photo. | Contributor giả lập, photo / fixture ID, location / segment, capture time, vehicle scope nếu có, mô tả; pending review trước sử dụng. | P0 |
+| US-29 | Citizen photo. | Contributor giả lập, photo / fixture ID, location / segment, capture time, vehicle scope nếu có, mô tả; report gắn tối đa một mission/campaign/region khi làm nhiệm vụ. Server kiểm scope/window và pin policy tại receipt; pending review trước sử dụng. Report tự do vẫn hợp lệ theo luật riêng ở 6.4. | P0 |
 | US-30 | Validate / review. | Schema, ảnh load được, vị trí, timestamp, duplicate; reason codes rõ. Dùng fixture metadata + dispatcher review, không claim chống giả GPS / ảnh thực. | P0 |
-| US-31 | Points. | Accepted, fresh report lấp active gap mới được award một lần theo 6.4; redundant = 0. Retry / ảnh trùng không nhân điểm. | P0 |
-| US-32 | Data gaps. | Các cặp segment / vehicle relevant thiếu observation còn hạn / đủ chất lượng; coverage từ state, không số ảnh. Một edge có thể đủ thông tin cho xe máy nhưng còn gap cho ô tô. | P0 |
+| US-31 | Points. | Một award/report đủ điều kiện theo loại collect/verify/update và policy version đã pin ở 6.4. Collect giữ unique first-fill gap; verify chỉ thưởng khi có nhiệm vụ xác minh độc lập còn slot và evidence có ích. Duplicate/retry/redundant ngoài nhiệm vụ đủ điều kiện = 0; completion/award/budget/ranking commit nguyên tử. | P0 |
+| US-32 | Data gaps. | Các cặp segment / vehicle relevant thiếu observation còn hạn / đủ chất lượng; coverage từ state, không số ảnh. Gap có thể tạo nhiệm vụ collect/update; verify có data need riêng, không giả gap fill. Một edge có thể đủ thông tin cho xe máy nhưng còn gap cho ô tô. | P0 |
 | US-34 | Mưa và triều. | Chạy được rain-only, tide-only và combined; source context không tự sửa edge condition. Mực nước có unit / datum / location; không so khác datum như cùng chuẩn. | P0 |
+| US-35 | Chiến dịch theo khu vực. | Người có quyền tạo/publish/pause/close campaign với region, mục tiêu dữ liệu, window nhận/review, nhiệm vụ và policy/budget hợp lệ. Contributor xem tiến độ từ state; không publish khi thiếu cấu hình hoặc hứa quà chưa được bảo đảm. | P0 |
+| US-36 | Nhiệm vụ S-F. | Đủ S-A-B-C-D-E-F, work type collect/verify/update, scope/epoch, yêu cầu ảnh, capacity, thời hạn, reason/actor/version. Server gán hoặc người có quyền điều chỉnh; client không tự đổi cấp/điểm. Report đã nhận giữ policy đã pin; cấp không dựa vào nguy hiểm. | P0 |
+| US-37 | Bảng hạng khu vực. | Rank theo campaign/region và committed awards; pending không cộng. Bằng điểm đồng hạng, thứ tự hiển thị ổn định; mỗi report chỉ tính một vùng. Contributor chỉ thấy alias/điểm/rank projection và own position, không mở dữ liệu riêng của người khác. | P0 |
+| US-38 | Quyền lợi và phần thưởng. | Catalog theo hạng/mốc, điều kiện, inventory/budget và entitlement ledger có version; trạng thái dự kiến/chốt rõ, retry không nhân quà. Demo Simulated; sponsor/giá trị/fulfillment thật TBD, không payout hoặc tự đổi điểm ra tiền. | P0 |
 
 ### 5.3 Điều khiển và evidence demo
 
@@ -296,7 +307,9 @@ US là mã yêu cầu; mỗi dòng mô tả việc cần làm và cách xác nh�
 | Order | ID, tier, demand cùng đơn vị capacity, pickup hub, destination / điểm nối graph, driver, original SLA, ETA, service time, lifecycle (unpicked / picked_up / delivered), cumulative defer; nguồn thực ẩn danh hoặc giả lập có nhãn. |
 | Scenario / Parameter provenance | Scenario ID / version, vùng / kỳ dữ liệu, T0 / timezone, replay mapping, calibration_status; mỗi parameter có value, unit, source / reference date, phạm vi vehicle / geography / valid time, measured / derived / assumed, phương pháp và sai số / mức bất định. |
 | Plan / Action / Approval | Plan ID, session / input revision; action ID / type / targets, route ID, evidence, reason, dependencies / group, status, projected changes. Approval lưu action ID / plan ID / revision / decision. |
-| Report / Gap / Reward | Report ID, contributor, photo_hash, capture metadata / review; gap ID theo segment / vehicle và lần mở; award ID, report ID, filled_gap_ids, points, award_time. |
+| Report / Gap / Reward | Report ID, contributor, photo_hash, capture metadata / review, optional mission link; gap ID theo segment / vehicle và lần mở. Award tối đa một/report, thêm completion/mission/campaign/region, work type, policy version đã pin, points/reason/time; filled_gap_ids có thể rỗng với verify. |
+| Campaign / Mission | Campaign ID, region, data goal, activity/review windows, lifecycle, policy/budget. Mission ID/occurrence, campaign/region, segment/vehicle/epoch/data need, collect/verify/update, cấp S-F, reason/actor/version, yêu cầu ảnh, capacity và thời hạn. |
+| Completion / Regional ranking / Benefit | Completion liên kết report/mission/participant và eligibility; leaderboard projection alias/committed points/rank theo campaign/region; benefit policy, inventory/budget và entitlement Simulated. Exact wire schemas chờ AM-C01 cutover. |
 
 Simulation time là phút kể từ T0 của ca, cho phép phần lẻ; đổi từ giây / giờ phải tường minh. Một phút mô phỏng biểu diễn một phút vận hành. Playback có thể tăng tốc đồng đều, ví dụ hành trình 15 phút phát ở 30× mất 30 giây wall clock nhưng ETA vẫn là 15 phút. Travel, service, SLA, defer, TTL và incident time cùng đồng hồ đó. Wall clock đo API latency / rehearsal. Replay giữ timestamp gốc và mapping sang T0; không ghép dữ liệu khác ngày thành một sự kiện thực. State có session ID và revision; không dùng thời gian nhận thay thời gian quan sát. Không cộng / so sánh mưa mm, mực nước m theo datum và discharge m³/s như cùng một đại lượng.
 
@@ -322,14 +335,14 @@ classDiagram
     Action "1" --> "0..*" Approval : decision history
     Action "0..*" --> "0..*" Observation : evidence
     Report "1" --> "0..1" Reward : award
-    Reward "0..1" --> "1..*" Gap : first rewarded fill
+    Reward "0..1" --> "0..*" Gap : rewarded collect fill
 ```
 
 **Cách đọc:** số ở hai đầu dây chỉ số lượng đối tượng được liên kết: `1` = đúng một; `0..1` = không có hoặc một; `0..*` = từ 0 trở lên; `1..*` = từ 1 trở lên. Ví dụ Report–Reward: một báo cáo có thể không nhận thưởng hoặc nhận tối đa một phần thưởng; mỗi phần thưởng thuộc đúng một báo cáo. Hình thoi đen là quan hệ chứa: Plan chứa các nhóm hành động.
 
 Đây là quan hệ khái niệm, không yêu cầu DB hoặc class code tương ứng; bảng 6.1 vẫn là hợp đồng trường dữ liệu. Report là dữ liệu gửi vào / kết quả review, Observation là bằng chứng chuẩn hóa; không phải mọi report đều tạo observation dùng được. Observation chỉ tham gia knowledge khi đúng segment / vehicle / epoch và còn hạn theo 6.3; các reference không tự cấp quyền đi đường.
 
-Hub–Order và Driver–Order biểu diễn phân công hiện tại; hub availability có thể liệt kê order ở nhiều hub, còn picked_up giữ carrying driver. Plan chưa có action có thể có 0 group; mỗi action thuộc một group và dependency phải không có vòng lặp. Approval giữ lịch sử; chỉ quyết định khớp action / plan / revision hiện hành mới có hiệu lực. Mỗi report tối đa một award; một award ghi được nhiều gap, mỗi gap ID tối đa một first-fill award. Camera / report redundant có thể không tạo award; mất coverage mở gap ID mới, không thu hồi điểm cũ hợp lệ.
+Hub-Order và Driver-Order biểu diễn phân công hiện tại; hub availability có thể liệt kê order ở nhiều hub, còn picked_up giữ carrying driver. Plan chưa có action có thể có 0 group; mỗi action thuộc một group và dependency phải không có vòng lặp. Approval giữ lịch sử; chỉ quyết định khớp action / plan / revision hiện hành mới có hiệu lực. Mỗi report tối đa một award; collect/update có thể ghi nhiều gap nhưng mỗi gap occurrence tối đa một first-fill award. Verify award liên kết completion của nhiệm vụ xác minh, không cần gap fill mới. Camera / report redundant ngoài nhiệm vụ đủ điều kiện không tạo award; mất coverage mở gap ID mới, không thu hồi điểm cũ hợp lệ. Campaign/Mission/Completion/Benefit là phần AM-C01 mô tả ở bảng 6.1 và mục 6.4, không phải entity đã có trong wire baseline.
 
 ### 6.2 Nhiều nguồn và vai trò
 
@@ -366,14 +379,47 @@ Không evidence đủ điều kiện → **ordinary unknown**, có thể xét du
 
 ### 6.4 Community Reporting & Rewards
 
-Game tối giản gồm gap cần cập nhật, tiến độ, review result và điểm. Chỉ quan sát từ vị trí đang an toàn; không nhiệm vụ đi vào vùng ngập hoặc thưởng theo mức nguy hiểm. Báo cáo nước rút cũng có giá trị.
+**AM-C01 đã thống nhất ngày 31/10/2026:** contributor có chiến dịch, bảng nhiệm vụ treo thưởng S-F, tiến độ, kết quả review, điểm, bảng hạng khu vực và quyền lợi. Chi tiết triển khai/cutover ở [contributor campaigns](../plans/20261030-2249-floodops-web-mobile-implementation/specs/contributor-campaigns.md).
 
-- **Gap:** relevant segment / vehicle scope không có observation đủ chất lượng và còn hạn. Mỗi lần mất coverage mở một gap ID mới.
-- **Điều kiện:** report accepted và dùng được lấp gap đang open ngay trước transition làm report dùng được: acceptance hoặc review resolution. Tại transition đó kiểm lại freshness, vehicle scope, duplicate và report chưa có award; ghi gap IDs thực sự được lấp. Camera / system events không nhận điểm; số ảnh không phải thước đo thưởng.
-- **Exactly once:** acceptance / review resolution làm dữ liệu dùng được, gap fill và award commit một transition. Report nhiều vehicle chỉ lấp gap đúng scope, lưu toàn bộ filled_gap_ids nhưng tối đa một award / report. Gap chỉ thưởng lần lấp đầu tiên. Retry / cùng ảnh qua contributor khác trong phiên không nhân điểm. Report còn conflict chưa lấp gap hoặc nhận thưởng.
-- **Redundant / expiry:** valid redundant có thể lưu lịch sử, 0 điểm. Ảnh cũ / trùng có reason. Expiry về sau không thu hồi điểm đã cấp hợp lệ; Reset xóa ledger.
-- **Ba kết quả riêng:** accepted report ≠ eligible reward ≠ approved route.
-- Fixture metadata + review không chứng minh chống gian lận thực tế. Tiền / voucher, tài trợ và production payout là TBD; demo chỉ points.
+#### 6.4.1 Chiến dịch và hành trình người dùng
+
+- Campaign gom nhu cầu dữ liệu trong một region và kỳ hoạt động. Người có quyền quản lý xác định mục tiêu, window nhận/review, nhiệm vụ, quy tắc thưởng/đồng hạng và budget/inventory.
+- Lifecycle: draft -> active -> closing -> closed; paused ngừng nhận submission mới nhưng giữ xử lý report đã nhận theo policy đã pin. Không chốt rank/quà khi report đúng hạn còn pending hoặc tranh chấp chưa giải quyết.
+- Contributor xem chiến dịch/tiến độ -> chọn nhiệm vụ -> gửi ảnh theo yêu cầu -> xem review/completion/điểm -> xem hạng khu vực và quyền lợi. Khu vực chọn thủ công; không tự thêm GPS nền hoặc dẫn đường.
+- Chỉ quan sát từ vị trí đang an toàn; unknown/gap không chứng minh có thể đi tới. Không nhiệm vụ đi vào vùng ngập/đường đóng, không thưởng theo nguy hiểm. Được bỏ qua nhiệm vụ không phạt; ảnh nước rút cũng có giá trị.
+
+#### 6.4.2 Cấp nhiệm vụ S-A-B-C-D-E-F
+
+| Cấp | Ý nghĩa dữ liệu cần có | Thưởng trong cùng work type/policy |
+|---|---|---|
+| S | Thiếu dữ liệu cản quyết định cho đơn critical, cần cập nhật ngay. | Cao nhất |
+| A | Cần sớm để xử lý nhiều đơn hoặc tuyến quan trọng. | Rất cao |
+| B | Ảnh hưởng đáng kể, còn phương án thay thế. | Cao |
+| C | Nhu cầu vận hành thường, khẩn cấp trung bình. | Trung bình |
+| D | Bổ sung coverage ưu tiên thấp, ít ảnh hưởng hiện tại. | Cơ bản |
+| E | Cập nhật định kỳ ít khẩn cấp. | Thấp |
+| F | Thông tin hữu ích có nhu cầu xác định nhưng không gấp. | Nhỏ |
+
+Cấp do server gán hoặc người có quyền điều chỉnh từ impact, thời hạn cần dữ liệu và freshness; ghi reason/actor/version. Cấp không đo độ nguy hiểm, không tăng uy tín an toàn của người dùng. Thẻ nhiệm vụ có mục tiêu, scope/epoch, yêu cầu ảnh, thời hạn, capacity, reward và trạng thái.
+
+Ngưỡng phân loại và điểm cụ thể còn **TBD**; cùng loại nhiệm vụ dùng cấu hình S > A > B > C > D > E > F. Không mặc định 10 điểm/report hoặc một lịch thưởng theo thứ tự đến. Thiếu grade/reward policy, capacity hoặc budget hợp lệ thì chưa publish/disabled kèm reason. Server pin grade/reward version khi nhận report hoàn chỉnh; đổi cấp về sau không tự hạ thưởng của report đã nhận đúng điều kiện. Draft offline chưa giữ slot hoặc bảo đảm thưởng.
+
+#### 6.4.3 Công việc và ghi nhận điểm
+
+- **Collect:** report accepted, fresh và dùng được lấp gap đang open ngay trước acceptance/resolution; mỗi gap occurrence giữ một first-fill award.
+- **Verify:** chỉ có thưởng khi mission xác minh độc lập được mở rõ, còn slot và evidence accepted/fresh/đúng scope có ích. Không bắt buộc tạo gap fill mới; ảnh thứ hai hoặc cùng kết luận chưa đủ để được thưởng. Conflict phải qua quy trình review, không dùng số đông để cấp quyền đi đường.
+- **Update:** nhu cầu mới do expiry hoặc thay đổi điều kiện/epoch đã kiểm tra; tạo mission occurrence mới. Không tự mở lại nhiệm vụ để farm điểm.
+- **Exactly once:** report thuộc tối đa một mission/campaign/region, tối đa một award/report và một completion được thưởng/participant/mission occurrence. Completion, award, budget, ranking contribution và audit/idempotency commit nguyên tử; gap/knowledge cùng transition nếu có thay đổi. Baseline/FloodOps không nhân thưởng.
+- **Duplicate / redundant:** cùng normalized photo qua contributor khác, retry, report lỗi hoặc ảnh dư thừa ngoài verify task đủ điều kiện đều 0 điểm, reason rõ. Verification uniqueness tách khỏi collect first-fill gap; không bịa filled_gap_ids để thưởng xác minh.
+- Expiry sau đó không thu hồi điểm đã cấp hợp lệ. Reset xóa campaign runtime/completions/points/ranks/simulated benefits, tạo phiên/quyền mới và khôi phục campaign fixture ban đầu.
+- Fixture metadata + review không chứng minh chống giả GPS/ảnh hoặc độc lập hoàn toàn. Accepted report, eligible reward và approved route luôn là ba kết quả riêng.
+
+#### 6.4.4 Bảng hạng và quyền lợi
+
+- Leaderboard theo campaign + region + kỳ trong phiên, tính từ committed awards; pending là tạm tính riêng. Một report không cộng nhiều vùng. Bằng điểm đồng hạng; thứ tự hiển thị ổn định, không lấy tốc độ gửi/duyệt để phá hòa.
+- Contributor thấy alias/points/rank/own position qua projection được cấp quyền; không lộ ảnh, report riêng, vị trí/hành trình người khác hoặc mở ledger dispatcher. Coverage hiện hành, completion và điểm là các số riêng.
+- Catalog có quyền lợi theo hạng/mốc, điều kiện, inventory và entitlement ledger. Voucher/phần quà là thiết kế được bổ sung; demo hiển thị **Simulated**, không tự đổi điểm thành tiền hoặc xác nhận quà thật đã có.
+- Nhà tài trợ, giá trị, ngân sách, điều kiện đồng hạng/khiếu nại và fulfillment thật còn TBD, phải xác nhận trước cam kết. Không có payout/redemption/provider integration hoặc phát quà thật trong amendment tài liệu này.
 
 ### 6.5 Tỉ lệ thực và hiệu chuẩn mô phỏng — D04
 
@@ -388,7 +434,7 @@ Game tối giản gồm gap cần cập nhật, tiến độ, review result và 
 | Ngập / ùn tắc | Kịch bản replay thực cần nguồn, vị trí, thời gian và phạm vi phương tiện của sự kiện / tác động. Sự kiện dựng để kiểm gate có nhãn Simulated. Không đổi mực triều / lượng mưa thành street depth hoặc tốc độ đi qua nước khi chưa có model được kiểm chứng; thiếu passability thì unknown / restriction theo evidence. |
 | TTL / vị trí ảnh | TTL là policy cần căn cứ nhịp cập nhật, độ biến động hiện trường và loại nguồn; tolerance vị trí dựa trên độ chính xác vị trí / hình học. Không mặc định 2 / 5 phút hoặc 50 m cho mọi nguồn; mapping nhiều đường còn mơ hồ thì review. Không claim chống GPS spoofing thực. |
 | SLA / defer / horizon | SLA và giới hạn defer lấy từ quy trình vận hành / dữ liệu có nguồn hoặc giả định được công bố; không dời SLA để đạt KPI. P1 thiếu defer limit → disabled. H sau mọi SLA của tập đánh giá, cùng H cho mọi nhánh. |
-| Điểm thưởng | Đề xuất 10 points / eligible report, chỉ là cấu hình UX giả lập; không quy thành tiền / thu nhập thực hay dùng để tuyên bố đã mô phỏng đúng kinh tế khuyến khích. |
+| Điểm thưởng | AM-C01 dùng policy theo cấp S-F và collect/verify/update; điểm, ngưỡng, capacity và budget còn TBD, không có 10 points mặc định. Chỉ là cấu hình UX giả lập; không quy thành tiền / thu nhập thực hoặc bằng chứng hiệu quả khuyến khích ngoài đời. |
 
 **Hồ sơ hiệu chuẩn trong seed / kết quả:** mỗi thông số ảnh hưởng route, ETA, feasibility hoặc freshness phải có provenance theo 6.1. Ghi mẫu / cỡ mẫu, thời gian / địa bàn, cách tính, phạm vi áp dụng, sai số chấp nhận và kết quả đối chiếu. Ngưỡng sai số phải chốt **trước** khi kiểm chứng; dùng mẫu đối chiếu độc lập với mẫu đã dùng để fit. Cùng đơn vị chưa đủ chứng minh đúng thực tế. Hiện chưa có bộ dữ liệu / kết quả đối chiếu trong repo chứng minh D04 đã đạt.
 
@@ -671,6 +717,11 @@ Mục tiêu 100% IDs hợp lệ; gate phải từ chối mọi ID sai. Đưa pro
 | T13 | Xe đã Execute, evidence expires hoặc closure trước edge tiếp theo. | Chờ trước entry không hợp lệ; không thêm entry qua closure; log phân biệt edge đang đi lúc event. |
 | T14 | Đối chiếu seed với nguồn / mẫu độc lập theo 6.5; chạy lại cùng stub / event time với playback speed khác. | Khoảng cách, travel / service time, tải / capacity đạt ngưỡng sai số đã chốt, ghi cỡ mẫu / phạm vi / sai số; kết quả deterministic không đổi khi tua nhanh. Thiếu căn cứ hoặc chưa đạt → Calibration incomplete; không công bố đã đúng tỉ lệ thực. |
 | T15 | Reset fixture US-18 → Execute plan đầu → accepted fresh motorbike report tại gap E27 → replan → Approve nếu cần → Execute. | K6: diff có ETA đổi và lý do đúng report; ô tô không thừa kế observation. Không áp dụng thay đổi từ proposal mới vào operational state trước Execute; proposal / approval cũ hết hiệu lực theo revision. |
+| T16 | Tạo/publish/pause/close campaign; thiếu policy/budget hoặc contributor gửi lệnh quản lý. | Guard quyền và window đúng; thiếu config không publish; closing xử lý pending đúng hạn trước khi chốt kết quả. |
+| T17 | Nhiệm vụ đủ S-A-B-C-D-E-F; đổi cấp/thưởng trước và sau receipt; sửa grade/points từ client. | Reason/actor/version có trace; report cũ giữ policy đã pin, draft phải refresh; client không tự sửa thưởng, cấp không dựa nguy hiểm. |
+| T18 | collect/verify/update, ảnh độc lập, ảnh trùng, race/retry và report nhiều mission. | Một award/report, một completion được thưởng/participant/mission occurrence, đúng slot/budget; verify có thể thưởng không gap fill mới, không nhân discovery hoặc thưởng ảnh dư thừa. |
+| T19 | Hai vùng/campaign, bằng điểm, pending review và contributor đọc leaderboard. | Chỉ committed points đúng scope, đồng hạng và own position; không lộ report/ảnh riêng hoặc ledger dispatcher. |
+| T20 | Catalog quà, điều kiện/tie/budget, close, expiry, Reset và offline/cross-device. | Entitlement mô phỏng exactly-once, không hứa quà thật; expiry giữ điểm hợp lệ, Reset không lẫn phiên; mobile/web thấy cùng kết quả và không auto-send/award. |
 
 Test hành vi bên ngoài: seam chính scenario runner với Commander stub cho logic deterministic; seam phụ gate nhận arbitrary proposal. Rehearsal LLM thật riêng cho latency / chất lượng; không test câu chữ prompt.
 
@@ -732,7 +783,7 @@ Bảo vệ P0: incident → impact → plan → gate / approval / Execute → nh
 
 ### 9.4 Bộ nộp và Definition of Done
 
-Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20Hackathon%20-%20Participants%20briefing.pdf), tr. 3–7, 10, 12: build **10:00–17:00 ngày 31/10/2026**, nộp tiến độ **14:30**; mỗi vòng trình bày **6 phút demo / pitch + 2 phút Q&A**. Demo lõi 150 giây nằm trong bài 6 phút. Toàn đội check-in 08:30–09:15; tối thiểu 3 người, mọi thành viên đăng ký phải có mặt đủ ngày. Xác nhận phân vai theo briefing cuối.
+Theo [briefing lưu trong repo planning](https://github.com/mncuchiinhuttt/seahackathon/blob/3909094f742fb4348c917c42272699c379cd2afc/%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20Hackathon%20-%20Participants%20briefing.pdf), tr. 3-7, 10, 12: build **10:00-17:00 ngày 31/10/2026**, nộp tiến độ **14:30**; mỗi vòng trình bày **6 phút demo / pitch + 2 phút Q&A**. Demo lõi 150 giây nằm trong bài 6 phút. Toàn đội check-in 08:30-09:15; tối thiểu 3 người, mọi thành viên đăng ký phải có mặt đủ ngày. Xác nhận phân vai theo briefing cuối.
 
 **Điều kiện chuẩn bị:** briefing tr. 4 cho phép bắt đầu từ đầu hoặc mở rộng đáng kể dự án cá nhân / mã nguồn mở, chỉ chấm phần xây tại chỗ và yêu cầu khai báo repo gốc. [FAQ chính thức](https://codexhackathon.sea.com/#faq) còn ghi không nộp dự án / code làm sẵn (đối chiếu 21/10/2026). Chưa có xác nhận giải quyết khác biệt: giữ phương án **bắt đầu từ đầu**, trước D-Day chỉ chuẩn bị tài liệu; không tạo code ứng dụng / seed trước để nộp như viết tại chỗ. D09 cần đối chiếu hướng build với **bản đăng ký thực nộp**, không chỉ bản nháp trong repo.
 
@@ -741,6 +792,8 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 **Definition of Done:** P0 có evidence nghiệm thu, gồm K6 / T15; 5 invariants pass; D04 có hồ sơ nguồn / sai số và T14 đạt trong phạm vi chốt; báo K1/K2 thực từ runner kể cả không đạt target; rehearsal K4; log K5; mọi input có nhãn provenance, points ghi simulated; Reset lặp lại; không secret. Thiếu hiệu chuẩn, P0 hoặc bằng chứng phải ghi rõ, chưa đánh dấu complete.
 
 **Definition of Done cho bản triển khai hai nền tảng:** thêm bằng chứng web + iOS + Android và luồng liên thiết bị ở 3.4.3; toàn bộ phạm vi P0/P1/P2 của implementation plan được thực hiện, có disabled reason nếu thiếu config hợp lệ. Chỉ xong web hoặc chỉ có form report mobile không phải hoàn tất sản phẩm; cut-line thi ở 9.2 không tự thay phạm vi hiện hành.
+
+**DoD bổ sung AM-C01:** 38 US và T16..T20 được truy vết, contracts/producers/cả hai client/tests đã cutover cùng phiên bản; chứng minh campaign -> mission S-F -> report/review -> completion/points -> rank/benefit. Thiếu contract freeze mới, policy/budget hoặc evidence chỉ được ghi pending/blocked phần liên quan; review tài liệu cũ không chứng minh phần mới đã chạy.
 
 ### 9.5 Bằng chứng theo sáu tiêu chí chấm
 
@@ -768,10 +821,11 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 | D05 | **Đã chốt nền tảng:** web React/React Router/Tailwind v4/shadcn, native Expo/React Native, Hono/Cloudflare theo implementation plan và 3.4. **Còn mở:** model / credits / keys, exact dependency patches, dữ liệu / account và quyền deploy. | Hai client dùng chung API/session rules; web và native là hai deliverable bắt buộc. Kiểm structured output / latency và secrets server-side; chưa có access không chứng minh LLM thật hoặc release đã chạy. |
 | D06 | **Đề xuất:** UI English, report tiếng Việt; critical seed có đơn thuốc ưu tiên. | Xác nhận trước polish; không quy tất cả thuốc ngoài đời thành critical. |
 | D07 | **TBD trước sử dụng:** nguồn / quyền lưu snapshot bản đồ, vận hành và sự kiện để đáp ứng D04. Connector live / mapping thủy văn station / tide / street thuộc sau MVP. | Catalog không phải tuyên bố đã kết nối hoặc có dữ liệu hiệu chuẩn. Không suy street depth từ tide; thiếu quyền / dữ liệu thì chưa đáp ứng D04. |
-| D08 | **TBD sau MVP:** tiền / voucher, người tài trợ, ngân sách, adoption / anti-fraud thực. | Demo points, không hứa tiền thật. |
+| D08 | **Thiết kế đã bổ sung qua AM-C01:** catalog quyền lợi/voucher/phần quà theo hạng/mốc. **TBD:** nhà tài trợ, giá trị, inventory/budget, điều kiện nhận và fulfillment thật, adoption / anti-fraud thực. | Demo points/catalog/entitlement Simulated; chưa cấp quyền payout, redemption hoặc phát quà thật. |
 | D09 | **TBD trước D-Day:** phân vai / người phụ trách từng đầu ra, bản đăng ký thực nộp, chi tiết nộp tiến độ 14:30 và xác nhận BTC về khác biệt FAQ / PDF. | Khung mốc / bộ nộp theo mục 9; mặc định bắt đầu từ đầu tới khi điều kiện khác được xác nhận. Chốt tham dự, trình bày và Q&A. |
+| D10 | **Đã thống nhất ngày 31/10/2026, AM-C01:** chiến dịch, collect/verify/update missions cấp S-F, bảng hạng khu vực và quyền lợi; US-35..US-38 P0. Điểm/ngưỡng/capacity/budget chưa chốt. | Contract delta/refreeze/cutover còn pending trước implementation, không sửa giả baseline 64 operations/8 tools hoặc cấp quyền từ Markdown. |
 
-**Checklist còn mở:** vùng / kỳ / cỡ mẫu; travel / service / capacity / demand; profile confidence / TTL / tolerance vị trí; H / cumulative defer limit; quyền dữ liệu; model / hosting; ngôn ngữ UI và phân vai. D04 / 6.5 quy định căn cứ và sai số cần có; thiếu defer limit thì tắt P1 đó. Người triển khai phải nêu lựa chọn / giả định, không tự coi các mục Đề xuất / TBD là đã duyệt.
+**Checklist còn mở:** vùng / kỳ / cỡ mẫu; travel / service / capacity / demand; profile confidence / TTL / tolerance vị trí; H / cumulative defer limit; quyền dữ liệu; model / hosting; ngôn ngữ UI và phân vai. AM-C01 cần ngưỡng S-F, bảng điểm theo work type, verification slots, review window, budget/inventory/tie policy và quyền lợi thật; contract freeze mới theo spec trước implementation. D04 / 6.5 quy định căn cứ và sai số cần có; thiếu defer limit thì tắt P1 đó. Người triển khai phải nêu lựa chọn / giả định, không tự coi các mục Đề xuất / TBD là đã duyệt.
 
 ### 10.2 Sau hackathon — giả thuyết
 
@@ -783,7 +837,7 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 - [Ngập do mưa và triều — HĐND TP.HCM](https://hdnd.hochiminhcity.gov.vn/tin-tuc/tin-tong-hop/tphcm-mua-lon-ket-hop-trieu-cuong-gay-ngap-nhieu-noi): bối cảnh, không chứng minh product-market fit.
 - [FEDS — World Bank](https://documents1.worldbank.org/curated/en/099052625225018333/pdf/P176260-dffa6f4e-18b1-412f-ab75-4e4dfe34167d.pdf): reporting / decision support, không chứng minh API mở cho FloodOps.
 - [TEKKON — WEF](https://prtimes.jp/main/html/rd/p/000000022.000079512.html) và [PicTrée — TEPCO](https://www4.tepco.co.jp/en/pg/about/newsroom/press/archives/2024/20240304_01.html): gamification hỗ trợ thu thập / review hạ tầng; không chứng minh hiệu quả cho ngập TP.HCM hoặc thay toàn bộ kỹ sư.
-- API docs ở 6.6; briefing / FAQ và mốc đối chiếu ở 9.4. [Thể lệ nghiên cứu trong repo](../hackathon-research/judging-and-rules.md) là nguồn nền; file PRD này chứa các ràng buộc sản phẩm / delivery cần để triển khai.
+- API docs ở 6.6; briefing / FAQ và mốc đối chiếu ở 9.4. [Thể lệ nghiên cứu trong repo planning](https://github.com/mncuchiinhuttt/seahackathon/blob/3909094f742fb4348c917c42272699c379cd2afc/hackathon-research/judging-and-rules.md) là nguồn nền; file PRD này chứa các ràng buộc sản phẩm / delivery cần để triển khai.
 
 ### 10.4 Chú giải mã, ký hiệu và thuật ngữ
 
@@ -793,9 +847,9 @@ Các mã giúp tra cứu một yêu cầu / quyết định chính xác; không 
 
 | Mã | Cách hiểu |
 |---|---|
-| US-01…US-34 | Yêu cầu chức năng: người dùng / hệ thống cần làm được gì, kèm điều kiện nghiệm thu. |
+| US-01..US-38 | Yêu cầu chức năng; US-35..US-38 bổ sung campaign/mission/ranking/benefit qua AM-C01. |
 | POL-01…POL-08 / I1…I5 | POL là quy tắc kiểm tra hành động; I là điều kiện bắt buộc luôn đúng. |
-| K1…K6 / T01…T15 / D01…D09 | K: chỉ số / mục tiêu đo; T: tình huống nghiệm thu; D: quyết định và trạng thái đã chốt / còn mở. |
+| K1..K6 / T01..T20 / D01..D10 | K: chỉ số / mục tiêu đo; T: nghiệm thu (T16..T20 cho AM-C01); D: quyết định và trạng thái đã chốt / còn mở. |
 | P0 / P1 / P2 | Bắt buộc cho demo / mở rộng nếu còn giờ / tùy chọn; khác mức khẩn critical / food / standard của đơn hàng. |
 | E17 / N_A / H_A / O_1 / M1 / C1 | Đoạn đường / nút giao / điểm lấy hàng / đơn / tài xế xe máy / tài xế ô tô trong hình minh họa. |
 

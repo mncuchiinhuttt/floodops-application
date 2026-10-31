@@ -49,6 +49,8 @@
 - [ ] Step 09.08: Test complete built UI against actual local Worker, permission/errors/offline/race, all loading/empty/rejected/stale states, keyboard+320px reflow.
 
 ## Success criteria
+- AM-C01 sau contract cutover: contributor campaign list/detail, mission S-F/detail, task-linked report form, own completion/points, regional alias leaderboard và prize/eligibility detail; dispatcher quản lý campaign khi có capability. Không fake endpoint, điểm hoặc quà khi baseline chưa hỗ trợ.
+- T16..T20 trên web: missing-config/paused/closing/closed states, report policy pin, pending points khác committed rank, shared ties, privacy và Reset. Native report -> web review -> cả hai cùng completion/points/rank/benefit là required cross-client proof.
 - Every web route in surface matrix has real server data and errors, not mocked dashboard numbers.
 - T01..T15 relevant UI flows reproducible, no secret/capability in URL/log/localStorage.
 - Visual screenshots plus keyboard focus evidence for map/plans/report/review/results at target widths.

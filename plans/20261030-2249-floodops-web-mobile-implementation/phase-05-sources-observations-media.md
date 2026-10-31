@@ -37,6 +37,12 @@
 6. Expose graph/source/knowledge/report owner-projected reads; no camera/driver default trust hierarchy. Domain conflict transitions preserve closure and gaps.
 7. Record unavailable providers rather than no-op mocks called live adapters. Source catalog data is replay input only.
 
+## AM-C01 - Report gắn nhiệm vụ
+- Sau contract cutover ở [contributor campaigns](specs/contributor-campaigns.md), kiểm mission/campaign/region/session/epoch/vehicle/window và pin grade/reward policy version lúc nhận report hoàn chỉnh; client không tự sửa các giá trị này.
+- Dùng cùng upload/private media và duplicate normalization cho collect/verify/update. Report tự do vẫn có đường gửi; report mission chỉ thuộc một mission/campaign/region, không tự tạo điểm hoặc data need.
+- Trả liên kết và reason để ReviewRewards xét completion/award; không award ở phase 05, không biến accepted/low-confidence thành quyền đi đường. Draft offline refresh mission trước explicit send, Reset không gắn ảnh/report cũ sang campaign mới.
+- T16..T18/T20 kiểm invalid/paused/closed mission, mismatched scope, old policy/draft, media duplicate và expiry; phụ thuộc typed contract mới, không mock DTO chưa tồn tại.
+
 ## Todo list
 - [ ] Step 05.01: Implement fixture adapters weather/tide/river/traffic/camera/driver/community with common envelope, source context/observation/restriction roles and provenance labels.
 - [ ] Step 05.02: Normalize units/datum/time/geography

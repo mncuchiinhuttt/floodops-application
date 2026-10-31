@@ -1,4 +1,4 @@
-# Phase 07 — Review cộng đồng, conflict, gap và điểm exactly-once
+# Phase 07 - Review, campaign, nhiệm vụ S-F và quyền lợi
 
 ## Context links
 - [Plan](plan.md) · [PRD](../../FloodOps/prd.md) · [Coverage](specs/requirements-coverage.md) · [API](contracts/api-index.md)
@@ -34,24 +34,28 @@
 1. Review report schema/image/mapping/capture/freshness/duplicate before acceptance; record safe reason codes, no claim production anti-fraud/GPS authenticity.
 2. Conflict resolution chooses kept/superseded evidence + reason; no authoritative closure supersede, accepted low remains low and route still requires approval.
 3. Calculate useful coverage per frozen relevant segment+vehicle+epoch, accepted current nonunknown/no-conflict, low qualifies coverage.
-4. Open gap occurrence when coverage lost; acceptance/resolution checks immediately-prior open gaps and single report eligibility.
-5. Commit accepted observation+gap fill+one award/report+first-fill unique gap ledger+revision/events/idempotency atomic. Prevent duplicate photo across contributors and race between review clients.
-6. Expose contributor-own dashboard/ledger and dispatcher full ledger; no raw image or owner identity leaked to viewer.
-7. Expire evidence later opens new gap occurrence without clawback; Reset fresh ledger. Trigger planning event after commit, never rollback review if model timeout.
+4. Open gap occurrence when coverage lost; collect/update checks immediately-prior open gaps. AM-C01 verify dùng explicit data need/mission occurrence/slot, không giả gap mới để thưởng.
+5. Sau AM-C01 contract cutover, commit completion+one award/report+budget use+regional ranking+revision/events/idempotency atomic; collect giữ first-fill gap unique, verify dùng completion unique riêng. Prevent duplicate photo across contributors, duplicate branch event and review races.
+6. Expose contributor-own dashboard/ledger, campaign/mission view và alias-only regional leaderboard/prize projection; dispatcher full ledger không tự mở cho contributor. No raw image, private report or participant identity leak.
+7. Expire evidence later opens new gap occurrence without clawback; Reset fresh campaign runtime/completions/ledger/ranking/simulated benefits. Trigger planning event after knowledge commit, never rollback review if model timeout.
+8. Campaign lifecycle, S-F reason/version, collect/verify/update, pinned policy at report receipt, bounded task capacity và budget/entitlement rules theo [AM-C01](specs/contributor-campaigns.md). Người có quyền quản lý campaign; client/LLM không tự cấp grade/points/quà.
 
 ## Todo list
 - [ ] Step 07.01: Review report schema/image/mapping/capture/freshness/duplicate before acceptance
 - [ ] Step 07.02: Conflict resolution chooses kept/superseded evidence + reason
 - [ ] Step 07.03: Calculate useful coverage per frozen relevant segment+vehicle+epoch, accepted current nonunknown/no-conflict, low qualifies coverage.
-- [ ] Step 07.04: Open gap occurrence when coverage lost
-- [ ] Step 07.05: Commit accepted observation+gap fill+one award/report+first-fill unique gap ledger+revision/events/idempotency atomic. Prevent duplicate photo across contributors and race between review clients.
-- [ ] Step 07.06: Expose contributor-own dashboard/ledger and dispatcher full ledger
-- [ ] Step 07.07: Expire evidence later opens new gap occurrence without clawback
+- [ ] Step 07.04: Open gap occurrence; phân biệt collect/update gap fill và explicit verify data need/slot
+- [ ] Step 07.05: Commit completion/award/budget/ranking exactly-once; separate collect-gap và verify-completion uniqueness
+- [ ] Step 07.06: Expose own ledger, campaign/mission và alias-only ranking/prize projection; preserve dispatcher-only ledger
+- [ ] Step 07.07: Expiry không clawback; Reset clear campaign runtime/completions/points/ranks/simulated benefits
+- [ ] Step 07.08: Sau contract refreeze, implement AM-C01 campaign lifecycle, S-F/policy version, task capacity và budget/entitlement rules
 
 ## Success criteria
 - T07/T12 behavior with concurrent accepts, duplicate/old/conflict/redundant reports: exact points and gap occurrence IDs.
 - accepted report≠eligible reward≠approved route shown as separate state contracts.
-- No payment/payout endpoint; safe-location-only prompts and simulated points label.
+- T16..T20: grade/policy version không đổi ngược report đã nhận; review reordering/race không tranh slot trái policy; bảng hạng đúng region/campaign và committed awards; quà mô phỏng exactly-once.
+- No payment/payout endpoint; voucher/gift catalog/entitlement chỉ Simulated tới khi có scope fulfillment riêng; safe-location-only prompts and labels.
+- Baseline wire/contracts và gate cũ chưa chứa phần mới; không claim phase hoàn tất trước AM-C01 producer/client/test cutover và configuration gates.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

@@ -3,6 +3,8 @@
 ## Những gì user vừa chốt
 React web, React Router, Tailwind CSS v4, shadcn, isometric icons, Hono API, Expo/React Native mobile, Cloudflare Workers, feature-based architecture, full contracts/rules/tests, không chia thời gian. Không triển khai ứng dụng ở bước plan.
 
+Ngày 31/10/2026, user chốt [AM-C01](contributor-campaigns.md): contributor có campaign theo vùng/kỳ, collect/verify/update mission cấp S-F, regional leaderboard và benefit/prize design. Thêm US-35..US-38/T16..T20/D10, giữ mã cũ. Chưa chốt số điểm, ngưỡng cấp, capacity/budget hoặc quà thật; không mặc định lịch điểm theo thứ tự tới.
+
 ## Proposed technical decisions (không giả làm yêu cầu cũ)
 | ID | Quyết định | Lý do / hệ quả |
 |---|---|---|
@@ -28,9 +30,12 @@ React web, React Router, Tailwind CSS v4, shadcn, isometric icons, Hono API, Exp
 | E06 | Expo/EAS project, iOS signing/Apple team, Android keystore/store access | Mobile release owner | Dev build/emulator evidence, store release blocked, không giả EAS account |
 | E07 | Isometric icon asset/package licence confirmed | Design owner | SVG export licensed + native adapter, no nonexistent import |
 | E08 | Reviewer quyết scope high-risk authority/source profiles/retention | Product/security owner | Default deny/low-confidence, không grant quyền từ provider name |
+| E09 | Grade/reward policy theo work type, S-F thresholds hoặc manual classification có reason/version, verification slots, activity/review windows và timeout/escalation policy | Product/data + review owner, cần Lead giao | Thiếu thì campaign draft/disabled; không tự đặt điểm hoặc để review order quyết định thưởng |
+| E10 | Campaign region/ranking period, tie policy, inventory/budget, sponsor/giá trị/quy trình nhận quà thật nếu muốn phát thật | Product/benefit owner, cần user giao | Demo catalog/entitlement Simulated; không hứa voucher hoặc cấp payout/provider quyền mới |
+| E11 | AM-C01 contract delta/refreeze, migration/Reset/events/access, typed client, producer và cả hai consumer/test cùng SHA/hash | Lead + ContractsClient phối hợp owners | Baseline 64 operations/8 tools và receipts cũ chưa hỗ trợ; implementation phần mới chờ cutover |
 
 ## Scope parity và exclusions
-- Website/mobile/API đều có kịch bản rain/tide/combined, report-review-reward-replan, plan approval/execute, clock/reset/results.
+- Website/mobile/API đều có kịch bản rain/tide/combined, report-review-reward-replan, plan approval/execute, clock/reset/results; AM-C01 thêm campaign/mission S-F/ranking/benefit parity sau contract cutover.
 - Không live external provider connectors trong release này (catalog/fixture adapters vẫn đầy đủ), không payout tiền thật, push notification vận hành thật, community acquisition platform, background GPS, production auth/OMS.
 - Native app không cần auth account SaaS để xem/gửi demo reports nhưng API capability thực vẫn enforce quyền và phiên.
 - Không đưa lại tranh luận pre-build vào logic sản phẩm; tài liệu giữ source compliance ở PRD, plan không ràng buộc schedule 7h.
@@ -40,3 +45,4 @@ React web, React Router, Tailwind CSS v4, shadcn, isometric icons, Hono API, Exp
 - E01/E02/E03 là information/data prerequisites, không thể giải bằng architecture; assign owner và evidence paths.
 - Không đổi PRD P1/P2 priority chỉ để cắt application. Plan phases có dependency order thay vì duration.
 - Nếu source update scope, sửa coverage/contracts/specs cùng lần; log ADR ngắn, không duplicate PRD nguyên file.
+- AM-C01 hiện là approved product/doc amendment. Cutover mới phải review wire/examples/client/capability/storage/producers/web/native/tests cùng candidate; không sửa historical gate/baseline/role receipt để giả đã pass. Worker đang chạy nhận amendment/resync từ Lead trước đổi contract.

@@ -49,10 +49,14 @@
 ## Report, gap, reward
 - Accepted ≠ rewarded ≠ route approved. Useful coverage accepted/fresh/epoch+vehicle đúng/nonunknown/no-conflict, **low vẫn covered** nhưng route cần approval.
 - Gap relevant segment+vehicle missing coverage; relevance scope frozen; reopen sinh occurrence ID mới.
-- Transaction review acceptance/resolution: xem gap open ngay trước transition, validate freshness/hash/vehicle, tạo observations, fill gaps, grant max **một award/report**, mỗi gap max một first-fill award, snapshot/event atomic.
+- Collect/update hoặc report tự do: review acceptance/resolution xem gap open ngay trước transition, validate freshness/hash/vehicle, tạo observations, fill gaps, tối đa một first-fill award/gap occurrence. AM-C01 verify là explicit mission/slot/evidence hữu ích, có thể award mà không tạo gap fill giả.
+- [AM-C01](contributor-campaigns.md) là target policy sau contract cutover, không endpoint đã có: report thuộc tối đa một mission/campaign/region, tối đa một award/report và một eligible completion/participant/mission occurrence. Completion/award/budget/ranking contribution/snapshot/event atomic; discovery-gap uniqueness tách verification-completion uniqueness.
 - Cùng hash ảnh normalized qua participant khác trong session => DUPLICATE_IMAGE, không duplicate points; hash scope server-side, không tin supplied client hash.
-- Camera/system source không được thưởng; redundant valid report lưu history với 0 point.
-- Expiry sau award hợp lệ không clawback points; Reset xóa ledger phiên mới. Không tiền thật hoặc route permissions đổi từ điểm.
+- Camera/system source không được thưởng; redundant ngoài verify task đủ điều kiện lưu history với 0 point. Same conclusion hoặc account ID khác không tự chứng minh verification độc lập; conflict vẫn qua review.
+- Campaign có authorized lifecycle/config guard; S-F do server/người có quyền gán với reason/version theo data urgency/impact. Reward policy pin khi nhận report hoàn chỉnh; đổi cấp sau đó không tự hạ thưởng report đã nhận. Điểm/ngưỡng/capacity/budget phải cấu hình hợp lệ, không mặc định một lịch điểm.
+- Verification slots theo stable receipt sequence trong các submission cuối cùng đủ điều kiện; không theo review click, incomplete upload không giữ slot. Chờ earlier pending trước chốt last slot; review timeout/escalation policy phải có trước publish, overdue không tự thành fail hoặc free slot.
+- Regional rank từ committed awards đúng campaign/region; bằng điểm đồng hạng, projection alias-only. Catalog/tie/inventory/budget phải rõ trước publish; pending review không final rank/benefit.
+- Expiry sau award hợp lệ không clawback points; Reset xóa campaign runtime/completions/ledger/ranking/simulated benefits phiên mới. Demo voucher/gift entitlement là Simulated, không tiền thật hoặc route permissions đổi từ điểm.
 - Không khuyến khích đi vào nước/nguy hiểm; chỉ báo cáo từ vị trí đang an toàn.
 
 ## Error semantics

@@ -22,6 +22,12 @@
 - [Feature-based layering](specs/architecture.md) là chuẩn. Shared schema/domain/data authority không fork cho web/native.
 - Phase này không tự đổi API/role/revision contract; interface change phải sửa OpenAPI + client + tests trước consumers.
 
+## AM-C01 - Contract delta trước triển khai contributor
+- User đã chốt [campaigns/missions/ranking/benefits](specs/contributor-campaigns.md); baseline 64 operations/8 tools chưa có DTO hoặc operations tương ứng. Phase 01 cần review/freeze delta thay vì đoán endpoint hoặc nhét field lạ vào strict schema.
+- Candidate bổ sung Campaign/Mission S-F/Completion, policy-versioned Award, regional alias projection, prize catalog/entitlement; cập nhật access matrix, error/event/Reset semantics, examples và typed clients cùng lần. Grade/points/budget không do client hoặc LLM cấp.
+- Producer 05/07, web/native 09/10 và QA 11 dùng cùng contract SHA/hash mới; migration/rollback hoặc new-session cutover được ghi rõ. T16..T20 và 38 US phải được map trước release.
+- Historical plan-published/contract-index/receipts chưa chứng minh delta đã được freeze. Lead publish amendment/resync và ownership của phần mới trước worker launch; tài liệu này không tự cấp grant hoặc đổi protected metadata.
+
 ## Related code files
 - Create/modify `package.json; bunfig.toml; tsconfig.base.json; eslint.config.js (root workspace/import rules)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
 - Create/modify `packages/contracts/src/** (common + session/scenario/operations/evidence/planning/simulation DTOs)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
