@@ -1,0 +1,47 @@
+{
+  "amendment_id": "session-platform-image-event-isolation-v1",
+  "status": "authorized",
+  "scope": "Narrow correction of the already frozen dispatcher-only image_review_changed invariant. No wire/PRD, dependency, permission or production change.",
+  "integrated_source_sha": "0b6521ab2b717ad5f41d36ae785cb7a13e7e6be4",
+  "integrated_delivery_sha": "43a0553fd98ff79e1b22d61447c80534a71e0fef",
+  "integration_merge_sha": "fdd64af1d9b9ed91ff76aaa85dfd1457ee1a8b95",
+  "next_work_item": "session-platform-phase-04-v2",
+  "work_items": [
+    {
+      "role_id": "session-platform",
+      "work_item_id": "session-platform-phase-04-v2",
+      "include_files": [
+        "apps/api/src/session-runtime/events.ts",
+        "apps/api/src/session-runtime/README.md",
+        "apps/api/test/runtime-worker.ts"
+      ],
+      "include_prefixes": [
+        "apps/api/test/replay/",
+        "apps/api/test/commands/",
+        "apps/api/test/capabilities/"
+      ]
+    }
+  ],
+  "finding": {
+    "location": "apps/api/src/session-runtime/events.ts:14 and eventPage audience filter",
+    "cause": "appendEvents forces roles=[dispatcher] but preserves input.participantIds; eventPage accepts role OR explicit participant ID. A downstream misdirected image event can therefore reach a non-dispatcher participant.",
+    "proof": "Lead Workerd fault-injection probe using actual public factory/Hono/SQLite DO: authenticated owner metadata reducer emits image_review_changed with audience contributor + participantIds=[contributor participant]. Contributor GET events returns1 matching event; expected0. Command and GET both200. Probe failed its privacy assertion, not setup.",
+    "command": "bun run --cwd apps/api test:runtime --config .wrangler/session-review-probe/vitest.config.ts",
+    "result": "FAIL: expected length0, received1",
+    "qualification": "Fault-injected trusted reducer misconfiguration proves missing projection defense; not a claim that public users can register reducers or directly bypass command permissions."
+  },
+  "required_fix": [
+    "Enforce dispatcher-only delivery independent of participantIds and caller-specified audience; consider both append normalization and read-time defense for already misdirected rows.",
+    "Add real Workerd regression(s) for contributor/driver/viewer explicit participant targeting, dispatcher visibility and hidden scan-cursor progress. JSON and SSE must share the corrected projection.",
+    "Keep safe resource IDs only; no image/advice text, capabilities, operational revision mutation or new model/reward behavior.",
+    "Re-run full44+ runtime suite, types/lint and exact targeted regression; no fake platform-ready. No need for new dependencies or central edits."
+  ],
+  "completed_lead_checks": [
+    "Exact delivery verifier44 paths/policy/index/ancestry passed",
+    "C/R signed valid; exact R merged preserving history",
+    "Integrated actual Workerd44 tests pass after source's final reset adjustment",
+    "API source/test typechecks and scoped ESLint pass"
+  ],
+  "remaining_integration": "Lead must compose actual registered class/bindings/loadScenario and feature ports using real integrated SimulationData exports, not production test seeds or fabricated projections. Missing business projections remain explicit CONFIG_INCOMPLETE; full backend is later gate.",
+  "remote_permissions": "No push/deploy/account/key/resource/model/device authority; parent owns the same-worker fast resume."
+}

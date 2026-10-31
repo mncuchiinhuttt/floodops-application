@@ -1,0 +1,89 @@
+{
+  "work_item_id": "session-platform-phase-04-v1",
+  "role_id": "session-platform",
+  "base_sha": "f0c6dc019dc63df89eb8c479de2cd00310123f54",
+  "observed_launch_sha": "c17ef2531904f2d94b39e074677cdd212db7d0cc",
+  "delivery_sha": "43a0553fd98ff79e1b22d61447c80534a71e0fef",
+  "status": "blocked",
+  "contract_sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e",
+  "source_sha": "0b6521ab2b717ad5f41d36ae785cb7a13e7e6be4",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/src/app/create-app.ts",
+    "apps/api/src/app/http.ts",
+    "apps/api/src/app/index.ts",
+    "apps/api/src/features/session/creation.ts",
+    "apps/api/src/features/session/router.ts",
+    "apps/api/src/features/session/stream.ts",
+    "apps/api/src/session-runtime/README.md",
+    "apps/api/src/session-runtime/auth.ts",
+    "apps/api/src/session-runtime/credentials.ts",
+    "apps/api/src/session-runtime/events.ts",
+    "apps/api/src/session-runtime/image-jobs.ts",
+    "apps/api/src/session-runtime/index.ts",
+    "apps/api/src/session-runtime/initialize.ts",
+    "apps/api/src/session-runtime/leases.ts",
+    "apps/api/src/session-runtime/lifecycle.ts",
+    "apps/api/src/session-runtime/membership.ts",
+    "apps/api/src/session-runtime/pagination.ts",
+    "apps/api/src/session-runtime/permissions.ts",
+    "apps/api/src/session-runtime/quotas.ts",
+    "apps/api/src/session-runtime/reads.ts",
+    "apps/api/src/session-runtime/reset.ts",
+    "apps/api/src/session-runtime/schema.ts",
+    "apps/api/src/session-runtime/session-object.ts",
+    "apps/api/src/session-runtime/store.ts",
+    "apps/api/src/session-runtime/transitions.ts",
+    "apps/api/src/shared/crypto.ts",
+    "apps/api/src/shared/index.ts",
+    "apps/api/src/shared/platform-error.ts",
+    "apps/api/src/shared/platform-types.ts",
+    "apps/api/src/shared/session-client.ts",
+    "apps/api/test/capabilities/helpers.ts",
+    "apps/api/test/capabilities/limits.test.ts",
+    "apps/api/test/capabilities/security.test.ts",
+    "apps/api/test/capabilities/tsconfig.json",
+    "apps/api/test/commands/atomic.test.ts",
+    "apps/api/test/commands/image-metadata.test.ts",
+    "apps/api/test/commands/leases.test.ts",
+    "apps/api/test/expiry/lifecycle.test.ts",
+    "apps/api/test/replay/events.test.ts",
+    "apps/api/test/reset/saga.test.ts",
+    "apps/api/test/runtime-worker.ts",
+    "apps/api/vitest.config.ts",
+    "apps/api/wrangler.test.jsonc",
+    "plans/reports/worktree-session-platform-session-platform-phase-04-v1.md"
+  ],
+  "checks": [
+    {
+      "command": "Lead exact delivery verifier, signatures, actual integrated44 Workerd tests, API/test types and scoped lint",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-session-platform-session-platform-phase-04-v1.md"
+    },
+    {
+      "command": "bun run --cwd apps/api test:runtime --config .wrangler/session-review-probe/vitest.config.ts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "fail",
+      "evidence_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/amendments/session-platform-image-event-isolation-v1.json"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [
+    "apps/api/src/app/index.ts:createApp/http adapters",
+    "apps/api/src/session-runtime/index.ts:createSessionObject/SessionDO and transition types",
+    "apps/api/src/shared/index.ts:runtime/image metadata client and platform types"
+  ],
+  "integration_requests": [
+    "Enforce dispatcher-only delivery independent of participantIds and caller-specified audience; consider both append normalization and read-time defense for already misdirected rows.",
+    "Add real Workerd regression(s) for contributor/driver/viewer explicit participant targeting, dispatcher visibility and hidden scan-cursor progress. JSON and SSE must share the corrected projection.",
+    "Keep safe resource IDs only; no image/advice text, capabilities, operational revision mutation or new model/reward behavior.",
+    "Re-run full44+ runtime suite, types/lint and exact targeted regression; no fake platform-ready. No need for new dependencies or central edits."
+  ],
+  "blocked_prerequisites": [
+    "appendEvents forces roles=[dispatcher] but preserves input.participantIds; eventPage accepts role OR explicit participant ID. A downstream misdirected image event can therefore reach a non-dispatcher participant.",
+    "Lead must compose actual registered class/bindings/loadScenario and feature ports using real integrated SimulationData exports, not production test seeds or fabricated projections. Missing business projections remain explicit CONFIG_INCOMPLETE; full backend is later gate."
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}
