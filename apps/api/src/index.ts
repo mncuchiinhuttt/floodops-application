@@ -6,6 +6,7 @@ import { createRun, loadScenario, type ScenarioManifest, type SimulationRun } fr
 import { freezeValue } from "@floodops/domain/operations";
 import type { ScenarioReference, SimulationPersistence } from "@floodops/domain/public-ports";
 import manifest from "../../../data/scenarios/functional-v2/manifest.json";
+import demoRewardPolicyDocument from "../../../data/policies/demo-reward-policy-v1.json";
 import legacyManifest from "../../../data/scenarios/functional-v1/manifest.json";
 import { createApp } from "./app/index";
 import { fail, type PlatformBindings, type SessionSeed, type RuntimeRegistry, type TransitionContext } from "./shared/index";
@@ -17,6 +18,7 @@ import { createReviewSeed, createSourceBackedReviewRuntime, reconcileReviewGaps 
 import { imageReviewConfigFromEnv } from "./features/reports/review/image/environment-config";
 import { createResponsesImageReviewPort } from "./features/reports/review/image/responses-image-review";
 import { createEvaluationRuntime } from "./features/evaluations/index";
+import { loadDemoRewardPolicy } from "./features/rewards/reward-policy";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
 const legacyScenario = loadScenario(legacyManifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
@@ -73,7 +75,11 @@ function sessionSeed(id: string, version: string): SessionSeed {
   };
 }
 export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> { return sessionSeed(id, version); }
-const ports = { scenarioCatalog, simulationPersistence };
+const rewardPolicyBindings = workerEnv as unknown as PlatformBindings & { DEMO_REWARD_POLICY_ENABLED?: string };
+const demoRewardConfig = loadDemoRewardPolicy(demoRewardPolicyDocument,
+  rewardPolicyBindings.DEMO_REWARD_POLICY_ENABLED === undefined || rewardPolicyBindings.DEMO_REWARD_POLICY_ENABLED === "true");
+const ports = { scenarioCatalog, simulationPersistence,
+  ...(demoRewardConfig ? { receiptRewardPolicy: () => demoRewardConfig.policy } : {}) };
 const sources = createSourcesFeature(ports);
 // Image review stays unavailable unless its explicit backend Worker bindings are complete.
 const imageReviewSettings = imageReviewConfigFromEnv(workerEnv as unknown as PlatformBindings);
@@ -81,6 +87,8 @@ const imageReviewProvider = imageReviewSettings.providerConfig
   ? createResponsesImageReviewPort(imageReviewSettings.providerConfig, fetch)
   : undefined;
 const review = createSourceBackedReviewRuntime(ports, {
+  ...(demoRewardConfig ? { resolveRewardPolicy: receipt => receipt.policy_id === demoRewardConfig.policy.policy_id
+    && receipt.version === demoRewardConfig.policy.version && receipt.config_hash === demoRewardConfig.policy.config_hash ? demoRewardConfig : null } : {}),
   imageConfig: imageReviewSettings.imageConfig,
   imageProvider: imageReviewProvider ? () => imageReviewProvider : undefined,
 });
@@ -116,6 +124,7 @@ const registry: RuntimeRegistry = {
   ...review.registry, serialization: "m1-v1", seedForReset: previous => sessionSeed(previous.scenario_id, previous.scenario_version),
   commands: { ...sources.registry.commands, ...simulation.registry.commands, ...planning.registry.commands, ...review.registry.commands,
     ...evaluation.registry.commands },
+  drivers: { ...planning.registry.drivers, ...evaluation.registry.drivers },
   views: { ...sources.registry.views, ...simulation.registry.views, ...planning.registry.views, ...review.registry.views,
     ...evaluation.registry.views, ...workspaces, [RESULTS_VIEW]: createResultsView(simulationPersistence) },
   onLeaseExpired(snapshot, lease, now) {
