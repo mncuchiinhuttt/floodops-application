@@ -27,6 +27,8 @@
     "APP_ENV": "production",
     "WEB_ORIGIN": "https://floodops-api.vominhlongbentre.workers.dev,https://floodops.mncuchiinhuttt.dev",
     "CREATE_LIMIT_PER_HOUR": "200",
+    "OPENAI_IMAGE_REVIEW_MODEL": "gpt-6-luna",
+    "OPENAI_IMAGE_REVIEW_ENABLED": "true",
     "CAPABILITY_SEAL_KEY_ID": "prod-v1"
   },
   "env": {

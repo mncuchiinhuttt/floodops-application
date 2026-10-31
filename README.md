@@ -42,7 +42,7 @@ node apps/api/node_modules/wrangler/bin/wrangler.js dev --config tooling/runtime
 
 This is explicitly local synthetic test configuration, not deployment: isolated SQLite/private R2/Images, public synthetic local signing values, web origin127.0.0.1:5174. For ordinary non-synthetic dev, use the API-local config with operator-supplied session secrets. Running Bun does not automatically expose its `.env` to Workerd; `--env-file` passes it into the Worker binding environment. The installed Wrangler4.156.0 CLI was checked for this option. Automatic `.env` search otherwise uses the Wrangler config directory, and `.dev.vars` takes precedence; do not duplicate real keys across files. See [Cloudflare local environment docs](https://developers.cloudflare.com/workers/local-development/environment-variables/). Never print bindings/process.env or prefix this secret with VITE_/EXPO_PUBLIC_.
 
-For remote deployments, use `wrangler secret put OPENAI_API_KEY` for the key and configure `OPENAI_IMAGE_REVIEW_MODEL`, `OPENAI_IMAGE_REVIEW_ENABLED`, and optional `OPENAI_IMAGE_REVIEW_MAX_OUTPUT_TOKENS` as Worker variables. Keep the key out of Wrangler config and browser-prefixed variables.
+For remote deployments, the model and enable flag are Worker variables in `apps/api/wrangler.jsonc` (`OPENAI_IMAGE_REVIEW_MODEL`, `OPENAI_IMAGE_REVIEW_ENABLED`, optional `OPENAI_IMAGE_REVIEW_MAX_OUTPUT_TOKENS`); the key is a secret. After filling `OPENAI_API_KEY` in the repo-root `.env`, upload it without printing it: `CLOUDFLARE_ACCOUNT_ID=<id> tooling/runtime/push-openai-secret.sh`. Until the secret exists the adapter stays disabled. Keep the key out of Wrangler config and browser-prefixed variables.
 
 ## Cloudflare production deployment (demo)
 
