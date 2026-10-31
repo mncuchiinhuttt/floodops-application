@@ -1,3 +1,4 @@
+import { PresentationGallery } from "./presentation-gallery";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { tokens } from "@floodops/design-tokens";
@@ -62,6 +63,6 @@ export function FoundationsGallery() {
       {(["hub", "parcel", "motorbike", "car", "water", "source"] as const).map(name => <Icon key={name} name={name} label={name} size={64} />)}
     </View></Card>
     <Alert title="Component status">No application connection is active.</Alert>
-    <Skeleton label="Loading example" />
+    <Skeleton label="Loading example" /><PresentationGallery />
   </ScrollView>;
 }

@@ -1,17 +1,19 @@
+import type { ComponentRef, Ref } from "react";
 import { useId, useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import type { TextInputProps } from "react-native";
 import { styles } from "./styles";
 
-export type TextFieldProps = TextInputProps & { label: string; hint?: string; error?: string; required?: boolean };
+export type TextFieldProps = TextInputProps & { ref?: Ref<ComponentRef<typeof TextInput>>; label: string; hint?: string; error?: string; required?: boolean };
 export function TextField({ label, hint, error, required, onFocus, onBlur, accessibilityHint, ...props }: TextFieldProps) {
   if (!label.trim()) throw new Error("Fields require a non-empty visible label.");
+  const fieldLabel = `${label}${required ? " (required)" : ""}`;
   const id = useId();
   const [focused, setFocused] = useState(false);
   return <View style={styles.group}>
-    <Text nativeID={`${id}-label`} style={styles.label}>{label}{required ? " (required)" : ""}</Text>
+    <Text nativeID={`${id}-label`} style={styles.label}>{fieldLabel}</Text>
     {hint && <Text style={styles.hint}>{hint}</Text>}
-    <TextInput {...props} accessibilityLabel={`${label}${required ? ", required" : ""}`}
+    <TextInput {...props} accessibilityLabel={fieldLabel}
       accessibilityLabelledBy={`${id}-label`} accessibilityHint={[accessibilityHint, hint, error && `Error: ${error}`].filter(Boolean).join(". ") || undefined}
       accessibilityState={{ ...props.accessibilityState, disabled: props.editable === false }}
       onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }}

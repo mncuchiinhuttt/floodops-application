@@ -15,7 +15,7 @@ export function FoundationsGallery() {
   const [submitted, setSubmitted] = useState(false);
   const [pressed, setPressed] = useState(0);
   const [attempt, setAttempt] = useState(0);
-  return <main style={{ maxWidth: 960, margin: "auto", padding: "var(--fo-space-4)", display: "grid", gap: "var(--fo-space-4)" }}>
+  return <div style={{ maxWidth: 960, margin: "auto", padding: "var(--fo-space-4)", display: "grid", gap: "var(--fo-space-4)" }}>
     <h1>FloodOps foundations</h1>
     <p>Simulation · component review gallery</p>
     <Card title="Actions" description="Generic states; no operation is executed.">
@@ -56,5 +56,5 @@ export function FoundationsGallery() {
     </Card>
     <Alert title="Component status">No application connection is active.</Alert>
     <Alert title="Example error" urgent>Retry is a manual action.</Alert><Skeleton label="Loading example" />
-  </main>;
+  </div>;
 }

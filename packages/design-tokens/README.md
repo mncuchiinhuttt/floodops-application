@@ -9,3 +9,5 @@ CSS defines stable `--fo-*` properties and Tailwind v4 `@theme inline` color/spa
 Checks: `bun test packages/design-tokens/test`, `bun --bun run tsc -p packages/design-tokens/tsconfig.json`. Contrast tests cover foreground/background/border pairs, action hover/disabled, text, focus and map lines on supported canvas/panel surfaces. A contrast check does not prove complete web or native accessibility. New pairings need tests.
 
 Breaking semantic renames require both adapters and consumer migration in the same approved delivery; avoid permanent compatibility aliases. Token checks alone do not establish a full UI gate.
+
+The public root also exports UI-only presentation types and pure map display helpers. Feature facades map frozen contracts into these view models; they are not wire schemas or domain models. Structured map points are finite and inside explicit view-box dimensions, road patterns consume canonical map aliases, and route overlays retain a separate state stroke. Elevation is canonical data with synchronized CSS shadow and native shadow/elevation inputs. No clock, network, React or native platform dependency is added to this package.
