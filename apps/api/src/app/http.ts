@@ -1,3 +1,4 @@
+import type { StatusCode } from "hono/utils/http-status";
 import { formatEtag, parseOperationResponse, parseSchema, type OperationId } from "@floodops/contracts";
 import { open, validateKey } from "../shared/crypto";
 import { errorReply, fail } from "../shared/platform-error";
@@ -37,7 +38,8 @@ export async function invoke(c: AppContext, call: Call): Promise<Reply> {
 }
 export async function send(c: AppContext, reply: Reply, operation?: OperationId): Promise<Response> {
   const body = structuredClone(reply.body);
-  const headers = new Headers({ "Content-Type": "application/json", "Cache-Control": "no-store", "X-Request-ID": String(body.meta.request_id) });
+  const headers = new Headers({ "Cache-Control": "no-store", "X-Request-ID": String(body.meta.request_id) });
+  if (reply.status !== 204) headers.set("Content-Type", "application/json");
   if (reply.credential) {
     const secret = await open<{ token: string; csrf: string | null }>(c.env, reply.credential.box, reply.credential.aad);
     if (reply.credential.type === "invite") (body.data as Record<string, unknown>).claim_token = secret.token;
@@ -54,7 +56,7 @@ export async function send(c: AppContext, reply: Reply, operation?: OperationId)
   if (reply.retryAfter) headers.set("Retry-After", String(reply.retryAfter));
   if (reply.status < 400 && reply.status !== 204 && operation) parseOperationResponse(operation, reply.status, body);
   if (reply.status >= 400) parseSchema("ErrorResponse", body);
-  return new Response(reply.status === 204 ? null : JSON.stringify(body), { status: reply.status, headers });
+  return c.newResponse(reply.status === 204 ? null : JSON.stringify(body), { status: reply.status as StatusCode, headers });
 }
 export function key(c: AppContext): string { return validateKey(c.req.header("Idempotency-Key")); }
 export function failure(c: AppContext, error: unknown): Promise<Response> { return send(c, errorReply(error, c.get("requestId"))); }

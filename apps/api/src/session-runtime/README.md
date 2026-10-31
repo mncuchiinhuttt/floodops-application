@@ -1,6 +1,6 @@
 # SessionPlatform public seam
 
-`../app/index.ts` exports `createApp(featureRouters, ports)` and HTTP helpers. The factory mounts session routes at `/api/v1`, then injected feature Hono routers under the same prefix. Feature routes use `runtimeCall` → `invoke` → `send`. `send` deliberately never exposes an internal job lease/effect. Production entrypoint and Wrangler bindings remain IntegrationLead-owned.
+`../app/index.ts` exports `createApp(featureRouters, ports)` and HTTP helpers. The factory mounts session routes at `/api/v1`, then injected feature Hono routers under the same prefix. Feature routes use `runtimeCall` → `invoke` → `send`. JSON and SSE adapters construct responses with the Hono context builder, preserving middleware security and exact-Origin CORS headers alongside status, ETag, cookies and stream body. Empty 204 responses carry no JSON representation. `send` deliberately never exposes an internal job lease/effect. Production entrypoint and Wrangler bindings remain IntegrationLead-owned.
 
 `./index.ts` exports `SessionDO`, `createSessionObject(registry)` and transition types. Lead composes pure command reducers, view projections, `imageBinding`, and `onLeaseExpired` inside the DO class with `createSessionObject`; closures never cross RPC. Missing scenario or projection implementations return a typed dependency failure instead of fabricated domain state. `PlatformPorts.loadScenario` must return the frozen scenario seed, entities, initial values, horizon and calibration status.
 
