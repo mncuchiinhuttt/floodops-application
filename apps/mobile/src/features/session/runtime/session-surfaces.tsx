@@ -1,3 +1,4 @@
+import { OwnReportsScreen } from "../../reports/own-reports-screen";
 import { Text } from "react-native";
 import { Alert, Button } from "@floodops/ui-native";
 import { useRouter } from "expo-router";
@@ -26,11 +27,11 @@ export function SessionSurface({ workspace }: { workspace: string }) {
 }
 function DriverRuntime({ context }: { context: MobileContext }) {
   const query = useResource(context, ["own-driver"], async (api, options) => { const result = await api.request("getOwnDriverDashboard", { path: { session_id: context.session.session_id } }, options); return { value: result.body.data, meta: result.body.meta }; });
-  return <DriverScreen context={context} query={query} />;
+  return <><DriverScreen context={context} query={query} />{query.status === "error" && <OwnReportsRuntime context={context} />}</>;
 }
 function ContributorRuntime({ context }: { context: MobileContext }) {
   const query = useResource(context, ["own-contributor"], async (api, options) => { const result = await api.request("getOwnContributorDashboard", { path: { session_id: context.session.session_id } }, options); return { value: result.body.data, meta: result.body.meta }; });
-  return <ContributorScreen context={context} query={query} />;
+  return <><ContributorScreen context={context} query={query} />{query.status === "error" && <OwnReportsRuntime context={context} />}</>;
 }
 function DispatchSnapshot({ context, surface }: { context: MobileContext; surface: string }) {
   const runtime = useNativeRuntime(), command = useNativeCommand(); const path = { session_id: context.session.session_id };
@@ -73,4 +74,12 @@ function ReviewList({ context }: { context: MobileContext }) {
     {!reports.length && <Text>No accessible reports.</Text>}{reports.map(report => <Button key={report.report_id} label={`${report.report_id} · ${report.status}`}
       onPress={() => router.push({ pathname: "/sessions/[sessionId]/reports/[reportId]", params: { sessionId: context.session.session_id, reportId: report.report_id } })} />)}
   </ScreenFrame>}</ResourceBoundary>;
+}
+
+function OwnReportsRuntime({ context }: { context: MobileContext }) {
+  const query = useResource(context, ["field-own-reports"], async (api, options) => {
+    const result = await api.request("listReports", { path: { session_id: context.session.session_id } }, options);
+    return { value: result.body.data.items, meta: result.body.meta };
+  });
+  return <OwnReportsScreen context={context} query={query} />;
 }
