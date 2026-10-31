@@ -1,0 +1,36 @@
+{
+  "name": "floodops-planner-mvp-test",
+  "main": "./runtime-worker.ts",
+  "compatibility_date": "2026-10-30",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SESSIONS",
+        "class_name": "SessionDO"
+      },
+      {
+        "name": "MISSING_SESSIONS",
+        "class_name": "MissingSessionDO"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "SessionDO",
+        "MissingSessionDO"
+      ]
+    }
+  ],
+  "vars": {
+    "WEB_ORIGIN": "https://floodops.test",
+    "APP_ENV": "test",
+    "SESSION_LOCATOR_KEY": "synthetic-test-locator-key-never-use-remotely",
+    "CAPABILITY_SEAL_KEY_ACTIVE": "synthetic-test-sealing-key-never-use-remotely",
+    "CAPABILITY_SEAL_KEY_ID": "test-v1"
+  }
+}

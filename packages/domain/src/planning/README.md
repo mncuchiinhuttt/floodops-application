@@ -68,3 +68,9 @@ Focused tests live under `apps/api/test/planning` and `apps/api/test/policy`; sc
 critical-loss/approval-invariance case through actual public simulator paths. `planning-smoke.ts`
 retains original-event-fixture hub pickup/projection proof. Neither is a durable Execute proof.
 No phase06/planner-ready, calibration, real-model or client acceptance is implied.
+
+Runtime v3 consumer: `apps/api/src/features/planning/index.ts` composes these pure functions with actual
+Hono/DO jobs, metadata decisions, atomic Execute and persisted movement grants. A valid server-issued
+soft-risk path remains pending when it differs from a safe detour; unmatched DTO path assertions still
+grant no authority. Ready metrics use the actual gated projection. Runtime proposals normalize cached
+knowledge from canonical source facts before tools/gates; see the API-owned README for composition.

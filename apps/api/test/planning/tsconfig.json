@@ -2,7 +2,10 @@
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "types": [
-      "bun"
+      "bun",
+      "node",
+      "@cloudflare/workers-types",
+      "@cloudflare/vitest-plugin/types"
     ]
   },
   "include": [

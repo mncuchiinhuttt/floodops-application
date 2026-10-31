@@ -91,9 +91,16 @@ export function evaluateCandidate(input: CandidateEvaluationInput): CandidateEva
       const context = contextFor(driverId, all);
       seen.length = 0;
       const route = computeRoute(run, all.candidate, driverId, strict, context);
-      if (route.status === "candidate") continue;
       const soft = createPlanningPolicy(run, input.authority, all.actionIdsByDriver, currentPolicy, true);
-      const pending = computeRoute(run, all.candidate, driverId, soft, context).status === "candidate";
+      const proposed = computeRoute(run, all.candidate, driverId, soft, context);
+      const supplied = input.routes.filter(r => r.driver_id === driverId && input.plan.actions.some(a =>
+        all.actionIdsByDriver[driverId]?.includes(a.action_id) && a.targets.route_id === r.route_id));
+      const boundSoftPath = proposed.status === "candidate" && supplied.some(r =>
+        JSON.stringify(r.segment_ids) === JSON.stringify(proposed.segment_ids));
+      const pending = proposed.status === "candidate";
+      // An issued soft-risk route is still pending when a different safe detour exists.
+      // Invalid/unmatched DTO segment assertions remain powerless: only recomputed paths can be used.
+      if (route.status === "candidate" && (!boundSoftPath || JSON.stringify(route.segment_ids) === JSON.stringify(proposed.segment_ids))) continue;
       const stale = seen.find(d => d.status === "needs_replan");
       const issue = pending ? decision("pending_approval", "POL-02", "EXACT_APPROVAL_REQUIRED", all.actionIdsByDriver[driverId], true)
         : stale ?? decision("blocked", "POL-04", "NO_FEASIBLE_ROUTE", [driverId]);
