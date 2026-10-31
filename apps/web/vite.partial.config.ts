@@ -1,0 +1,6 @@
+import { defineConfig } from "vite";
+import tailwind from "@tailwindcss/vite";
+export default defineConfig({ plugins: [tailwind()], root: new URL("./preview", import.meta.url).pathname,
+  server: { host: "127.0.0.1", port: 5174, strictPort: true },
+  build: { outDir: "../dist/partial", emptyOutDir: true },
+});

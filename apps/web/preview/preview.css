@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "@floodops/design-tokens/styles.css";
+@import "@floodops/ui-web/styles.css";
+body { margin: 0; background: #f6f7f5; color: #172f32; font-family: system-ui, sans-serif; }
+.fixture-preview { max-width: 80rem; margin: auto; padding: clamp(.75rem, 3vw, 2.5rem); overflow-wrap: anywhere; }
+.fixture-warning { padding: 1rem; border: 3px solid #9c5822; background: #fff3df; margin-bottom: 1.5rem; }
+.fixture-warning nav, .feature-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.simulation-banner { padding: .75rem; border-inline-start: 4px solid #206e68; background: #e9f4f0; }
+main, section, form { min-width: 0; }
+fieldset { min-inline-size: 0; margin-block: 1rem; padding: 1rem; border: 1px solid #aabfba; }
+fieldset > label { display: block; margin-block: .5rem; }
+input[type=checkbox], input[type=radio] { width: 1.25rem; height: 1.25rem; margin: .75rem; vertical-align: middle; }
+article { border-block-end: 1px solid #aabfba; padding-block: 1rem; }
+article dl { display: flex; flex-wrap: wrap; gap: 1rem; }
+article dd { margin-inline-start: 0; }
+footer { padding: 1rem; margin-top: 2rem; border: 1px dashed #206e68; }
+.fixture-preview h1 { font-size: clamp(1.5rem, 3.2vw, 2rem); font-weight: 750; line-height: 1.2; margin-block: 1rem; }
+.fixture-preview h3 { font-size: 1.2rem; font-weight: 700; margin-block: .75rem; }
+.fixture-preview h4 { font-weight: 700; margin-top: 1rem; }
+.fixture-preview p { margin-block: .65rem; }
+.fixture-preview main > .fo-card { margin-block: 1rem; }
