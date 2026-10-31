@@ -7,7 +7,7 @@
       "const": "inert-prompt-injection-scenarios"
     },
     "execution_status": {
-      "const": "not-executed-against-agents-or-app"
+      "const": "partially-executed-against-app"
     },
     "purpose": {
       "type": "string"

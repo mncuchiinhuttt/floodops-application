@@ -1,6 +1,6 @@
 {
   "kind": "inert-prompt-injection-scenarios",
-  "execution_status": "not-executed-against-agents-or-app",
+  "execution_status": "partially-executed-against-app",
   "purpose": "Synthetic hostile/benign input data with desired observable boundary outcomes. Schema/docs validation is not proof of agent or application injection resistance.",
   "cases": [
     {
