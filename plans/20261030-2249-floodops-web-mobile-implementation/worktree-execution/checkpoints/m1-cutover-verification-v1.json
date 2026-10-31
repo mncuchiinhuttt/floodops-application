@@ -1,0 +1,46 @@
+{
+  "source_prd": "9036f6332f810eda5366dd63a60d4bb615f38374",
+  "prd_reconcile_commit": "99e840b",
+  "canonical_composition_commit": "ef0beeb",
+  "planner_checkpoint_delivery": "ba77af72faed6dc2cc91e077d9c58256973faba6",
+  "checks": [
+    {
+      "command": "tooling/runtime strict tsc and driver-report-mvp + source-mvp-composition actual Workerd",
+      "result": "pass",
+      "tests": 2
+    },
+    {
+      "command": "bun test apps/api/test/planning apps/api/test/policy",
+      "result": "pass",
+      "tests": 103,
+      "assertions": 245
+    },
+    {
+      "command": "Planner Workerd suite on integrated canonical v2",
+      "result": "fail",
+      "tests": 7,
+      "error": "Create404: old owned harness requests v1; runtime permits onlyv2 new sessions",
+      "owner": "planner-safety"
+    },
+    {
+      "command": "API standard typecheck",
+      "result": "blocked",
+      "error": "Review state.ts:39 TS2367 obsolete SOURCE_SCOPE_INCOMPATIBLE union branch",
+      "owner": "review-rewards"
+    },
+    {
+      "command": "Exact new receipts policy/index/artifact checks",
+      "result": "pass",
+      "workers": 5,
+      "artifacts": 721,
+      "commits_per_artifact": 3
+    }
+  ],
+  "legacy_router_registration": {
+    "mounted": 41,
+    "total": 66,
+    "qualifier": "registration only, v0.5 refreeze pending"
+  },
+  "no_model_calls": true,
+  "no_deploy": true
+}

@@ -16,3 +16,5 @@ Focused standard typecheck/scopedlint/tests and real executable smoke. Disclose 
 User: "nhưng mà không cần làm kỹ quá đâu MVP chạy được và đúng thôi, làm nhanh lên đi không còn nhiều thời gian"
 User: "main mới push lên PRD mới sửa, pull về coi run thêm chỉnh sửa thêm nha"
 </transcript_evidence>
+
+Integrated checkpoint regression to fix WITHIN this assigned scope: `bun --bun run vitest run --config apps/api/test/planning/vitest.config.ts` currently7/7fail at create404 because runtime-fixtures.ts requests scenario_version1 while imported production loadSessionScenario now intentionally creates only canonical driver-ready functional-v2. Use explicit frozen v2 fixture/reference in owned tests/harness and preserve v1 immutability, no production fallback/reopening or weakened assertions. Unit103/103 pass independently. This is not proof deterministic M1 engine works yet; replace obsolete test Commander as appropriate and rerun real job→Approve→Execute→advance on v2. SourceC958afd3/Rba77af7 are integrated already for reuse; do not cherry-pick/recreate history.
