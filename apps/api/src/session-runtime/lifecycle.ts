@@ -35,6 +35,7 @@ export async function drainCleanup(store: Store, env: PlatformBindings): Promise
 export function compactClosedSession(store: Store, now: number): void {
   const snapshot = store.get<Snapshot>("runtime", "snapshot");
   if (!snapshot || !["expired", "reset"].includes(snapshot.meta.status) || store.list("cleanup").length) return;
+  if (snapshot.meta.status === "reset" && store.list<{ expires: number }>("streams").some(stream => stream.expires > now)) return;
   snapshot.values = snapshot.meta.status === "reset" ? { replacement_session_id: snapshot.values.replacement_session_id } : {};
   snapshot.seed.values = {}; snapshot.leases = {}; snapshot.pointers = {};
   store.save(snapshot);

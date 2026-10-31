@@ -1,7 +1,7 @@
 import { parseSchema, type EventPage } from "@floodops/contracts";
 import { randomId } from "../../shared/crypto";
 import { fail } from "../../shared/platform-error";
-import type { AppContext, Reply } from "../../shared/platform-types";
+import type { AppContext } from "../../shared/platform-types";
 import { invoke, runtimeCall, send } from "../../app/http";
 export async function streamEvents(c: AppContext): Promise<Response> {
   const query = c.req.query();
@@ -26,15 +26,22 @@ export async function streamEvents(c: AppContext): Promise<Response> {
     try { controller.close(); } catch { /* Reader cancellation already closed it. */ }
     c.executionCtx.waitUntil(release());
   };
-  function emit(reply: Reply): void {
-    const page = parseSchema("EventPage", reply.body.data) as EventPage;
-    for (const event of page.events) controller.enqueue(encoder.encode(`id: ${event.event_sequence}\nevent: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`));
+  function emit(page: EventPage): boolean {
+    for (const event of page.events) {
+      // A terminal notice skips private/hidden backlog; advance the existing cursor protocol first.
+      if (event.type === "session_reset" && event.event_sequence > cursor + 1) {
+        cursor = event.event_sequence - 1;
+        controller.enqueue(encoder.encode(`event: cursor\ndata: ${JSON.stringify({ next_sequence: cursor })}\n\n`));
+      }
+      controller.enqueue(encoder.encode(`id: ${event.event_sequence}\nevent: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`));
+    }
     if (page.next_sequence > cursor) controller.enqueue(encoder.encode(`event: cursor\ndata: ${JSON.stringify({ next_sequence: page.next_sequence })}\n\n`));
     cursor = page.next_sequence;
+    return page.events.some(event => event.type === "session_reset");
   }
   const body = new ReadableStream<Uint8Array>({
     start(value) {
-      controller = value; emit(initial);
+      controller = value; emit(parseSchema("EventPage", initial.body.data));
       poll = setInterval(() => {
         if (busy || closed) return; busy = true;
         void (async () => {
@@ -42,9 +49,11 @@ export async function streamEvents(c: AppContext): Promise<Response> {
             const next = await invoke(c, { ...call, kind: "stream-poll", after: cursor });
             if (closed) return;
             if (next.status !== 200) { close(); return; }
+            const page = parseSchema("EventPage", next.body.data);
+            const terminal = page.events.some(event => event.type === "session_reset");
             // Apply backpressure by reconnecting from the last cursor instead of buffering indefinitely.
-            if ((controller.desiredSize ?? 0) < -500) { close(); return; }
-            emit(next);
+            if (!terminal && (controller.desiredSize ?? 0) < -500) { close(); return; }
+            if (emit(page)) { close(); return; }
             if (Date.now() - heartbeatAt >= 15000) { controller.enqueue(encoder.encode(": heartbeat\n\n")); heartbeatAt = Date.now(); }
           } catch { close(); } finally { busy = false; }
         })();

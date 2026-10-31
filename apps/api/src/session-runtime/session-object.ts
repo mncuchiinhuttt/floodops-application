@@ -107,7 +107,11 @@ export class SessionDO extends DurableObject<PlatformBindings> {
     const deadlines = pendingImages.map(r => r.leaseExpires);
     deadlines.push(...Object.values(snapshot.leases ?? {}).filter(l => l.status === "active").map(l => l.expires_at));
     if (active) await this.ctx.storage.setAlarm(Math.max(now + 1, Math.min(now + 15000, Date.parse(snapshot.meta.expires_at), ...deadlines)));
-    else if (this.store.list("cleanup").length) await this.ctx.storage.setAlarm(now + 15000);
+    else if (this.store.list<{ expires: number }>("streams").some(stream => stream.expires > now)) {
+      const streamDeadlines = this.store.list<{ expires: number }>("streams").map(stream => stream.expires).filter(expires => expires > now);
+      await this.ctx.storage.setAlarm(Math.max(now + 1, Math.min(now + 15000, ...streamDeadlines)));
+    } else if (this.store.list("cleanup").length) await this.ctx.storage.setAlarm(now + 15000);
+    else if (snapshot.meta.status === "reset" && this.ctx.storage.sql.exec("SELECT sequence FROM events LIMIT 1").toArray().length) await this.ctx.storage.setAlarm(now + 15000);
     else if (snapshot.absoluteExpiry > now) await this.ctx.storage.setAlarm(snapshot.absoluteExpiry);
   }
 }

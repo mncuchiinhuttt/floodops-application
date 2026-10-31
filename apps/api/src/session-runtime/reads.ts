@@ -4,6 +4,7 @@ import { authenticate, credentialCheck, touch } from "./auth";
 import { eventPage } from "./events";
 import { getView } from "./transitions";
 import { participantPage } from "./pagination";
+import { resetStreamTerminal } from "./terminal-stream";
 import { Store } from "./store";
 export function readCall(store: Store, registry: RuntimeRegistry, env: PlatformBindings, call: Call, proof: Proof | undefined, now: number): Reply {
   const snapshot = store.snapshot();
@@ -15,6 +16,7 @@ export function readCall(store: Store, registry: RuntimeRegistry, env: PlatformB
     if (stream?.participant === record.participant.participant_id) store.remove("streams", call.streamId!);
     return success(200, null, call.requestId);
   }
+  if (call.kind === "stream-poll" && snapshot.meta.status === "reset") return resetStreamTerminal(store, snapshot, env, call, proof, now);
   const actor = authenticate(store, snapshot, proof, env, now, false, "session:read");
   let data: unknown;
   if (call.kind === "identity") data = { participant: actor.participant, session: snapshot.meta, csrf_token: proof?.derivedCsrf ?? null };
