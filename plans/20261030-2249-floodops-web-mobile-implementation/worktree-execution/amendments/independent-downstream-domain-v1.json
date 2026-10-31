@@ -1,0 +1,49 @@
+{
+  "amendment_id": "independent-downstream-domain-v1",
+  "status": "authorized",
+  "authority": "User explicitly requested more parallel agents on genuinely independent later-wave slices; parent delegated publish2-3 partial scopes now. These two plus SourcesMedia domain foundations are exactly3 independent coding slices; existing13 roles/9 waves and full-role gate DAG stay unchanged.",
+  "required_gates": [
+    "contracts-ready",
+    "simulation-ready"
+  ],
+  "deferred_gates": [
+    "platform-ready",
+    "sources-ready"
+  ],
+  "reason": "Pure policy/candidate evaluators and pure advisory rubric/reward proposals can consume integrated C1 schemas and simulator without HTTP/media/DO/provider effects. Sources knowledge implementations are still in flight; consume canonical DTOs and explicit server-owned inputs, never import or fabricate unmerged sources code.",
+  "work_items": [
+    {
+      "role_id": "planner-safety",
+      "work_item_id": "planner-safety-domain-foundations-v1",
+      "include_prefixes": [
+        "packages/domain/src/planning/",
+        "apps/api/test/policy/",
+        "apps/api/test/planning/",
+        "apps/api/test/execution/"
+      ],
+      "include_files": [],
+      "scope": "Pure policy/safety candidate evaluator/dependency closure, immutable tier/SLA/custody/capacity/objective and exact vehicle/epoch/evidence approval boundaries plus actual deterministic tests using frozen simulator. No API routers/DO/provider/controller/Commander jobs/real Execute or latest-pointer durable commit in this slice."
+    },
+    {
+      "role_id": "review-rewards",
+      "work_item_id": "review-rewards-domain-foundations-v1",
+      "include_prefixes": [
+        "packages/domain/src/rewards/",
+        "apps/api/src/features/reports/review/rubric/",
+        "apps/api/test/review/",
+        "apps/api/test/rewards/",
+        "apps/api/test/coverage/"
+      ],
+      "include_files": [],
+      "scope": "Pure server rubric output validation/score/recommendation derivation and pure coverage/gap/duplicate/reward-ledger proposal transitions plus tests. Rubric code isolated in reports/review/rubric, not rewards. No image bytes/normalization/model/job/HTTP/DO/durable review/knowledge acceptance or actual award commit."
+    }
+  ],
+  "rules": [
+    "No phase06/07/full gate or durable authorization/concurrency/model/media/device/calibration acceptance from these partial deliveries. Full role later requires fresh producer/gate receipts.",
+    "Actual canonical contract remains66API/194schemas/8tools. No new wire schema/default physics/policy constants or SourcesMedia type fork. No producer private imports; request precise missing public seam.",
+    "Advisory ratings are not road confidence/safety/authenticity; AI produces no human decision, reward, closure/TTL/vehicle change or Execute.",
+    "Domain pure inputs explicit clock/config/state; no Node/Bun/React/Hono/Cloudflare/provider imports or hidden I/O. Existing operation/simulation implementations reused, not copied.",
+    "Central protected manifests/exports/config/gates/AGENTS remain Lead-only. Reports exact own work item. Worktree06/07 only one actual writer each, parent owns sol/ultra/fast launch.",
+    "No worker push/deploy/main/account/key/resource/paid provider/Images/device or remote model grant. Existing audit blockers remain, no waiver. Manual review and no-provider behavior must not claim model quality."
+  ]
+}
