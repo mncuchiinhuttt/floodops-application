@@ -44,3 +44,15 @@ This is explicitly local synthetic test configuration, not deployment: isolated 
 
 For remote deployments, use `wrangler secret put OPENAI_API_KEY` for the key and configure `OPENAI_IMAGE_REVIEW_MODEL`, `OPENAI_IMAGE_REVIEW_ENABLED`, and optional `OPENAI_IMAGE_REVIEW_MAX_OUTPUT_TOKENS` as Worker variables. Keep the key out of Wrangler config and browser-prefixed variables.
 
+## Cloudflare production deployment (demo)
+
+Live at `https://floodops-api.vominhlongbentre.workers.dev` (one Worker serves the SPA from `apps/web/dist/live` and `/api/*`; same origin, so the `__Host-` cookie and exact `WEB_ORIGIN` work). Config: `apps/api/wrangler.jsonc`. Private R2 buckets `floodops-report-media` and `floodops-scenario-assets` (object `assets/asset_synthetic01` is `data/scenarios/functional-v2/synthetic-report.png`). `SESSION_LOCATOR_KEY` and `CAPABILITY_SEAL_KEY_ACTIVE` are Worker secrets (never in Git; regenerating them invalidates existing sessions).
+
+```sh
+export CLOUDFLARE_ACCOUNT_ID=<account id>
+bun run --cwd apps/web build
+node apps/api/node_modules/wrangler/bin/wrangler.js deploy --config apps/api/wrangler.jsonc --env-file /dev/null
+FLOODOPS_API_URL=https://floodops-api.vominhlongbentre.workers.dev/api/v1 bun tooling/runtime/m1-local-smoke.ts
+```
+
+Known limit: the account is on the Workers Free plan (10 ms CPU per request). Planning and evaluation run the deterministic planner in the Worker (`waitUntil`), so on Free they fail with "Worker exceeded CPU time limit"; catalog, session, upload, report, review and knowledge work. Workers Paid (30 s CPU) or running the planner driver inside the Durable Object is required for planning on production. Responses carry `Cache-Control: no-store, no-transform` because the edge otherwise weakens the strong ETag used by `If-Match`.
