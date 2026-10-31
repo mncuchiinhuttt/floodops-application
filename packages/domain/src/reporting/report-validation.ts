@@ -3,7 +3,7 @@ import type { Report, ReportReason } from "@floodops/contracts";
 import type { ReportContext } from "./report-types.ts";
 import { fail, SourceDomainError } from "../sources/source-types.ts";
 import { profileFor, sourceFor, validateRegistry } from "../sources/source-policy.ts";
-import { assertMappedTime, simTimestamp } from "../sources/source-time.ts";
+import { assertMappedTime } from "../sources/source-time.ts";
 import { resolveReportLocation } from "../sources/location.ts";
 
 export function validateReportEvidence(report: Report, context: ReportContext): { segmentId: string | null; reasons: ReportReason[] } {
@@ -13,7 +13,7 @@ export function validateReportEvidence(report: Report, context: ReportContext): 
   if (source.role !== "observation" || source.source_type !== (report.kind === "driver" ? "driver" : "community")) fail("SOURCE_ROLE_MISMATCH");
   if (profile.ttl_sim_minute === null || profile.location_tolerance_m === null) fail("CONFIG_INCOMPLETE");
   assertMappedTime(context.t0, report.captured_at, report.captured_sim_minute);
-  if ((!Number.isFinite(Date.parse(report.received_at))) || Date.parse(report.received_at) > Date.parse(simTimestamp(context.t0, context.nowSimMinute))
+  if ((!Number.isFinite(Date.parse(report.received_at))) || Date.parse(report.received_at) > (context.nowWall ?? Date.parse(context.receivedAt))
     || (report.captured_sim_minute <= context.nowSimMinute && Date.parse(report.received_at) < Date.parse(report.captured_at))) fail("INVALID_TIME");
   const reasons: ReportReason[] = [];
   if (report.captured_sim_minute > context.nowSimMinute) reasons.push("FUTURE_CAPTURE");

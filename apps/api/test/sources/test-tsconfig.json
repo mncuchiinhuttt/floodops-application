@@ -1,8 +1,7 @@
 {
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["bun"],
-    "paths": { "@floodops/test-fixtures": ["../../../../packages/test-fixtures/src/index.ts"] }
+    "types": ["bun"]
   },
   "include": ["./**/*.ts", "../observations/**/*.ts"]
 }

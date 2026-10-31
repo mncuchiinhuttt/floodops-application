@@ -9,6 +9,8 @@ export interface SourceEnvironment extends SourceRegistry {
   readonly graph: Graph;
   readonly t0: string;
   readonly nowSimMinute: number;
+  /** Optional injected wall clock for receipt provenance; simulation freshness remains separate. */
+  readonly nowWall?: number;
 }
 export interface EvidenceContext extends SourceEnvironment {
   readonly observations: readonly Observation[];

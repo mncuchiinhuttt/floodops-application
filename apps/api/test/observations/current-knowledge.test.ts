@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { deriveCurrentKnowledge, deriveKnowledgeSnapshot, proposeConflictResolution } from "../../../../packages/domain/src/knowledge/index.ts";
+import { deriveCurrentKnowledge, deriveKnowledgeSnapshot, proposeConflictResolution } from "@floodops/domain/knowledge";
 import { evidenceContext, observation, pair } from "../sources/test-context.ts";
 
 describe("current knowledge", () => {

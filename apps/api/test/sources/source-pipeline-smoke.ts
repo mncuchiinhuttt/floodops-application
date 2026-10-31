@@ -1,7 +1,7 @@
 import { createFunctionalScenario, createReportCases } from "@floodops/test-fixtures";
 import { advanceRun, applyKnowledgeTransition, createRun, loadScenario, sealScenarioDraft } from "@floodops/simulation";
-import { proposeReportSubmission } from "../../../../packages/domain/src/reporting/index.ts";
-import { proposeObservationAcceptance } from "../../../../packages/domain/src/knowledge/index.ts";
+import { proposeReportSubmission } from "@floodops/domain/reporting";
+import { proposeObservationAcceptance } from "@floodops/domain/knowledge";
 import { participant } from "./test-context.ts";
 
 const hash = (value: string) => new Bun.CryptoHasher("sha256").update(value).digest("hex");

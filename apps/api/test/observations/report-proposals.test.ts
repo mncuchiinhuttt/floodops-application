@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { submitReport, proposeReportSubmission } from "../../../../packages/domain/src/reporting/index.ts";
-import { proposeObservationAcceptance, proposeConflictResolution, reconcileEvidence } from "../../../../packages/domain/src/knowledge/index.ts";
+import { submitReport, proposeReportSubmission } from "@floodops/domain/reporting";
+import { proposeObservationAcceptance, proposeConflictResolution, reconcileEvidence } from "@floodops/domain/knowledge";
 import { driverContext, evidenceContext, observation, pair, participant, reportContext, reports } from "../sources/test-context.ts";
 
 const acceptanceContext = () => ({ ...evidenceContext(), ...reportContext(), observationId: "obs_proposal1", reasonId: "manual-review" });

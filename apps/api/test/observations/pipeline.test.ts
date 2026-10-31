@@ -2,8 +2,8 @@ import { expect, test } from "bun:test";
 import { createFunctionalScenario, createReportCases } from "@floodops/test-fixtures";
 import { advanceRun, applyKnowledgeTransition, createRun, loadScenario, sealScenarioDraft } from "@floodops/simulation";
 import type { SimulationPolicy, SimulationRun } from "@floodops/simulation";
-import { submitReport } from "../../../../packages/domain/src/reporting/index.ts";
-import { proposeObservationAcceptance, reconcileEvidence } from "../../../../packages/domain/src/knowledge/index.ts";
+import { submitReport } from "@floodops/domain/reporting";
+import { proposeObservationAcceptance, reconcileEvidence } from "@floodops/domain/knowledge";
 import { observation, participant } from "../sources/test-context.ts";
 
 export const hash = (text: string) => new Bun.CryptoHasher("sha256").update(text).digest("hex");
