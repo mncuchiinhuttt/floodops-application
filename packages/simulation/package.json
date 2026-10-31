@@ -11,7 +11,8 @@
   "scripts": {
     "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
     "test": "bun test test",
-    "smoke": "bun test/graph/foundation-smoke.ts"
+    "smoke": "bun test/scenario/scenario-smoke.ts",
+    "smoke:foundations": "bun test/graph/foundation-smoke.ts"
   },
   "dependencies": {
     "@floodops/contracts": "workspace:*",

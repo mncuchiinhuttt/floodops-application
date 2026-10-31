@@ -1,2 +1,8 @@
 APP_ENV=development
+WEB_ORIGIN=http://127.0.0.1:5170
+# Supply local-only values through an ignored .dev.vars or approved secret binding.
+# These placeholders deliberately do not provision credentials or remote resources.
+SESSION_LOCATOR_KEY=REPLACE_WITH_LOCAL_ONLY_VALUE
+CAPABILITY_SEAL_KEY_ACTIVE=REPLACE_WITH_LOCAL_ONLY_VALUE
+CAPABILITY_SEAL_KEY_ID=local-v1
 

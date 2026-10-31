@@ -7,7 +7,11 @@
     "@floodops/contracts": "workspace:*"
   },
   "exports": {
-    "./operations": "./src/operations/index.ts"
+    "./operations": "./src/operations/index.ts",
+    "./public-ports": "./src/public-ports.ts"
+  },
+  "scripts": {
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json"
   }
 }
 

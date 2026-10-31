@@ -1,0 +1,47 @@
+{
+  "amendment_id": "session-platform-response-headers-v1",
+  "status": "authorized",
+  "scope": "Narrow correction of existing HTTP security/CORS contract; no wire or product change.",
+  "work_items": [
+    {
+      "role_id": "session-platform",
+      "work_item_id": "session-platform-phase-04-v3",
+      "include_files": [
+        "apps/api/src/app/create-app.ts",
+        "apps/api/src/app/http.ts",
+        "apps/api/src/features/session/stream.ts",
+        "apps/api/src/session-runtime/README.md",
+        "apps/api/test/capabilities/tsconfig.json"
+      ],
+      "include_prefixes": [
+        "apps/api/test/capabilities/",
+        "apps/api/test/replay/"
+      ]
+    }
+  ],
+  "integrated_delivery_sha": "21d9dd831dbe19385bb82d4f7489b8ab25cf41a5",
+  "finding": {
+    "cause": "createApp sets security/CORS headers with c.header but send and streamEvents return new Response without the prepared context headers. Health JSON in actual Bun/Hono and Workerd returns null X-Content-Type-Options instead of nosniff; same adapter discards CSP/referrer and allowed-Origin CORS headers.",
+    "probe": "bun --bun run vitest run --config tooling/runtime/vitest.config.ts: 4 pass,1 fail at health nosniff; bun test tooling:32 pass,1 same header fail. Assertion retained.",
+    "qualification": "Actual runtime response defect, not an untested source-only suspicion. Additional CORS/SSE/error regressions required; no bypassing Origin or suppressing assertions."
+  },
+  "required_fix": [
+    "Preserve middleware security/CORS headers on successful JSON, typed errors, 204, cookies and SSE; keep correct no-store/type/ETag/Retry-After/Set-Cookie semantics.",
+    "Add actual Workerd regressions for same-origin web preflight + readable JSON with credentials, error responses, unknown paths, SSE and native without Origin; disallowed Origin remains403 and never receives allow-origin. Do not loosen security rules.",
+    "The integrated entrypoint uses supported Workerd node:crypto SHA256 for real scenario fingerprints. API central tsconfig now includes node; your test/capabilities tsconfig overrides types and must add node explicitly (existing @types/node26.6.6 dependency supplied by Lead). This is the only authorized test-config edit.",
+    "Re-run full73+ Workerd suite, API/test strict types and lint plus Lead composed-entrypoint and Bun regression. Never replace real factory with a fake response or weaken nosniff/CORS assertions."
+  ],
+  "central_baseline": {
+    "entrypoint": "Actual registered DO/Hono with validated synthetic functional scenario, immutable bundle reference plus mutable-state checkpoint; no full graph/config persisted per checkpoint.",
+    "public_port": "@floodops/domain/public-ports:SimulationPersistence<Run,State> injected into owner factories. Do not import API entrypoint into a feature. write preserves other values; Transition.values replaces the full record, not a partial merge.",
+    "synthetic_contributor": "contributor_functional1 is an explicit central synthetic admission roster entry; driver IDs derive real bundle. No source/report/client-selected entity becomes authority.",
+    "dependencies": "No new registry versions: existing Vitest4.1.12/plugin1.4.11/WorkersTypes5.20261031.1 linked for Lead tests; @types/node26.6.6 existing lock transitive MIT now explicit API dev type. Frozen install pass."
+  },
+  "proven_checks": [
+    "Session v2 exact delivery verifier6 paths and valid C/R signatures, merge264b0fdaba27fdee65680fa3045fe9530e3698c2",
+    "Lead real integrated73 Workerd tests + independent fault-injection privacy regression1 test pass",
+    "Simulation full55 tests4979 assertions; full executable scenario smoke projected/actual5.75 pass, calibration incomplete",
+    "Actual composed Workerd four unaffected tests pass: immutable bundle persistence, replay, contributor/driver invite/claim, Reset fencing, missing views503, invalid fingerprint/version fail closed"
+  ],
+  "gate_status": "platform-ready remains blocked until HTTP header fix; simulation semantic readiness independently eligible after central commit/evidence. No ui/model/device/calibration/security release acceptance."
+}

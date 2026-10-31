@@ -1,5 +1,15 @@
 {
   "extends": "../tsconfig.base.json",
-  "compilerOptions": { "types": ["bun"] },
-  "include": ["./**/*.ts"]
+  "compilerOptions": {
+    "types": [
+      "bun",
+      "@cloudflare/workers-types"
+    ]
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "./runtime/**"
+  ]
 }

@@ -23,7 +23,11 @@
     "@types/bun": "1.4.0",
     "eslint": "10.14.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.1"
+    "typescript-eslint": "8.72.1",
+    "@cloudflare/workers-types": "5.20261031.1",
+    "vitest": "4.1.12",
+    "@cloudflare/vitest-plugin": "1.4.11",
+    "@floodops/contracts": "workspace:*"
   },
   "trustedDependencies": [],
   "overrides": {

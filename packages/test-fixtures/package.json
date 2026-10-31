@@ -8,7 +8,8 @@
     "./functional/graph": "./src/functional/graph/index.ts"
   },
   "scripts": {
-    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json"
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
+    "test": "bun test test"
   },
   "dependencies": {
     "@floodops/contracts": "workspace:*"

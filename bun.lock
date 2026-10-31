@@ -5,11 +5,15 @@
     "": {
       "name": "@floodops/root",
       "devDependencies": {
+        "@cloudflare/vitest-plugin": "1.4.11",
+        "@cloudflare/workers-types": "5.20261031.1",
         "@eslint/js": "10.0.1",
+        "@floodops/contracts": "workspace:*",
         "@types/bun": "1.4.0",
         "eslint": "10.14.0",
         "typescript": "6.0.3",
         "typescript-eslint": "8.72.1",
+        "vitest": "4.1.12",
       },
     },
     "apps/api": {
@@ -17,11 +21,14 @@
       "version": "0.0.0",
       "dependencies": {
         "@floodops/contracts": "workspace:*",
+        "@floodops/domain": "workspace:*",
+        "@floodops/simulation": "workspace:*",
         "hono": "4.13.14",
       },
       "devDependencies": {
         "@cloudflare/vitest-plugin": "1.4.11",
         "@cloudflare/workers-types": "5.20261031.1",
+        "@types/node": "26.6.6",
         "vitest": "4.1.12",
         "wrangler": "4.156.0",
       },
