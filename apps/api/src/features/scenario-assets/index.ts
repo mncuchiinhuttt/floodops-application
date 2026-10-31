@@ -1,0 +1,1 @@
+export { createScenarioAssetsRouter } from "./router";

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { submitReport, proposeReportSubmission } from "../../../../packages/domain/src/reporting/index.ts";
-import { proposeObservationAcceptance, proposeConflictResolution, reconcileEvidence } from "../../../../packages/domain/src/knowledge/index.ts";
+import { submitReport, proposeReportSubmission } from "@floodops/domain/reporting";
+import { proposeObservationAcceptance, proposeConflictResolution, reconcileEvidence } from "@floodops/domain/knowledge";
 import { driverContext, evidenceContext, observation, pair, participant, reportContext, reports } from "../sources/test-context.ts";
 
 const acceptanceContext = () => ({ ...evidenceContext(), ...reportContext(), observationId: "obs_proposal1", reasonId: "manual-review" });
@@ -97,11 +97,14 @@ describe("actor-bound reporting and pure acceptance", () => {
     const context = acceptanceContext(), report = submitReport(reports().fresh, context);
     expect(() => proposeObservationAcceptance(report, "normal", context.epochs.map(item => item.segment_id === pair.segment_id ? { ...item, knowledge_epoch: 0 } : item), context)).toThrow("STALE_EPOCH");
   });
-  test("preexisting shared observations fail explicitly when the frozen Simulation global flag cannot represent mixed conflict", () => {
+  test("shared observation can conflict for bike while remaining known for car", () => {
     const context = evidenceContext(), normal = observation({ vehicle_types: ["motorbike", "car"] });
     const contrary = observation({ observation_id: "obs_bikeconf1", condition: "impassable" });
-    expect(() => reconcileEvidence(reportContext().epochs, { ...context,
-      observations: [...context.observations.filter(item => item.observation_id !== normal.observation_id), normal, contrary] })).toThrow("SOURCE_SCOPE_INCOMPATIBLE");
+    const result = reconcileEvidence(reportContext().epochs, { ...context,
+      observations: [...context.observations.filter(item => item.observation_id !== normal.observation_id), normal, contrary] });
+    expect(result.knowledge.find(item => item.segment_id === pair.segment_id && item.vehicle_type === "motorbike")?.state).toBe("unresolved_conflict");
+    expect(result.knowledge.find(item => item.segment_id === pair.segment_id && item.vehicle_type === "car")?.state).toBe("known");
+    expect(result.observations.find(item => item.observation_id === normal.observation_id)?.has_conflict).toBe(true);
   });
   test("multi-vehicle resolution recomputes every affected projection", () => {
     const context = evidenceContext(), pairs = reportContext().epochs;

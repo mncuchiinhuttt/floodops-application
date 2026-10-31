@@ -1,7 +1,7 @@
 import { createFunctionalScenario, createReportCases } from "@floodops/test-fixtures";
 import type { Observation, Source, SourcePolicyProfile, Participant } from "@floodops/contracts";
-import type { EvidenceContext } from "../../../../packages/domain/src/sources/index.ts";
-import type { ReportContext } from "../../../../packages/domain/src/reporting/index.ts";
+import type { EvidenceContext } from "@floodops/domain/sources";
+import type { ReportContext } from "@floodops/domain/reporting";
 
 export const pair = { segment_id: "seg_edge27", vehicle_type: "motorbike" as const, knowledge_epoch: 1 };
 export function evidenceContext(): EvidenceContext {

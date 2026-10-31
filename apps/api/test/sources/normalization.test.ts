@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { normalizeInput, normalizeMeasurement, resolveReportLocation, simTimestamp, distanceToPolyline,
-  validateRegistry } from "../../../../packages/domain/src/sources/index.ts";
+  validateRegistry } from "@floodops/domain/sources";
 import { evidenceContext, reports } from "./test-context.ts";
 
 const rain = () => structuredClone(evidenceContext().inputEvents.find(item => item.source_id === "src_rain001")!);
