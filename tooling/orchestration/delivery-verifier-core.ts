@@ -58,6 +58,7 @@ export async function verifyDelivery(input: DeliveryInput, git: GitReader, readB
   if (!Array.isArray(index.artifacts) || !index.artifacts.length) throw new Error("Empty contract index.");
   const seen = new Set<string>();
   for (const artifact of index.artifacts) {
+    assertRepoPath(artifact.path);
     if (seen.has(artifact.path)) throw new Error("Duplicate indexed path.");
     seen.add(artifact.path);
     for (const commit of [index.source_commit, receipt.contract_ref.commit_sha, launchSha]) {
