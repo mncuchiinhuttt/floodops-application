@@ -1,47 +1,50 @@
-# WebConsole M1 wire v4 — SourceEvidence
+# WebConsole M1 wire v4 — refreshed SourceEvidence
 
-Signed source C `50308c299accc92ed3a65b27b45cc1e79210ee39`. Sole writer at `/Users/vominhlong/seahackathon-worktrees/09-web-console`, feat/floodops-web-console. Parent explicitly requested preserving independent v3 work before exact new launch. V3 C05e42f745bcd170736ba5ac5b7f07d9fc5c5ee8d / report-only R648e166e20dd7975a30d60f28c8402c863e55899 was signed and passed full canonical verifier before merge. Its actual browser upload→normalized media→pending_review201 and graph/knowledge proof is in the separate v3 report.
+This replaces the obsolete blocked evidence text carried in R6765ca9. That old delivery is not resubmitted as valid. Fresh signed source **C `7eb1c542562930e925757d0205818eabf0c6bba2`** is the preserving merge of existing M1 UI source50308c299accc92ed3a65b27b45cc1e79210ee39/history and exact newly authorized launch05ed04bc5655e51e8a25b64eb5685f4a64ae1d5f. Report R is a separate direct child supplied out of band; no new UI feature/polish was added.
 
-V4 exact launch c30dd59defde31e222e4a52416ad3e6f553d0bb0, BASE2a440311b4a8a78f1dc3303e7aa9c8c35d097f40, index90e923e9a92af548aefa38975eb3d177805521862ff68b7b16a423903eff82cd. All1017 artifacts byte-verified at source d6e5fdf541ddbb018d4778237196e54fc4a01ee7/index/launch with pinned policy and required ancestor gates; BASE→launch15 metadata files only. Clean preserved v3 checkpoint merged exact launch as ba9820245c7d3652ee43f43a889c7a5edbd3d7dc; frozen Bun1.4.0 install --ignore-scripts checked1102installs/1261packages with no changes. New writes25 source/test paths only, passed canonical ownership/partial scope, regular-file/realpath and <200-line checks. No protected/config/manifest/lock/shared schema/UI/backend edits.
+## Receipt and preservation
 
-## Implemented
+- Sole WebConsole writer, `/Users/vominhlong/seahackathon-worktrees/09-web-console`, branch feat/floodops-web-console. Clean prior checkpoint6765ca9 checked before mutation.
+- New BASEcf2acdd2f845ea14641544424981760248b4d960, amendment rapid-runnable-demo-v1, contract index SHA2564c0567b8dbb3b5b9fce91bfcf3b1abc82db0dafe20619b4d152b03d0232ca335. All1066 raw artifacts verified at source73446fba232f2cbc441ba93b6e31675d167d6a0f/index/launch; policy b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a and six required gate ancestors verified. BASE→launch is seven coordination metadata files only.
+- Verified v3 R648e166e20dd7975a30d60f28c8402c863e55899 is now in launch ancestry. Actual ort merge was clean and preserves C50308c2/R6765ca9; no reset/stash/rebase/force, no verifier waiver or old report deletion. Read-only helper confirmed launch→C contains exactly25 own src/test paths plus this exact v4 report, with **no non-owned source or metadata drift**. Ancestry blocker is resolved.
+- Frozen Bun1.4.0 install --ignore-scripts passed,1102installs/1261packages unchanged. App strict typecheck passed after merge. Git signature for source C verified. Own web source/tests and packages/contracts/api-client/ui-web are byte-identical to validated C50308c2; earlier56/56 tests, strict source/test TypeScript, ESLint and672-module real build remain explicitly qualified to that preserved source/dependency content. No broad newmatrix was run for this narrow unblock; actual startup/browser evidence follows.
 
-- Strict M1 reward feedback pending_review/pending_config/ineligible/committed, canonical reason/pinned policy/hash/review identity and committed award ID. No missing-config fake0 award, retro-policy or client award derivation. Contributor total remains actual server ledger; ledger rows expose immutable policy/review binding. Missing reward policy does not block valid manual review. Parsed review response displays immediately and yields to newer authoritative report data.
-- Typed createPlanningJob from explicit manual click with current CAS/idempotency/auth. Deterministic algorithm/config/search budget/status shown from actual DTO; typed NO_FEASIBLE_PLAN and PLANNER_TIMEOUT remain failed/no-plan, no global-infeasibility or provider/AICommander claim. Refresh reads only; no automatic Approve/Execute. Job selection follows current snapshot latest pointer including same-revision supersession, with local creation response only while snapshot catches up. An independent reviewer found the initial local-A masking newer-B issue; fixed with metadata sequence binding and regression.
-- Execute/Approve guard now verifies coherent current plan/snapshot metadata, embedded session, identical latest plan/action content and completed latest requested job binding to that plan/session/generation/input revision. Null/queued/running/failed/cancelled/superseded/foreign/stale/missing metadata stays blocked. Unrelated newer event sequence is allowed. Existing group/approval/CAS checks retained.
-- Preserved v3 actual file upload/normalization/media ID, graph metric geometry and abort/Reset/privacy behavior. No polish, Claude contact, production/device/provider/live model call or invitation.
-- Current M1 fixtures live only in apps/web/test. Excluded apps/web/preview remains untouched and contains obsolete v0.3 report data; fixture preview is not M1-ready and was not claimed as evidence. Lead may grant/update preview/fixtures.ts separately; no production bundle imports fixture data.
+## Preserved implementation
 
-## Checks and runtime evidence
+M1 report reward status/reason/immutable policy/review identity and committed ledger rendering; pending_config never fakes an award or blocks otherwise valid manual review. Deterministic job request/metadata/bounded failures, snapshot latest-job selection and full plan/job/meta freshness before manual commands. Approve/dry-run/Execute remain separate; no optimistic assignment/ETA/award. Immediate review response yields to newer report data. Current test fixtures are isolated in test; excluded legacy preview was not rewritten or claimed M1 evidence. Real v3 upload/map implementation and its separately verified C/R remain preserved. No new UI, style, dependency, shared contract or backend edits in this refresh.
 
-Final full **56/56 tests in11files passed** with one worker (16.23s). App strict TypeScript, test strict TypeScript, scoped ESLint --max-warnings=0 passed; final source typecheck and real build after the last report-response binding fix passed672modules (largest index343.25kB/106.56gzip). New source signature verified. Test transports/data are disclosed synthetic fixtures, not backend proof.
+## Actual browser proof at merged source C
 
-Earlier parallel and serial suites hit the map DOM test's5s default while measured actual interaction took7–10s during severe shared-host contention; no assertion was removed. Bounded20s allowance plus stopped own servers yielded7/7 focused map/latest checks and final full56/56. Initial M1 test used an unsupported testing-library exact option and assumed Alert default urgent role; corrected typing and actual failure accessibility, then reran. Initial optional Meta.event_sequence compile error was fixed with explicit numeric validation.
+Used existing self-controlled Brave tab/session from previous authorized local runtime, rather than create an invitation or another participant. Own API8789/web5190 were stopped before merge, then restarted against existing ignored apps/web/.wrangler/live-demo-5190 state. Existing approved local config, --env-file /dev/null (no private env read/copy), loopback only, exact CLI WEB_ORIGIN http://127.0.0.1:5190; existing Vite proxy. No auth/cookie/CSRF weakening. Lead5170/API8760 processes were untouched. Parent-reported full typed HTTP proof on Lead remains separate, not recast as this worker's browser proof.
 
-Actual M1 native typed-client loopback probe `/tmp/web-m1-http-smoke.ts`, source SHA256 d4895545b39abf62083dcd264ac83f069abb5262524fee85941c620a041f41f5: fresh separate own ignored apps/web/.wrangler/m1-wire state, canonical scn_functional1/version2, real Workerd8789 and local Vite5174. Catalog200/create201/config200/graph200/knowledge200. Project-authored64×48 synthetic PNG reserve201/PUT200/normalize201. Strict M1 report request then returned **422 INVALID_SCHEMA**; independent manual createPlanningJob returned **404 NOT_FOUND**. Therefore no manual-review/plan/Execute/assignment/award business proof at this launch. Producer migration/root mount remains owner work, not a client fake fallback.
+1. Existing session session_61b07248ac9ea12434470025e0a4d051b12e3ae3adc07f3c31f5963831641bd7 reload recovered cookie identity200. Graph/knowledge/operations/snapshot/events/SSE/routes all200. Actual map now displayed three branches, real supplied hubs/drivers/orders and committed route pointers; former operations404/snapshot503 disappeared.
+2. Real browser file chooser attempted the same project-authored PNG, but **setFiles was blocked before execution** because Brave ChatGPT extension lacks Allow access to file URLs. No permission changed and no upload retried through a workaround. Therefore no new-browser-upload proof here; earlier v3 actual IAB upload201/200/201 is separate historical evidence.
+3. Independent report form selected the existing disclosed scenario fixture asset, not a fake transport/live-road image. POST reports returned503 STORAGE_UNAVAILABLE and UI retained fields. Normal authenticated Reset201 replaced generation0 with generation1 session_5b0487d5836e45bf98162eadc069c0be, cleared forms/selection and retained own role. A new report in the fresh seed also returned503, so the initial old-seed hypothesis was ruled out. Router verifiedFixture requires SCENARIO_ASSETS assets/asset_synthetic01 and verifies declared bytes/hash/dimensions; isolated local scenario bucket was never seeded by this task. Treat fixture asset provisioning/integrity as the exact remaining path, not M1 report producer422. No new report/manual-review/award browser success is claimed.
+4. In Reset replacement, explicit manual createPlanningJob returned202; actual job job_29a59490-3a33-49af-a2de-c9be4c980a16 completed with planner deterministic-bounded-v1, search_limit16 and frozen config hashb742a1cb19b5910b3c7dab0df83e18e2d4e52d509888e7c4767590487620cc39. GET job/plan/snapshot200; plan_ab9cfc9f-fa97-4a75-ba4a-2d0de27351bc displayed ready/projected. Its one action was already ready under server policy, so no approval-required case was exercised or claimed.
+5. User-authorized synthetic UI test explicitly selected dependency group group_e3c2cf4f667f92c956edf1cf5ff25fb9be251f91. Dry-run200 completed with revision still0. Separate manual Execute returned **201**, then server refetch showed plan/action executed, revision1 and SSE#6. Old-plan controls became disabled with replan/freshness message; no automatic replay/Execute.
+6. Results GET200 rendered actual static/floodops/reroute_only metrics, H20/observed0, calibration incomplete, late reduction unknown. No null→fake0 result conversion. No clock advance UI/device/model or cross-role proof claimed. Screenshot of actual results emitted in browser output; no durable screenshot artifact fabricated.
 
-Execution host disconnected and reconnected mid-run. Probe logout reported failed; whether server applied logout is **uncertain** and was not retried with a guessed key/credential. Ephemeral native token was nulled and never printed/stored. Only local self-controlled synthetic session was created; no external participant/invitation. Recovered own API/Vite processes were later stopped with their exact PTY handles; pre-disconnect ports were verified closed before restart. No state/credentials copied or legacy data deleted. Actual M1 browser proof unavailable: IAB attach timed out then browser3 disappeared; remaining Brave temporary-tab command detached with no tab ID, so creation/cleanup outcome is uncertain. No browser security bypass or alternate browser backend was used. V3 real browser screenshot/output remains separate; no durable screenshot artifact fabricated.
+Current live own browser remains open on http://127.0.0.1:5190/sessions/session_5b0487d5836e45bf98162eadc069c0be/dispatch/results; own servers API session83984/web41154 kept running for viewing. Clearly disconnected prebuilt fixture demo5189 is a separate existing artifact. No Root/Lead process or active worktree was modified.
 
-## Exact blockers / Lead action
+## Remaining limits / exact blocked action
 
-1. **Coordination pending:** c30dd59 predates newly completed authorized v3 R648e166e. Launch→current history contains unchanged `plans/reports/worktree-web-console-web-console-m1-media-map-v3.md`, which canonical ownership and partial-scope checks reject for work item v4. Read-only Git helper reproduced both failures; this does not invalidate previous v3 authorization or its successful verifier. Do not delete that report or relax matcher/verifier. Lead should integrate exact verified R648e166e, publish fresh continuation BASE+metadata-only launch containing that history, then authorize exact merge preserving this signed source/report checkpoint. Current v4 is **not** claimed coordination-accepted or web-ready.
-2. **Runtime blocked, known failures:** submitReport on fresh M1 session returned422 INVALID_SCHEMA after real normalized upload; createPlanningJob returned404 NOT_FOUND. Sources/Planner/root composition must land on a fresh authorized baseline. Full review/knowledge/reward/plan/Execute/assignment/Reset E2E remains unexecuted under M1.
-3. **Preview scope pending:** apps/web/preview/fixtures.ts still serializes legacy reports; receipt allows only src/test and own report. No scope bypass. Browser availability additionally needs restoration for fresh M1 real UI proof.
+- Action: browser FileChooser.setFiles for project PNG; target Brave ChatGPT extension on local report page; reason file-URL access not enabled; outcome **blocked/known not executed**, not automatic approval rejection. Enablement requires an explicit user action/approval; task did not change extension permissions or route around it. For Brave the corresponding manual setting is brave://extensions → ChatGPT → Details → Allow access to file URLs.
+- Action: submit report using server fixture_photo_id in own isolated session; result **503 STORAGE_UNAVAILABLE**, fields retained, no success claim. Fixture verification path needs correctly seeded SCENARIO_ASSETS asset content. After failure, planner/dry-run/Execute/Reset/results independent paths completed. No retry of prior uncertain logout or invitation occurred.
+- Full M1 acceptance, manual photo-review/award browser proof, real model/device/D04/release remain unclaimed. Driver quick pending-manual demo repair is another owner's narrow task. Legacy preview remains outside this grant.
 
-No main/integration merge, push, deploy, paid/live provider, new credential/resource/account/device action, external communication or Claude launch. Only own branch checkpoint/authorized exact baseline merge performed.
+No new source changes beyond authorized exact merge; no main/integration merge, push, deploy, paid/OpenAI call, CLI polish/Claude contact, new invitation/access-recipient, resource/account/key/device/software-install action. Credentials stayed opaque in browser memory/server cookie and were not read or printed.
 
 ```json
 {
   "work_item_id": "web-console-m1-wire-v4",
   "role_id": "web-console",
-  "base_sha": "2a440311b4a8a78f1dc3303e7aa9c8c35d097f40",
-  "observed_launch_sha": "c30dd59defde31e222e4a52416ad3e6f553d0bb0",
-  "worker_merge_checkpoint_sha": "ba9820245c7d3652ee43f43a889c7a5edbd3d7dc",
-  "source_sha": "50308c299accc92ed3a65b27b45cc1e79210ee39",
-  "status": "source-ready-coordination-and-runtime-blocked",
-  "contract_sha256": "90e923e9a92af548aefa38975eb3d177805521862ff68b7b16a423903eff82cd",
+  "base_sha": "cf2acdd2f845ea14641544424981760248b4d960",
+  "observed_launch_sha": "05ed04bc5655e51e8a25b64eb5685f4a64ae1d5f",
+  "source_sha": "7eb1c542562930e925757d0205818eabf0c6bba2",
+  "status": "code-ready-for-integration-partial-browser-proof",
+  "contract_sha256": "4c0567b8dbb3b5b9fce91bfcf3b1abc82db0dafe20619b4d152b03d0232ca335",
   "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
-  "new_source_paths": [
+  "changed_paths": [
     "apps/web/src/app/latest-job.ts",
     "apps/web/src/app/latest-plan.ts",
     "apps/web/src/app/plan-route.tsx",
@@ -66,45 +69,32 @@ No main/integration merge, push, deploy, paid/live provider, new credential/reso
     "apps/web/test/router.test.tsx",
     "apps/web/test/runtime.test.ts",
     "apps/web/test/screens.test.tsx",
-    "apps/web/test/upload-fixtures.ts"
+    "apps/web/test/upload-fixtures.ts",
+    "plans/reports/worktree-web-console-web-console-m1-wire-v4.md"
   ],
-  "prior_authorized_delivery_sha": "648e166e20dd7975a30d60f28c8402c863e55899",
-  "out_of_scope_new_writes": [],
+  "new_source_changes_after_merge": false,
+  "out_of_scope_changes": [],
   "unrequested_remote_actions": false,
   "checks": [
     {
-      "name": "web tests",
-      "result": "56/56 pass; 11 files; --maxWorkers=1"
-    },
-    {
-      "name": "source and test strict TypeScript",
+      "command": "1066 source/index/launch raw artifact, policy, receipt, ancestry, metadata-only launch verification",
       "result": "pass"
     },
     {
-      "name": "scoped ESLint max-warnings0",
-      "result": "pass"
+      "command": "bun install --frozen-lockfile --ignore-scripts",
+      "result": "pass;1102installs/1261packages unchanged"
     },
     {
-      "name": "live Vite build",
-      "result": "pass;672 modules"
+      "command": "bun run --cwd apps/web typecheck",
+      "result": "pass at merged source C"
     },
     {
-      "name": "new source ownership and amendment scope",
-      "result": "pass;25paths"
+      "command": "git diff --exit-code 50308c2 C -- apps/web/src apps/web/test packages/contracts packages/api-client packages/ui-web",
+      "result": "pass;byte-identical consumer source and dependencies preserve prior56test/build qualification"
     },
     {
-      "name": "full launch-to-delivery coordination",
-      "result": "blocked: prior authorized v3 report absent from new launch baseline"
-    }
-  ],
-  "smoke": [
-    {
-      "stage": "M1 actual loopback typed HTTP",
-      "result": "catalog200/create201/config200/graph200/knowledge200/reserve201/PUT200/normalize201; report422 INVALID_SCHEMA; planning404 NOT_FOUND; logout unconfirmed"
-    },
-    {
-      "stage": "M1 real browser",
-      "result": "unavailable after environment/browser detach; prior v3 actual browser proof remains separate"
+      "command": "actual browser existing-session reload, Reset, deterministic request/plan/dryRun/Execute/results",
+      "result": "pass;details below"
     }
   ]
 }
