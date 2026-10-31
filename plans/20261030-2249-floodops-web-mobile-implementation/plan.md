@@ -11,10 +11,12 @@ created: 2026-10-30
 
 ## Phạm vi và quyết định
 - Toolchain amendment theo user 2026-10-31: Bun 1.4.0 workspace/package manager/scripts, một `bun.lock`; Node ngoại lệ cho Wrangler/Expo, Worker vẫn `workerd`. [Bun toolchain decision](../../docs/architecture/bun-toolchain.md) là chuẩn cho lệnh runtime/tooling.
-- Chuẩn: [PRD v0.3](../../FloodOps/prd.md), toàn bộ34 US gồm P1/P2; web và Expo native đầy đủ, không chỉ companion app.
+- Chuẩn: [PRD v0.3, mục 3.4](../../FloodOps/prd.md), toàn bộ34 US gồm P1/P2. **Hai deliverable bắt buộc:** web app trong trình duyệt và một app native Expo cài trên iOS/Android; không responsive-only, PWA hoặc reporting-only companion.
 - Web: React + React Router Data Mode + Tailwind CSS v4 + shadcn. Native: Expo Router/RN, shared tokens + native components + SVG isometric package adapter.
 - Backend: Hono Worker + static web assets, Session Durable Object/SQLite + private R2; không D1/KV/SaaS accounts/live provider connectors.
-- Delta PRD no-DB: durable session và scoped capabilities để cross-device/reconnect an toàn; xem [decisions](specs/decisions-prerequisites.md).
+- Delta prototype gốc no-DB: durable session và scoped capabilities để cross-device/reconnect an toàn, đã làm rõ trong PRD §3.4/9.1; xem [decisions](specs/decisions-prerequisites.md).
+- Theo người dùng: web ưu tiên dispatcher; mobile ưu tiên driver/contributor và vẫn có dispatcher đầy đủ. Driver đọc phân công/tuyến/ETA đã commit, không nhận cuốc/turn-by-turn; workspace theo capability, không theo tên thiết bị.
+- Cùng backend/session authority; UI/tương tác riêng theo nền tảng. Nghiệm thu phải có mobile report → web review → mobile status/points và mobile dispatcher Execute → web/driver cùng committed outcome.
 - Không phân thời gian/effort, không viết code ứng dụng hoặc deploy trong bước này. Thứ tự dưới là dependency, không lịch thi.
 
 ## Phases

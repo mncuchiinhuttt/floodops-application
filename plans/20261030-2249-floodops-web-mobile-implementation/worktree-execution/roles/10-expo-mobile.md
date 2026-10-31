@@ -31,6 +31,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 
 ## Scope
 - Implement phase10 Expo Router [sessionId], full dispatcher oversight/approval/Execute/review/results và driver/community reporting.
+- Một app cài iOS/Android, ba workspace theo server capability: dispatcher đầy đủ; driver own committed assignment/route/ETA + reports; contributor photo/own report status/points theo [PRD §3.4](../../../../FloodOps/prd.md) / [surface matrix](../../specs/web-mobile-feature-surfaces.md). Không responsive-only/Expo web/WebView, accept/reject cuốc hoặc turn-by-turn.
 - Native shared tokens/UI/SVG adapter, SecureStore capability, foreground SSE+cursor/poll fallback, photo permissions/manual location.
 - Offline chỉ drafts/images; no approval/Execute/reset/advance queue, explicit send/relink after refresh.
 - EAS/app permission/runtime config requests do Lead commit; không tự Expo install/root lockfile thay đổi, no DOM/Radix import.

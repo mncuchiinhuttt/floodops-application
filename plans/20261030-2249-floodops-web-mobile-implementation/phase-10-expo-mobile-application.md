@@ -33,7 +33,7 @@
 1. Create Expo SDK-compatible RN app, Expo Router stacks/tabs including [sessionId], shared api-client/native fetch adapter and SecureStore credentials; no BrowserRouter/shadcn imports.
 2. Implement full dispatcher mobile overview/map/impact/plans/approval/Execute/review/source/conflict/results/clock/reset, not reporting-only companion.
 3. Use react-native-svg for calibrated map and @floodops/icons native entrypoint, accessible list alternative, native safe-area/large text and touch actions.
-4. Driver report quick/text/own assignment; contributor photo picker/manual location/vehicle/time/report status/points. Permission denial/cancel preserves input; no background GPS.
+4. Driver workspace: own committed assignment/orders/stops/route/ETA + quick/text report and own report status, no accept/reject-job or turn-by-turn flow. Contributor: photo picker/manual location/vehicle/time, own report list/status/reasons and simulated points. Permission denial/cancel preserves input; no background GPS.
 5. Offline app-private drafts/images only; persist with session/generation/capture metadata; explicit review/send after refresh; no offline approval/execution/clock/reset outbox.
 6. Use expo/fetch SSE foreground with abort/reconnect/cursor; polling fallback same semantics; stale session drafts never auto-submit replacement.
 7. Configure dev/preview/prod API origins without API secret, universal/deep link invite fragment handshake, EAS update runtimeVersion guard and platform permissions copy.
@@ -43,7 +43,7 @@
 - [ ] Step 10.01: Create Expo SDK-compatible RN app, Expo Router stacks/tabs including [sessionId], shared api-client/native fetch adapter and SecureStore credentials
 - [ ] Step 10.02: Implement full dispatcher mobile overview/map/impact/plans/approval/Execute/review/source/conflict/results/clock/reset, not reporting-only companion.
 - [ ] Step 10.03: Use react-native-svg for calibrated map and @floodops/icons native entrypoint, accessible list alternative, native safe-area/large text and touch actions.
-- [ ] Step 10.04: Driver report quick/text/own assignment
+- [ ] Step 10.04: Implement driver own assignment/route/ETA/report workspace and contributor photo submission/own report status/simulated points.
 - [ ] Step 10.05: Offline app-private drafts/images only
 - [ ] Step 10.06: Use expo/fetch SSE foreground with abort/reconnect/cursor
 - [ ] Step 10.07: Configure dev/preview/prod API origins without API secret, universal/deep link invite fragment handshake, EAS update runtimeVersion guard and platform permissions copy.
@@ -53,6 +53,7 @@
 - Dispatcher can complete same plan/review/Execute/results flow as web; both show same revision and committed outcomes.
 - No commands queued offline or old token applied after Reset. Image permission denial no data loss or auto location tracking.
 - Native dev build installed on both platforms and relevant T01..T15 + offline/security paths observed.
+- Native là một app với workspace theo capability, không ba app theo role và không Expo web/PWA/WebView. Thực hiện mobile dispatcher Execute → web/driver cùng committed outcome và mobile contributor report → web review → mobile feedback theo PRD §3.4.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

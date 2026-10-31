@@ -2,7 +2,7 @@
 
 Repository source độc lập cho FloodOps tại `/Users/vominhlong/seahackathon/floodops-application`, khởi tạo từ bộ plan sẵn có. Hiện là nền tảng Wave 0; feature implementation và worker agents bắt đầu sau bàn giao init.
 
-PRD/plans gốc đang được user cập nhật trong `~/seahackathon`. Bộ tài liệu trong repo này là snapshot bootstrap; gate `plan-published` và mọi launch đang chờ user báo chỉnh xong, parent đọc lại và đồng bộ bản hoàn chỉnh. Theo dõi hash/delta trong `docs/decisions/document-baseline.json`.
+PRD/plans đã được đọc lại và đồng bộ sau khi user xác nhận hoàn tất cập nhật: web bàn dispatcher và một app native iOS/Android có workspace theo capability. Hash/delta và source commit được ghi trong `docs/decisions/document-baseline.json`; parent kiểm tra handoff và cấp launch receipt trước khi mở implementation agents.
 
 ## Toolchain
 

@@ -5,7 +5,7 @@
 | Phiên bản | v0.3 — Bản hợp nhất, cập nhật 2026-10-21 |
 | Owner | Team Gay Hackers (Hung, Kai, Long, Thiên Ân) |
 | Mục tiêu | Bản thử nghiệm tối thiểu (MVP) trong 7 giờ build: 31/10/2026, 10:00–17:00, Shopee VN Office, TP.HCM |
-| Tài liệu triển khai | File này chứa phạm vi, dữ liệu, quy tắc, luồng và nghiệm thu. Link ngoài là bằng chứng / tài liệu nguồn, không thay thế yêu cầu sản phẩm. |
+| Tài liệu triển khai | File này chứa phạm vi, dữ liệu, quy tắc, luồng và nghiệm thu. Mục 3.4 làm rõ hai nền tảng đã chốt trong [implementation plan](../plans/20261030-2249-floodops-web-mobile-implementation/plan.md); link ngoài chỉ là bằng chứng / tài liệu nguồn. |
 | Nguồn hợp nhất | floodops-prd@b30b808 + long-prd@7a9f3b3 + docs/hung-floodops-prd-revision@6b46e40; [đối chiếu ba bản](../plans/reports/review-261021-2211-three-prd-branches.md). |
 | Quy ước | **Đã thống nhất** = hướng được xác nhận; **Đề xuất** = cần review; **TBD** = chưa quyết định. Mọi kết quả demo là **Simulation result**. |
 
@@ -36,7 +36,7 @@ flowchart LR
 
 **Giá trị kỳ vọng.** Đơn vị giao hàng bảo vệ đơn ưu tiên và hạn chế trễ dây chuyền; dispatcher có kế hoạch phối hợp kèm lý do; tài xế nhận phân công có kiểm tra ràng buộc; người nhận có ETA cập nhật. Người dân được xét điểm giả lập cho quan sát đã kiểm tra lấp khoảng trống dữ liệu.
 
-**Đầu ra MVP.** Console mô phỏng một khu vực nhỏ của TP.HCM, giữ đúng tỉ lệ khoảng cách, thời gian và tải vận hành theo D04; có xử lý sự cố, thực thi có kiểm soát, nhiều nguồn replay / giả lập, báo cáo tài xế, người dân gửi ảnh, review, cộng điểm giả lập và replan. Không tích hợp live hoặc chi trả thật. Dữ liệu hiệu chuẩn, nhu cầu mua và hiệu quả thực tế cần kiểm chứng.
+**Đầu ra sản phẩm.** Một sản phẩm FloodOps gồm **web app cho trình duyệt và một app mobile React Native/Expo cài trên iOS/Android**, cùng sử dụng backend và dữ liệu phiên mô phỏng. Web ưu tiên bàn điều phối; mobile ưu tiên tác vụ hiện trường và vẫn có đầy đủ luồng dispatcher khi được cấp quyền. Cả hai giữ đúng tỉ lệ khoảng cách, thời gian và tải vận hành theo D04; hỗ trợ xử lý sự cố, thực thi có kiểm soát, nguồn replay / giả lập, báo cáo, review, điểm giả lập và replan. Không tích hợp live hoặc chi trả thật; hiệu chuẩn, nhu cầu mua và hiệu quả thực tế cần kiểm chứng.
 
 ---
 
@@ -47,9 +47,9 @@ flowchart LR
 | Vai trò | Đối tượng | Nhu cầu / đầu ra |
 |---|---|---|
 | Khách hàng chính — giả thuyết B2B | Đơn vị giao hàng nội thành TP.HCM có đội xe, dispatcher và điểm lấy hàng; người mua dự kiến là quản lý vận hành. | Duy trì giao hàng khi gián đoạn, bảo vệ đơn ưu tiên, theo dõi kết quả. |
-| Người dùng chính | Dispatcher / trưởng ca. | Xem tác động, so sánh kế hoạch, duyệt và điều phối. |
-| Người dùng phụ | Tài xế. | Gửi quan sát; thấy phân công cập nhật trên console. Chỉ giả lập phần báo cáo. |
-| Người đóng góp | Người dân có thể quan sát từ vị trí an toàn. | Gửi ảnh / mô tả, xem kết quả review và điểm. |
+| Người dùng chính | Dispatcher / trưởng ca; quản lý vận hành khi trực tiếp được giao quyền điều phối. | Web là nơi làm việc chính: theo dõi đội xe / đơn, lập kế hoạch, review, duyệt và Execute. Có cùng luồng trên mobile khi rời bàn; xem 3.4. |
+| Người dùng phụ | Tài xế được ghép với một tài xế trong phiên. | Mobile là nơi làm việc chính: xem phân công, tuyến và ETA đã commit của mình; gửi báo cáo đường. Web có workspace tương đương; không có nhận / từ chối cuốc hoặc dẫn đường GPS. |
+| Người đóng góp | Người dân có thể quan sát từ vị trí an toàn. | Mobile ưu tiên gửi ảnh / mô tả và xem báo cáo của mình, kết quả review, điểm giả lập. Web hỗ trợ cùng nghiệp vụ; không cấp quyền điều phối. |
 | Bên hưởng lợi phụ | Người nhận hàng. | Xem trước thông báo ETA mới; không có app khách. |
 | Người quan sát demo | Giám khảo. | Kiểm chứng thích nghi, an toàn, nhãn mô phỏng và kết quả. |
 
@@ -102,11 +102,50 @@ Có thể dùng tab / drawer cho khu vực phụ. Banner **Simulation** luôn hi
 
 ### 3.3 Ưu tiên và non-goals
 
-**P0:** bắt buộc cho demo. **P1:** mở rộng nếu còn giờ. **P2:** tùy chọn. Cả 5 điều kiện luôn phải đúng (invariants, mục 8.3) áp dụng cho mọi tính năng được bật; cắt tính năng trước khi giảm luật an toàn.
+**P0:** bắt buộc cho demo. **P1/P2:** thứ tự ưu tiên của prototype gốc. Với bản triển khai đầy đủ hiện hành, [plan](../plans/20261030-2249-floodops-web-mobile-implementation/plan.md) bao gồm toàn bộ P0/P1/P2 trên **cả web và native mobile**; không dùng ưu tiên hay cut-line demo để bỏ một nền tảng. Năm invariants ở mục 8.3 luôn áp dụng; tính năng thiếu cấu hình hợp lệ phải disabled kèm lý do, không giảm luật an toàn.
 
 **Ưu tiên bản hợp nhất — D03:** P0 gồm reroute, đổi tài xế, ETA, report → replan, an toàn và luồng dữ liệu / điểm tối giản. Đổi hub và defer standard là P1, chỉ bật khi có cấu hình và bằng chứng nghiệm thu. Giữ đặc tả P1 để không phải tự suy diễn khi mở rộng.
 
-Ngoài phạm vi: mô hình thủy văn riêng; bản đồ phát hiện ngập toàn thành phố; lắp camera; marketplace / OMS / cảm biến live; app cư dân hoặc tài xế production; cứu hộ; auth / multi-tenant; gửi tin thật; thanh toán / crypto; multi-agent chat. “Learn” là cập nhật world state có hạn dùng trong phiên, không huấn luyện mô hình.
+Ngoài phạm vi: mô hình thủy văn riêng; bản đồ phát hiện ngập toàn thành phố; lắp camera; marketplace / OMS / cảm biến live; vận hành đội xe / cộng đồng production; cứu hộ; hệ thống tài khoản SaaS / multi-tenant; gửi tin thật; thanh toán / crypto; multi-agent chat. **App native mô phỏng ở 3.4 nằm trong phạm vi hiện tại**, không bị hoãn bởi non-goal production. “Learn” là cập nhật world state có hạn dùng trong phiên, không huấn luyện mô hình.
+
+### 3.4 Hai nền tảng và trải nghiệm người dùng — phạm vi hiện hành
+
+**Đã chốt:** hai client của cùng sản phẩm, không phải hai hệ thống nghiệp vụ độc lập. `apps/web` là web app React/React Router; `apps/mobile` là **một app React Native/Expo cho iPhone và Android**, không phải responsive website, PWA, WebView hoặc ba app tách theo vai trò. Cùng một người chỉ thấy workspace mà capability do server cấp cho phép; chọn vai trò trên UI không cấp thêm quyền.
+
+#### 3.4.1 Web app — bàn điều phối và workspace hỗ trợ
+
+Người dùng chính là **dispatcher / trưởng ca** ở bàn vận hành; màn hình rộng phục vụ đọc nhiều đơn, tuyến và bằng chứng cùng lúc:
+
+1. **Tổng quan và bản đồ:** đội xe, hub, đơn hàng, tuyến, đường closed / congestion / unknown; xem chi tiết thực thể.
+2. **Sự cố và tác động:** chọn kịch bản mưa / triều / kết hợp, xem đơn và tài xế bị ảnh hưởng.
+3. **Kế hoạch AI:** xem lý do, evidence, thay đổi tuyến / phân công / ETA; Approve / Reject khi cần, rồi Execute riêng để áp dụng.
+4. **Nguồn và dữ liệu:** độ mới, phạm vi phương tiện, khoảng trống thông tin và conflict.
+5. **Review báo cáo:** kiểm ảnh / mô tả / vị trí / thời gian; Accept / Reject và lý do. Accept không tự cấp quyền đi đường.
+6. **Timeline, clock và Reset:** theo dõi sự kiện → quyết định → thực thi, điều khiển phiên đúng quyền.
+7. **Kết quả:** so baseline / FloodOps từ runner, phân biệt projected và committed / measured, xem giới hạn D04.
+8. **Workspace tài xế:** xem phân công / tuyến / ETA của chính tài xế được gắn capability, gửi report nhanh / văn bản và xem report của mình.
+9. **Workspace người đóng góp:** gửi ảnh / fixture, xem lịch sử và kết quả review của mình, xem điểm giả lập.
+
+Hai workspace cuối là giao diện web cho cùng nghiệp vụ hiện trường, không biến tài xế / contributor thành dispatcher và không yêu cầu họ dùng web hằng ngày.
+
+#### 3.4.2 Mobile app — hiện trường và điều phối khi rời bàn
+
+App có navigation theo capability, tối ưu thao tác chạm và đọc trên màn hình nhỏ; không phải bản thu nhỏ nguyên bố cục desktop:
+
+- **Tài xế:** màn công việc của tôi (đơn / điểm dừng / tuyến / ETA đã commit); bản đồ / chi tiết tuyến được phân; form report nhanh hoặc văn bản và trạng thái report của mình. “Nhận phân công” là thấy cập nhật sau Execute, **không** có luồng nhận / từ chối cuốc, bằng chứng giao hàng, tự đổi đơn hoặc turn-by-turn navigation. Không live GPS / tracking nền.
+- **Người đóng góp:** màn gửi ảnh / fixture kèm đoạn đường, vị trí chọn thủ công, thời gian và mô tả; danh sách / chi tiết báo cáo của tôi (pending / accepted / rejected và lý do); ledger điểm giả lập. Không xem đơn / đội xe, review người khác hoặc rút tiền.
+- **Dispatcher:** đủ overview / map / impact, plan / diff / Approve / Reject / Execute, sources / coverage / conflict / review, timeline / clock / results / Reset như web. Đây là luồng điều phối đầy đủ khi rời bàn, không chỉ read-only; mọi lệnh vẫn cần online và đúng capability.
+
+Driver / contributor có thể lưu nháp report và ảnh chưa gửi khi offline; kết nối lại phải kiểm phiên và người dùng chủ động gửi. Không queue Approve, Execute, Reset, clock hoặc tự gửi ảnh nền. UI giữ nhãn `Simulation`; app native không biến mô phỏng thành dịch vụ logistics production.
+
+#### 3.4.3 Luồng phối hợp và nghiệm thu hai nền tảng
+
+1. Dispatcher mở web và tạo / tham gia phiên; tài xế / contributor ghép mobile vào **cùng phiên** bằng quyền được cấp, không tự chọn role để nâng quyền.
+2. Mobile gửi report về E27; web thấy report chờ kiểm tra. Report pending chưa làm thay đổi road knowledge hoặc points.
+3. Dispatcher review; report đủ điều kiện cập nhật knowledge và được xét điểm một lần. Contributor thấy kết quả / lý do trong app.
+4. AI đề xuất lại kế hoạch; dispatcher xem diff trên web **hoặc mobile**, Approve nếu cần rồi bấm Execute. Tài xế chỉ thấy phân công / tuyến / ETA mới sau commit thành công.
+
+**Nghiệm thu bắt buộc:** có web chạy trong trình duyệt và native build chạy trên iOS lẫn Android; không lấy responsive web / Expo web thay bằng chứng native. T01–T15 áp dụng cho các luồng tương ứng ở cả hai client. Kiểm thêm mobile report → web review → cập nhật trạng thái / điểm trên mobile, mobile dispatcher Execute → web / driver đọc cùng committed outcome, stale-command / Reset giữa thiết bị không commit lặp hoặc dùng quyền cũ. Người nhận hàng vẫn không có app riêng; chỉ có ETA notification preview, không gửi thật. Danh sách route / screen và test chi tiết ở [platform surfaces](../plans/20261030-2249-floodops-web-mobile-implementation/specs/web-mobile-feature-surfaces.md).
 
 ---
 
@@ -655,10 +694,10 @@ flowchart LR
 
 Validator, reward service và tools trả result / transition; reducer là điểm commit duy nhất. Acceptance có thể commit observation / award trước Commander; plan execution là transaction riêng theo 7.3.
 
-- State và ảnh fixture trong phiên, không DB / auth / multi-tenant. Reset tái lập được.
+- State phiên có authority chung cho web/native theo [architecture plan](../plans/20261030-2249-floodops-web-mobile-implementation/specs/architecture.md): Hono Worker, Session Durable Object/SQLite và private R2; không mỗi app giữ một bản vận hành riêng. Đây là mở rộng đã ghi trong plan so với prototype in-process/no-DB; chỉ scoped session capabilities, không account SaaS / multi-tenant. Reset tái lập được và vô hiệu quyền / response cũ.
 - Route / ETA / simulator chạy code thật trên graph từ geometry tham chiếu thực và config có provenance theo D04; không chỉ đổi số theo nút.
 - Map có thể tự vẽ geometry snapshot và thước tỉ lệ, không phụ thuộc tile server live; chọn phép chiếu phù hợp vùng để không méo tỉ lệ. Key LLM / provider ở backend / env, không browser bundle / repo public.
-- Stack / model / test runner chốt đầu build. AI được đề xuất phù hợp môi trường, giữ hợp đồng PRD; không tự thêm DB, auth hoặc live adapters.
+- Stack web/native/API đã chốt theo 3.4 và implementation plan; model / credits / patch versions / môi trường còn cần kiểm chứng theo D05. Không tự thêm DB khác, hệ thống tài khoản production hoặc live adapters ngoài plan.
 - Model cần structured output / tool calling, schema / timeout rõ. API lỗi phải hiện; replay / video dự phòng có nhãn, không giả live model.
 - Trace event / report / proposal / action; external text không thực thi lệnh. Phân biệt dữ liệu tham chiếu có nguồn, replay và synthetic; ảnh được phép, dữ liệu vận hành thật phải ẩn danh trước sử dụng.
 
@@ -701,6 +740,8 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 
 **Definition of Done:** P0 có evidence nghiệm thu, gồm K6 / T15; 5 invariants pass; D04 có hồ sơ nguồn / sai số và T14 đạt trong phạm vi chốt; báo K1/K2 thực từ runner kể cả không đạt target; rehearsal K4; log K5; mọi input có nhãn provenance, points ghi simulated; Reset lặp lại; không secret. Thiếu hiệu chuẩn, P0 hoặc bằng chứng phải ghi rõ, chưa đánh dấu complete.
 
+**Definition of Done cho bản triển khai hai nền tảng:** thêm bằng chứng web + iOS + Android và luồng liên thiết bị ở 3.4.3; toàn bộ phạm vi P0/P1/P2 của implementation plan được thực hiện, có disabled reason nếu thiếu config hợp lệ. Chỉ xong web hoặc chỉ có form report mobile không phải hoàn tất sản phẩm; cut-line thi ở 9.2 không tự thay phạm vi hiện hành.
+
 ### 9.5 Bằng chứng theo sáu tiêu chí chấm
 
 | Tiêu chí briefing | Giám khảo kiểm gì | Truy vết |
@@ -724,7 +765,7 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 | D02 | **Đã thống nhất:** MVP source fixtures, citizen photo, checks / review / points; không live / tiền thật. | US-28–US-32 P0 trong seed / demo / acceptance; US-34 ghi nhận mưa / triều. |
 | D03 | **Đã thống nhất cho bản hợp nhất:** hub / defer P1; before-after, clock / expiry demo, Reset / labels P0. | Cắt P2 rồi P1 nếu thiếu giờ, giữ 5 invariants cho chức năng bật. Thay đổi phạm vi phải cập nhật US / DoD đồng bộ. |
 | D04 | **Đã thống nhất:** mô phỏng phải đúng tỉ lệ ngoài đời về hình học / khoảng cách, thời gian và tải vận hành trong khu vực TP.HCM được chọn; chỉ playback được tăng tốc đồng đều. Số liệu / nguồn cụ thể và ngưỡng sai số **TBD**, theo 6.5. | Hiệu chuẩn / đối chiếu T14 trước tuyên bố đạt. Bỏ config vật lý tùy ý; thiếu dữ liệu hiện Calibration incomplete. Freeze config trước so baseline; KPI là kết quả tính, không chỉnh thông số để ép đạt. |
-| D05 | **TBD đầu build:** stack, runtime model / credits / key, test runner, hosting và người phụ trách demo access. | Kiểm API / structured output / latency và server-side env; chưa access thì chưa chứng minh demo LLM thật, vẫn có thể kiểm simulator với stub có nhãn. |
+| D05 | **Đã chốt nền tảng:** web React/React Router/Tailwind v4/shadcn, native Expo/React Native, Hono/Cloudflare theo implementation plan và 3.4. **Còn mở:** model / credits / keys, exact dependency patches, dữ liệu / account và quyền deploy. | Hai client dùng chung API/session rules; web và native là hai deliverable bắt buộc. Kiểm structured output / latency và secrets server-side; chưa có access không chứng minh LLM thật hoặc release đã chạy. |
 | D06 | **Đề xuất:** UI English, report tiếng Việt; critical seed có đơn thuốc ưu tiên. | Xác nhận trước polish; không quy tất cả thuốc ngoài đời thành critical. |
 | D07 | **TBD trước sử dụng:** nguồn / quyền lưu snapshot bản đồ, vận hành và sự kiện để đáp ứng D04. Connector live / mapping thủy văn station / tide / street thuộc sau MVP. | Catalog không phải tuyên bố đã kết nối hoặc có dữ liệu hiệu chuẩn. Không suy street depth từ tide; thiếu quyền / dữ liệu thì chưa đáp ứng D04. |
 | D08 | **TBD sau MVP:** tiền / voucher, người tài trợ, ngân sách, adoption / anti-fraud thực. | Demo points, không hứa tiền thật. |

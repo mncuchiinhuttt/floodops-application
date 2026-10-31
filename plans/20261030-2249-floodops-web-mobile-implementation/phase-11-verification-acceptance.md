@@ -54,6 +54,7 @@
 - All enabled feature requirements have deterministic behavior proof and user-surface smoke; five invariants zero violations.
 - Full contract examples and client/server schemas consistent, no unresolved endpoint or role mismatch.
 - Security/accessibility/release blockers resolved or explicitly external evidence gated, not silently waived.
+- Chứng minh cả browser web và native iOS/Android, cộng luồng liên thiết bị ở [surface matrix](specs/web-mobile-feature-surfaces.md): report/review/feedback, native dispatcher Execute/shared committed state, stale authority/Reset. Một app hoặc screenshots responsive không thay bằng chứng hai nền tảng.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

@@ -4,7 +4,7 @@
 - Nguồn: [PRD v0.3](../../../FloodOps/prd.md); thay thế mọi suy luận từ PRD v0.1/v0.2.
 - User đã chọn React, React Router, Tailwind CSS v4, Hono, shadcn, isometric icons, Expo và Cloudflare Workers. Không có phân bổ thời gian.
 - Toàn bộ US-01–US-34 được lập kế hoạch, gồm P1 đổi hub/defer và P2 reroute-only baseline; feature flags không phải lý do bỏ triển khai.
-- Web đầy đủ console; mobile có dispatcher, driver, contributor. Không làm app khách nhận hàng, payout thật, SaaS multi-tenant, live data connectors hoặc background GPS.
+- Hai client của cùng sản phẩm: web app bàn dispatcher và một app native iOS/Android cho driver/contributor cùng đầy đủ dispatcher, theo [PRD mục 3.4](../../../FloodOps/prd.md). Driver xem own committed assignment/route/ETA và report, không có accept/reject cuốc hoặc turn-by-turn navigation. Không làm app khách nhận hàng, payout thật, SaaS multi-tenant, live data connectors hoặc background GPS.
 - Tiếp tục là simulator. Chọn phương tiện/vai trò trong UI không phải quyền production và không cấp quyền API.
 
 ## Kiến trúc chốt cho plan
@@ -20,7 +20,7 @@ flowchart LR
 ```
 - Một Worker phục vụ Hono API và static web assets cùng origin; `/api/*` không fallback HTML. React Router **data mode SPA**, không ghép thêm SSR framework/server thứ hai.
 - Durable Object (DO) là authority duy nhất mỗi phiên: snapshot, revision, approvals, idempotency, event log, reports/gaps/awards. Model gọi ngoài transaction; response áp dụng bằng compare-and-set.
-- SQLite-backed DO và R2 là **đề xuất mở rộng kỹ thuật** so với PRD §9.1 “state trong phiên, không DB”: để web/mobile cùng một state, reconnect và atomicity. Không thêm D1, Redis, KV, microservices hoặc event bus.
+- SQLite-backed DO và R2 là thiết kế session persistence đã ghi trong plan, thay cho prototype in-process/no-DB: web/mobile dùng cùng authority, reconnect và atomicity theo PRD §3.4/9.1. Không thêm D1, Redis, KV, microservices hoặc event bus.
 - DO storage không biến demo thành logistics production. Dữ liệu phiên có expiry; Reset không giữ ledger cũ trong phiên mới.
 - Native binaries phát hành EAS; Cloudflare chỉ host web/API/assets, không host executable iOS/Android.
 
@@ -65,4 +65,4 @@ packages/
 ## Quyết định chưa phải fact
 - Numeric quota, retention, ảnh và timeout trong plan là operational security limits, không physical/calibration constants.
 - Exact dependency patch được freeze lúc implementation sau compatibility/supply-chain check; không tự nhận package “latest” đã xác minh.
-- Không sửa PRD trong bước lập plan; [decision register](decisions-prerequisites.md) ghi delta cho lần triển khai.
+- [Decision register](decisions-prerequisites.md) ghi lựa chọn kỹ thuật và prerequisite chưa kiểm chứng. PRD §3.4 nay làm rõ hai nền tảng và người dùng; không đổi US/API/safety rules hoặc dùng tài liệu thay runtime evidence.

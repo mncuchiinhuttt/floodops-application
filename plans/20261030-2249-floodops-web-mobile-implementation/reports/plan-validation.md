@@ -37,3 +37,12 @@ Máy đọc được: [validation-results.json](validation-results.json). Nhữn
 
 ## Validation method
 Dùng Python jsonschema hiện có cho OAS meta-schema/component/request-response/tool payloads; kiểm `$ref`, path parameters, US/API coverage, Markdown links/fences/tables và checklist/DAG bằng throwaway evaluation. Không để generator/test scaffolding trong app. Chỉ giữ contract examples và report để implementer tái lập.
+
+## Bổ sung làm rõ web/native theo người dùng
+
+- [PRD §2.1/3.4/9.1/DoD/D05](../../../FloodOps/prd.md) nay xác định hai deliverable: web trong trình duyệt và một app Expo native cài iOS/Android; không còn mô tả native như phần production để sau MVP.
+- Web ưu tiên dispatcher; mobile ưu tiên driver/contributor, vẫn có dispatcher đầy đủ. Driver đọc own committed assignment/route/ETA và gửi report; contributor gửi ảnh, đọc own status/points. Không thêm accept/reject cuốc, turn-by-turn, GPS tracking, app người nhận hoặc payout.
+- Đã đồng bộ root plan, architecture/planning contract, [surface matrix](../specs/web-mobile-feature-surfaces.md), phase09/10/11 và hai UI-role prompts. Hai route/screen cho own driver workspace và own community report history được ghi tường minh; dùng API đã có, không thêm endpoint.
+- Kiểm chứng bằng throwaway evaluation:10 tài liệu cập nhật,134 local file links, Markdown fences/tables PASS;34 US cùng toàn bộ functional/safety/acceptance rows giữ nguyên;64 API operations giữ nguyên. OpenAPI, role/task manifests và root policy byte-for-byte không đổi.
+- Bốn planned UI paths mới tường minh khớp đúng một existing owner; checklist counts phase09/10/11 và overview <80 dòng giữ đúng. Các scenario report→review→feedback, native Execute→shared outcome và stale/Reset là **nghiệm thu được yêu cầu**, chưa phải log chạy.
+- Đây là document/contract consistency verification, không application suite, browser/native device test hay injection evaluation. Không sửa/sync repo `floodops-application`, không commit/push/deploy. IntegrationLead cần publish/amend baseline có tài liệu mới trước khi worker đang dùng bản cũ tiếp tục; không tự làm mất hiệu lực receipt hoặc grant.

@@ -1,6 +1,6 @@
 # Red-team review — Scope & Complexity
 
-**Plan:** `plans/20261030-2249-floodops-web-mobile-implementation/`  
+**Plan:** `plans/20261030-2249-floodops-web-mobile-implementation/`
 **Phạm vi đọc:** `plan.md`, toàn bộ 12 phase, task manifest, coverage và các spec/contracts liên quan; đối chiếu PRD v0.3 §§5–8 và D01–D09. Giữ toàn bộ 34 US, P1/P2 và Expo mobile. Đây là review tài liệu, không phải bằng chứng ứng dụng chạy được.
 
 **Kết luận:** Còn **2 finding High/P1** cần sửa trước khi dùng plan làm hợp đồng triển khai. Không có finding Critical được giữ lại.

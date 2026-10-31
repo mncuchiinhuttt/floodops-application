@@ -32,6 +32,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 ## Scope
 - Implement phase09 all feature-based web routes/screens từ matrix, React Router Data Mode/TanStack cache/schema client.
 - Real geometry map/list, impact/plans/diff/reasons/Approve/Execute, sources/reports/review/gaps/points, clock/Reset/results.
+- Web ưu tiên dispatcher nhưng cũng có own driver assignment/route/ETA/report workspace và contributor own reports/status/points theo [PRD §3.4](../../../../FloodOps/prd.md) / [surface matrix](../../specs/web-mobile-feature-surfaces.md). Không suy platform thành quyền; không thêm accept/reject cuốc hoặc turn-by-turn.
 - No optimistic committed assignments/points; correct401/410/412/422, private image display and same-origin cookie/CSRF.
 - Use ui-web/design tokens public APIs. Missing UI/schema/dependency => request owner, không copy/fork primitives or wire types.
 
