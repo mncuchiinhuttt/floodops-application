@@ -1,17 +1,21 @@
-import { afterEach, describe, expect, it } from "vitest";
-import { reset } from "cloudflare:test";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { createExecutionContext, reset } from "cloudflare:test";
 import { parseSchema } from "@floodops/contracts";
 import { createApp } from "../../src/app";
+import { logAppError } from "../../src/app/error-log";
 import { scenarioReference } from "../../src/index";
-import { requestKey } from "./helpers";
+import { bindings, requestKey } from "./helpers";
 import { activeStreamCount, composed, createComposed, emitComposedEvent, finishStream, memberHeaders, webOrigin } from "./composed-http-fixtures";
 afterEach(reset);
 function security(response: Response): void {
   expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
   expect(response.headers.get("Referrer-Policy")).toBe("no-referrer");
   expect(response.headers.get("Cache-Control")).toBe("no-store, no-transform");
-  expect(response.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'none'");
-  expect(response.headers.get("Content-Security-Policy")).toContain("object-src 'none'");
+  expect(response.headers.get("Content-Security-Policy")).toBe("default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'");
+  expect(response.headers.get("Strict-Transport-Security")).toBe("max-age=31536000; includeSubDomains");
+  expect(response.headers.get("X-Frame-Options")).toBe("DENY");
+  expect(response.headers.get("Cross-Origin-Opener-Policy")).toBe("same-origin");
+  expect(response.headers.get("Permissions-Policy")).toBe("camera=(), microphone=(), geolocation=()");
   expect(Boolean(response.headers.get("X-Request-ID"))).toBe(true);
 }
 function cors(response: Response): void {
@@ -26,6 +30,12 @@ describe("composed HTTP response security and CORS", () => {
     expect(r.headers.get("Content-Type")).toBe("application/json");
     const body = parseSchema("HealthResponse", await r.json()); expect(body.data?.status).toBe("ok");
     expect(r.headers.get("X-Request-ID")).toBe(body.meta.request_id);
+  });
+  it("does not send HSTS over local HTTP", async () => {
+    const app = createApp([], { loadScenario: async () => { throw new Error("unexpected"); } });
+    const response = await app.fetch(new Request("http://127.0.0.1/api/v1/health"), bindings, createExecutionContext());
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Strict-Transport-Security")).toBeNull();
   });
   it("permits native bearer requests without adding Origin authority", async () => {
     const owner = await createComposed(); const r = await composed(`/sessions/${owner.id}/identity`, { headers: memberHeaders(owner) });
@@ -92,6 +102,17 @@ describe("composed HTTP response security and CORS", () => {
     const app = createApp([], { loadScenario: async () => { throw new Error("Synthetic private failure detail"); } });
     const r = await composed("/sessions", { method: "POST", headers: { Origin: webOrigin, "Content-Type": "application/json", "Idempotency-Key": requestKey(), "X-Client-Request-Scope": requestKey(), "CF-Connecting-IP": "192.0.2.8" }, body: JSON.stringify({ scenario_id: scenarioReference.scenario_id, scenario_version: scenarioReference.scenario_version, client_type: "native" }) }, app);
     expect(r.status).toBe(503); security(r); cors(r); expect(await r.text()).not.toContain("Synthetic private failure detail");
+  });
+  it("logs only allowlisted error fields", () => {
+    const output = vi.spyOn(console, "error").mockImplementation(() => {});
+    const event = { requestId: "request-safe", operation: "GET /api/v1/sessions/:session_id/identity", status: 503,
+      errorCode: "STORAGE_UNAVAILABLE", token: "secret-token", cookie: "private-cookie", key: "secret-key",
+      imageBytes: "private-image", personalData: "synthetic@example.invalid", body: { secret: "private-body" } };
+    logAppError(event);
+    expect(output).toHaveBeenCalledOnce();
+    expect(output).toHaveBeenCalledWith({ event: "http.error", request_id: "request-safe",
+      operation: "GET /api/v1/sessions/:session_id/identity", status: 503, error_code: "STORAGE_UNAVAILABLE" });
+    output.mockRestore();
   });
   it.each(["web", "native"] as const)("preserves SSE body/type and policy headers for %s", async type => {
     const owner = await createComposed(type); await emitComposedEvent(owner);
