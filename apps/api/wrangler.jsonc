@@ -2,6 +2,26 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "floodops-api",
   "main": "src/index.ts",
-  "compatibility_date": "2026-10-30"
+  "compatibility_date": "2026-10-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": {
+    "directory": "../web/dist/live",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "SESSIONS", "class_name": "SessionDO" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SessionDO"] }],
+  "r2_buckets": [
+    { "binding": "REPORT_MEDIA", "bucket_name": "floodops-report-media" },
+    { "binding": "SCENARIO_ASSETS", "bucket_name": "floodops-scenario-assets" }
+  ],
+  "images": { "binding": "IMAGES" },
+  "vars": {
+    "APP_ENV": "production",
+    "WEB_ORIGIN": "https://floodops-api.vominhlongbentre.workers.dev",
+    "CAPABILITY_SEAL_KEY_ID": "prod-v1"
+  }
 }
-

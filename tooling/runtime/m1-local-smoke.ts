@@ -1,5 +1,5 @@
 import { ApiClient, ApiError, nativeCredentials } from "@floodops/api-client";
-const baseUrl = "http://127.0.0.1:8760/api/v1", key = () => crypto.randomUUID();
+const baseUrl = process.env.FLOODOPS_API_URL ?? "http://127.0.0.1:8760/api/v1", key = () => crypto.randomUUID();
 const output: { stage: string; status: string; http?: number }[] = [];
 let stage = "catalog", cleanup: (() => Promise<void>) | undefined;
 function check(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
