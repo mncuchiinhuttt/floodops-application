@@ -1,0 +1,461 @@
+{
+  "kind": "planning-handoff",
+  "status": "pending",
+  "time_allocations": "omitted as requested",
+  "phases": [
+    {
+      "phase": 1,
+      "title": "Workspace và contracts dùng chung",
+      "file": "phase-01-workspace-contracts.md",
+      "status": "pending",
+      "dependencies": [],
+      "ownership": [
+        "package.json; pnpm-workspace.yaml; tsconfig.base.json; eslint.config.js (root workspace/import rules)",
+        "packages/contracts/src/** (common + session/scenario/operations/evidence/planning/simulation DTOs)",
+        "packages/api-client/src/** (typed HTTP, auth adapter, idempotent command, SSE parser)",
+        "packages/contracts/test/**; packages/api-client/test/**"
+      ],
+      "task": "Implement phase 01: Workspace và contracts dùng chung",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-01-workspace-contracts.md",
+      "checklist_steps": 6,
+      "primary_agent": "contracts-client",
+      "primary_agent_name": "ContractsClient",
+      "agent_prompt": "worktree-execution/roles/01-contracts-client.md",
+      "worktree_branch": "feat/floodops-contracts-client",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/01-contracts-client",
+      "launch_gates": [
+        "workspace-bootstrap"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 2,
+      "title": "Design system, token và isometric vector package",
+      "file": "phase-02-design-system-icons.md",
+      "status": "pending",
+      "dependencies": [
+        1
+      ],
+      "ownership": [
+        "packages/design-tokens/** (tokens.json + CSS/native adapters + tests)",
+        "packages/icons/** (manifest, original vector sources, web/native exports)",
+        "packages/ui-web/** (shadcn primitives/patterns + Storybook)",
+        "packages/ui-native/** (native primitives/patterns + gallery components)"
+      ],
+      "task": "Implement phase 02: Design system, token và isometric vector package",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-02-design-system-icons.md",
+      "checklist_steps": 6,
+      "primary_agent": "design-system",
+      "primary_agent_name": "DesignSystem",
+      "agent_prompt": "worktree-execution/roles/02-design-system.md",
+      "worktree_branch": "feat/floodops-design-system",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "launch_gates": [
+        "contracts-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 3,
+      "title": "Scenario, graph tỉ lệ thực và simulator tất định",
+      "file": "phase-03-scenario-graph-simulator.md",
+      "status": "pending",
+      "dependencies": [
+        1
+      ],
+      "ownership": [
+        "packages/simulation/src/{scenario,graph,clock,movement,projection,metrics,calibration}/**",
+        "packages/domain/src/operations/**",
+        "packages/test-fixtures/src/{functional,adversarial,calibration}/**",
+        "data/scenarios/** (only licensed/synthetic bundles + manifests/provenance)"
+      ],
+      "task": "Implement phase 03: Scenario, graph tỉ lệ thực và simulator tất định",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-03-scenario-graph-simulator.md",
+      "checklist_steps": 7,
+      "primary_agent": "simulation-data",
+      "primary_agent_name": "SimulationData",
+      "agent_prompt": "worktree-execution/roles/03-simulation-data.md",
+      "worktree_branch": "feat/floodops-simulation-data",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "launch_gates": [
+        "contracts-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 4,
+      "title": "Hono session runtime, capabilities và consistency",
+      "file": "phase-04-session-runtime-security.md",
+      "status": "pending",
+      "dependencies": [
+        1
+      ],
+      "ownership": [
+        "apps/api/src/app/** (Hono factory/middleware/error guards, excludes production index composition)",
+        "apps/api/src/session-runtime/** (DO schema/state/transaction/expiry/reset/outbox)",
+        "apps/api/src/features/session/**",
+        "apps/api/src/shared/** (platform ports, no domain logic dump)",
+        "apps/api/test/{capabilities,commands,replay,reset,expiry}/**",
+        "apps/api/{package.json,vitest.config.ts,wrangler.test.jsonc}; apps/api/test/runtime-worker.ts (injected real factory + SessionDO test harness)"
+      ],
+      "task": "Implement phase 04: Hono session runtime, capabilities và consistency",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-04-session-runtime-security.md",
+      "checklist_steps": 7,
+      "primary_agent": "session-platform",
+      "primary_agent_name": "SessionPlatform",
+      "agent_prompt": "worktree-execution/roles/04-session-platform.md",
+      "worktree_branch": "feat/floodops-session-platform",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/04-session-platform",
+      "launch_gates": [
+        "contracts-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 5,
+      "title": "Nguồn, observation, report và upload ảnh an toàn",
+      "file": "phase-05-sources-observations-media.md",
+      "status": "pending",
+      "dependencies": [
+        3,
+        4
+      ],
+      "ownership": [
+        "packages/domain/src/{sources,knowledge,reporting}/** (excludes reward/review orchestration owned07)",
+        "apps/api/src/features/{scenario,sources,knowledge,reports,media}/** (review route/controller subtree reserved07)",
+        "apps/api/test/{sources,observations,media}/**"
+      ],
+      "task": "Implement phase 05: Nguồn, observation, report và upload ảnh an toàn",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-05-sources-observations-media.md",
+      "checklist_steps": 7,
+      "primary_agent": "sources-media",
+      "primary_agent_name": "SourcesMedia",
+      "agent_prompt": "worktree-execution/roles/05-sources-media.md",
+      "worktree_branch": "feat/floodops-sources-media",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/05-sources-media",
+      "launch_gates": [
+        "simulation-ready",
+        "platform-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 6,
+      "title": "Commander, route tools, policy gate và Execute",
+      "file": "phase-06-planning-safety-execution.md",
+      "status": "pending",
+      "dependencies": [
+        3,
+        4,
+        5
+      ],
+      "ownership": [
+        "packages/domain/src/planning/**",
+        "apps/api/src/features/{incidents,planning,operations}/**",
+        "apps/api/src/integrations/openai/**",
+        "apps/api/test/{planning,execution,policy}/**"
+      ],
+      "task": "Implement phase 06: Commander, route tools, policy gate và Execute",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-06-planning-safety-execution.md",
+      "checklist_steps": 8,
+      "primary_agent": "planner-safety",
+      "primary_agent_name": "PlannerSafety",
+      "agent_prompt": "worktree-execution/roles/06-planner-safety.md",
+      "worktree_branch": "feat/floodops-planner-safety",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/06-planner-safety",
+      "launch_gates": [
+        "sources-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 7,
+      "title": "Review cộng đồng, conflict, gap và điểm exactly-once",
+      "file": "phase-07-review-gaps-rewards.md",
+      "status": "pending",
+      "dependencies": [
+        4,
+        5
+      ],
+      "ownership": [
+        "packages/domain/src/rewards/**",
+        "apps/api/src/features/reports/review/**",
+        "apps/api/src/features/knowledge/conflict-review/**",
+        "apps/api/src/features/rewards/**",
+        "apps/api/test/{review,rewards,coverage}/**"
+      ],
+      "task": "Implement phase 07: Review cộng đồng, conflict, gap và điểm exactly-once",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-07-review-gaps-rewards.md",
+      "checklist_steps": 7,
+      "primary_agent": "review-rewards",
+      "primary_agent_name": "ReviewRewards",
+      "agent_prompt": "worktree-execution/roles/07-review-rewards.md",
+      "worktree_branch": "feat/floodops-review-rewards",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/07-review-rewards",
+      "launch_gates": [
+        "sources-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 8,
+      "title": "Clock, kết quả, realtime projections và model evaluation",
+      "file": "phase-08-simulation-results-evaluations.md",
+      "status": "pending",
+      "dependencies": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "ownership": [
+        "apps/api/src/features/{simulation,results,evaluations}/**",
+        "apps/api/test/{simulation,metrics,evaluations}/**",
+        "evidence/{calibration,model-runs,rehearsal,codex}/** (real result artifacts after execution only)",
+        "apps/api/src/index.ts; apps/api/wrangler.api-local.jsonc (full backend composition/local API without missing static assets)"
+      ],
+      "task": "Implement phase 08: Clock, kết quả, realtime projections và model evaluation",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-08-simulation-results-evaluations.md",
+      "checklist_steps": 8,
+      "primary_agent": "results-evaluation",
+      "primary_agent_name": "ResultsEvaluation",
+      "agent_prompt": "worktree-execution/roles/08-results-evaluation.md",
+      "worktree_branch": "feat/floodops-results-evaluation",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/08-results-evaluation",
+      "launch_gates": [
+        "planner-ready",
+        "review-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 9,
+      "title": "React Router web console đầy đủ theo feature",
+      "file": "phase-09-react-web-console.md",
+      "status": "pending",
+      "dependencies": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "ownership": [
+        "apps/web/src/{app,features,shared}/**",
+        "apps/web/index.html; apps/web/vite.config.ts; apps/web/components.json",
+        "apps/web/test/{components,e2e,accessibility,visual}/**"
+      ],
+      "task": "Implement phase 09: React Router web console đầy đủ theo feature",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-09-react-web-console.md",
+      "checklist_steps": 8,
+      "primary_agent": "web-console",
+      "primary_agent_name": "WebConsole",
+      "agent_prompt": "worktree-execution/roles/09-web-console.md",
+      "worktree_branch": "feat/floodops-web-console",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/09-web-console",
+      "launch_gates": [
+        "backend-ready",
+        "ui-libraries-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 10,
+      "title": "Expo native dispatcher, driver và contributor",
+      "file": "phase-10-expo-mobile-application.md",
+      "status": "pending",
+      "dependencies": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "ownership": [
+        "apps/mobile/app/** (Expo Router thin navigation routes)",
+        "apps/mobile/src/{features,shared}/**",
+        "apps/mobile/{app.config.ts,eas.json,metro.config.js,package.json}",
+        "apps/mobile/{test,.maestro}/**"
+      ],
+      "task": "Implement phase 10: Expo native dispatcher, driver và contributor",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-10-expo-mobile-application.md",
+      "checklist_steps": 8,
+      "primary_agent": "expo-mobile",
+      "primary_agent_name": "ExpoMobile",
+      "agent_prompt": "worktree-execution/roles/10-expo-mobile.md",
+      "worktree_branch": "feat/floodops-expo-mobile",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/10-expo-mobile",
+      "launch_gates": [
+        "backend-ready",
+        "ui-libraries-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 11,
+      "title": "Kiểm chứng đầy đủ contracts, invariants và cross-platform",
+      "file": "phase-11-verification-acceptance.md",
+      "status": "pending",
+      "dependencies": [
+        9,
+        10
+      ],
+      "ownership": [
+        "tests/{cross-platform,performance,smoke}/**",
+        ".github/workflows/quality.yml",
+        ".github/workflows/mobile-validation.yml",
+        "docs/{testing,evidence}/** (actual reports and reproduction)",
+        "apps/api/wrangler.jsonc; apps/api/.dev.vars.example (static/env declarative configuration for built client integration)"
+      ],
+      "task": "Implement phase 11: Kiểm chứng đầy đủ contracts, invariants và cross-platform",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-11-verification-acceptance.md",
+      "checklist_steps": 8,
+      "primary_agent": "quality-security",
+      "primary_agent_name": "QualitySecurity",
+      "agent_prompt": "worktree-execution/roles/11-quality-security.md",
+      "worktree_branch": "test/floodops-quality-security",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/11-quality-security",
+      "launch_gates": [
+        "combined-config-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    },
+    {
+      "phase": 12,
+      "title": "Cloudflare Workers và EAS deployment/rollback",
+      "file": "phase-12-cloudflare-eas-release.md",
+      "status": "pending",
+      "dependencies": [
+        11
+      ],
+      "ownership": [
+        ".github/workflows/{deploy-preview,deploy-production}.yml",
+        "docs/{deployment,release-checklist,rollback}.md; README.md",
+        "apps/mobile/release/** (metadata/runbook only, never signing secrets)"
+      ],
+      "task": "Implement phase 12: Cloudflare Workers và EAS deployment/rollback",
+      "priority": "P1",
+      "plan_dir": "plans/20261030-2249-floodops-web-mobile-implementation",
+      "phase_file": "phase-12-cloudflare-eas-release.md",
+      "checklist_steps": 8,
+      "primary_agent": "release-ops",
+      "primary_agent_name": "ReleaseOps",
+      "agent_prompt": "worktree-execution/roles/12-release-ops.md",
+      "worktree_branch": "chore/floodops-release-ops",
+      "worktree_path": "/Users/vominhlong/seahackathon-worktrees/12-release-ops",
+      "launch_gates": [
+        "qa-ready"
+      ],
+      "central_file_writer": "integration-lead",
+      "ownership_interpretation": "Deliverable paths only; actual writes and protected-file exceptions defined by worktree-execution/roles.json.",
+      "repository_agent_policy": "AGENTS.md"
+    }
+  ],
+  "critical_steps": [
+    {
+      "phase": 3,
+      "name": "Validate D04 data provenance and independent calibration",
+      "blocked_by_external": [
+        "E01",
+        "E02",
+        "E03"
+      ],
+      "primary_agent": "simulation-data",
+      "verification_owner": "quality-security"
+    },
+    {
+      "phase": 4,
+      "name": "Prove capability isolation and idempotent reset saga",
+      "primary_agent": "session-platform",
+      "verification_owner": "quality-security"
+    },
+    {
+      "phase": 6,
+      "name": "Prove atomic execution and all five safety invariants",
+      "primary_agent": "planner-safety",
+      "verification_owner": "quality-security"
+    },
+    {
+      "phase": 7,
+      "name": "Prove report-gap-reward exactly-once transitions",
+      "primary_agent": "review-rewards",
+      "verification_owner": "quality-security"
+    },
+    {
+      "phase": 12,
+      "name": "Prove compatible deployment rollback and EAS binaries",
+      "blocked_by_external": [
+        "E04",
+        "E05",
+        "E06"
+      ],
+      "primary_agent": "release-ops",
+      "verification_owner": "quality-security"
+    }
+  ],
+  "worktree_execution": {
+    "manifest": "worktree-execution/roles.json",
+    "entrypoint": "worktree-execution/README.md",
+    "orchestrator": "worktree-execution/orchestrator.md",
+    "ownership": "worktree-execution/ownership.md",
+    "producer_interfaces": "worktree-execution/producer-interfaces.md",
+    "handoff_schema": "worktree-execution/handoff-schemas.json",
+    "mode": "isolated-role-worktrees",
+    "coordinator": "integration-lead",
+    "worktrees_created": false,
+    "write_authority": "Roles manifest central exact-file ownership overrides human phase deliverable paths. Unassigned source paths denied.",
+    "root_policy": "AGENTS.md",
+    "start_here": "worktree-execution/start-here.md",
+    "agent_bootstrap": "worktree-execution/agent-bootstrap.md",
+    "prompt_injection_policy": "worktree-execution/prompt-injection-policy.md",
+    "launch_policy_ref_required": true
+  }
+}

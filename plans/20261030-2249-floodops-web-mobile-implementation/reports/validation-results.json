@@ -1,0 +1,50 @@
+{
+  "artifact": "plan-contract-validation",
+  "implementation_executed": false,
+  "checks": {
+    "openapi_official_structure": true,
+    "all_json_schemas_valid": true,
+    "all_contract_references_resolve": true,
+    "request_response_examples": true,
+    "tool_examples": true,
+    "unique_operations_and_path_parameters": true,
+    "dependency_dag_and_phase_structure": true,
+    "all_34_prd_requirements": true,
+    "all_policy_and_acceptance_ids": true,
+    "coverage_operation_ids_exist": true,
+    "markdown_fences_tables_links": true,
+    "overview_under80_lines": true,
+    "no_work_time_estimates": true,
+    "architecture_diagram_rendered": true
+  },
+  "statistics": {
+    "operations": 64,
+    "paths": 59,
+    "schemas": 186,
+    "tool_definitions": 8,
+    "request_response_cases": 19,
+    "tool_cases": 6,
+    "resolved_json_refs": 1551,
+    "phases": 12,
+    "phase_checklist_steps": 88,
+    "requirements": 34,
+    "markdown_files": 38,
+    "mermaid_blocks": 1
+  },
+  "failures": [],
+  "adversarial_review": {
+    "unique_high_findings": 7,
+    "critical_findings": 0,
+    "accepted_resolved": 7,
+    "unresolved_original_findings": 0
+  },
+  "renderer": {
+    "package": "mermaid",
+    "version": "11.12.1",
+    "parse": "pass",
+    "nodes": 8,
+    "width_px": 1052,
+    "height_px": 333,
+    "viewport_px": 1100
+  }
+}

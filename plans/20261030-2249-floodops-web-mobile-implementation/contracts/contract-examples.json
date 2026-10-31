@@ -1,0 +1,290 @@
+{
+  "purpose": "Design contract examples, not executed app/API results. IDs synthetic, geographic coordinate illustrative not calibration.",
+  "examples": [
+    {
+      "name": "create_native_session",
+      "schema": "CreateSessionInput",
+      "valid": true,
+      "payload": {
+        "scenario_id": "scenario_functional01",
+        "scenario_version": "functional-v1",
+        "client_type": "native"
+      }
+    },
+    {
+      "name": "quick_motorbike_report",
+      "schema": "SubmitReportInput",
+      "valid": true,
+      "payload": {
+        "kind": "driver",
+        "input_mode": "quick",
+        "quick_condition": "caution",
+        "segment_id": "segment_e27functional",
+        "coordinate": null,
+        "captured_at": "2026-10-30T10:00:00Z",
+        "captured_sim_minute": 10.0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "description": "Hẻm E27 nước thấp, xe máy vẫn đi được"
+      }
+    },
+    {
+      "name": "citizen_report",
+      "schema": "SubmitReportInput",
+      "valid": true,
+      "payload": {
+        "kind": "citizen",
+        "media_id": "media_normalized01",
+        "fixture_photo_id": null,
+        "segment_id": "segment_e27functional",
+        "coordinate": [
+          106.7009,
+          10.7769
+        ],
+        "captured_at": "2026-10-30T10:00:00Z",
+        "captured_sim_minute": 10.0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "description": "Ảnh quan sát từ vị trí an toàn"
+      }
+    },
+    {
+      "name": "privilege_injection",
+      "schema": "SubmitReportInput",
+      "valid": false,
+      "payload": {
+        "kind": "driver",
+        "input_mode": "quick",
+        "quick_condition": "normal",
+        "segment_id": "segment_e27functional",
+        "coordinate": null,
+        "captured_at": "2026-10-30T10:00:00Z",
+        "captured_sim_minute": 10,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "description": "",
+        "role": "dispatcher",
+        "points": 100
+      }
+    },
+    {
+      "name": "approve_not_execute",
+      "schema": "PlanDecisionInput",
+      "valid": true,
+      "payload": {
+        "action_ids": [
+          "action_change001"
+        ],
+        "decision": "approve",
+        "reason": "Chấp nhận rủi ro thông tin thấp, không override hard rule"
+      }
+    },
+    {
+      "name": "execute_groups",
+      "schema": "CandidateInput",
+      "valid": true,
+      "payload": {
+        "group_ids": [
+          "group_delivery001"
+        ]
+      }
+    },
+    {
+      "name": "duplicate_group_ids",
+      "schema": "CandidateInput",
+      "valid": false,
+      "payload": {
+        "group_ids": [
+          "group_delivery001",
+          "group_delivery001"
+        ]
+      }
+    },
+    {
+      "name": "negative_advance",
+      "schema": "AdvanceInput",
+      "valid": false,
+      "payload": {
+        "target_sim_minute": -1
+      }
+    },
+    {
+      "name": "valid_advance",
+      "schema": "AdvanceInput",
+      "valid": true,
+      "payload": {
+        "target_sim_minute": 45.5
+      }
+    },
+    {
+      "name": "authoritative_conflict_resolution",
+      "schema": "ConflictResolutionInput",
+      "valid": true,
+      "payload": {
+        "keep_observation_ids": [
+          "observation_current01"
+        ],
+        "supersede_observation_ids": [
+          "observation_older001"
+        ],
+        "reason": "Review evidence nguồn/thời gian/vehicle, không gỡ authoritative closure"
+      }
+    },
+    {
+      "name": "too_large_upload",
+      "schema": "MediaUploadInput",
+      "valid": false,
+      "payload": {
+        "content_type": "image/jpeg",
+        "byte_length": 5242881,
+        "original_filename": "flood.jpg"
+      }
+    },
+    {
+      "name": "unsupported_svg_upload",
+      "schema": "MediaUploadInput",
+      "valid": false,
+      "payload": {
+        "content_type": "image/svg+xml",
+        "byte_length": 100,
+        "original_filename": "flood.svg"
+      }
+    },
+    {
+      "name": "evaluation_keeps_denominator",
+      "schema": "EvaluationInput",
+      "valid": true,
+      "payload": {
+        "kind": "model_quality",
+        "runs": 10,
+        "scenario_id": "scenario_functional01",
+        "scenario_version": "functional-v1"
+      }
+    },
+    {
+      "name": "evaluation_no_selective_trials",
+      "schema": "EvaluationInput",
+      "valid": false,
+      "payload": {
+        "kind": "model_quality",
+        "runs": 2,
+        "scenario_id": "scenario_functional01",
+        "scenario_version": "functional-v1"
+      }
+    },
+    {
+      "name": "review_confirmation",
+      "schema": "ReviewInput",
+      "valid": true,
+      "payload": {
+        "decision": "accept",
+        "reason": "Quan sát đúng xe và thời điểm",
+        "mapped_segment_id": "segment_e27functional",
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "caution"
+      }
+    },
+    {
+      "name": "claim_scoped_session",
+      "schema": "ClaimInput",
+      "valid": true,
+      "payload": {
+        "session_id": "session_example001",
+        "claim_token": "synthetic-example-only-invite-token-123456",
+        "client_type": "native"
+      }
+    },
+    {
+      "name": "no_claim_role_elevation",
+      "schema": "ClaimInput",
+      "valid": false,
+      "payload": {
+        "session_id": "session_example001",
+        "claim_token": "synthetic-example-only-invite-token-123456",
+        "client_type": "native",
+        "role": "dispatcher"
+      }
+    },
+    {
+      "name": "stale_revision_error_response",
+      "schema": "ErrorResponse",
+      "valid": true,
+      "payload": {
+        "success": false,
+        "data": null,
+        "error": {
+          "code": "REVISION_MISMATCH",
+          "message": "State changed",
+          "details": [],
+          "retryable": false,
+          "current_revision": 8,
+          "replacement_session_id": null
+        },
+        "meta": {
+          "request_id": "request_example001",
+          "session_id": "session_example001",
+          "generation": 0,
+          "revision": 8,
+          "event_sequence": 43
+        }
+      }
+    },
+    {
+      "name": "ratio_na_observed_metrics",
+      "schema": "Results",
+      "valid": true,
+      "payload": {
+        "session_id": "session_example001",
+        "scenario_id": "scenario_functional01",
+        "scenario_version": "functional-v1",
+        "config_hash": "synthetic-config-example",
+        "horizon_minute": 60,
+        "observed_until_minute": 60,
+        "calibration_status": "incomplete",
+        "branches": [
+          {
+            "branch_id": "static",
+            "metrics": {
+              "critical_late": 0,
+              "total_late": 0,
+              "total_delay_minutes": 0,
+              "blocked_route_attempts": 0,
+              "blocked_proposal_attempts": 0,
+              "blocked_movement_attempts": 0,
+              "orders_reassigned": 0,
+              "updated_eta_previews": 0,
+              "unfinished_count": 0,
+              "unreachable_count": 0,
+              "executed_violations": 0
+            },
+            "completed_at_horizon": true
+          },
+          {
+            "branch_id": "floodops",
+            "metrics": {
+              "critical_late": 0,
+              "total_late": 0,
+              "total_delay_minutes": 0,
+              "blocked_route_attempts": 0,
+              "blocked_proposal_attempts": 0,
+              "blocked_movement_attempts": 0,
+              "orders_reassigned": 0,
+              "updated_eta_previews": 0,
+              "unfinished_count": 0,
+              "unreachable_count": 0,
+              "executed_violations": 0
+            },
+            "completed_at_horizon": true
+          }
+        ],
+        "late_reduction_ratio": null,
+        "label": "Simulation result"
+      }
+    }
+  ]
+}

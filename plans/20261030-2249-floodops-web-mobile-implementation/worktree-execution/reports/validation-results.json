@@ -1,0 +1,73 @@
+{
+  "kind": "worktree-plan-validation",
+  "checks": {
+    "13_unique_role_names_branches_paths": true,
+    "12_phases_exactly_one_primary_owner": true,
+    "unique_local_ports": true,
+    "prompts_and_context_exist": true,
+    "task_role_mapping_matches": true,
+    "role_dependencies_match_phase_dag": true,
+    "nine_wave_dag_ready_order": true,
+    "all_gate_references_resolve": true,
+    "unique_owner_151plus_paths": true,
+    "28_positive_negative_ownership_cases": true,
+    "handoff_jsonschema_valid": true,
+    "local_and_preqa_preview_launch_valid": true,
+    "source_evidence_and_coordinator_delivery_valid": true,
+    "preview_authorization_independent_of_test_results": true,
+    "production_authority_retains_required_evidence": true,
+    "worktree_git_smoke": true,
+    "nonrecursive_evidence_git_smoke": true,
+    "dependency_diagram_rendered": true,
+    "root_plan_under80_lines": true,
+    "all_role_prompts_under200_lines": true,
+    "implementation_not_started": true
+  },
+  "statistics": {
+    "roles": 13,
+    "implementation_role_owners": 12,
+    "waves": 9,
+    "unique_owner_path_probes": 151,
+    "ownership_positive_negative_cases": 28,
+    "receipt_positive_outcomes": 4,
+    "receipt_negative_outcomes": 11,
+    "phase_mapping": 12,
+    "critical_task_mapping": 5,
+    "phase_checklist_steps": 88,
+    "root_plan_lines": 60,
+    "worktrees_created_in_user_repository": 0,
+    "application_code_written": false,
+    "commit_or_push_performed": false
+  },
+  "git_smoke": {
+    "scope_excludes_lead_launch_receipt": true,
+    "inflight_central_amendment_preserves_owned_commit": true,
+    "amended_diff_excludes_inherited_central_files": true,
+    "exact_delivery_merge_contains_only_owned_change": true,
+    "postmerge_role_resync_fast_forward": true,
+    "user_repository_modified": false,
+    "temporary_repository_cleaned": true
+  },
+  "source_evidence_smoke": {
+    "source_evidence_references_prior_source_commit": true,
+    "enclosing_delivery_sha_not_self_embedded": true,
+    "source_to_evidence_only_report_changes": true,
+    "exact_delivery_merge_includes_source_and_report": true,
+    "coordinator_ledger_records_known_delivery_sha": true,
+    "temporary_repository_cleaned": true,
+    "user_repository_modified": false
+  },
+  "review": {
+    "unique_high_findings": 3,
+    "resolved": 3,
+    "remaining_original_findings": 0
+  },
+  "diagram": {
+    "renderer": "mermaid@11.12.1",
+    "parse": "pass",
+    "nodes": 16,
+    "width_px": 592,
+    "height_px": 1406,
+    "viewport_width_px": 1100
+  }
+}

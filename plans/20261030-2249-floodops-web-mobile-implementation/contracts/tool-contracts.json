@@ -1,0 +1,305 @@
+{
+  "contract_version": "1.0.0-plan",
+  "openai_runtime": "Responses API",
+  "snapshot_context": "Server-injected session/generation/input_revision/participant scope. Resolve external references then compile supported strict tool schema before registration.",
+  "tools": [
+    {
+      "name": "get_incident_state",
+      "description": "Read the immutable request snapshot, never live global state.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/SessionSnapshot"
+      },
+      "side_effect": "read_only"
+    },
+    {
+      "name": "get_affected_orders",
+      "description": "Derived impact for current captured incident/event snapshot.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "incident_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+              "maxLength": 128
+            }
+          }
+        },
+        "required": [
+          "incident_ids"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/Impact"
+      },
+      "side_effect": "read_only"
+    },
+    {
+      "name": "compute_route",
+      "description": "Build validated candidate pickup/delivery stops from immutable order/driver/hub data plus assignment_overrides, then compute route. Never trust model-supplied physical times/nodes. Binds route to captured job/revision/candidate_context_hash.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "driver_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "origin_node_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "stop_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "openapi.json#/components/schemas/StopReference"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "assignment_overrides": {
+            "type": "array",
+            "items": {
+              "$ref": "openapi.json#/components/schemas/CandidateAssignment"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "driver_id",
+          "origin_node_id",
+          "stop_refs",
+          "assignment_overrides"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/Route"
+      },
+      "side_effect": "read_only"
+    },
+    {
+      "name": "test_reassignment",
+      "description": "Validate the entire proposed batch with combined load/pickup/hub/objective checks.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "openapi.json#/components/schemas/PlanAction"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "actions"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/DryRunResult"
+      },
+      "side_effect": "dry_run_only"
+    },
+    {
+      "name": "propose_assignment_change",
+      "description": "Propose unpicked driver/hub change or reroute with server-issued route reference.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "driver_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "pickup_hub_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "route_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+              "maxLength": 128
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "order_id",
+          "driver_id",
+          "pickup_hub_id",
+          "route_id",
+          "reason",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/PlanAction"
+      },
+      "side_effect": "proposal_only"
+    },
+    {
+      "name": "propose_order_deferral",
+      "description": "Propose bounded standard-only cumulative deferral; never alter SLA.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "defer_minute": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+              "maxLength": 128
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "order_id",
+          "defer_minute",
+          "reason",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/PlanAction"
+      },
+      "side_effect": "proposal_only"
+    },
+    {
+      "name": "draft_customer_notification",
+      "description": "Prepare deterministic ETA-only preview from committed server state; no real sending.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "committed_revision": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "order_id",
+          "committed_revision"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/Notification"
+      },
+      "side_effect": "preview_only"
+    },
+    {
+      "name": "record_road_observation",
+      "description": "Propose normalization of an existing actor-authorized submitted report; policy owns TTL/confidence and ingestion owns commit.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "segment_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "vehicle_types": {
+            "type": "array",
+            "items": {
+              "$ref": "openapi.json#/components/schemas/VehicleType"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "condition": {
+            "$ref": "openapi.json#/components/schemas/Condition"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+              "maxLength": 128
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "report_id",
+          "segment_id",
+          "vehicle_types",
+          "condition",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "$ref": "openapi.json#/components/schemas/Observation"
+      },
+      "side_effect": "validated_transition_proposal_only"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "inert-prompt-injection-scenarios"
+    },
+    "execution_status": {
+      "const": "not-executed-against-agents-or-app"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "pattern": "^PI-[0-9]{2}$"
+          },
+          "surface": {
+            "enum": [
+              "developer-agent",
+              "runtime-commander"
+            ]
+          },
+          "input_origin": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "enum": [
+              "injection",
+              "benign"
+            ]
+          },
+          "payload": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^INJ-(?:0[1-9]|1[0-2])$"
+            }
+          },
+          "deny_actions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "safe_continuation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observable_assertions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "case_id",
+          "surface",
+          "input_origin",
+          "classification",
+          "payload",
+          "rule_ids",
+          "deny_actions",
+          "safe_continuation",
+          "observable_assertions"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "classification": {
+                  "const": "injection"
+                }
+              },
+              "required": [
+                "classification"
+              ]
+            },
+            "then": {
+              "properties": {
+                "deny_actions": {
+                  "minItems": 1
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "deny_actions": {
+                  "maxItems": 0
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "kind",
+    "execution_status",
+    "purpose",
+    "cases"
+  ]
+}

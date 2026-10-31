@@ -1,0 +1,103 @@
+{
+  "purpose": "Tool request schema examples only; semantic entity/route/stock rules require real future domain fixture tests E-HUB-01.",
+  "examples": [
+    {
+      "name": "candidate_hub_change_route",
+      "tool": "compute_route",
+      "valid": true,
+      "payload": {
+        "driver_id": "driver_delivery001",
+        "origin_node_id": "node_origin0001",
+        "stop_refs": [
+          {
+            "order_id": "order_delivery001",
+            "kind": "pickup"
+          },
+          {
+            "order_id": "order_delivery001",
+            "kind": "delivery"
+          }
+        ],
+        "assignment_overrides": [
+          {
+            "order_id": "order_delivery001",
+            "driver_id": "driver_delivery001",
+            "pickup_hub_id": "hub_alternative01"
+          }
+        ]
+      }
+    },
+    {
+      "name": "old_unexpressive_stop_ids_contract",
+      "tool": "compute_route",
+      "valid": false,
+      "payload": {
+        "driver_id": "driver_delivery001",
+        "origin_node_id": "node_origin0001",
+        "stop_ids": [
+          "stop_pickup0001"
+        ]
+      }
+    },
+    {
+      "name": "model_cannot_set_capacity_or_time",
+      "tool": "compute_route",
+      "valid": false,
+      "payload": {
+        "driver_id": "driver_delivery001",
+        "origin_node_id": "node_origin0001",
+        "stop_refs": [
+          {
+            "order_id": "order_delivery001",
+            "kind": "pickup"
+          }
+        ],
+        "assignment_overrides": [],
+        "speed_kph": 999
+      }
+    },
+    {
+      "name": "default_hub_route",
+      "tool": "compute_route",
+      "valid": true,
+      "payload": {
+        "driver_id": "driver_delivery001",
+        "origin_node_id": "node_origin0001",
+        "stop_refs": [
+          {
+            "order_id": "order_delivery001",
+            "kind": "delivery"
+          }
+        ],
+        "assignment_overrides": []
+      }
+    },
+    {
+      "name": "bounded_defer_proposal",
+      "tool": "propose_order_deferral",
+      "valid": true,
+      "payload": {
+        "order_id": "order_delivery001",
+        "defer_minute": 5,
+        "reason": "Synthetic functional example, not calibrated duration",
+        "evidence_ids": [
+          "observation_current01"
+        ]
+      }
+    },
+    {
+      "name": "no_tier_override_in_proposal",
+      "tool": "propose_order_deferral",
+      "valid": false,
+      "payload": {
+        "order_id": "order_delivery001",
+        "defer_minute": 5,
+        "reason": "",
+        "evidence_ids": [
+          "observation_current01"
+        ],
+        "tier": "standard"
+      }
+    }
+  ]
+}
