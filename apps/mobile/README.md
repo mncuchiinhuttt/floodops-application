@@ -37,7 +37,7 @@ The separate `preview/` surfaces are prominently marked disconnected synthetic f
 
 ## Integration continuation
 
-Lead owns central manifests/lock/EAS/API composition/plan/gates. Full Planner/Review/reward projections and final backend gates remain pending; stable source/media/report routes are now mounted. After their integrated receipts, run real mobile report→web review→mobile status/points and mobile Execute→web/driver flows on the actual backend. iOS/Android binary installation, hardware persistence/photo permissions, screen readers, approved device access and release/advisory gates require their own evidence and authorization.
+Lead owns central manifests/lock/EAS/API composition/plan/gates. Exact rapid-demo launch `05ed04bc5655e51e8a25b64eb5685f4a64ae1d5f` includes native-v3 plus M1 Source/Planner/Review/Results/Session deliveries. Lead runs API `127.0.0.1:8760` and Web `127.0.0.1:5170`. This worker verified public health/catalog HTTP200 through the real native adapter without new sessions, invitations or access grants. Authenticated full-chain proof belongs to Lead; the c30 report422 probe above is historical. iOS/Android installation, hardware persistence/photo permissions and cross-device flows require their own evidence and authorized connection.
 
 ## Fast Expo Go path (compatibility checked, not device-tested)
 
@@ -48,10 +48,10 @@ A phone must actually have Expo Go supporting SDK58. Each Expo Go build supports
 Verified local Go-targeted command, from apps/mobile:
 
 ```sh
-EXPO_NO_TELEMETRY=1 EXPO_OFFLINE=1 node node_modules/expo/bin/cli start --go --localhost --port 8082
+EXPO_PUBLIC_FLOODOPS_API_BASE_URL=http://127.0.0.1:8760/api/v1 EXPO_NO_TELEMETRY=1 EXPO_OFFLINE=1 node node_modules/expo/bin/cli start --go --localhost --port 8082
 ```
 
-API base remains http://127.0.0.1:8790/api/v1. On a physical phone,127.0.0.1 is the phone itself. The current localhost-only setup therefore needs separately authorized supported USB port mapping, or an approved phone-reachable Metro plus HTTPS API endpoint. Neither LAN/tunnel nor network permission was enabled; no device connection is claimed. Custom permission text, removed native permissions, custom app scheme/runtimeVersion and standalone behavior cannot be verified by Expo Go’s existing binary.
+Default API base is http://127.0.0.1:8790/api/v1; the command above selects Lead’s current loopback API8760. On a physical phone,127.0.0.1 is the phone itself. The current localhost-only setup therefore needs separately authorized supported USB port mapping, or an approved phone-reachable Metro plus HTTPS API endpoint. Neither LAN/tunnel nor network permission was enabled; no device connection is claimed. Custom permission text, removed native permissions, custom app scheme/runtimeVersion and standalone behavior cannot be verified by Expo Go’s existing binary.
 
 Fresh report defaults now derive captured_at from the authorized configuration T0 + simulation minute. Restored drafts keep their original capture metadata. A confirmed server report receipt survives its own revision refresh, shows ID/status/reason codes and disables duplicate Send until explicit Start new report. When an assignment/points projection is unavailable, field workspaces can still read actual own reports from the separate authorized endpoint; no assignment or points total is fabricated.
 
@@ -61,4 +61,4 @@ Reports display exact server reward status/reason, immutable receipt policy and 
 
 The dispatcher can explicitly Request new plan through current capability/CAS/idempotency guards. Planning jobs display deterministic algorithm/config/search limit and distinguish NO_FEASIBLE_PLAN from PLANNER_TIMEOUT. A newer same-revision job fences an older proposal; requesting/approving does not Execute. Photo AI job fields remain unchanged.
 
-Strict M1 responses are consumed without local DTO upgrades. A malformed mutation response can follow a server commit and blocks subsequent commands until authoritative inspection/refresh. Legacy serialized data requires an explicit new session/Reset; private stored captures and credentials are not rewritten. Full manual-review/planner/assignment/reward backend composition remains Lead/producer-owned and must land before the probes can establish that path.
+Strict M1 responses are consumed without local DTO upgrades. A malformed mutation response can follow a server commit and blocks subsequent commands until authoritative inspection/refresh. Legacy serialized data requires an explicit new session/Reset; private stored captures and credentials are not rewritten. Rapid-demo baseline now contains M1 backend composition; fresh worker proof is native startup and public GET connectivity. Existing session/media smoke scripts create test actors and target isolated8790, so they were not run against Lead’s shared8760 under this continuation.
