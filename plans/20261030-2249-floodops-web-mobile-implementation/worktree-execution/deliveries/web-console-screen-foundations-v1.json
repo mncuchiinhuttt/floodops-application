@@ -1,0 +1,59 @@
+{
+  "work_item_id": "web-console-screen-foundations-v1",
+  "role_id": "web-console",
+  "base_sha": "112d539da6cf36b2b08ff3499b5eb93416a73bb4",
+  "observed_launch_sha": "c2216f9610cb7fb6a71279e4357a70896f86fa3c",
+  "delivery_sha": "a511ab3e27c2c15958ae5465d5394d799ef3c2ab",
+  "status": "blocked",
+  "contract_sha256": "bf181e09bb24b462d22ca867a61ff42559d59a3b72d55c20222e08a6f234a688",
+  "source_sha": "ce8b0c49bc4c1b02f6397ee1641bad1401af24a4",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/web/README.md",
+    "apps/web/preview/fixtures.ts",
+    "apps/web/preview/index.html",
+    "apps/web/preview/main.tsx",
+    "apps/web/preview/plan-fixture.ts",
+    "apps/web/preview/preview.css",
+    "apps/web/src/features/index.ts",
+    "apps/web/src/features/planning/client.ts",
+    "apps/web/src/features/planning/plan-actions.tsx",
+    "apps/web/src/features/planning/plan-screen.tsx",
+    "apps/web/src/features/reports/client.ts",
+    "apps/web/src/features/reports/contributor-workspace.tsx",
+    "apps/web/src/features/reports/driver-routes.tsx",
+    "apps/web/src/features/reports/driver-workspace.tsx",
+    "apps/web/src/features/reports/image-binding.ts",
+    "apps/web/src/features/reports/image-review-card.tsx",
+    "apps/web/src/features/reports/report-form.tsx",
+    "apps/web/src/features/reports/report-list.tsx",
+    "apps/web/src/features/reports/review-screen.tsx",
+    "apps/web/src/features/session/navigation.ts",
+    "apps/web/src/shared/access.ts",
+    "apps/web/src/shared/client-context.ts",
+    "apps/web/src/shared/feature-state.tsx",
+    "apps/web/src/shared/use-command.ts",
+    "apps/web/test/client.test.ts",
+    "apps/web/test/image-events.test.ts",
+    "apps/web/test/screens.test.tsx",
+    "apps/web/test/tsconfig.json",
+    "apps/web/vite.partial.config.ts",
+    "plans/reports/worktree-web-console-web-console-screen-foundations-v1.md"
+  ],
+  "checks": [
+    {
+      "command": "Exact delivery verifier/ownership/signatures, integrated focused tests/types/lint; see checkpoint for precise results",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/checkpoints/backend-client-runtime-v1.json"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [],
+  "integration_requests": [],
+  "blocked_prerequisites": [
+    "Integrated partial delivery; source-reviewed issues and remaining runtime scope assigned in backend-repairs-client-runtime-v1, NOT full role ready"
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

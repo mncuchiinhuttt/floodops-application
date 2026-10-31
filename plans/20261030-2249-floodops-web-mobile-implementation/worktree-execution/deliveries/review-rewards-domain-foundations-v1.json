@@ -1,0 +1,45 @@
+{
+  "work_item_id": "review-rewards-domain-foundations-v1",
+  "role_id": "review-rewards",
+  "base_sha": "8074d280b8c315b96df7ba018311690e050a718b",
+  "observed_launch_sha": "e2e8feef2ddd94fcb7dbe2bb609ddda8c60487fc",
+  "delivery_sha": "fae580753fe6fa9675b19dd191d89c6b6b93b3e4",
+  "status": "blocked",
+  "contract_sha256": "69cb1d52e620d0bad6e4732c7d73f5e72b58281bf443265cd6fa79cc1e7aa40e",
+  "source_sha": "8946cdbfe0f783e3536300677276e1605d46d3f5",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/src/features/reports/review/rubric/index.ts",
+    "apps/api/test/coverage/useful-coverage.test.ts",
+    "apps/api/test/review/rubric.test.ts",
+    "apps/api/test/rewards/fixtures.ts",
+    "apps/api/test/rewards/lifecycle.test.ts",
+    "apps/api/test/rewards/reward-proposal.test.ts",
+    "apps/api/test/rewards/smoke.ts",
+    "apps/api/test/rewards/tsconfig.json",
+    "packages/domain/src/rewards/coverage.ts",
+    "packages/domain/src/rewards/gaps.ts",
+    "packages/domain/src/rewards/index.ts",
+    "packages/domain/src/rewards/propose-reward.ts",
+    "packages/domain/src/rewards/report-evidence.ts",
+    "packages/domain/src/rewards/types.ts",
+    "packages/domain/src/rewards/validation.ts",
+    "plans/reports/worktree-review-rewards-review-rewards-domain-foundations-v1.md"
+  ],
+  "checks": [
+    {
+      "command": "Exact delivery verifier/ownership/signatures, integrated focused tests/types/lint; see checkpoint for precise results",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/checkpoints/backend-client-runtime-v1.json"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [],
+  "integration_requests": [],
+  "blocked_prerequisites": [
+    "Integrated partial delivery; source-reviewed issues and remaining runtime scope assigned in backend-repairs-client-runtime-v1, NOT full role ready"
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

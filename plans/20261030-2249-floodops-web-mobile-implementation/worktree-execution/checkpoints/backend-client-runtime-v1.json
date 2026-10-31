@@ -1,0 +1,36 @@
+{
+  "source_sha": "91158e2dd79ebcdd8761d884784553afd4fc46c4",
+  "latest_simulation_merge": "e4742300a0063bce4c2f6a2430b120e76a5815d4",
+  "api": {
+    "contract_operations": 66,
+    "mounted": 17,
+    "working_session_operations": 13,
+    "mounted_business_views_fail_closed": 4,
+    "unmounted": 49,
+    "live_server": "stopped; local config published, no running-server claim"
+  },
+  "integrated_deliveries": [
+    "planner pure",
+    "review/rewards pure",
+    "results pure",
+    "web22tests",
+    "Expo34tests",
+    "UI81tests",
+    "simulation pervehicle correction121tests"
+  ],
+  "independent_checks": [
+    "Backend120tests413assertions and standard domain/API types + scoped lint pass",
+    "Review/source319tests1440assertions and actual public source CLI pass, including unchanged failclosed legacy consumer guard pending owner adoption",
+    "Web22tests/types/build:partial pass; new REAL build fails missingindex.html, runtime owner tasked to implement",
+    "Expo8suites34tests/types pass with new runtime batch",
+    "Simulation121tests5570assertions/types/lint/scoped-conflict CLI pass; a mistyped pipeline-smoke path failed module-not-found, corrected actual source-pipeline-smoke then passed",
+    "UI81 tests/types/lint/storybookbuild pass; concurrency timeout retried unchanged and disclosed"
+  ],
+  "critical_path": "FullSources delivery -> Lead actual composition/source gate -> fullPlanner and fullReview parallel -> fullResults/final backend composition -> real web/native E2E. Independent owner corrections/clock runtime/client bootstraps can run now.",
+  "remaining": [
+    "Source API/media full worker active; new producer baseline adoption at safe checkpoint",
+    "Planner branch/current authority bugs; review scopedcoverage bug; results contradictoryfailureflag; Session ResetSSE suspicion must reproduce",
+    "Web live entry/router/backend not yet; Expo Router/SecureStore/photo/draft real adapters not yet",
+    "D04/realvision/realmodel/device/account/deployment grants and two upstream advisories remain external/release limitations"
+  ]
+}
