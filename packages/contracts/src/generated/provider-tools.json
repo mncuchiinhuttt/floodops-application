@@ -1,0 +1,524 @@
+[
+  {
+    "type": "function",
+    "name": "get_incident_state",
+    "description": "Read the immutable request snapshot, never live global state.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "get_affected_orders",
+    "description": "Derived impact for current captured incident/event snapshot.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "incident_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          }
+        }
+      },
+      "required": [
+        "incident_ids"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "compute_route",
+    "description": "Build validated candidate pickup/delivery stops from immutable order/driver/hub data plus assignment_overrides, then compute route. Never trust model-supplied physical times/nodes. Binds route to captured job/revision/candidate_context_hash.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "driver_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "origin_node_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "stop_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                "maxLength": 128
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "pickup",
+                  "delivery"
+                ]
+              }
+            },
+            "required": [
+              "order_id",
+              "kind"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "assignment_overrides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                "maxLength": 128
+              },
+              "driver_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                "maxLength": 128
+              },
+              "pickup_hub_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                    "maxLength": 128
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "order_id",
+              "driver_id",
+              "pickup_hub_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "driver_id",
+        "origin_node_id",
+        "stop_refs",
+        "assignment_overrides"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "test_reassignment",
+    "description": "Validate the entire proposed batch with combined load/pickup/hub/objective checks.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                "maxLength": 128
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "reroute",
+                  "reassign",
+                  "defer",
+                  "change_hub",
+                  "eta_preview"
+                ]
+              },
+              "targets": {
+                "type": "object",
+                "properties": {
+                  "order_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "driver_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "hub_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "route_id": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "defer_minute": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "order_id",
+                  "driver_id",
+                  "hub_id",
+                  "route_id",
+                  "defer_minute"
+                ],
+                "additionalProperties": false
+              },
+              "dependency_group_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                "maxLength": 128
+              },
+              "depends_on_action_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                  "maxLength": 128
+                },
+                "uniqueItems": true
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                  "maxLength": 128
+                }
+              },
+              "rule_results": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "rule_id": {
+                      "type": "string",
+                      "enum": [
+                        "POL-01",
+                        "POL-02",
+                        "POL-03",
+                        "POL-04",
+                        "POL-05",
+                        "POL-06",
+                        "POL-07",
+                        "POL-08"
+                      ]
+                    },
+                    "outcome": {
+                      "type": "string",
+                      "enum": [
+                        "pass",
+                        "pending",
+                        "blocked",
+                        "needs_replan"
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "entity_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+                        "maxLength": 128
+                      }
+                    }
+                  },
+                  "required": [
+                    "rule_id",
+                    "outcome",
+                    "reason",
+                    "entity_ids"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "proposed",
+                  "pending_approval",
+                  "ready",
+                  "blocked",
+                  "rejected",
+                  "executed",
+                  "needs_replan"
+                ]
+              }
+            },
+            "required": [
+              "action_id",
+              "kind",
+              "targets",
+              "dependency_group_id",
+              "depends_on_action_ids",
+              "reason",
+              "evidence_ids",
+              "rule_results",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "actions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "propose_assignment_change",
+    "description": "Propose unpicked driver/hub change or reroute with server-issued route reference.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "driver_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "pickup_hub_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "route_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "order_id",
+        "driver_id",
+        "pickup_hub_id",
+        "route_id",
+        "reason",
+        "evidence_ids"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "propose_order_deferral",
+    "description": "Propose bounded standard-only cumulative deferral; never alter SLA.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "defer_minute": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "order_id",
+        "defer_minute",
+        "reason",
+        "evidence_ids"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "draft_customer_notification",
+    "description": "Prepare deterministic ETA-only preview from committed server state; no real sending.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "committed_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "order_id",
+        "committed_revision"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "type": "function",
+    "name": "record_road_observation",
+    "description": "Propose normalization of an existing actor-authorized submitted report; policy owns TTL/confidence and ingestion owns commit.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "report_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "segment_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+          "maxLength": 128
+        },
+        "vehicle_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "motorbike",
+              "car",
+              "truck"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "condition": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "caution",
+            "impassable",
+            "unknown"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$",
+            "maxLength": 128
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "report_id",
+        "segment_id",
+        "vehicle_types",
+        "condition",
+        "evidence_ids"
+      ],
+      "additionalProperties": false
+    }
+  }
+]

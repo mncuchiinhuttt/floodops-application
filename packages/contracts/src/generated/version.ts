@@ -1,0 +1,2 @@
+export const CONTRACT_VERSION = "1.0.0-plan";
+export const CONTRACT_SOURCE_SHA256 = "6b0159736ac039e6aafba4a474d14a85e7d0071e16ae56943524aeb7a77deb81";

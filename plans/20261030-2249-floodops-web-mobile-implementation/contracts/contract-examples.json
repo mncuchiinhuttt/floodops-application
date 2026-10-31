@@ -22,7 +22,7 @@
         "segment_id": "segment_e27functional",
         "coordinate": null,
         "captured_at": "2026-10-30T10:00:00Z",
-        "captured_sim_minute": 10.0,
+        "captured_sim_minute": 10,
         "vehicle_types": [
           "motorbike"
         ],
@@ -43,7 +43,7 @@
           10.7769
         ],
         "captured_at": "2026-10-30T10:00:00Z",
-        "captured_sim_minute": 10.0,
+        "captured_sim_minute": 10,
         "vehicle_types": [
           "motorbike"
         ],
