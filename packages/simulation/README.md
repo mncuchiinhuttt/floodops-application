@@ -1,74 +1,116 @@
-# Simulation foundations
+# FloodOps deterministic simulation
 
-This partial package implements portable, deterministic graph algorithms and a generic event clock.
-It is not the scenario runner, operational reducer, movement/assignment engine or a simulation-ready gate.
-No API DTOs or contracts package are imported. No wall clock, random generator, network or platform SDK is used.
+Portable TypeScript uses canonical `@floodops/contracts` entities and the pure
+`@floodops/domain/operations` public seam. Platform clock/network/storage/model code is injected
+or owned by later producers. Runtime logic imports no Bun, Node, Hono, React or provider SDK.
 
-## Internal algorithm entrypoints
+## Public entrypoints
 
-`src/graph/index.ts` exposes `createGraph`, `findRoute`, `distanceMeters`,
-`polylineLengthMeters`, `validateTravelProfile`, `travelDurationMs` and their internal types.
-`src/clock/index.ts` exposes `createEventClock`, `advanceEventClock`, `EVENT_PHASES`,
-`minutesToMilliseconds`, `millisecondsToMinutes` and their internal types.
-These source entrypoints still need Lead-owned package export maps before other packages consume them.
+| Import | Public seam |
+| --- | --- |
+| `@floodops/simulation` | `loadScenario`, `createRun`, `advanceRun`, `computeRoute`, `projectCandidate`, `projectCurrent`, `applyExecutedCandidate`, `retryCommittedRoute`, `checkEntry`, `calculateObservedMetrics`, `relativeReduction`, `objectiveFromEtas`, `compareObjectives`, `assessCalibration`; manifest/run/policy/projection types |
+| `@floodops/simulation/graph` | immutable graph construction, turn-aware FIFO routing, geometry/profile algorithms and internal types |
+| `@floodops/simulation/clock` | immutable generic event queue and explicit minute/millisecond adapters |
+| `@floodops/domain/operations` | canonical operational validation, isolated assignment candidates, deferral and exact quantity-vector operations |
+| `@floodops/test-fixtures` | synthetic scenario authoring factory, source fixture factory and T01–T15 input catalog |
 
-Graph geometry uses WGS84 `[longitude, latitude]`. Each directed polyline must start and end at
-its declared nodes exactly; no implicit snapping tolerance is invented. Length is calculated over
-all vertices using a sphere of mean Earth radius 6,371,008.8 meters. This is a documented approximation
-for synthetic functional tests, not calibrated ellipsoidal or TP.HCM road measurement evidence.
-Every allowed vehicle needs its own positive travel profile. No vehicle or bicycle fallback exists.
-Turn bans refer to adjacent directed edges and explicit compatible vehicles.
+`loadScenario(manifest, hashText, options)` copies and freezes the bundle, parses canonical wire
+schemas, verifies graph/config/seed content hashes and semantic references/units/profiles/geometry,
+checks source/evidence consistency and causal event ordering, then returns `LoadedScenario`.
+`hashText` is a synchronous trusted SHA-256 port; tests use Bun only at this outer adapter.
+`sealScenarioDraft` is explicit fixture-authoring tooling. It is never runtime input repair.
+Limits default to 10,000 events, 20,000 segments and 100 drivers; callers may set lower bounds.
+These resource limits are not physical/calibration parameters.
 
-Profiles contain safe integer `departureMs` and positive safe integer `durationMs` knots.
-Duration is linearly interpolated with an exact integer rational ceiling of arrival time; before/after the knots,
-the endpoint duration is constant. Knots must have strictly increasing departure time and nondecreasing
-arrival time. This representation is FIFO; non-FIFO input is rejected. No traffic multiplier is inferred
-from geometry. Arithmetic beyond safe integer time is rejected.
+`createRun(scenario, runId, includeRerouteOnly?)` copies static/FloodOps/optional reroute-only
+operational states. Every branch starts from the same frozen assignment, stops, route, clock and
+physics. The seed is recorded; no stochastic operation consumes a PRNG. Scenario inputs/knowledge
+are shared; branch positions, load, custody, routes, service, approvals supplied by policy, stock,
+pickup-window usage and completion/attempt logs remain independent.
 
-Routing minimizes arrival time on states `(node, incoming edge)`, evaluating each profile at actual
-edge entry time. Optional `incomingEdgeId` preserves a turn restriction at the origin. A zero-hop route
-has zero length and the requested departure as arrival. Unreachable destinations return `null`.
-Tie resolution uses arrival time, then code-unit ordering of serialized `(node, incoming edge)` keys;
-outgoing edges use code-unit ID order and the first equal-arrival state is retained. Input array order
-and locale do not affect the result. This route is physical access only: current evidence, closures,
-load/custody, approvals and Execute remain downstream policy responsibilities.
+`advanceRun(run, targetMinute, policy, {maxBoundaries?})` returns `{run, complete, targetMinute}`.
+Target must increase time and stay within H. It processes complete timestamp batches, up to the
+requested boundary budget; an incomplete checkpoint retains its fixed target and resumes with the
+same target. Inputs/expiry apply before new entry. An arrival or service completion may causally
+create an entry at that timestamp, after those inputs. No callback/wall clock advances a run.
+A DO job owner must persist/checkpoint the returned data with its own lease/CAS/idempotency fence.
 
-## Clock semantics
+`SimulationPolicy.authorizeEntry` is a required pure port. SourcesMedia supplies current normalized
+knowledge; PlannerSafety supplies approval bound to session/generation/revision/latest plan/action,
+vehicle/epoch/evidence and time. The callback sees cloned prospective entry context; it cannot
+mutate the run. Core closure/impassable/conflict/vehicle/turn guards remain hard checks. Expiry
+removes current observation IDs, condition and confidence; a later ordinary-unknown authorization
+must be a new owner-bound decision. Old evidence-bound approvals must fail in the policy adapter.
+The simulator does not implement participant auth, manual review, rewards, LLM control or API CAS.
 
-Time is safe nonnegative integer milliseconds relative to injected T0. Minute conversion rounds to
-the nearest millisecond once at the boundary; no timezone or playback speed is involved.
-Clock construction copies and freezes events; event IDs reference caller-owned immutable data.
-No payload, callback, side effect or domain mutation is executed by this queue.
-A clock initialized at its horizon must have no pending events, because it cannot advance further.
-An advance must increase time and stay within the injected horizon. Every event through the target
-(including events at the target or initial time) is emitted. At an equal timestamp the order is:
+A blocked route remains waiting with null ETA. `retryCommittedRoute` is an explicit owner-authorized
+wake of an existing route; approval alone does not execute a proposed plan. Physical checks run again
+on advance. `applyExecutedCandidate` is a pure transition for an already-authorized atomic Executor;
+it is not an API/security boundary. It validates the entire batch, recomputes projection, rejects a
+worse lexicographic objective (POL-05), and returns a new FloodOps state. Static remains unchanged.
+`projectCandidate` returns projected objective/ETAs/candidate state without mutation. It uses the
+same movement/service/load physics and frozen future input stream, including completions beyond H
+when finite; score delay is capped at H. `computeRoute` uses the same projection for ETA rather than
+trusting a supplied stop time/distance/ETA. Consumers must keep projected output separate from committed state.
 
-1. `input` (context/restriction/accepted evidence), in declared sequence order.
-2. `expiry`.
-3. `invalidation`.
-4. `entry` (Execute/edge-entry check).
-5. `completion` (movement/service completion).
+## Physical and data rules
 
-Declared event IDs and sequences are unique; emitted `eventSequence` is assigned monotonically in
-processing order across advances. Original clock snapshots remain unchanged. Applying emitted events
-in order, enforcing causal constraints, handling newly scheduled events and bounded DO advance jobs
-belong to the later scenario/runtime integration; the generic queue does not claim those behaviors.
+Geometry is WGS84 `[longitude,latitude]`; polyline endpoints match nodes exactly, with no implicit
+snapping. Length sums all vertices using mean spherical radius 6,371,008.8m. The declared tolerance
+is a scenario parameter; this approximation and synthetic success do not establish D04 accuracy.
+Motorbike/car/truck access is explicit, each vehicle has its own profile, and `only_turn`/`no_turn`
+compile to vehicle-scoped adjacent-turn bans. Search retains `(node,incoming edge)` and deterministic
+arrival/state-key/edge-ID ties. Unreachable returns null, with no bicycle or geometric-time fallback.
 
-## Verification
+Wire travel profiles are constant over `[valid_from,valid_until)` windows, with contiguous coverage
+through H and nondecreasing duration at boundaries (FIFO). They never interpolate between windows.
+Original internal knot profiles remain continuous piecewise-linear duration with exact rational
+arrival ceiling and constant endpoints. Both use nonnegative safe integer milliseconds, positive
+duration and explicit overflow rejection. Fractional wire minutes round once to nearest millisecond.
 
-Run from the worktree root with Bun 1.4.0 and frozen workspace dependencies:
+Pickup and delivery consume authored service time. Load/carrying IDs/lifecycle change together at
+service completion. Pickup service resolves by frozen order+hub parameter, not a caller-selected
+stop ID. Capacity is checked at every stop in every declared dimension; omitted dimensions and
+unit mismatch fail. Decimal arithmetic follows each finite JSON number's shortest decimal spelling
+exactly; unrepresentable results fail rather than use an epsilon or silently drop demand.
+Hub windows have explicit absolute anchors and no automatic refill; stock is consumed once.
+Picked-up retains driver/hub; delivered assignment/completion and original SLA/tier remain immutable.
+
+A legally entered edge locks its exit time. A later change logs `in_progress_at_change`; it does not
+reverse/teleport/shorten travel. The next entry is checked against current state. Reroute-only keeps
+its initial route until a road change/expiry requests a new individual path, using the same guards
+and physics without changing assignment/hub/priority.
+
+Source snapshots are canonical, declared synthetic inputs. Loader consistency checks all accepted
+current matching observations, excludes future/expired/rejected/superseded evidence, and prevents a
+selected reference subset from hiding conflict. Known confidence/expiry must match supporting
+source policy/evidence. Available effective authority cannot be omitted. A reopening needs a matching
+actual authorized source restriction and input, scoped to the active closure/vehicle/segment/time;
+a label or contrary report cannot remove closure. Runtime source normalization/review remains owned
+by SourcesMedia/ReviewRewards. Rain/tide context never changes street knowledge.
+
+## Metrics, evidence and limitations
+
+`calculateObservedMetrics(orders, branchLog, H)` uses actual completion logs, never proposal ETA.
+Unfinished lateness uses H; exact-SLA delivery is on time. Road attempts are distinct IDs with
+proposal/movement breakdown; hub/load/no-route failures do not inflate blocked-road counts.
+Reassignment/ETA counters deduplicate order IDs; baseline-zero reduction is null.
 
 ```sh
-bun test packages/simulation/test/graph packages/simulation/test/clock
+bun test packages/simulation/test packages/test-fixtures/test
 bun --bun run tsc -p packages/simulation/tsconfig.json
+bun --bun run tsc -p packages/domain/tsconfig.json
 bun --bun run tsc -p packages/test-fixtures/tsconfig.json
-bun --bun run eslint packages/simulation/src packages/simulation/test packages/test-fixtures/src/functional/graph --max-warnings=0
-bun packages/simulation/test/graph/foundation-smoke.ts
+bun --bun run eslint packages/simulation/src packages/simulation/test packages/domain/src/operations packages/test-fixtures/src packages/test-fixtures/test --max-warnings=0
+bun packages/simulation/test/scenario/scenario-smoke.ts
 ```
 
-`@floodops/test-fixtures` contains original synthetic coordinates and assumed durations under
-`src/functional/graph`; its catalog is explicitly `functional_fixture`, calibration `incomplete`.
-No PRNG is needed because these algorithms and fixtures contain no stochastic operations.
-D04 source provenance, licence snapshots, parameter estimates and holdout validation remain unavailable.
-Scenario loading, movement, assignment, projections, metrics and calibration require contracts-ready
-and a follow-up launch receipt. This delivery does not establish T01–T15 application acceptance.
+The frozen bundle lives at `data/scenarios/functional-v1/manifest.json`; its README and calibration
+register explain provenance, units, hashes and missing evidence. The fixture catalog maps T01–T15
+inputs and owner boundaries; it does not claim complete application acceptance. Own tests exercise
+reachable simulation/domain portions; platform/media/reward/planner/client/model/device checks need
+their corresponding producers and integration. D04 real sources/licences/holdout/tolerances are absent.
+Calibrated loading rejects incomplete evidence; `assessCalibration` checks supplied metadata/residuals
+and known simulated/assumed labels, not real-world source truth. No real K1/K2 efficacy or release
+claim follows from this delivery. Existing baseline Expo Zod3/deepmerge audit findings remain explicit
+QA/security/release blockers; manifests/lock/config were not changed by this worker.

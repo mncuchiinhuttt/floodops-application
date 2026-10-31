@@ -1,0 +1,3993 @@
+{
+  "config": {
+    "scenario": {
+      "scenario_id": "scn_functional1",
+      "version": "1",
+      "title": "Synthetic FloodOps functional scenario",
+      "calibration_status": "incomplete",
+      "cause_types": [
+        "combined",
+        "rain",
+        "high_tide"
+      ],
+      "supports_defer": true,
+      "supports_hub_change": true,
+      "supports_reroute_only": true
+    },
+    "t0": "2026-10-31T00:00:00Z",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "region_boundary": [
+      [
+        106.698,
+        10.769
+      ],
+      [
+        106.703,
+        10.769
+      ],
+      [
+        106.703,
+        10.772
+      ],
+      [
+        106.698,
+        10.772
+      ],
+      [
+        106.698,
+        10.769
+      ]
+    ],
+    "horizon_minute": 20,
+    "seed_hash": "a5ed2d18708f37f1021225af64236140b32f43d19e902558b2f4bb9ebbdc56c9",
+    "config_hash": "2dfe0b778bab983d5621e07e249203e1fbb3db6f849369e560d7abacd9127f38",
+    "graph_hash": "a5bf0eb6d7e57bc3f80fd11571cf21d19d870da91d56cac34b62191859f2c86c",
+    "parameters": [
+      {
+        "key": "travel:seg_edge17",
+        "value": 2,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge21",
+        "value": 2,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge12",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge31",
+        "value": 3,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge27",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge32",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge33",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge34",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge35",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge36",
+        "value": 2,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge37",
+        "value": 2,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "travel:seg_edge38",
+        "value": 1,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "demand:1:mass",
+        "value": 1.5,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "demand:1:volume",
+        "value": 2,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "demand:2:mass",
+        "value": 4,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "demand:2:volume",
+        "value": 6,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "demand:3:mass",
+        "value": 2,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "demand:3:volume",
+        "value": 3,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "sla:ord_order1",
+        "value": 7,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "service:ord_order1",
+        "value": 0.5,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "sla:ord_order2",
+        "value": 6,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "service:ord_order2",
+        "value": 0.75,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "sla:ord_order3",
+        "value": 12,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "service:ord_order3",
+        "value": 0.5,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "pickup_service:ord_order1:hub_alpha1",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "pickup_service:ord_order2:hub_beta01",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "pickup_service:ord_order3:hub_alpha1",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "pickup_service:ord_order3:hub_beta01",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "service:stp_pickup_ord_order3",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "cap:M1:mass",
+        "value": 5,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "cap:M1:volume",
+        "value": 8,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "service:stp_pickup_ord_order1",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "cap:C1:mass",
+        "value": 10,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "cap:C1:volume",
+        "value": 20,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "service:stp_pickup_ord_order2",
+        "value": 0.25,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "hub:A:mass",
+        "value": 30,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "hub:A:volume",
+        "value": 60,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "hub:B:mass",
+        "value": 30,
+        "unit": "kg",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "hub:B:volume",
+        "value": 60,
+        "unit": "L",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "ttl_seed",
+        "value": 21,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "ttl_citizen",
+        "value": 3,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "location_fixture",
+        "value": 10,
+        "unit": "m",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "horizon",
+        "value": 20,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "geometry_tolerance_m",
+        "value": 0.01,
+        "unit": "m",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "key": "defer_limit",
+        "value": 3,
+        "unit": "minute",
+        "basis": "assumed",
+        "vehicle_types": [],
+        "geography": "Synthetic TP.HCM coordinate envelope; no real-road claim",
+        "valid_from": null,
+        "valid_until": null,
+        "sample_size": null,
+        "tolerance": null,
+        "uncertainty": "Functional assumption, not D04 evidence",
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      }
+    ],
+    "missing_essential_parameters": [
+      "real_geometry",
+      "real_travel_service",
+      "real_workload",
+      "ttl_location_evidence",
+      "independent_holdout"
+    ],
+    "relevant_scope_pairs": [
+      {
+        "segment_id": "seg_edge17",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge17",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge17",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge21",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge21",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge21",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge12",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge31",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge31",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge27",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge27",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge27",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge32",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge32",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge32",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge33",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge33",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge33",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge34",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge34",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge34",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge35",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge35",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge35",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge36",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge36",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge36",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge37",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge37",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge37",
+        "vehicle_type": "truck"
+      },
+      {
+        "segment_id": "seg_edge38",
+        "vehicle_type": "motorbike"
+      },
+      {
+        "segment_id": "seg_edge38",
+        "vehicle_type": "car"
+      },
+      {
+        "segment_id": "seg_edge38",
+        "vehicle_type": "truck"
+      }
+    ],
+    "policies": [],
+    "incident_fixtures": [
+      {
+        "fixture_incident_id": "inc_combined1",
+        "cause": "combined",
+        "title": "Simulated closures, not historical flooding",
+        "road_event_ids": [
+          "evt_close17",
+          "evt_close21"
+        ],
+        "label": "simulated"
+      }
+    ],
+    "source_fixtures": [
+      {
+        "fixture_event_id": "fxe_close17",
+        "source_id": "src_authority1",
+        "title": "Simulated evt_close17",
+        "role": "restriction",
+        "scheduled_sim_minute": 1
+      },
+      {
+        "fixture_event_id": "fxe_close21",
+        "source_id": "src_authority1",
+        "title": "Simulated evt_close21",
+        "role": "restriction",
+        "scheduled_sim_minute": 1
+      },
+      {
+        "fixture_event_id": "fxe_bike027",
+        "source_id": "src_citizen1",
+        "title": "Simulated evt_bike027",
+        "role": "observation",
+        "scheduled_sim_minute": 3
+      },
+      {
+        "fixture_event_id": "fxe_rain001",
+        "source_id": "src_rain001",
+        "title": "Simulated evt_rain001",
+        "role": "context",
+        "scheduled_sim_minute": 0
+      },
+      {
+        "fixture_event_id": "fxe_tide001",
+        "source_id": "src_tide001",
+        "title": "Simulated evt_tide001",
+        "role": "context",
+        "scheduled_sim_minute": 0
+      },
+      {
+        "fixture_event_id": "fxe_tide002",
+        "source_id": "src_tide001",
+        "title": "Simulated evt_tide002",
+        "role": "context",
+        "scheduled_sim_minute": 0
+      }
+    ],
+    "fixture_assets": [
+      {
+        "asset_id": "asset_synthetic01",
+        "fixture_photo_id": "photo_fixture01",
+        "content_type": "image/png",
+        "sha256": "1ae5d1b406a5aea5bd6c91a126710100063ad0a96883866c6ced960c3fd027a6",
+        "byte_length": 187,
+        "width": 64,
+        "height": 48,
+        "provenance": {
+          "label": "simulated",
+          "reference_url": null,
+          "source_date": null,
+          "licence": "Project-authored synthetic fixture",
+          "method": "Original procedural geometric PNG; synthetic media pipeline fixture, not a real road image.",
+          "source_hash": "1ae5d1b406a5aea5bd6c91a126710100063ad0a96883866c6ced960c3fd027a6"
+        }
+      }
+    ],
+    "source_policy_profiles": [
+      {
+        "policy_profile_id": "prf_seedhigh1",
+        "confidence_band": "high",
+        "ttl_sim_minute": 21,
+        "location_tolerance_m": 10,
+        "is_restriction_authority": false,
+        "may_reopen_restriction": false,
+        "parameter_keys": [
+          "ttl_seed",
+          "location_fixture"
+        ]
+      },
+      {
+        "policy_profile_id": "prf_citizen1",
+        "confidence_band": "low",
+        "ttl_sim_minute": 3,
+        "location_tolerance_m": 10,
+        "is_restriction_authority": false,
+        "may_reopen_restriction": false,
+        "parameter_keys": [
+          "ttl_citizen",
+          "location_fixture"
+        ]
+      },
+      {
+        "policy_profile_id": "prf_authority1",
+        "confidence_band": "high",
+        "ttl_sim_minute": null,
+        "location_tolerance_m": null,
+        "is_restriction_authority": true,
+        "may_reopen_restriction": true,
+        "parameter_keys": []
+      }
+    ],
+    "feature_flags": {
+      "defer_standard": true,
+      "change_pickup_hub": true,
+      "reroute_only_baseline": true
+    }
+  },
+  "graph": {
+    "graph_hash": "a5bf0eb6d7e57bc3f80fd11571cf21d19d870da91d56cac34b62191859f2c86c",
+    "nodes": [
+      {
+        "node_id": "node_hubAAA",
+        "coordinate": [
+          106.7,
+          10.77
+        ]
+      },
+      {
+        "node_id": "node_nodeBB",
+        "coordinate": [
+          106.701,
+          10.77
+        ]
+      },
+      {
+        "node_id": "node_nodeCC",
+        "coordinate": [
+          106.7,
+          10.771
+        ]
+      },
+      {
+        "node_id": "node_destO1",
+        "coordinate": [
+          106.702,
+          10.77
+        ]
+      },
+      {
+        "node_id": "node_hubBBB",
+        "coordinate": [
+          106.699,
+          10.771
+        ]
+      },
+      {
+        "node_id": "node_destO2",
+        "coordinate": [
+          106.702,
+          10.771
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "segment_id": "seg_edge17",
+        "from_node_id": "node_hubAAA",
+        "to_node_id": "node_nodeBB",
+        "polyline": [
+          [
+            106.7,
+            10.77
+          ],
+          [
+            106.701,
+            10.77
+          ]
+        ],
+        "length_m": 109.2364043245975,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge17"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge17"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge17"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge21",
+        "from_node_id": "node_nodeBB",
+        "to_node_id": "node_destO1",
+        "polyline": [
+          [
+            106.701,
+            10.77
+          ],
+          [
+            106.702,
+            10.77
+          ]
+        ],
+        "length_m": 109.23640432614985,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge21"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge21"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge21"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge12",
+        "from_node_id": "node_hubAAA",
+        "to_node_id": "node_nodeCC",
+        "polyline": [
+          [
+            106.7,
+            10.77
+          ],
+          [
+            106.7,
+            10.771
+          ]
+        ],
+        "length_m": 111.19508023366879,
+        "allowed_vehicle_types": [
+          "motorbike"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge12"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge31",
+        "from_node_id": "node_hubAAA",
+        "to_node_id": "node_nodeCC",
+        "polyline": [
+          [
+            106.7,
+            10.77
+          ],
+          [
+            106.7,
+            10.771
+          ]
+        ],
+        "length_m": 111.19508023366879,
+        "allowed_vehicle_types": [
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 3,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge31"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 3,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge31"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge27",
+        "from_node_id": "node_nodeCC",
+        "to_node_id": "node_destO1",
+        "polyline": [
+          [
+            106.7,
+            10.771
+          ],
+          [
+            106.702,
+            10.77
+          ]
+        ],
+        "length_m": 245.14190894617445,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge27"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge27"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge27"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge32",
+        "from_node_id": "node_hubBBB",
+        "to_node_id": "node_nodeCC",
+        "polyline": [
+          [
+            106.699,
+            10.771
+          ],
+          [
+            106.7,
+            10.771
+          ]
+        ],
+        "length_m": 109.23604165300783,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge32"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge32"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge32"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge33",
+        "from_node_id": "node_nodeCC",
+        "to_node_id": "node_destO2",
+        "polyline": [
+          [
+            106.7,
+            10.771
+          ],
+          [
+            106.702,
+            10.771
+          ]
+        ],
+        "length_m": 218.47208330417277,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge33"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge33"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge33"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge34",
+        "from_node_id": "node_destO2",
+        "to_node_id": "node_destO1",
+        "polyline": [
+          [
+            106.702,
+            10.771
+          ],
+          [
+            106.702,
+            10.77
+          ]
+        ],
+        "length_m": 111.19508023366879,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge34"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge34"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge34"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge35",
+        "from_node_id": "node_nodeBB",
+        "to_node_id": "node_nodeCC",
+        "polyline": [
+          [
+            106.701,
+            10.77
+          ],
+          [
+            106.7,
+            10.771
+          ]
+        ],
+        "length_m": 155.8746235967703,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge35"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge35"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge35"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge36",
+        "from_node_id": "node_nodeCC",
+        "to_node_id": "node_hubBBB",
+        "polyline": [
+          [
+            106.7,
+            10.771
+          ],
+          [
+            106.699,
+            10.771
+          ]
+        ],
+        "length_m": 109.23604165300783,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge36"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge36"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge36"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge37",
+        "from_node_id": "node_nodeCC",
+        "to_node_id": "node_nodeBB",
+        "polyline": [
+          [
+            106.7,
+            10.771
+          ],
+          [
+            106.701,
+            10.77
+          ]
+        ],
+        "length_m": 155.8746235967703,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge37"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge37"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 2,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge37"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      },
+      {
+        "segment_id": "seg_edge38",
+        "from_node_id": "node_destO2",
+        "to_node_id": "node_nodeCC",
+        "polyline": [
+          [
+            106.702,
+            10.771
+          ],
+          [
+            106.7,
+            10.771
+          ]
+        ],
+        "length_m": 218.47208330417277,
+        "allowed_vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "travel_profiles": [
+          {
+            "vehicle_type": "motorbike",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge38"
+            ]
+          },
+          {
+            "vehicle_type": "car",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge38"
+            ]
+          },
+          {
+            "vehicle_type": "truck",
+            "travel_time_minute": 1,
+            "valid_from_minute": 0,
+            "valid_until_minute": null,
+            "parameter_keys": [
+              "travel:seg_edge38"
+            ]
+          }
+        ],
+        "turn_restrictions": [],
+        "provenance": [
+          {
+            "label": "simulated",
+            "reference_url": null,
+            "source_date": null,
+            "licence": "Project-authored synthetic fixture",
+            "method": "Original invented coordinates/assumed values for functional checks only.",
+            "source_hash": "synthetic-authored-v1"
+          }
+        ]
+      }
+    ]
+  },
+  "initial": {
+    "orders": [
+      {
+        "order_id": "ord_order1",
+        "tier": "critical",
+        "demand": [
+          {
+            "dimension": "mass",
+            "value": 1.5,
+            "unit": "kg",
+            "parameter_key": "demand:1:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 2,
+            "unit": "L",
+            "parameter_key": "demand:1:volume"
+          }
+        ],
+        "pickup_hub_id": "hub_alpha1",
+        "destination_node_id": "node_destO1",
+        "driver_id": "drv_moto01",
+        "original_sla_minute": 7,
+        "eta_minute": null,
+        "service_minute": 0.5,
+        "lifecycle": "unpicked",
+        "delivered_at_minute": null,
+        "cumulative_defer_minute": 0,
+        "provenance_label": "simulated"
+      },
+      {
+        "order_id": "ord_order2",
+        "tier": "food",
+        "demand": [
+          {
+            "dimension": "mass",
+            "value": 4,
+            "unit": "kg",
+            "parameter_key": "demand:2:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 6,
+            "unit": "L",
+            "parameter_key": "demand:2:volume"
+          }
+        ],
+        "pickup_hub_id": "hub_beta01",
+        "destination_node_id": "node_destO2",
+        "driver_id": "drv_auto01",
+        "original_sla_minute": 6,
+        "eta_minute": null,
+        "service_minute": 0.75,
+        "lifecycle": "unpicked",
+        "delivered_at_minute": null,
+        "cumulative_defer_minute": 0,
+        "provenance_label": "simulated"
+      },
+      {
+        "order_id": "ord_order3",
+        "tier": "standard",
+        "demand": [
+          {
+            "dimension": "mass",
+            "value": 2,
+            "unit": "kg",
+            "parameter_key": "demand:3:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 3,
+            "unit": "L",
+            "parameter_key": "demand:3:volume"
+          }
+        ],
+        "pickup_hub_id": "hub_alpha1",
+        "destination_node_id": "node_destO1",
+        "driver_id": null,
+        "original_sla_minute": 12,
+        "eta_minute": null,
+        "service_minute": 0.5,
+        "lifecycle": "unpicked",
+        "delivered_at_minute": null,
+        "cumulative_defer_minute": 0,
+        "provenance_label": "simulated"
+      }
+    ],
+    "drivers": [
+      {
+        "driver_id": "drv_moto01",
+        "vehicle_type": "motorbike",
+        "capacity": [
+          {
+            "dimension": "mass",
+            "value": 5,
+            "unit": "kg",
+            "parameter_key": "cap:M1:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 8,
+            "unit": "L",
+            "parameter_key": "cap:M1:volume"
+          }
+        ],
+        "load": [
+          {
+            "dimension": "mass",
+            "value": 0,
+            "unit": "kg",
+            "parameter_key": "cap:M1:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 0,
+            "unit": "L",
+            "parameter_key": "cap:M1:volume"
+          }
+        ],
+        "position": {
+          "kind": "node",
+          "node_id": "node_hubAAA",
+          "segment_id": null,
+          "entered_sim_minute": null,
+          "exit_sim_minute": null
+        },
+        "status": "idle",
+        "carrying_order_ids": [],
+        "ordered_stops": [
+          {
+            "stop_id": "stp_pickup_ord_order1",
+            "order_id": "ord_order1",
+            "kind": "pickup",
+            "node_id": "node_hubAAA",
+            "service_minute": 0.25
+          },
+          {
+            "stop_id": "stp_deliver_ord_order1",
+            "order_id": "ord_order1",
+            "kind": "delivery",
+            "node_id": "node_destO1",
+            "service_minute": 0.5
+          }
+        ]
+      },
+      {
+        "driver_id": "drv_auto01",
+        "vehicle_type": "car",
+        "capacity": [
+          {
+            "dimension": "mass",
+            "value": 10,
+            "unit": "kg",
+            "parameter_key": "cap:C1:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 20,
+            "unit": "L",
+            "parameter_key": "cap:C1:volume"
+          }
+        ],
+        "load": [
+          {
+            "dimension": "mass",
+            "value": 0,
+            "unit": "kg",
+            "parameter_key": "cap:C1:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 0,
+            "unit": "L",
+            "parameter_key": "cap:C1:volume"
+          }
+        ],
+        "position": {
+          "kind": "node",
+          "node_id": "node_hubBBB",
+          "segment_id": null,
+          "entered_sim_minute": null,
+          "exit_sim_minute": null
+        },
+        "status": "idle",
+        "carrying_order_ids": [],
+        "ordered_stops": [
+          {
+            "stop_id": "stp_pickup_ord_order2",
+            "order_id": "ord_order2",
+            "kind": "pickup",
+            "node_id": "node_hubBBB",
+            "service_minute": 0.25
+          },
+          {
+            "stop_id": "stp_deliver_ord_order2",
+            "order_id": "ord_order2",
+            "kind": "delivery",
+            "node_id": "node_destO2",
+            "service_minute": 0.75
+          }
+        ]
+      }
+    ],
+    "hubs": [
+      {
+        "hub_id": "hub_alpha1",
+        "node_id": "node_hubAAA",
+        "coordinate": [
+          106.7,
+          10.77
+        ],
+        "status": "open",
+        "capacity": [
+          {
+            "dimension": "mass",
+            "value": 30,
+            "unit": "kg",
+            "parameter_key": "hub:A:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 60,
+            "unit": "L",
+            "parameter_key": "hub:A:volume"
+          }
+        ],
+        "capacity_window_minute": 20,
+        "available_order_ids": [
+          "ord_order1",
+          "ord_order3"
+        ],
+        "is_assumed": true
+      },
+      {
+        "hub_id": "hub_beta01",
+        "node_id": "node_hubBBB",
+        "coordinate": [
+          106.699,
+          10.771
+        ],
+        "status": "open",
+        "capacity": [
+          {
+            "dimension": "mass",
+            "value": 30,
+            "unit": "kg",
+            "parameter_key": "hub:B:mass"
+          },
+          {
+            "dimension": "volume",
+            "value": 60,
+            "unit": "L",
+            "parameter_key": "hub:B:volume"
+          }
+        ],
+        "capacity_window_minute": 20,
+        "available_order_ids": [
+          "ord_order2",
+          "ord_order3"
+        ],
+        "is_assumed": true
+      }
+    ],
+    "deferredUntilMinute": {}
+  },
+  "initialRoutes": [
+    {
+      "route_id": "rte_drv_moto01",
+      "driver_id": "drv_moto01",
+      "input_revision": 0,
+      "segment_ids": [
+        "seg_edge17",
+        "seg_edge21"
+      ],
+      "stops": [
+        {
+          "stop_id": "stp_pickup_ord_order1",
+          "order_id": "ord_order1",
+          "kind": "pickup",
+          "node_id": "node_hubAAA",
+          "service_minute": 0.25
+        },
+        {
+          "stop_id": "stp_deliver_ord_order1",
+          "order_id": "ord_order1",
+          "kind": "delivery",
+          "node_id": "node_destO1",
+          "service_minute": 0.5
+        }
+      ],
+      "eta_minute": null,
+      "evidence_ids": [],
+      "unknown_segment_ids": [],
+      "status": "candidate",
+      "distance_m": 218.47280865074737,
+      "candidate_context_hash": "33170fd9f15e6fd97d65236b7a2bafd500b5cbbcf3a2f410e9e52b3fccd50e3a",
+      "origin_node_id": "node_hubAAA",
+      "assignment_overrides": []
+    },
+    {
+      "route_id": "rte_drv_auto01",
+      "driver_id": "drv_auto01",
+      "input_revision": 0,
+      "segment_ids": [
+        "seg_edge32",
+        "seg_edge33"
+      ],
+      "stops": [
+        {
+          "stop_id": "stp_pickup_ord_order2",
+          "order_id": "ord_order2",
+          "kind": "pickup",
+          "node_id": "node_hubBBB",
+          "service_minute": 0.25
+        },
+        {
+          "stop_id": "stp_deliver_ord_order2",
+          "order_id": "ord_order2",
+          "kind": "delivery",
+          "node_id": "node_destO2",
+          "service_minute": 0.75
+        }
+      ],
+      "eta_minute": null,
+      "evidence_ids": [],
+      "unknown_segment_ids": [],
+      "status": "candidate",
+      "distance_m": 327.7081249571806,
+      "candidate_context_hash": "33170fd9f15e6fd97d65236b7a2bafd500b5cbbcf3a2f410e9e52b3fccd50e3a",
+      "origin_node_id": "node_hubBBB",
+      "assignment_overrides": []
+    }
+  ],
+  "initialKnowledge": [
+    {
+      "segment_id": "seg_edge17",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge17_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge17",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge17_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge17",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge17_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge21",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge21_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge21",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge21_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge21",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge21_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge12",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge12_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge31",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge31_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge31",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge31_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge27",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "unknown",
+      "confidence_band": null,
+      "state": "ordinary_unknown",
+      "observation_ids": [],
+      "restriction_ids": [],
+      "expires_sim_minute": null
+    },
+    {
+      "segment_id": "seg_edge27",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "unknown",
+      "confidence_band": null,
+      "state": "ordinary_unknown",
+      "observation_ids": [],
+      "restriction_ids": [],
+      "expires_sim_minute": null
+    },
+    {
+      "segment_id": "seg_edge27",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "unknown",
+      "confidence_band": null,
+      "state": "ordinary_unknown",
+      "observation_ids": [],
+      "restriction_ids": [],
+      "expires_sim_minute": null
+    },
+    {
+      "segment_id": "seg_edge32",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge32_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge32",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge32_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge32",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge32_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge33",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge33_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge33",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge33_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge33",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge33_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge34",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge34_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge34",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge34_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge34",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge34_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge35",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge35_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge35",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge35_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge35",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge35_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge36",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge36_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge36",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge36_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge36",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge36_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge37",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge37_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge37",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge37_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge37",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge37_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge38",
+      "vehicle_type": "motorbike",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge38_motorbike"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge38",
+      "vehicle_type": "car",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge38_car"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    },
+    {
+      "segment_id": "seg_edge38",
+      "vehicle_type": "truck",
+      "knowledge_epoch": 0,
+      "condition": "normal",
+      "confidence_band": "high",
+      "state": "known",
+      "observation_ids": [
+        "obs_simulated_seg_edge38_truck"
+      ],
+      "restriction_ids": [],
+      "expires_sim_minute": 21
+    }
+  ],
+  "sourceSnapshot": {
+    "sources": [
+      {
+        "source_id": "src_seedcam1",
+        "provider": "Synthetic seed evidence",
+        "source_type": "camera",
+        "role": "observation",
+        "access_status": "available",
+        "is_simulated": true,
+        "policy_profile_id": "prf_seedhigh1",
+        "provenance": {
+          "label": "simulated",
+          "reference_url": null,
+          "source_date": null,
+          "licence": "Project-authored synthetic fixture",
+          "method": "Original invented coordinates/assumed values for functional checks only.",
+          "source_hash": "synthetic-authored-v1"
+        }
+      },
+      {
+        "source_id": "src_citizen1",
+        "provider": "Synthetic community report",
+        "source_type": "community",
+        "role": "observation",
+        "access_status": "available",
+        "is_simulated": true,
+        "policy_profile_id": "prf_citizen1",
+        "provenance": {
+          "label": "simulated",
+          "reference_url": null,
+          "source_date": null,
+          "licence": "Project-authored synthetic fixture",
+          "method": "Original invented coordinates/assumed values for functional checks only.",
+          "source_hash": "synthetic-authored-v1"
+        }
+      },
+      {
+        "source_id": "src_authority1",
+        "provider": "Synthetic configured closure authority",
+        "source_type": "authority",
+        "role": "restriction",
+        "access_status": "available",
+        "is_simulated": true,
+        "policy_profile_id": "prf_authority1",
+        "provenance": {
+          "label": "simulated",
+          "reference_url": null,
+          "source_date": null,
+          "licence": "Project-authored synthetic fixture",
+          "method": "Original invented coordinates/assumed values for functional checks only.",
+          "source_hash": "synthetic-authored-v1"
+        }
+      },
+      {
+        "source_id": "src_rain001",
+        "provider": "Synthetic rainfall context",
+        "source_type": "weather",
+        "role": "context",
+        "access_status": "available",
+        "is_simulated": true,
+        "policy_profile_id": null,
+        "provenance": {
+          "label": "simulated",
+          "reference_url": null,
+          "source_date": null,
+          "licence": "Project-authored synthetic fixture",
+          "method": "Original invented coordinates/assumed values for functional checks only.",
+          "source_hash": "synthetic-authored-v1"
+        }
+      },
+      {
+        "source_id": "src_tide001",
+        "provider": "Synthetic tide context",
+        "source_type": "tide",
+        "role": "context",
+        "access_status": "available",
+        "is_simulated": true,
+        "policy_profile_id": null,
+        "provenance": {
+          "label": "simulated",
+          "reference_url": null,
+          "source_date": null,
+          "licence": "Project-authored synthetic fixture",
+          "method": "Original invented coordinates/assumed values for functional checks only.",
+          "source_hash": "synthetic-authored-v1"
+        }
+      }
+    ],
+    "inputEvents": [
+      {
+        "input_event_id": "evt_close17",
+        "source_id": "src_authority1",
+        "fixture_event_id": "fxe_close17",
+        "role": "restriction",
+        "observed_at": "2026-10-31T00:01:00Z",
+        "received_at": "2026-10-31T00:01:00Z",
+        "sim_minute": 1,
+        "label": "simulated",
+        "measurement": null,
+        "restriction_id": "rst_seg_edge17",
+        "report_id": null
+      },
+      {
+        "input_event_id": "evt_close21",
+        "source_id": "src_authority1",
+        "fixture_event_id": "fxe_close21",
+        "role": "restriction",
+        "observed_at": "2026-10-31T00:01:00Z",
+        "received_at": "2026-10-31T00:01:00Z",
+        "sim_minute": 1,
+        "label": "simulated",
+        "measurement": null,
+        "restriction_id": "rst_seg_edge21",
+        "report_id": null
+      },
+      {
+        "input_event_id": "evt_bike027",
+        "source_id": "src_citizen1",
+        "fixture_event_id": "fxe_bike027",
+        "role": "observation",
+        "observed_at": "2026-10-31T00:03:00Z",
+        "received_at": "2026-10-31T00:03:00Z",
+        "sim_minute": 3,
+        "label": "simulated",
+        "measurement": null,
+        "restriction_id": null,
+        "report_id": "rpt_bike001"
+      },
+      {
+        "input_event_id": "evt_rain001",
+        "source_id": "src_rain001",
+        "fixture_event_id": "fxe_rain001",
+        "role": "context",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "received_at": "2026-10-31T00:00:00Z",
+        "sim_minute": 0,
+        "label": "simulated",
+        "restriction_id": null,
+        "report_id": null,
+        "measurement": {
+          "measurement_type": "rain",
+          "value": 30,
+          "unit": "mm",
+          "datum": null,
+          "coordinate": [
+            106.7,
+            10.77
+          ],
+          "station_id": "synthetic-station",
+          "is_forecast": false,
+          "issued_at": "2026-10-31T00:00:00Z",
+          "observed_at": "2026-10-31T00:00:00Z",
+          "valid_at": "2026-10-31T00:00:00Z"
+        }
+      },
+      {
+        "input_event_id": "evt_tide001",
+        "source_id": "src_tide001",
+        "fixture_event_id": "fxe_tide001",
+        "role": "context",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "received_at": "2026-10-31T00:00:00Z",
+        "sim_minute": 0,
+        "label": "simulated",
+        "restriction_id": null,
+        "report_id": null,
+        "measurement": {
+          "measurement_type": "tide_height",
+          "value": 1.2,
+          "unit": "m",
+          "datum": null,
+          "coordinate": [
+            106.7,
+            10.77
+          ],
+          "station_id": "synthetic-station",
+          "is_forecast": false,
+          "issued_at": "2026-10-31T00:00:00Z",
+          "observed_at": "2026-10-31T00:00:00Z",
+          "valid_at": "2026-10-31T00:00:00Z"
+        }
+      },
+      {
+        "input_event_id": "evt_tide002",
+        "source_id": "src_tide001",
+        "fixture_event_id": "fxe_tide002",
+        "role": "context",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "received_at": "2026-10-31T00:00:00Z",
+        "sim_minute": 0,
+        "label": "simulated",
+        "restriction_id": null,
+        "report_id": null,
+        "measurement": {
+          "measurement_type": "tide_height",
+          "value": 1.3,
+          "unit": "m",
+          "datum": "synthetic-datum-B",
+          "coordinate": [
+            106.7,
+            10.77
+          ],
+          "station_id": "synthetic-station",
+          "is_forecast": false,
+          "issued_at": "2026-10-31T00:00:00Z",
+          "observed_at": "2026-10-31T00:00:00Z",
+          "valid_at": "2026-10-31T00:00:00Z"
+        }
+      }
+    ],
+    "observations": [
+      {
+        "observation_id": "obs_simulated_seg_edge17_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge17",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge17_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge17",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge17_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge17",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge21_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge21",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge21_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge21",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge21_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge21",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge12_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge12",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge31_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge31",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge31_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge31",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge32_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge32",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge32_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge32",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge32_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge32",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge33_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge33",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge33_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge33",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge33_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge33",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge34_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge34",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge34_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge34",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge34_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge34",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge35_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge35",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge35_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge35",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge35_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge35",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge36_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge36",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge36_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge36",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge36_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge36",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge37_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge37",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge37_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge37",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge37_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge37",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge38_motorbike",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge38",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge38_car",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge38",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "car"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_simulated_seg_edge38_truck",
+        "source_id": "src_seedcam1",
+        "segment_id": "seg_edge38",
+        "knowledge_epoch": 0,
+        "vehicle_types": [
+          "truck"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "high",
+        "observed_at": "2026-10-31T00:00:00Z",
+        "observed_sim_minute": 0,
+        "expires_at": "2026-10-31T00:21:00Z",
+        "expires_sim_minute": 21,
+        "evidence_ids": [
+          "evd_seed001"
+        ],
+        "has_conflict": false
+      },
+      {
+        "observation_id": "obs_bike001",
+        "source_id": "src_citizen1",
+        "segment_id": "seg_edge27",
+        "knowledge_epoch": 1,
+        "vehicle_types": [
+          "motorbike"
+        ],
+        "condition": "normal",
+        "validation": "accepted",
+        "confidence_band": "low",
+        "observed_at": "2026-10-31T00:03:00Z",
+        "observed_sim_minute": 3,
+        "expires_at": "2026-10-31T00:06:00Z",
+        "expires_sim_minute": 6,
+        "evidence_ids": [
+          "rpt_bike001"
+        ],
+        "has_conflict": false
+      }
+    ],
+    "restrictions": [
+      {
+        "restriction_id": "rst_seg_edge17",
+        "segment_id": "seg_edge17",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "kind": "closure",
+        "authority_profile_id": "prf_authority1",
+        "effective_sim_minute": 1,
+        "supersedes_restriction_id": null,
+        "evidence_ids": [
+          "evd_closure1"
+        ]
+      },
+      {
+        "restriction_id": "rst_seg_edge21",
+        "segment_id": "seg_edge21",
+        "vehicle_types": [
+          "motorbike",
+          "car",
+          "truck"
+        ],
+        "kind": "closure",
+        "authority_profile_id": "prf_authority1",
+        "effective_sim_minute": 1,
+        "supersedes_restriction_id": null,
+        "evidence_ids": [
+          "evd_closure1"
+        ]
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "evt_close17",
+      "atMinute": 1,
+      "sequence": 1,
+      "afterIds": [],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge17",
+        "vehicle_type": "motorbike",
+        "knowledge_epoch": 1,
+        "condition": "impassable",
+        "confidence_band": null,
+        "state": "authoritative_closed",
+        "observation_ids": [],
+        "restriction_ids": [
+          "rst_seg_edge17"
+        ],
+        "expires_sim_minute": null
+      },
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_close21",
+      "atMinute": 1,
+      "sequence": 2,
+      "afterIds": [],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge21",
+        "vehicle_type": "motorbike",
+        "knowledge_epoch": 1,
+        "condition": "impassable",
+        "confidence_band": null,
+        "state": "authoritative_closed",
+        "observation_ids": [],
+        "restriction_ids": [
+          "rst_seg_edge21"
+        ],
+        "expires_sim_minute": null
+      },
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_close17_car",
+      "atMinute": 1,
+      "sequence": 3,
+      "afterIds": [],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge17",
+        "vehicle_type": "car",
+        "knowledge_epoch": 1,
+        "condition": "impassable",
+        "confidence_band": null,
+        "state": "authoritative_closed",
+        "observation_ids": [],
+        "restriction_ids": [
+          "rst_seg_edge17"
+        ],
+        "expires_sim_minute": null
+      },
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_close21_car",
+      "atMinute": 1,
+      "sequence": 4,
+      "afterIds": [],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge21",
+        "vehicle_type": "car",
+        "knowledge_epoch": 1,
+        "condition": "impassable",
+        "confidence_band": null,
+        "state": "authoritative_closed",
+        "observation_ids": [],
+        "restriction_ids": [
+          "rst_seg_edge21"
+        ],
+        "expires_sim_minute": null
+      },
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_close17_truck",
+      "atMinute": 1,
+      "sequence": 5,
+      "afterIds": [],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge17",
+        "vehicle_type": "truck",
+        "knowledge_epoch": 1,
+        "condition": "impassable",
+        "confidence_band": null,
+        "state": "authoritative_closed",
+        "observation_ids": [],
+        "restriction_ids": [
+          "rst_seg_edge17"
+        ],
+        "expires_sim_minute": null
+      },
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_close21_truck",
+      "atMinute": 1,
+      "sequence": 6,
+      "afterIds": [],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge21",
+        "vehicle_type": "truck",
+        "knowledge_epoch": 1,
+        "condition": "impassable",
+        "confidence_band": null,
+        "state": "authoritative_closed",
+        "observation_ids": [],
+        "restriction_ids": [
+          "rst_seg_edge21"
+        ],
+        "expires_sim_minute": null
+      },
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_rain001",
+      "atMinute": 0,
+      "sequence": 10,
+      "afterIds": [],
+      "kind": "context",
+      "knowledge": null,
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_tide001",
+      "atMinute": 0,
+      "sequence": 11,
+      "afterIds": [],
+      "kind": "context",
+      "knowledge": null,
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_tide002",
+      "atMinute": 0,
+      "sequence": 12,
+      "afterIds": [],
+      "kind": "context",
+      "knowledge": null,
+      "supersedesRestrictionIds": []
+    },
+    {
+      "id": "evt_bike027",
+      "atMinute": 3,
+      "sequence": 9,
+      "afterIds": [
+        "evt_close21"
+      ],
+      "kind": "knowledge",
+      "knowledge": {
+        "segment_id": "seg_edge27",
+        "vehicle_type": "motorbike",
+        "knowledge_epoch": 1,
+        "condition": "normal",
+        "confidence_band": "low",
+        "state": "known",
+        "observation_ids": [
+          "obs_bike001"
+        ],
+        "restriction_ids": [],
+        "expires_sim_minute": 6
+      },
+      "supersedesRestrictionIds": []
+    }
+  ],
+  "hubWindows": [
+    {
+      "hubId": "hub_alpha1",
+      "fromMinute": 0,
+      "untilMinute": 20,
+      "capacity": [
+        {
+          "dimension": "mass",
+          "value": 30,
+          "unit": "kg",
+          "parameter_key": "hub:A:mass"
+        },
+        {
+          "dimension": "volume",
+          "value": 60,
+          "unit": "L",
+          "parameter_key": "hub:A:volume"
+        }
+      ]
+    },
+    {
+      "hubId": "hub_beta01",
+      "fromMinute": 0,
+      "untilMinute": 20,
+      "capacity": [
+        {
+          "dimension": "mass",
+          "value": 30,
+          "unit": "kg",
+          "parameter_key": "hub:B:mass"
+        },
+        {
+          "dimension": "volume",
+          "value": 60,
+          "unit": "L",
+          "parameter_key": "hub:B:volume"
+        }
+      ]
+    }
+  ],
+  "seed": "functional-seed-v1",
+  "datasetKind": "functional_fixture",
+  "licence": "Original project-authored synthetic fixture; not sourced road/operational data",
+  "aliases": {
+    "E17": "seg_edge17",
+    "E21": "seg_edge21",
+    "E27": "seg_edge27",
+    "E12": "seg_edge12"
+  },
+  "calibration": {
+    "holdoutId": null,
+    "trainingId": null,
+    "results": []
+  }
+}
