@@ -1,4 +1,5 @@
 import type { Report } from "@floodops/contracts";
+import { RewardFeedback } from "./reward-feedback";
 import { DataTable } from "@floodops/ui-web";
 
 export function ReportList({ reports }: { reports: readonly Report[] }) {
@@ -6,6 +7,6 @@ export function ReportList({ reports }: { reports: readonly Report[] }) {
     emptyLabel="Chưa có báo cáo." columns={[
       { key: "report", label: "Báo cáo", render: report => <>{report.report_id}<p>{report.description}</p></> },
       { key: "status", label: "Review", render: report => <>{report.status}<p>{report.reason_codes.join(", ") || "Chưa có lý do từ server"}</p></> },
-      { key: "award", label: "Thưởng", render: report => report.award_id ? `Award: ${report.award_id}` : "Chưa có award — accepted không tự cộng điểm" },
+      { key: "award", label: "Thưởng", render: report => <RewardFeedback report={report} /> },
     ]} />;
 }

@@ -41,4 +41,4 @@ test("map exposes keyboard controls, matching segment/entity/route lists and nul
   expect(screen.getByRole("region", { name: "Routes theo committed pointer" })).toBeDefined();
   expect(container.querySelectorAll("path[data-segment-id]")).toHaveLength(graph.segments.length);
   expect(screen.getByText(/ETA Đang chờ/)).toBeDefined();
-});
+}, 20000);

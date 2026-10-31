@@ -12,7 +12,7 @@ export function PlanRoute() {
   const query = useQuery(readOptions(runtime, "getPlan", "operations:read", "dispatcher", { path: { session_id: session.session_id, plan_id: planId } }));
   const snapshot = useQuery(readOptions(runtime, "getSessionSnapshot", "operations:read", "dispatcher", { path: { session_id: session.session_id } }));
   const plan = query.data?.body.data, latest = snapshot.data?.body.data.latest_plan;
-  const blocked = latestPlanReason({ plan, latest, snapshotRevision: snapshot.data?.body.data.session.revision, currentRevision: session.revision,
+  const blocked = latestPlanReason({ plan, latest, activeJob: snapshot.data?.body.data.active_job, planMeta: query.data?.body.meta, snapshotMeta: snapshot.data?.body.meta, snapshotSession: snapshot.data?.body.data.session, current: session,
     fetching: query.isFetching || snapshot.isFetching, snapshotReady: snapshot.isSuccess });
   return <>{snapshot.isError && <Alert title="Không xác minh được latest plan">{failureText(snapshot.error)}</Alert>}
     <PlanScreen context={context} resource={resourceOf(query)} commandBlockedReason={blocked}

@@ -4,6 +4,7 @@ import { Alert, Button, Card, ErrorSummary, SelectField, TextArea, TextField, ty
 import { accessReason, sameVersion, type AccessContext } from "../../shared/access";
 import { Denied, SimulationBanner, type Resource } from "../../shared/feature-state";
 import { useCommand } from "../../shared/use-command";
+import { RewardFeedback } from "./reward-feedback";
 import { ImageReviewCard } from "./image-review-card";
 import { reportImageContext, type ImageBinding } from "./image-binding";
 
@@ -49,6 +50,7 @@ function ReviewDetail({ context, session, report, imageReview, imageBinding, onR
   return <main><SimulationBanner session={session} provenance={context.provenance} /><h1>Review báo cáo {report.report_id}</h1>
     <Card title="Báo cáo"><p>{report.description}</p><p>{report.status} · Chụp {report.captured_at} · Phút {report.captured_sim_minute}</p>
       <p>Vehicle: {report.vehicle_types.join(", ") || "Chưa xác định"} · {report.reason_codes.join(", ")}</p></Card>
+    <RewardFeedback report={report} />
     <ImageReviewCard resource={safeImageReview} binding={imageBinding} />
     <Button {...disabled(aiBlocked)} pending={ai.pending} pendingLabel="Đang yêu cầu AI…" onClick={() => void ai.run(onAiRequest)}>AI nhận xét</Button>
     {ai.message && <Alert title="Trạng thái AI">{ai.message}</Alert>}

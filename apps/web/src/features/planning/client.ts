@@ -1,8 +1,11 @@
-import type { CandidateInput, PlanDecisionInput } from "@floodops/contracts";
+import type { CandidateInput, PlanDecisionInput, PlanningJobInput } from "@floodops/contracts";
 import type { BoundClient } from "../../shared/client-context";
 
 export function createPlanningClient(client: BoundClient) {
   return {
+    start: (body: PlanningJobInput, key: string) => client.prepare("createPlanningJob", "planning:request", "dispatcher", context => ({
+      path: { session_id: context.identity.session.session_id }, headers: client.headers(context, key), body,
+    })),
     plan: (planId: string) => client.read("getPlan", "operations:read", "dispatcher", {
       path: { session_id: client.sessionId(), plan_id: planId },
     }),

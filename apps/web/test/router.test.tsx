@@ -4,7 +4,7 @@ import type { FetchAdapter } from "@floodops/api-client";
 import { createApplication } from "../src/router";
 import { WebRuntime } from "../src/app/runtime";
 import { WebApplication } from "../src/app/application";
-import { identity, now, session } from "../preview/fixtures";
+import { identity, now, session } from "./fixtures";
 afterEach(cleanup);
 const meta = { request_id: "test-router", session_id: session.session_id, generation: 1, revision: 4, event_sequence: 8 };
 function runtime(role: "driver" | "dispatcher") {

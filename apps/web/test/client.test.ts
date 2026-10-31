@@ -4,7 +4,7 @@ import { createBoundClient, type ClientContext } from "../src/shared/client-cont
 import { createReportClient } from "../src/features/reports/client";
 import { createPlanningClient } from "../src/features/planning/client";
 import { commandError } from "../src/shared/use-command";
-import { driverDashboard, driverRoute, identity, imageReview, now, session } from "../preview/fixtures";
+import { driverDashboard, driverRoute, identity, imageReview, now, session } from "./fixtures";
 const key = "fixture-idempotency-key";
 function harness(role: "driver" | "dispatcher" = "dispatcher") {
   let context: ClientContext = { identity: identity(role), online: true, now, scope: new RequestScope(session.session_id, 1) };

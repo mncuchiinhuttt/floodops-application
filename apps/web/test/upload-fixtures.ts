@@ -2,7 +2,7 @@
 import { ApiError, type FetchAdapter } from "@floodops/api-client";
 import { MediaSchema } from "@floodops/contracts";
 import { WebRuntime } from "../src/app/runtime";
-import { identity, now, session } from "../preview/fixtures";
+import { identity, now, session } from "./fixtures";
 export const media = MediaSchema.parse({ media_id: "media_test001", status: "ready", content_type: "image/png", byte_length: 3,
   width: 64, height: 48, sha256: "a".repeat(64), created_at: "2026-10-31T00:00:00Z" });
 export const upload = { upload_id: "upload_test001", status: "reserved", expires_at: session.expires_at, maximum_bytes: 5242880, content_path: "https://not-a-safe-image.invalid/quarantine" };
