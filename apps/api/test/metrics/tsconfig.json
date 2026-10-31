@@ -1,0 +1,5 @@
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": { "types": ["bun"] },
+  "include": ["../../src/features/results/pure/**/*.ts", "../../src/features/evaluations/pure/**/*.ts", "./**/*.ts", "../evaluations/**/*.ts"]
+}
