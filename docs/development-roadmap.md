@@ -1,0 +1,44 @@
+# Development roadmap
+
+**Evidence snapshot:** 2026-10-31. Statuses below describe observed integrated evidence against PRD v0.5, not the untouched phase checkboxes in the active plan. `done` means the scoped phase gate has evidence; it does not mean the entire product milestone is complete.
+
+## Milestones
+
+| Milestone | Status | Scope and evidence |
+| --- | --- | --- |
+| M1 — web workflow proof | **Partial** | The `rapid-runnable-demo-v1` amendment records a full synthetic HTTP flow from citizen report through manual review, knowledge, deterministic plan, Execute/replay, clock/results and Reset. The current route inventory is 66/66 registered contract operations; the harness distinguishes registration from functional acceptance. Neither is the full 31-US acceptance record, which remains unclosed. See [PRD](../FloodOps/prd.md), [runnable-demo amendment](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/amendments/rapid-runnable-demo-v1.json), and [route inventory test](../tooling/runtime/route-inventory.workerd.ts). |
+| M2 — native and gated extensions | **Pending** | Native app code exists, but actual iOS/Android device/build and cross-device acceptance are not recorded. Campaign/student contracts and operations remain pending cutover; forecast requires matched labeled data and temporal holdout. See [PRD](../FloodOps/prd.md), [phase 10](../plans/20261030-2249-floodops-web-mobile-implementation/phase-10-expo-mobile-application.md), [student demo spec](../plans/20261030-2249-floodops-web-mobile-implementation/specs/student-volunteer-demo.md). |
+| M3 — calibration and pilot | **Pending** | Independent D04 data, provenance/licence/holdout/tolerance evidence and pilot results are not present. Functional synthetic simulation is not calibration evidence. See [PRD](../FloodOps/prd.md), [simulation readiness qualification](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/gates/simulation-ready.json). |
+
+## Product decisions applied
+
+* **AM-M01:** M1 is a bounded web workflow proof. Native app parity is M2; calibration and pilot claims are M3. Completing M1 does not mean production readiness or full roadmap completion.
+* **AM-AI02:** planning and S–F classification are deterministic code. M1 photo analysis is advisory; flood forecast remains a data-gated M2 extension. There is no runtime AI Commander.
+* **AM-C01 / AM-C02:** campaign economy and student-volunteer recognition belong to M2 and require their current policy/contract cutover; they are not M1 acceptance.
+* **D04:** assumptions may support a disclosed functional fixture, but calibration requires sourced independent evidence and holdout; absent evidence remains Calibration incomplete.
+  See [PRD v0.5](../FloodOps/prd.md), [decision/prerequisite register](../plans/20261030-2249-floodops-web-mobile-implementation/specs/decisions-prerequisites.md), and [policy rules](../plans/20261030-2249-floodops-web-mobile-implementation/specs/policy-rules.md).
+
+## Implementation phases
+
+| Phase | Status | Evidence-based position |
+| --- | --- | --- |
+| 01 — workspace and shared contracts | **Partial** | Contracts/client and an earlier contracts-ready gate exist; the PRD v0.5 notes that AM-AI02, AM-M01 and AM-C02 have not all been refrozen through contracts, clients, tests and receipts. [Gate](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/gates/contracts-ready.json) · [current cutover note](../FloodOps/prd.md) |
+| 02 — design system, tokens and icons | **Done** | The shared-library delivery and `ui-libraries-ready` gate record integrated tests, typechecks, lint and Storybook build. This is a library gate, not app/device acceptance. [Gate](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/gates/ui-libraries-ready.json) · [delivery evidence](../plans/reports/worktree-design-system-design-system-phase-02-v3.md) |
+| 03 — scenario, graph and deterministic simulation | **Partial** | An executable synthetic functional scenario and simulator gate are integrated. The gate explicitly says D04 provenance, licence, holdout and tolerance calibration are unavailable; K1/K2 efficacy is not established. [Gate](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/gates/simulation-ready.json) · [phase report](../plans/reports/worktree-simulation-data-simulation-data-phase-03-v2.md) |
+| 04 — Hono session runtime and security | **Done** | The platform-ready gate covers generic capability/auth, CAS, idempotency, Reset, expiry, event and image-job metadata/lease behavior. Its qualification excludes full business projections and application acceptance. [Gate](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/gates/platform-ready.json) · [session report](../plans/reports/worktree-session-platform-session-platform-phase-04-v3.md) |
+| 05 — sources, observations, reports and media | **Partial** | The `rapid-runnable-demo-v1` amendment records the synthetic report-to-Reset HTTP flow; the driver handoff separately proves a bounded pending-review correction. No full Sources phase acceptance gate is recorded, and the workflow remains synthetic. [Amendment](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/amendments/rapid-runnable-demo-v1.json) · [driver correction](../plans/reports/worktree-sources-media-sources-media-demo-driver-v5.md) |
+| 06 — deterministic planning, safety and Execute | **Partial** | The M1 runtime uses a bounded deterministic planner and separate approval/Execute; local workflow evidence covers planning and execution. The phase has no full acceptance gate, and production Workers Free CPU limits planning/evaluation. [Planner report](../plans/reports/worktree-planner-safety-planner-safety-m1-runtime-v5.md) · [production limit](../README.md) |
+| 07 — review, gaps and rewards | **Partial** | Manual review, knowledge and the simple M1 receipt policy are wired. Optional image advice remains binding/key-gated; M2 campaigns, ranking, benefits and student recognition are not cut over. [Review report](../plans/reports/worktree-review-rewards-review-rewards-m1-reward-v5.md) · [PRD](../FloodOps/prd.md) |
+| 08 — clock, results and evaluation | **Partial** | Clock/results/evaluation routes are integrated, but the evaluation-run behavior does not establish forecast quality, K1/K2 calibration or full acceptance. [Results report](../plans/reports/worktree-results-evaluation-results-evaluation-m1-projections-v3.md) · [coverage checkpoint](../plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/checkpoints/api-composition-coverage-v1.json) |
+| 09 — web console | **Partial** | A real React Router application is connected to the backend and has browser evidence; the report records blocked fixture-media submission and unexercised manual-review/award cases. [Web report](../plans/reports/worktree-web-console-web-console-m1-wire-v4.md) · [web README](../apps/web/README.md) |
+| 10 — Expo native app | **Deferred** | Native source/runtime is present, but the PRD places native parity in M2. Device/build/cross-device acceptance is pending for that milestone; the native report and README do not claim it. [Phase 10](../plans/20261030-2249-floodops-web-mobile-implementation/phase-10-expo-mobile-application.md) · [native README](../apps/mobile/README.md) |
+| 11 — verification and acceptance | **Partial** | Route inventory, focused package/Worker tests and workflow probes exist; there is no recorded full 41-US / T01–T24 / IR-01–IR-12 acceptance pass. [Testing strategy](../plans/20261030-2249-floodops-web-mobile-implementation/specs/testing-strategy.md) · [M1 probe](../plans/reports/worktree-integration-lead-m1-http-probe-v1.md) |
+| 12 — Cloudflare and EAS release | **Partial** | The demo Worker is live on `workers.dev`; EAS binary release and rollback drills are not recorded. The deployed account is on Workers Free (10 ms CPU/request), and the README records planner/evaluation CPU failures. [Deployment README](../README.md) · [phase 12](../plans/20261030-2249-floodops-web-mobile-implementation/phase-12-cloudflare-eas-release.md) |
+
+## Deferred or gated work
+
+- M2: native device/cross-device acceptance, campaigns and S–F missions, ranking/benefits, student-volunteer recognition, hub/defer/reroute-only extensions, and AI flood forecast after data/model gates.
+- M3: D04 calibration, independent forecast evaluation (T21), pilot/interview evidence, and any real-world operational-value claim.
+- Production readiness, real rewards/payout, live data connectors, and school recognition are not implied by the demo deployment.
+
+The active [implementation plan](../plans/20261030-2249-floodops-web-mobile-implementation/plan.md) status cells and task checkboxes remain unchanged. This roadmap is a dated evidence view; use the linked reports and gates for exact scope and qualifications.
