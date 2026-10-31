@@ -1,0 +1,51 @@
+{
+  "work_item_id": "results-evaluation-runtime-foundations-v2",
+  "role_id": "results-evaluation",
+  "base_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe",
+  "observed_launch_sha": "2364a58e271a738790fe2a70fd47f67ad0befb52",
+  "delivery_sha": "5053147d43eaf0c94a2c36b5995a48cd3fbfc3fe",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "bda263b1d21bfa26994d857da94f97b8974a3cfee08059e805e889f765202527",
+  "source_sha": "87b17baec2472411627c26b2f878ed4c27db57ea",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/src/features/evaluations/pure/README.md",
+    "apps/api/src/features/evaluations/pure/aggregate-evaluation.ts",
+    "apps/api/src/features/results/index.ts",
+    "apps/api/src/features/results/runtime.ts",
+    "apps/api/src/features/simulation/README.md",
+    "apps/api/src/features/simulation/advance-service.ts",
+    "apps/api/src/features/simulation/continue-advance.ts",
+    "apps/api/src/features/simulation/index.ts",
+    "apps/api/src/features/simulation/router.ts",
+    "apps/api/src/features/simulation/runtime-types.ts",
+    "apps/api/src/features/simulation/start-advance.ts",
+    "apps/api/src/features/simulation/state.ts",
+    "apps/api/src/features/simulation/views.ts",
+    "apps/api/test/evaluations/aggregate-evaluation.test.ts",
+    "apps/api/test/simulation/advance.workerd.ts",
+    "apps/api/test/simulation/http.workerd.ts",
+    "apps/api/test/simulation/runtime-fixtures.ts",
+    "apps/api/test/simulation/runtime-worker.ts",
+    "apps/api/test/simulation/tsconfig.json",
+    "apps/api/test/simulation/vitest.config.ts",
+    "apps/api/test/simulation/wrangler.simulation.jsonc",
+    "plans/reports/worktree-results-evaluation-results-evaluation-runtime-foundations-v2.md"
+  ],
+  "checks": [
+    {
+      "command": "Exact delivery verifier/signatures/review; integrated focused tests/types/lint and public smoke; actual Workerd for Results",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-integration-lead-independent-business-runtime-v1.md"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [],
+  "integration_requests": [],
+  "blocked_prerequisites": [
+    "Full original phase/source/provider/device gates remain pending; partial slice verified only"
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

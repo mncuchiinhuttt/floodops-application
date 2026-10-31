@@ -1,0 +1,46 @@
+{
+  "work_item_id": "review-rewards-domain-correction-v2",
+  "role_id": "review-rewards",
+  "base_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe",
+  "observed_launch_sha": "2364a58e271a738790fe2a70fd47f67ad0befb52",
+  "delivery_sha": "326fe8f31ca91c8d3dbfcb92a16a5d25c184d32e",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "bda263b1d21bfa26994d857da94f97b8974a3cfee08059e805e889f765202527",
+  "source_sha": "e990fbaa3e273fda3fb362cf0b9f4e059dd52b61",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/test/coverage/active-gaps.test.ts",
+    "apps/api/test/coverage/scoped-correction-smoke.ts",
+    "apps/api/test/coverage/scoped-coverage.test.ts",
+    "apps/api/test/coverage/scoped-evidence-fixture.ts",
+    "apps/api/test/coverage/useful-coverage.test.ts",
+    "apps/api/test/rewards/fixtures.ts",
+    "apps/api/test/rewards/lifecycle.test.ts",
+    "apps/api/test/rewards/reward-proposal.test.ts",
+    "apps/api/test/rewards/smoke.ts",
+    "packages/domain/src/rewards/README.md",
+    "packages/domain/src/rewards/active-gaps.ts",
+    "packages/domain/src/rewards/coverage.ts",
+    "packages/domain/src/rewards/current-evidence.ts",
+    "packages/domain/src/rewards/index.ts",
+    "packages/domain/src/rewards/report-evidence.ts",
+    "packages/domain/src/rewards/validation.ts",
+    "plans/reports/worktree-review-rewards-review-rewards-domain-correction-v2.md"
+  ],
+  "checks": [
+    {
+      "command": "Exact delivery verifier/signatures/review; integrated focused tests/types/lint and public smoke; actual Workerd for Results",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-integration-lead-independent-business-runtime-v1.md"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [],
+  "integration_requests": [],
+  "blocked_prerequisites": [
+    "Full original phase/source/provider/device gates remain pending; partial slice verified only"
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

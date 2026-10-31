@@ -1,0 +1,46 @@
+{
+  "amendment_id": "independent-business-runtime-v1",
+  "status": "authorized",
+  "authority": "Parent explicitly authorized service implementation independent of Sources to avoid idle corrected owners; user prioritizes complete backend then real frontend E2E.",
+  "work_items": [
+    {
+      "role_id": "planner-safety",
+      "work_item_id": "planner-safety-runtime-foundations-v3",
+      "include_prefixes": [
+        "packages/domain/src/planning/",
+        "apps/api/src/features/incidents/",
+        "apps/api/src/features/planning/",
+        "apps/api/src/features/operations/",
+        "apps/api/src/integrations/openai/",
+        "apps/api/test/planning/",
+        "apps/api/test/execution/",
+        "apps/api/test/policy/"
+      ],
+      "include_files": [],
+      "scope": "Implement reachable original phase06 SERVICES/JOBS/ROUTERS now, not another pure-only correction. Use the integrated corrected evaluator and public simulator + already integrated pure Sources normalization/knowledge/reporting seams. Define narrow injected public source/evidence readers where full Sources HTTP/storage adapter is not delivered yet; no sibling WIP/deep imports. Implement actual incident ranking/impact,8captured-snapshot internal tools, bounded strict Responses controller/provider adapter, durable planning start/cancel/coalescing/lease/current-job/latest-plan, metadata action decisions, dry-run/atomic Execute and operations/route/execution/notification reads. Produce real Hono→DO tests using actual pure source/simulator/registry and explicit deterministic provider test transport, not mocked successful Execute. FINAL source service integration/gates remain pending, not permission to fabricate them. FIRST priority: export a genuine server-owned committed movement policy factory for Results advance, composing createCurrentPolicy guards with persisted committed route/action grants bound to branch/driver/route/segment/epoch/expiry. Baseline static waits on unknown without its own authority; reroute_only same safety gate, no assignment coordination. A new proposal or approval cannot affect current/baseline authority or committed route before Execute. Do not inject highOnly test policy or permissive fallback into production. Supply exact public factory/type and Lead constructor registration request EARLY. Current Lead composition now mounts4clock/results operations, but advance intentionally503CONFIG_INCOMPLETE until your genuine factory exists. Verify selected independent groups/dependency closure/latestIDs at same revision, replay-before-eligibility, picked-up/stock/capacity/turn/closed/conflict/expiry/POL05 guards, actual P1 hub/defer. Provider config unavailable must yield canonical failure, never canned plan or test stub default. No actual paid requests."
+    },
+    {
+      "role_id": "review-rewards",
+      "work_item_id": "review-rewards-runtime-foundations-v3",
+      "include_prefixes": [
+        "packages/domain/src/rewards/",
+        "apps/api/src/features/reports/review/",
+        "apps/api/src/features/knowledge/conflict-review/",
+        "apps/api/src/features/rewards/",
+        "apps/api/test/review/",
+        "apps/api/test/rewards/",
+        "apps/api/test/coverage/"
+      ],
+      "include_files": [],
+      "scope": "Implement reachable original phase07 SERVICES/JOBS/ROUTERS now using corrected rewards/active gaps and existing public pure Sources proposeObservationAcceptance/proposeConflictResolution/knowledge/reporting APIs. Build actual human review/conflict reducers atomically combining report+knowledge+gap+award+idempotency+revision/events under genuine DO; contributor-own dashboard/ledger and dispatcher reads, current epoch/vehicle projections. Do not accept via Source then separately award. Cross-client retry/races/crash-after-commit/duplicate normalized photo/late expiry/Reset must yield one report award/first-fill. Implement isolated AI advisory router/service/job/ImageReviewPort/provider adapter under reports/review, not Planner integrations. Generic durable ImageReviewMetadataPort reserve/read/start/complete is present. Use an explicitly typed injected normalized-image/readiness/digest/source-state port while full Source media factory delivery is pending; actual test media port is disclosed, not a production raw-byte fallback. Source owner will publish exact factory; provide constructor request so Lead adapts only public ports. Inputdigest binds actual normalized media+server report/session/generation/context/model/rubric, not unrelated operational revision. DO imageBinding reads only persisted normalized metadata; no R2/provider awaits in transaction. Model gets only self-contained C1 ImageReviewModelOutput schema, strict full output validation, server score/recommendation; no modelscore/authority. Implement IR01-IR11 actual local service/DO behavior including one call reservation/idempotency/quota/deadline/current pointers/equal-revision events/late human decision/Reset/expiry and manual independence. Missing provider/Images readiness returns canonical unavailable/null, no fake0/canned advice and no blocked human review. IR12 realvision remains explicitly unavailable without scoped grant. Contributor dashboard factory must use actor-owned reports/awards and current-scope coverage; no principal leak. Original reports parent and knowledge core belong Sources, do NOT edit them. Final full source/media integration and review-ready gate wait actual Source delivery."
+    }
+  ],
+  "rules": [
+    "13roles/9waves unchanged. Bounded early runtime implementation does not pass full Source or downstream gates.",
+    "Use pinned existing public pure Source/simulator/platform ports, explicit injected adapters for unfinished full media/service boundary; missing genuine dependency fails closed. No fake production provider/evidence or success.",
+    "Original role exclusions/central protected files unchanged; no mutation of active owners, moving integration or sibling WIP.",
+    "Current corrected C/R is integrated; new frozen index and exact launch required. Old receipt/hash cannot authorize this continuation.",
+    "Parent resumes same existing two workers, sol/ultra/fast, no duplicate writer.",
+    "No production/main/push/newpaid/account/key/resource/device/EAS/model action grant."
+  ]
+}
