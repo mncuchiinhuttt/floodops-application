@@ -1,5 +1,7 @@
 # Feature implementation recipes và packages
 
+Advisory image-review behavior and wire names follow [ai-assisted-image-review.md](ai-assisted-image-review.md).
+
 ## Feature boundary recipe
 `apps/api/src/features/<feature>/{routes.ts,schemas.ts,service.ts,ports.ts,tests}`; `schemas.ts` imports contracts, no duplicate wire types. Service receives session runtime/ports, cannot mutate a global map.
 `apps/web/src/features/<feature>/{api,model,components,routes,tests,index.ts}`; React Router route module small, server state via typed query client.
@@ -15,12 +17,18 @@
 | incidents | rain/tide/combined fixtures/impact ranking | trigger/impact priority | overview trigger + detail | context never closes road |
 | planning | tools/job/plan/diff/approval/execute | full plan comparison/group gates | full plan detail and group actions | no change before Execute |
 | sources | source/context/measurement/replay | source registry/tide datum panels | sources stacks | source unavailable not fake truth |
-| reports | driver+citizen input/media/normalization | report form/own history | image picker/drafts/report form | verified own media, explicit send |
+| reports | driver+citizen input/media/normalization and dispatcher-only image-review service/job | report form/own history + separate advisory card/manual decision | image picker/drafts/report form + same advisory card/manual decision | safe normalized input, null/pending/failure states, no authority from advice |
 | knowledge | validation/epochs/conflict/freshness | review/conflict resolution | review/evidence detail | accepted vs route authorization separate |
-| rewards | gaps/useful coverage/exactly-once ledger | gap progress/points/review result | contributor points + dispatcher ledger | one award/report + first-fill gap |
+| rewards | gaps/useful coverage/exactly-once ledger | gap progress/points/review result | contributor points + dispatcher ledger | one award/report + first-fill gap; AI never changes award |
 | simulation | explicit advance/event ordering/reset hooks | clock/trace playback | clock controls/render replay | wall speed never changes physics |
 | results | H-completion metrics/branches/model eval | results/evaluation table | same raw metrics lists | raw observed≠projected |
 | evidence-log | Codex/design/data provenance artifacts | read labels/trace links | labels/redacted traces | human decisions/test logs repo |
+
+## Advisory image-review recipe
+- Keep the service/router/job/provider adapter under `apps/api/src/features/reports/review/` (ReviewRewards); consume a public authorized normalized-image/digest/readiness port from SourcesMedia and metadata/lease/quota/event hooks from SessionPlatform.
+- Inject `ImageReviewPort` at the provider boundary and validate its self-contained strict provider-compatible `ImageReviewModelOutput` (resolve local refs, no network refs, never Job/Advice); compatibility does not loosen app validation, and the server revalidates full bounded output before deriving score/recommendation. Do not deep-import PlannerSafety/OpenAI internals.
+- Keep AI job/result state outside the Report and human-review contracts. Human decision remains independent; job state is metadata-only and UI refresh is keyed by `image_review_changed` plus current binding, not operational revision alone.
+
 
 ## Packages to pin at implementation
 - React + React DOM + React Router compatible releases; Vite web build; Tailwind CSS v4 via `@tailwindcss/vite`; shadcn copied component source remains ui-web-owned.
@@ -32,7 +40,7 @@
 - bun.lock frozen CI, Bun toolchain pinned (Node exceptions trong docs/architecture/bun-toolchain.md), `expo-doctor` and peer deps check; never force-ignore peer mismatch.
 
 ## Data/loading pattern
-- Query key begins session+generation+feature+filters. Response revision stored, not overwritten by older response. On reset abort all requests/query cache, clear old credential.
+- Query key begins session+generation+feature+filters. Response revision is stored, not used as the sole ordering key for metadata-only image-review job progress. On `image_review_changed`, refetch by event sequence and current session/generation/report/job/input-digest binding; never discard a valid same-revision running→completed update. On Reset abort old requests/query cache and clear old credential.
 - Route loaders prefetch same TanStack query options; no duplicate loader fetch + hook fetch storms.
 - Mutations server-first, no optimistic assignment/points/safety. Local loading flags/error field state okay. Retry GET bounded; mutation retry **same idempotency key/payload**, never stale revision rebase automatically.
 - Infinite list cursor session scoped. Map graph cache immutable by graph_hash; dynamic knowledge per revision; selectors memoized.

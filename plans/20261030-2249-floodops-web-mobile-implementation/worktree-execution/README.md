@@ -38,4 +38,4 @@
 - Không edit file ngoài ownership để “unblock nhanh”; gửi request tới owner/Lead. Git worktree tách working directory, không tự giải quyết semantic/API conflicts.
 
 ## Trạng thái
-Mọi role/phase ở trạng thái planned. Chưa tạo branch/worktree, chưa chạy application suites/deploy. Root plan và contracts hiện tại giữ scope34US,64 API operations và8 tools; role pack không đổi nghiệp vụ.
+Role/phase status ở bộ plan này là planned; không là trạng thái runtime của repo ứng dụng riêng. Scope34US,66 API operations và8 Commander tools; [US-30 AI image-review amendment](../specs/ai-assisted-image-review.md) cần Lead publish contract/hash và baseline amendment trước implementation. Chưa chạy app/model/device/deploy trong task tài liệu này.

@@ -1,6 +1,6 @@
 # Endpoint inventory — contract chuẩn
 
-[OpenAPI 3.1.1](openapi.json) chứa full request/response/error schemas. Base `/api/v1`. CAS=If-Match; Key=Idempotency-Key. Metadata-only không tăng operational revision.
+Base `/api/v1`; contract inventory: **66 operations / 61 paths** (the existing64 operations/59 paths are preserved, plus the two image-review paths). CAS=If-Match; Key=Idempotency-Key. Metadata-only changes do not increase operational revision.
 
 | Method | Path | operationId | Roles | CAS | Key | Response data |
 |---|---|---|---|---|---|---|
@@ -39,6 +39,8 @@
 | GET | `/sessions/{session_id}/reports` | `listReports` | dispatcher,driver,contributor | no | no | ReportListResponse |
 | GET | `/sessions/{session_id}/reports/{report_id}` | `getReport` | dispatcher,driver,contributor | no | no | ReportResponse |
 | POST | `/sessions/{session_id}/reports/{report_id}/reviews` | `reviewReport` | dispatcher | yes | yes | ReportReviewResultResponse |
+| POST | `/sessions/{session_id}/reports/{report_id}/image-review-jobs` | `createReportImageReview` | dispatcher | no | yes | ImageReviewJobResponse |
+| GET | `/sessions/{session_id}/reports/{report_id}/image-review` | `getReportImageReview` | dispatcher | no | no | ImageReviewStateResponse |
 | POST | `/sessions/{session_id}/media-uploads` | `reserveMediaUpload` | dispatcher,driver,contributor | no | yes | MediaUploadResponse |
 | PUT | `/sessions/{session_id}/media-uploads/{upload_id}/content` | `uploadMediaContent` | dispatcher,driver,contributor | no | yes | MediaUploadResponse |
 | POST | `/sessions/{session_id}/media-uploads/{upload_id}/completion` | `completeMediaUpload` | dispatcher,driver,contributor | no | yes | MediaResponse |

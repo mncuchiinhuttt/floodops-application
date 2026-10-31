@@ -1,6 +1,6 @@
 # Truy vết toàn bộ PRD tới feature, API và kiểm chứng
 
-[PRD v0.3](../../../FloodOps/prd.md) giữ nguyên, plan không sửa priorities để cắt scope. Full application gồm P0/P1/P2 dưới đây. P1 hub/defer thiếu parameter có căn cứ thì UI disabled đúng rule, không báo đã nghiệm thu chức năng đó. P2 reroute-only được triển khai và kiểm qua feature flag.
+[PRD v0.3](../../../FloodOps/prd.md) giữ34 requirement IDs/priorities; US-30 nay gồm [AI hỗ trợ review ảnh định lượng](ai-assisted-image-review.md), không tự duyệt hoặc thay safety/reward rules. Full application gồm P0/P1/P2; thiếu parameter hợp lệ thì disabled đúng rule, không claim nghiệm thu. P2 reroute-only triển khai và kiểm qua feature flag.
 
 | ID | Requirement | Priority PRD | Phase owner/integration | API operationId | Behavior acceptance |
 |---|---|---|---|---|---|
@@ -33,7 +33,7 @@
 | US-27 | Reroute-only baseline. | P2 | 03, 08, 09, 10 | getResults | T01, T14 |
 | US-28 | Nhiều nguồn. | P0 | 05, 09, 10 | listSources, replaySourceEvent | T08, T11 |
 | US-29 | Citizen photo. | P0 | 05, 07, 09, 10 | submitReport, reserveMediaUpload, uploadMediaContent, completeMediaUpload | T07 |
-| US-30 | Validate / review. | P0 | 05, 07 | reviewReport, getMedia | T07, T12 |
+| US-30 | Validate / human review + advisory AI image quality/match. | P0 | 01, 04, 05, 07, 09, 10, 11 | reviewReport, getMedia, createReportImageReview, getReportImageReview | T07, T09, T12; IR-01–IR-12 |
 | US-31 | Points. | P0 | 07, 09, 10 | listAwards, getOwnContributorDashboard | T07 |
 | US-32 | Data gaps. | P0 | 05, 07, 09, 10 | listGaps, getCoverage | T03, T07 |
 | US-33 | Đổi hub. | P1 | 06, 09, 10 | executePlan | T05 |
@@ -64,3 +64,8 @@
 
 ## Client parity gate
 Every operational US has web+native screen or background state rendering. US-26 is engineering evidence (not fake runtime UI). Server-only guards must be exercised through both clients' error/blocked states. Neither frontend locally grants route/reward authority.
+
+## US-30 quantitative image review gate
+- Contract/client giữ8 Commander tools; thêm2 dispatcher-only operations, typed rubric/advice/job/state và metadata-only event. SourcesMedia đưa normalized bytes/digest port; ReviewRewards sở hữu advisory service/job; SessionPlatform/Lead giữ durable shared runtime và config.
+- UI web/native hiển thị score0–100 và yes/no/unclear + reasons; no fake percent of safety/authenticity. IR-01 rubric/derived-field oracle tách khỏi IR-12 real-vision agreement; schema/stub không chứng minh model đúng.
+- Hoàn tất advisory metadata không thay operational revision/knowledge/award/route. Human review và deterministic checks luôn quyết định; failed/stale AI không chặn manual flow hoặc rollback accepted report.

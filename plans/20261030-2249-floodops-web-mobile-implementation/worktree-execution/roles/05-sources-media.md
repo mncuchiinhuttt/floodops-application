@@ -20,19 +20,20 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - [Root plan](../../plan.md) · [PRD v0.3](../../../../FloodOps/prd.md).
 - [Ownership](../ownership.md) · [Shared contracts](../shared-contracts.md) · [Work item/delivery](../work-items-and-handoff.md).
 - [Producer interfaces](../producer-interfaces.md): exact public exports chốt ở producer gate, không deep-import private implementation.
-- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md).
+- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md) · [Image review](../../specs/ai-assisted-image-review.md).
 - Đọc spec/contracts liên quan trong phase; không suy schema bằng câu chat hoặc tự dùng bản PRD cũ.
 
 ## Prerequisites
 - Required predecessor deliveries: SimulationData, SessionPlatform.
 - Tất cả phải **merged** ở required gate SHAs và là ancestors của launch checkout; branch chưa merge không là input authority.
 - Contract ref/hash và BASE_SHA lấy từ receipt, không giả HEAD/latest main là baseline đúng.
+- For image-review port work, wait until IntegrationLead publishes the explicit baseline amendment/contract hash and reissues affected launch refs; this role does not authorize itself from unmerged plan text.
 - CWD/branch/clean state đúng. User dirty/unexpected changes giữ nguyên, stop hoặc báo Lead; không auto-reset/clean/stash.
 
 ## Scope
 - Implement phase05 common source envelopes/context-vs-observation-vs-restriction, epoch/freshness/vehicle knowledge and source availability.
 - Driver quick/text và citizen photo submissions, pending/normalization semantics; strict accepted transition outputs, không thưởng ở raw-submit.
-- Private media reserve→bytes→normalize→completion→authorized read, scoped exact API paths, R2/DO orphan cleanup and Images prerequisite.
+- Private media reserve→bytes→normalize→completion→authorized read, scoped exact API paths, R2/DO orphan cleanup and Images prerequisite; publish the server-authorized normalized-image/digest/readiness port for pending reports. Never expose raw staging/R2 URLs or modify the ReviewRewards subtree.
 - Publish normalize/knowledge transition contracts cho ReviewRewards; review/conflict-review route subtrees thuộc ReviewRewards, không sửa trong role này.
 
 ## File ownership
@@ -71,6 +72,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Rain/tide không tự tạo passability; authority/conflict/epoch rules khớp; expired/ambiguous mapping không giả accepted.
 - Valid actual photo normalized, malformed/large/cross-session/private raw reads bị chặn; chưa entitlement phải ghi unavailable.
 - sources-ready artifact chỉ rõ ports/routes và pending vs accepted behaviors để planner/review chạy không đoán.
+- The review port supplies only verified normalized derivative access, server-derived digest and readiness/duplicate status; it does not invoke a model or commit review/reward state.
 - Commit owned source C, commit report SourceEvidence R riêng với source_sha=C (không SHA của chính R); gửi delivery_sha=R out-of-band cho Lead. Báo base/launch/hash, actual checks/smoke/public exports/requests/prerequisites; Lead ghi DeliveryReceipt sau khi R tồn tại.
 - Stage explicit owned files, commit focused. Không merge siblings/main hoặc rewrite shared history. Không tự sửa plan/phase/gate state; Lead cập nhật sau review/merge.
 - Xong scope thì dừng và trả report; không tự chuyển sang role/phase khác hoặc chạy root cook.

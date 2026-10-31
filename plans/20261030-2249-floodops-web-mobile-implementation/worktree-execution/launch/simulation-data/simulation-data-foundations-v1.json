@@ -1,0 +1,36 @@
+{
+  "work_item_id": "simulation-data-foundations-v1",
+  "role_id": "simulation-data",
+  "phase_ids": [
+    3
+  ],
+  "base_sha": "5934510f1ed03fea4d6bdaba46a3c01cebe225c7",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/simulation-foundations-v1-index.json",
+    "sha256": "6d2399ef5c6b805f463bbcaeb304dbf1b692a30c7b60359234f8f8183b286c86",
+    "commit_sha": "5934510f1ed03fea4d6bdaba46a3c01cebe225c7"
+  },
+  "required_gates": [
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    }
+  ],
+  "expected_branch": "feat/floodops-simulation-data",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "independent-foundations-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}

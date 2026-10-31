@@ -54,6 +54,22 @@ Từ mục3 tới7, path ngắn như `/reports`, `/plans/...`, `/simulation/...`
 7. 200 ReportReviewResult tách report accepted, observations, filled gaps và optional award. Conflict hoặc redundant vẫn có thể accepted nhưng không award.
 8. Retry lost response giữ **cùng key và payload**, trả same award/transition. Không gửi key mới để “thử lại” một khoản thưởng.
 
+### 3.1 Explicit advisory image review (web + Expo)
+1. Dispatcher opens a `pending_review` citizen report whose `media_id` points to the authorized, server-normalized private JPEG/PNG derivative (or an approved normalized fixture). The server checks session/report ownership and media readiness; a raw upload or caller-supplied image URL is not review input.
+2. Only after an explicit `AI nhận xét` action, POST `/api/v1/sessions/{session_id}/reports/{report_id}/image-review-jobs` with the required empty JSON body and a fresh Idempotency-Key:
+```http
+POST /api/v1/sessions/session_example001/reports/report_example001/image-review-jobs
+Authorization: Bearer <native-capability-from-SecureStore>
+Idempotency-Key: <stable-image-review-key>
+Content-Type: application/json
+
+{}
+```
+   Expo uses the session capability from SecureStore. Web uses its existing HttpOnly session cookie, same-origin `Origin`, and `X-CSRF-Token` instead of the bearer header. Do not send `If-Match`; the job is advisory metadata and does not advance operational revision.
+3. `202` returns `ImageReviewJobResponse` (initially `queued`/`running`, `result:null`). Poll GET `/api/v1/sessions/{session_id}/reports/{report_id}/image-review`; it is private `no-store`, and `data.job:null` means no request was made. A same key+digest replays the original result; a new key with the same current input reuses the queued/running/completed job. Do not auto-retry. Failed jobs remain `result:null` and can be retried only after an explicit user action with a new key.
+4. Image data stays server-side: the server resolves one authorized normalized derivative and sends one image plus minimal report text context to the configured provider. The client body remains `{}`—never send a public R2/raw-media URL, image bytes, provider credential, capability, or arbitrary model selector. Do not put raw image content or advice text in SSE/logs; verify provider data handling and retention before any live evaluation.
+5. Manual Accept/Reject remains available immediately, even if AI is queued, running, unavailable, or failed. Use the existing `/sessions/{session_id}/reports/{report_id}/reviews` request with its own current `If-Match` and Idempotency-Key; it does not wait for an AI job, score, recommendation, or advice ID. A human decision is authoritative; a late AI result is superseded/discarded and cannot accept/reject, award points, or change road knowledge.
+
 ## 4. Plan → Approve → Execute
 1. Incident/review commit trigger planning job; GET job until completed or fail. Manual POST `/planning-jobs` cũng có captured revision.
 2. GET `/plans/{id}`: projected route/assignment/ETA, dependency groups và POL reasons.

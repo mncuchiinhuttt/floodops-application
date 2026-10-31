@@ -2,7 +2,7 @@
 
 ## Context links
 - [Plan](plan.md) · [PRD](../../FloodOps/prd.md) · [Coverage](specs/requirements-coverage.md) · [API](contracts/api-index.md)
-- [testing-strategy.md](specs/testing-strategy.md) · [requirements-coverage.md](specs/requirements-coverage.md) · [api-conventions-security.md](specs/api-conventions-security.md)
+- [testing-strategy.md](specs/testing-strategy.md) · [requirements-coverage.md](specs/requirements-coverage.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [ai-assisted-image-review.md](specs/ai-assisted-image-review.md)
 
 ## Overview
 - Status: pending. Priority: P1 implementation phase (khác US product priorities).
@@ -31,23 +31,23 @@
 - Delete: không có file ứng dụng cũ cần xóa trong repo tài liệu; không xóa PRD/history/user files.
 
 ## Implementation steps
-1. Hydrate acceptance coverage US/POL/I/T from manifest; execute package/domain/Workerd/component suites once against integrated code, fix consumer failures not incidental snapshots.
-2. Run built web Playwright with local Worker + deterministic provider fixture, native Maestro iOS/Android dev build; actual network cross-client web review/native plan and reverse report.
-3. Adversarial API permissions, CSRF, revision/key replay, multiple dispatchers, reset saga, object eviction, R2/image errors, model injection/stale response and budget.
+1. Hydrate US/POL/I/T coverage from the current contract/manifest and IR-01–IR-12 from the canonical image-review/testing specs; verify planned totals (66 operations/61 paths, 194 schemas only with exactly eight added image-review schemas) and the provider-compatible self-contained strict `ImageReviewModelOutput` (local refs resolved, no network refs or Job/Advice schema, server revalidation); execute package/domain/Workerd/component suites once against integrated code, fix consumer failures not incidental snapshots.
+2. Run built web Playwright with local Worker + deterministic provider fixture and native Maestro iOS/Android dev build; actual cross-client web review/native feedback exercises pending/completed/failure UI, while stubs prove deterministic plumbing only.
+3. Adversarial API permissions, CSRF, revision/key replay, multiple dispatchers, reset saga, object eviction, R2/image errors, model injection/stale response and budget; add image-review role/readiness checks, idempotency, current input/job binding, human-decision/Reset races and lease/deadline recovery.
 4. Property-based safety across event sequences, capacities/pickup states, report conflicts/expiry and reward races; seed fixed and counterexamples retained.
-5. Calibrated T14 evidence gate and functional fixture separation; real-model10-trial K4/quality when credentials supplied, no stub quality claims.
-6. Accessibility manual and visual checks web/native; profile bounded graph/event workload, SSE reconnection/foreground/background and offline storage.
-7. Publish evidence matrix pass/fail/unavailable with command/env/config hashes; do not label full app complete while D04/physical device/account prerequisites missing.
+5. Calibrated T14 evidence gate and functional fixture separation; separately evaluate permitted real images/model against human-labelled rubric/match expectations, reporting sample IDs, model/prompt/config hashes, valid/failure counts, rating/match agreement and forbidden-claim count. Do not infer vision quality from stubs or conflate with D04 calibration.
+6. Accessibility manual and visual checks web/native; profile bounded graph/event workload, SSE reconnection/foreground/background and offline storage; ensure same-revision `image_review_changed` updates refetch by `event_sequence` and job binding.
+7. Publish evidence matrix pass/fail/unavailable with command/env/config hashes; do not label full app complete while D04/physical device/account/image-consent-retention prerequisites missing.
 8. Build web/dist rồi validate combined Wrangler static routing, private media and same entrypoint; không đợi phase12 mới có runtime/config để chạy acceptance.
 
 ## Todo list
-- [ ] Step 11.01: Hydrate acceptance coverage US/POL/I/T from manifest
-- [ ] Step 11.02: Run built web Playwright with local Worker + deterministic provider fixture, native Maestro iOS/Android dev build
-- [ ] Step 11.03: Adversarial API permissions, CSRF, revision/key replay, multiple dispatchers, reset saga, object eviction, R2/image errors, model injection/stale response and budget.
+- [ ] Step 11.01: Hydrate acceptance coverage US/POL/I/T and IR-01–IR-12 from current manifest/spec; check 66 operations/61 paths and 194 schemas only when exactly8 are added.
+- [ ] Step 11.02: Run built web Playwright with local Worker + deterministic provider fixture, native Maestro iOS/Android dev build; cross-client actual image-review states
+- [ ] Step 11.03: Adversarial API permissions, CSRF, revision/key replay, multiple dispatchers, reset saga, object eviction, R2/image errors, model injection/stale response and budget; include image-review binding/lease/supersession races.
 - [ ] Step 11.04: Property-based safety across event sequences, capacities/pickup states, report conflicts/expiry and reward races
-- [ ] Step 11.05: Calibrated T14 evidence gate and functional fixture separation
+- [ ] Step 11.05: Calibrated T14 evidence gate and functional fixture separation; separately assess real-image/model evaluation, never stub-based vision claims
 - [ ] Step 11.06: Accessibility manual and visual checks web/native
-- [ ] Step 11.07: Publish evidence matrix pass/fail/unavailable with command/env/config hashes
+- [ ] Step 11.07: Publish evidence matrix pass/fail/unavailable with command/env/config hashes and consent/retention/account evidence
 - [ ] Step 11.08: Validate full static+API Wrangler configuration trước remote deployment.
 
 ## Success criteria
@@ -55,6 +55,7 @@
 - Full contract examples and client/server schemas consistent, no unresolved endpoint or role mismatch.
 - Security/accessibility/release blockers resolved or explicitly external evidence gated, not silently waived.
 - Chứng minh cả browser web và native iOS/Android, cộng luồng liên thiết bị ở [surface matrix](specs/web-mobile-feature-surfaces.md): report/review/feedback, native dispatcher Execute/shared committed state, stale authority/Reset. Một app hoặc screenshots responsive không thay bằng chứng hai nền tảng.
+- IR-01–IR-12 are supplemental to, not replacements for, the existing 34 US/15 T acceptance and five invariants. Live image evaluation requires an explicit scoped preview grant and permitted/human-labelled samples; report unavailable/blocked evidence honestly.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

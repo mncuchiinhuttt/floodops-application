@@ -34,6 +34,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Typed DTO, strict validation, response/errors, ETag/If-Match, idempotency retry và SSE/cursor parser dùng cùng contract cho web/native.
 - Generate exports/types/spec theo một source, publish surface contract snapshot/hash, không thêm endpoint hoặc đổi body để consumer tự thích nghi.
 - Cấp input/output interfaces cho domain/platform, dependency request cho Zod/Hono tooling nếu cần; không sửa app manifests hay lockfile.
+- US-30 image-review amendment theo [spec](../../specs/ai-assisted-image-review.md):8 strict schemas,2 operations và image_review_changed event; ModelOutput không nhận score/recommendation/authority fields, typed clients không tự tính quyền từ score.
 
 ## File ownership
 - Include subtree `packages/contracts/`.
@@ -57,7 +58,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Bảo toàn I1–I5: approval không override hard rule; no auto Execute, stale/reset response không commit, points/source state không client-grant.
 
 ## Acceptance / handoff
-- 64 operations hiện tại và 8 tool contracts không drift; mọi sample positive/negative cho outcome đúng.
+- 66 operations và8 Commander tool contracts không drift; mọi current positive/negative fixture đúng expectation, kể cả quality rubric/state/forbidden fields. Derived-score semantics cần oracle riêng, không chỉ JSON shape.
 - Network lost-response retry giữ key;412/410 không auto execute/rebase; SSE handles chunk boundaries/cursor/filter/reconnect.
 - contracts-ready artifact liệt kê schema/source version, public exports và commands đã chạy, có commit riêng.
 - Commit owned source C, commit report SourceEvidence R riêng với source_sha=C (không SHA của chính R); gửi delivery_sha=R out-of-band cho Lead. Báo base/launch/hash, actual checks/smoke/public exports/requests/prerequisites; Lead ghi DeliveryReceipt sau khi R tồn tại.

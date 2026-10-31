@@ -1,7 +1,7 @@
 # Domain data contract và storage model
 
 ## Quy ước chung
-- Wire schema chuẩn ở [openapi.json](../contracts/openapi.json); rules ở [policy-rules.md](policy-rules.md).
+- Wire schemas are defined by [openapi.json](../contracts/openapi.json); operational rules by [policy-rules.md](policy-rules.md), and advisory image-review by [ai-assisted-image-review.md](ai-assisted-image-review.md).
 - ID opaque string có prefix, không suy thẩm quyền từ ID. Session ID và participant capability là hai thứ khác nhau.
 - `revision` integer tăng đơn điệu cho operational state; `event_sequence` tăng cho mọi sự kiện/audit. Không dùng timestamp thay sequence.
 - Timestamps provenance là RFC3339 UTC. Simulation là `sim_minute` finite nonnegative number từ T0, fractional hợp lệ. Không tự thay captured_at bằng received_at.
@@ -29,6 +29,7 @@
 | Approval | action/plan/input revision, approve/reject, actor, audit time | Không là execution; hard rules luôn kiểm lại |
 | Execution | execution_id, plan_id, eligible/excluded groups, old/new revision, attempt IDs | Commit whole candidate hoặc zero operational writes |
 | PlanningJob | id, captured session/revision, status, model config hash, input/output trace refs | Superseded response không publish proposal |
+| ImageReviewJob | job_id, session_id, generation, report_id, input_digest, model, model_config_hash, rubric_version, status, result/error_code, created_at, deadline_at, completed_at | Public fields follow canonical strict schema; internal lease/current pointer/budget bind one pending report + normalized-image/text/config/rubric context; stale work never publishes; score is ordinal image quality, not Observation confidence, authenticity or road-safety probability |
 | Result | horizon, independent branch completion log, six metrics, unfinished, labels | Không dùng projected ETA thay delivered_at |
 
 ## Immutable vs runtime state
@@ -38,10 +39,11 @@
 - Reroute-only P2 branch thứ ba dùng cùng physics, scope, event timeline; không gọi benchmark Google Maps.
 
 ## Snapshot
-`SessionSnapshot` gồm session metadata, scenario/config/calibration summary, sim clock, sources, current knowledge/restrictions, orders/drivers/hubs từng branch, report/gap/reward summaries, latest plan/job, timeline cursor, metrics projected/observed phân biệt.
+`SessionSnapshot` includes session metadata, scenario/config/calibration summary, sim clock, sources, current knowledge/restrictions, orders/drivers/hubs per branch, report/gap/reward summaries, latest plan/job, timeline cursor and projected/observed metrics. Image-review state is a separately authorized dispatcher projection, not a field on public `Report` or a general snapshot.
 - Graph static endpoint trả version/hash; snapshot chỉ segment knowledge + route IDs. Client không render mỗi event bằng tải lại toàn graph.
 - List response cursor opaque và bound session+generation+filter; cursor không là authorization.
 - Strict unknown-property rejection cho command schemas; enums rõ, numerical finite checks, entity existence scoped session.
+- Image-review metadata updates increment `event_sequence` only, never operational `revision`; an unchanged revision does not make a bound running→completed job stale.
 
 ## SQLite DO tables (schema migration, không D1)
 | Bảng | Khóa/constraint | Nội dung |
@@ -55,12 +57,12 @@
 | reports | report_id PK | raw+review+evidence refs |
 | awards | award_id PK, UNIQUE(report_id) | reward record |
 | gap_awards | gap_id UNIQUE | first-fill award mapping |
-| jobs | job_id PK | request snapshot hash, state, generation, output refs |
+| jobs | job_id PK | typed planning/image-review state, session/generation/report binding, input/config/rubric hashes, lease/deadline/current pointer and output refs; no image bytes |
 | outbox | sequence UNIQUE | events awaiting emission; catch-up reads durable log |
-| media | media_id PK | R2 key, owner, hash, lifecycle, size/dimensions, expiry |
-- Transition viết reports/observations/gaps/awards/snapshot/idempotency/outbox trong cùng DO transaction khi cùng nghiệp vụ.
-- Table JSON có schema version và validation on load; prepared SQL, index session-local query paths. Không event-source toàn bộ app nếu snapshot+bounded event log đủ.
-- Retention cleanup không xóa idempotency quá sớm khi command response vẫn có thể retry; replay retention ít nhất lifetime session.
+| media | media_id PK | R2 key, owner, normalized hash, lifecycle, size/dimensions, expiry |
+- Operational report/observation/gap/award/snapshot/idempotency/outbox writes remain atomic for human acceptance. Image-review job/result uses a separate metadata-only transition; do not join provider work to award/knowledge commits.
+- Table JSON has schema version and validation on load; prepared SQL, index session-local query paths. Do not event-source the whole app when snapshot+bounded event log suffices.
+- Retention cleanup must not delete idempotency before retry is no longer possible; replay retention at least session lifetime. Do not persist image bytes in DO job rows or claim provider-side zero retention without account evidence.
 
 ## Reducer API (thiết kế)
 `applyCommand(state, validatedCommand, policy, deterministicContext) -> Result<{nextState, events, effects}, DomainError>`.

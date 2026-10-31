@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "wave-01-contracts-client-running",
+  "status": "parallel-foundations-awaiting-fast-workers",
   "plan_directory": "plans/20261030-2249-floodops-web-mobile-implementation",
   "repository_path": "/Users/vominhlong/seahackathon/floodops-application",
   "worktree_root": "/Users/vominhlong/seahackathon-worktrees",
@@ -98,7 +98,8 @@
       "writer": "integration-lead",
       "owner_delivery": "contracts-client",
       "requirements": [
-        "Contract/client owner commit merged; schema/client checks and public exports recorded"
+        "Contract/client owner commit merged; schema/client checks and public exports recorded",
+        "US-30 image-review amendment published:66 operations/61 paths, strict model/advice/job schemas, image_review_changed event and typed clients; no new Commander tool"
       ]
     },
     {
@@ -178,7 +179,8 @@
       "writer": "integration-lead",
       "owner_delivery": "review-rewards",
       "requirements": [
-        "Owner focused scope complete, branch reviewed/merged at recorded SHA; checks and artifacts recorded, no uncommitted-only delivery"
+        "Owner focused scope complete, branch reviewed/merged at recorded SHA; checks and artifacts recorded, no uncommitted-only delivery",
+        "Image-review backend rubric/job/idempotency/stale/manual-independence proofs at provider boundary; client IR-02/11 and live-model IR-12 remain QA gates, not upstream device prerequisites"
       ]
     },
     {
@@ -369,10 +371,11 @@
         "Implement phase01 contracts/client sau workspace-bootstrap gate của Lead; schema/API operation IDs bám OpenAPI chuẩn hiện tại.",
         "Typed DTO, strict validation, response/errors, ETag/If-Match, idempotency retry và SSE/cursor parser dùng cùng contract cho web/native.",
         "Generate exports/types/spec theo một source, publish surface contract snapshot/hash, không thêm endpoint hoặc đổi body để consumer tự thích nghi.",
-        "Cấp input/output interfaces cho domain/platform, dependency request cho Zod/Hono tooling nếu cần; không sửa app manifests hay lockfile."
+        "Cấp input/output interfaces cho domain/platform, dependency request cho Zod/Hono tooling nếu cần; không sửa app manifests hay lockfile.",
+        "US-30 image-review schemas/2 operations/events theo specs/ai-assisted-image-review.md; no client/model score or authority-field acceptance."
       ],
       "accept": [
-        "64 operations hiện tại và 8 tool contracts không drift; mọi sample positive/negative cho outcome đúng.",
+        "66 operations và8 Commander tool contracts không drift; mọi current positive/negative fixture đúng outcome; derived quality_score semantics có oracle riêng.",
         "Network lost-response retry giữ key;412/410 không auto execute/rebase; SSE handles chunk boundaries/cursor/filter/reconnect.",
         "contracts-ready artifact liệt kê schema/source version, public exports và commands đã chạy, có commit riêng."
       ],
@@ -513,7 +516,8 @@
         "Implement phase04 Hono factory+actual local Workerd test harness, per-session SQLite DO reducer boundary, scopes/invites/CSRF/native bearer.",
         "Atomic revision/idempotency/outbox protocol và exact role-projected views/streams; no await network inside transaction.",
         "Reset persisted lock-before-await/fixed target và body-loss-after-cookie recovery; expiry/revoke/cleanup ownership chuẩn.",
-        "Đưa binding/type/route registration request cho Lead; không tự ghi production index/wrangler/API package manifests."
+        "Đưa binding/type/route registration request cho Lead; không tự ghi production index/wrangler/API package manifests.",
+        "US-30 durable advisory metadata/lease/deadline/quota hooks và dispatcher-only image_review_changed; job updates không tăng operational revision hoặc ghi report/knowledge/award."
       ],
       "accept": [
         "Local harness chạy Hono→real DO, capability isolation/412/428/idempotent retry và reset crash/recovery có focused proof.",
@@ -572,7 +576,8 @@
         "Implement phase05 common source envelopes/context-vs-observation-vs-restriction, epoch/freshness/vehicle knowledge and source availability.",
         "Driver quick/text và citizen photo submissions, pending/normalization semantics; strict accepted transition outputs, không thưởng ở raw-submit.",
         "Private media reserve→bytes→normalize→completion→authorized read, scoped exact API paths, R2/DO orphan cleanup and Images prerequisite.",
-        "Publish normalize/knowledge transition contracts cho ReviewRewards; review/conflict-review route subtrees thuộc ReviewRewards, không sửa trong role này."
+        "Publish normalize/knowledge transition contracts cho ReviewRewards; review/conflict-review route subtrees thuộc ReviewRewards, không sửa trong role này.",
+        "US-30 authorized normalized-image read/digest/readiness port; không public/raw URL, gọi vision hoặc derive award ở media owner."
       ],
       "accept": [
         "Rain/tide không tự tạo passability; authority/conflict/epoch rules khớp; expired/ambiguous mapping không giả accepted.",
@@ -688,12 +693,14 @@
         "Implement phase07 accept/reject/conflict resolution orchestration dùng knowledge public API SourcesMedia, không sửa core knowledge của role khác.",
         "Atomic observation+gap+award transition; unique report/first-filled gap, hash duplicate different contributors, freshness/epoch scope.",
         "Useful low-confidence coverage khác route authorization; unresolved conflict và closure giữ safety; no real payout.",
-        "Publish review-router/transition ports+award schema usage và integration request cho Lead; dependency gap thì gửi contract/fixture request."
+        "Publish review-router/transition ports+award schema usage và integration request cho Lead; dependency gap thì gửi contract/fixture request.",
+        "US-30 ImageReviewPort/service/job trong reports/review subtree: rubric0–2 -> server score0–100/match recommendation, no tools/auto accept/reward/Execute; manual review và stale/timeout guards theo feature spec."
       ],
       "accept": [
         "T07/T12 retries/races/crash-after-commit/redundant/expiry/new-gap-occurrence đúng và có evidence.",
         "Accepted≠rewarded≠approved route; one award/report and first-fill gap, no reward from camera/system.",
-        "review-ready transaction wiring yêu cầu Lead compose rõ, không update reports parent route file ngoài own subtree."
+        "review-ready transaction wiring yêu cầu Lead compose rõ, không update reports parent route file ngoài own subtree.",
+        "IR backend proof có scope: score rounding/derived fields, idempotency/budget/media/role/late-response guards; live vision quality không được suy từ schema/stub."
       ],
       "worktree_directory": "07-review-rewards",
       "worktree_path": "/Users/vominhlong/seahackathon-worktrees/07-review-rewards",
@@ -805,7 +812,8 @@
         "Implement phase09 all feature-based web routes/screens từ matrix, React Router Data Mode/TanStack cache/schema client.",
         "Real geometry map/list, impact/plans/diff/reasons/Approve/Execute, sources/reports/review/gaps/points, clock/Reset/results.",
         "No optimistic committed assignments/points; correct401/410/412/422, private image display and same-origin cookie/CSRF.",
-        "Use ui-web/design tokens public APIs. Missing UI/schema/dependency => request owner, không copy/fork primitives or wire types."
+        "Use ui-web/design tokens public APIs. Missing UI/schema/dependency => request owner, không copy/fork primitives or wire types.",
+        "Review detail có AI advisory card: quality_score0–100, report_match yes/no/unclear, reasons; manual actions luôn độc lập, không safety percent hoặc optimistic report/points."
       ],
       "accept": [
         "Relevant T01..15 actual UI path with local integrated Worker; P1/P2 shown when valid config, disabled reason otherwise.",
@@ -858,7 +866,8 @@
         "Implement phase10 Expo Router [sessionId], full dispatcher oversight/approval/Execute/review/results và driver/community reporting.",
         "Native shared tokens/UI/SVG adapter, SecureStore capability, foreground SSE+cursor/poll fallback, photo permissions/manual location.",
         "Offline chỉ drafts/images; no approval/Execute/reset/advance queue, explicit send/relink after refresh.",
-        "EAS/app permission/runtime config requests do Lead commit; không tự Expo install/root lockfile thay đổi, no DOM/Radix import."
+        "EAS/app permission/runtime config requests do Lead commit; không tự Expo install/root lockfile thay đổi, no DOM/Radix import.",
+        "Native dispatcher Review có cùng AI advisory card/score/match/reasons với web; no offline AI outbox, no fake score khi timeout, server capability và manual review giữ authority."
       ],
       "accept": [
         "iOS/Android dev-build real app flow and role/error handling; same authoritative state with web.",
@@ -908,7 +917,7 @@
       "scope": [
         "Implement phase11 consumer-level integration/security/accessibility checks trên frozen integrated candidate, not feature service edits.",
         "Drive actual Worker+builtweb+native: webreview→mobileplan, nativereport→webaward/replan, CAS two dispatchers, reset/expiry/image/modelfail.",
-        "All T01..15/POL/I and E-HUB-01,24/25schema cases current contract source, D04/rehearsal prerequisites marked honestly.",
+        "All T01..15/POL/I, E-HUB-01, US-30 IR-01..12 và mọi current declared schema example; real-vision/D04/rehearsal prerequisites marked honestly.",
         "Bugs gửi failing scenario+owner; không sửa application source, gate logic, fixture outcomes hoặc re-pin incidental tests để xanh."
       ],
       "accept": [
@@ -1195,6 +1204,13 @@
   },
   "execution_hold": {
     "implementation_agents_started": true,
-    "reason": "Parent accepted init and authorized role waves. Launch each worker only from its committed receipt; production remains separately unauthorized."
-  }
+    "currently_coding_workers_confirmed": 0,
+    "reason": "Old ContractsClient observed interrupted/idle; fast service tier unavailable in caller tools. Parent must launch prepared ultra/fast role tasks without duplicating a writer."
+  },
+  "partial_scope_amendments": [
+    {
+      "amendment_id": "independent-foundations-v1",
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/amendments/independent-foundations-v1.json"
+    }
+  ]
 }

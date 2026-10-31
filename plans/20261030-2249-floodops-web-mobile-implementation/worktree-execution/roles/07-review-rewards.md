@@ -20,20 +20,22 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - [Root plan](../../plan.md) · [PRD v0.3](../../../../FloodOps/prd.md).
 - [Ownership](../ownership.md) · [Shared contracts](../shared-contracts.md) · [Work item/delivery](../work-items-and-handoff.md).
 - [Producer interfaces](../producer-interfaces.md): exact public exports chốt ở producer gate, không deep-import private implementation.
-- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md).
+- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md) · [Image review](../../specs/ai-assisted-image-review.md).
 - Đọc spec/contracts liên quan trong phase; không suy schema bằng câu chat hoặc tự dùng bản PRD cũ.
 
 ## Prerequisites
 - Required predecessor deliveries: SessionPlatform, SourcesMedia.
 - Tất cả phải **merged** ở required gate SHAs và là ancestors của launch checkout; branch chưa merge không là input authority.
 - Contract ref/hash và BASE_SHA lấy từ receipt, không giả HEAD/latest main là baseline đúng.
+- For image-review work, wait until IntegrationLead publishes the explicit baseline amendment/contract hash and reissues affected launch refs; this role does not authorize itself from unmerged plan text.
 - CWD/branch/clean state đúng. User dirty/unexpected changes giữ nguyên, stop hoặc báo Lead; không auto-reset/clean/stash.
 
 ## Scope
 - Implement phase07 accept/reject/conflict resolution orchestration dùng knowledge public API SourcesMedia, không sửa core knowledge của role khác.
 - Atomic observation+gap+award transition; unique report/first-filled gap, hash duplicate different contributors, freshness/epoch scope.
 - Useful low-confidence coverage khác route authorization; unresolved conflict và closure giữ safety; no real payout.
-- Publish review-router/transition ports+award schema usage và integration request cho Lead; dependency gap thì gửi contract/fixture request.
+- Publish review-router/transition ports+award schema usage and integration request for Lead; dependency gap thì gửi contract/fixture request. Own isolated advisory image-review service/job/provider adapter only under `apps/api/src/features/reports/review/`, using SourcesMedia's authorized normalized-image/digest/readiness port and SessionPlatform metadata/lease/quota/event hooks.
+- The model output is validated via `ImageReviewPort`; provide only a self-contained provider-compatible strict `ImageReviewModelOutput` schema with local refs resolved/no network refs (never Job/Advice schema); revalidate full bounded output server-side without loosening app validation. Do not import PlannerSafety provider internals. Keep metadata-only job transitions separate from the human accept/reject + observation/gap/award commit.
 
 ## File ownership
 - Include subtree `packages/domain/src/rewards/`.
@@ -64,6 +66,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - T07/T12 retries/races/crash-after-commit/redundant/expiry/new-gap-occurrence đúng và có evidence.
 - Accepted≠rewarded≠approved route; one award/report and first-fill gap, no reward from camera/system.
 - review-ready transaction wiring yêu cầu Lead compose rõ, không update reports parent route file ngoài own subtree.
+- Cover IR-01–IR-12 service/job behavior, including dispatcher-only authorization, idempotency/input binding, same-revision progress events, stale/reset/deadline recovery, manual-review independence and no score-driven reward/knowledge changes; real-image evaluation remains separately gated.
 - Commit owned source C, commit report SourceEvidence R riêng với source_sha=C (không SHA của chính R); gửi delivery_sha=R out-of-band cho Lead. Báo base/launch/hash, actual checks/smoke/public exports/requests/prerequisites; Lead ghi DeliveryReceipt sau khi R tồn tại.
 - Stage explicit owned files, commit focused. Không merge siblings/main hoặc rewrite shared history. Không tự sửa plan/phase/gate state; Lead cập nhật sau review/merge.
 - Xong scope thì dừng và trả report; không tự chuyển sang role/phase khác hoặc chạy root cook.

@@ -46,3 +46,9 @@ Dùng Python jsonschema hiện có cho OAS meta-schema/component/request-respons
 - Kiểm chứng bằng throwaway evaluation:10 tài liệu cập nhật,134 local file links, Markdown fences/tables PASS;34 US cùng toàn bộ functional/safety/acceptance rows giữ nguyên;64 API operations giữ nguyên. OpenAPI, role/task manifests và root policy byte-for-byte không đổi.
 - Bốn planned UI paths mới tường minh khớp đúng một existing owner; checklist counts phase09/10/11 và overview <80 dòng giữ đúng. Các scenario report→review→feedback, native Execute→shared outcome và stale/Reset là **nghiệm thu được yêu cầu**, chưa phải log chạy.
 - Đây là document/contract consistency verification, không application suite, browser/native device test hay injection evaluation. Không sửa/sync repo `floodops-application`, không commit/push/deploy. IntegrationLead cần publish/amend baseline có tài liệu mới trước khi worker đang dùng bản cũ tiếp tục; không tự làm mất hiệu lực receipt hoặc grant.
+
+## Bổ sung US-30 AI nhận xét ảnh có định lượng
+
+- [PRD §6.3.1](../../../FloodOps/prd.md) và [feature spec](../specs/ai-assisted-image-review.md) thêm advisory image quality0–100, description match yes/no/unclear và reasons; không percent an toàn/ảnh thật, không auto review/reward/Execute.
+- [Image review validation](image-review-validation.md):66 operations/61 paths/194 schemas,46 declared JSON fixtures và243 document-level rubric/match oracle outcomes được kiểm.64 operation cũ/8 Commander tools giữ nguyên; IR-01–IR-12 là runtime acceptance phải triển khai, không phải model tests đã chạy.
+- Phase/spec/roles/API/client handoff đã đồng bộ;13 roles/9 waves/88 phase steps giữ nguyên, thêm critical advisory-proof step và explicit Lead baseline amendment. Hai static reviewers không còn High/Critical; runtime/device/model/privacy/account evidence vẫn cần thực hiện có quyền.

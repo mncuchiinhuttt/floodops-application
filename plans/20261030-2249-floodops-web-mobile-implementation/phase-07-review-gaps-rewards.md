@@ -2,7 +2,7 @@
 
 ## Context links
 - [Plan](plan.md) · [PRD](../../FloodOps/prd.md) · [Coverage](specs/requirements-coverage.md) · [API](contracts/api-index.md)
-- [policy-rules.md](specs/policy-rules.md) · [domain-model.md](specs/domain-model.md) · [api-conventions-security.md](specs/api-conventions-security.md)
+- [policy-rules.md](specs/policy-rules.md) · [domain-model.md](specs/domain-model.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [ai-assisted-image-review.md](specs/ai-assisted-image-review.md)
 
 ## Overview
 - Status: pending. Priority: P1 implementation phase (khác US product priorities).
@@ -31,27 +31,28 @@
 - Delete: không có file ứng dụng cũ cần xóa trong repo tài liệu; không xóa PRD/history/user files.
 
 ## Implementation steps
-1. Review report schema/image/mapping/capture/freshness/duplicate before acceptance; record safe reason codes, no claim production anti-fraud/GPS authenticity.
+1. Review report schema/image/mapping/capture/freshness/duplicate before acceptance; record safe reason codes, no claim production anti-fraud/GPS authenticity. Add the isolated dispatcher-only advisory image-review service/job/provider adapter under `apps/api/src/features/reports/review/`, using the SourcesMedia normalized-image/digest/readiness port and strict `ImageReviewPort` output; send only a self-contained provider-compatible strict `ImageReviewModelOutput` (local refs resolved, no network refs or full Job/Advice schema), then revalidate the full bounded output server-side without loosening app validation. Never depend on PlannerSafety provider internals.
 2. Conflict resolution chooses kept/superseded evidence + reason; no authoritative closure supersede, accepted low remains low and route still requires approval.
 3. Calculate useful coverage per frozen relevant segment+vehicle+epoch, accepted current nonunknown/no-conflict, low qualifies coverage.
 4. Open gap occurrence when coverage lost; acceptance/resolution checks immediately-prior open gaps and single report eligibility.
-5. Commit accepted observation+gap fill+one award/report+first-fill unique gap ledger+revision/events/idempotency atomic. Prevent duplicate photo across contributors and race between review clients.
+5. Commit accepted observation+gap fill+one award/report+first-fill unique gap ledger+revision/events/idempotency atomic. Prevent duplicate photo across contributors and race between review clients; AI job/result metadata is a separate metadata-only transition and cannot join or alter the award commit.
 6. Expose contributor-own dashboard/ledger and dispatcher full ledger; no raw image or owner identity leaked to viewer.
-7. Expire evidence later opens new gap occurrence without clawback; Reset fresh ledger. Trigger planning event after commit, never rollback review if model timeout.
+7. Expire evidence later opens new gap occurrence without clawback; Reset fresh ledger. Trigger planning event after commit, never rollback review if model timeout. AI pending/failure/stale never blocks manual Accept/Reject; human decision or changed report/config supersedes old advice.
 
 ## Todo list
-- [ ] Step 07.01: Review report schema/image/mapping/capture/freshness/duplicate before acceptance
+- [ ] Step 07.01: Review report schema/image/mapping/capture/freshness/duplicate before acceptance; implement isolated advisory image-review job/service under reports/review using public media/runtime ports
 - [ ] Step 07.02: Conflict resolution chooses kept/superseded evidence + reason
 - [ ] Step 07.03: Calculate useful coverage per frozen relevant segment+vehicle+epoch, accepted current nonunknown/no-conflict, low qualifies coverage.
 - [ ] Step 07.04: Open gap occurrence when coverage lost
-- [ ] Step 07.05: Commit accepted observation+gap fill+one award/report+first-fill unique gap ledger+revision/events/idempotency atomic. Prevent duplicate photo across contributors and race between review clients.
+- [ ] Step 07.05: Commit accepted observation+gap fill+one award/report+first-fill unique gap ledger+revision/events/idempotency atomic; no image-review metadata in award transition
 - [ ] Step 07.06: Expose contributor-own dashboard/ledger and dispatcher full ledger
-- [ ] Step 07.07: Expire evidence later opens new gap occurrence without clawback
+- [ ] Step 07.07: Expire evidence later opens new gap occurrence without clawback; supersede stale image-review advice and recover job deadlines without auto-retry
 
 ## Success criteria
 - T07/T12 behavior with concurrent accepts, duplicate/old/conflict/redundant reports: exact points and gap occurrence IDs.
 - accepted report≠eligible reward≠approved route shown as separate state contracts.
 - No payment/payout endpoint; safe-location-only prompts and simulated points label.
+- Image review remains advisory: score is ordinal image-quality rubric points, not calibrated probability, Observation confidence, authenticity, or safe-road percentage; no recommendation auto-accepts/rejects, changes closure/vehicle scope/knowledge, or changes reward eligibility. See [canonical image-review contract](specs/ai-assisted-image-review.md); stub behavior does not establish vision quality.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

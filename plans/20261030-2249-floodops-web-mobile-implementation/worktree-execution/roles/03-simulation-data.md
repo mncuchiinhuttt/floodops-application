@@ -64,3 +64,6 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Commit owned source C, commit report SourceEvidence R riêng với source_sha=C (không SHA của chính R); gửi delivery_sha=R out-of-band cho Lead. Báo base/launch/hash, actual checks/smoke/public exports/requests/prerequisites; Lead ghi DeliveryReceipt sau khi R tồn tại.
 - Stage explicit owned files, commit focused. Không merge siblings/main hoặc rewrite shared history. Không tự sửa plan/phase/gate state; Lead cập nhật sau review/merge.
 - Xong scope thì dừng và trả report; không tự chuyển sang role/phase khác hoặc chạy root cook.
+
+## Explicit independent-foundations partial work item
+Only when the committed receipt names amendment independent-foundations-v1: obey its narrower work-item include paths and use plan-published + workspace-bootstrap for that independent slice. Full-role contracts-ready requirements remain for deferred work. No wire/schema imports, feature integration or full-phase gate claim before actual fresh contracts-ready. See amendments/independent-foundations-v1.json.

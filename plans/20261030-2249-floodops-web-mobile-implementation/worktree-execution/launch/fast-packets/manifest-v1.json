@@ -1,0 +1,53 @@
+{
+  "status": "parent-launch-required",
+  "requested_runtime": {
+    "model": "gpt-6.1-sol",
+    "thinking": "ultra",
+    "service_tier": "fast"
+  },
+  "actual_workers_spawned": 0,
+  "base_sha": "5934510f1ed03fea4d6bdaba46a3c01cebe225c7",
+  "launch_sha": "supplied-out-of-band-as-containing-commit",
+  "reason": "Caller launch APIs have no fast service-tier field. Old ContractsClient control endpoints no longer resolve; no acknowledgement claimed.",
+  "workers": [
+    {
+      "role": "contracts-client",
+      "work_item_id": "contracts-client-phase-01-v3",
+      "receipt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/contracts-client/contracts-client-phase-01-v3.json",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/01-contracts-client",
+      "prompt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/contracts-client-phase-01-v3.md",
+      "recovery": true,
+      "index": {
+        "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/vision-review-v1-index.json",
+        "sha256": "974903fd7c63ff8bff2a19a8761cdcb9b48557700889e06c6cf4a4eb8ce248d7"
+      },
+      "scope": "Complete phase 01 contracts/schema/typed client using the 66-operation amendment; preserve and reconcile prior WIP before generators."
+    },
+    {
+      "role": "design-system",
+      "work_item_id": "design-system-foundations-v1",
+      "receipt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/design-system/design-system-foundations-v1.json",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "prompt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/design-system-foundations-v1.md",
+      "recovery": false,
+      "index": {
+        "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/design-foundations-v1-index.json",
+        "sha256": "622eb981f6be6e2169af0292a06f4e757292372b5d9f1430fd02bef4e664e818"
+      },
+      "scope": "Tokens/CSS/native-token adapters, original SVG assets/manifests/platform adapters and accessible generic primitives. No API/domain model imports or feature-specific image-review screens. Request protected dependency/export/tsconfig changes from Lead; start token/assets work that is runnable without those dependencies."
+    },
+    {
+      "role": "simulation-data",
+      "work_item_id": "simulation-data-foundations-v1",
+      "receipt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/simulation-data/simulation-data-foundations-v1.json",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "prompt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/simulation-data-foundations-v1.md",
+      "recovery": false,
+      "index": {
+        "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/simulation-foundations-v1-index.json",
+        "sha256": "6d2399ef5c6b805f463bbcaeb304dbf1b692a30c7b60359234f8f8183b286c86"
+      },
+      "scope": "Pure deterministic graph geometry/vehicle/turn routing, FIFO travel-profile checks, generic deterministic clock/event ordering and small labelled synthetic graph fixtures/tests. Own internal algorithm types are allowed; no duplicate public wire DTOs or @floodops/contracts imports. Defer scenario loader, assignment/movement/metrics/calibration, domain operations and real datasets until fresh contracts-ready and a follow-up receipt."
+    }
+  ]
+}

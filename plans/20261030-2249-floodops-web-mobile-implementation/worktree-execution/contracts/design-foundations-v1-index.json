@@ -1,0 +1,23 @@
+{
+  "mode": "approved-amendment",
+  "source_commit": "dee4dfb00af173eb3cccc2a0df75e67fa1577734",
+  "contracts_ready": false,
+  "artifacts": [
+    {
+      "path": "docs/architecture/bun-toolchain.md",
+      "sha256": "2d01c82c1ab1bf3c51830bf014632d2449d9bdebf4fd007557b3cb203f065cce"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-02-design-system-icons.md",
+      "sha256": "2679962b836b1f9d593e8dd594350177e5e25a98a42b65e2fe3c5a978516b467"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/architecture.md",
+      "sha256": "352aaf2265e9231efaeeae78023951d9eb6d6b64acbf9734c0cd5fcb33fd05f0"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/design-system.md",
+      "sha256": "4e16226ac9b3e5054674842d1aad85dab7ac633000214695cb5c3d91632f86f9"
+    }
+  ]
+}

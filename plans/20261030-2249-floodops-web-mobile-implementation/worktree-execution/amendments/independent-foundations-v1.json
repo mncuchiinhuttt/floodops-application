@@ -1,0 +1,46 @@
+{
+  "amendment_id": "independent-foundations-v1",
+  "status": "authorized",
+  "authority": "User explicitly requested immediate parallel implementation of genuinely independent parts; full-role dependency DAG remains unchanged.",
+  "full_contracts_ready": false,
+  "required_gates": [
+    "plan-published",
+    "workspace-bootstrap"
+  ],
+  "deferred_gate": "contracts-ready",
+  "work_items": [
+    {
+      "role_id": "design-system",
+      "work_item_id": "design-system-foundations-v1",
+      "include_prefixes": [
+        "packages/design-tokens/",
+        "packages/icons/",
+        "packages/ui-web/",
+        "packages/ui-native/"
+      ],
+      "include_files": [],
+      "scope": "Tokens/CSS/native-token adapters, original SVG assets/manifests/platform adapters and accessible generic primitives. No API/domain model imports or feature-specific image-review screens. Request protected dependency/export/tsconfig changes from Lead; start token/assets work that is runnable without those dependencies."
+    },
+    {
+      "role_id": "simulation-data",
+      "work_item_id": "simulation-data-foundations-v1",
+      "include_prefixes": [
+        "packages/simulation/src/graph/",
+        "packages/simulation/src/clock/",
+        "packages/simulation/test/graph/",
+        "packages/simulation/test/clock/",
+        "packages/test-fixtures/src/functional/graph/"
+      ],
+      "include_files": [
+        "packages/simulation/README.md"
+      ],
+      "scope": "Pure deterministic graph geometry/vehicle/turn routing, FIFO travel-profile checks, generic deterministic clock/event ordering and small labelled synthetic graph fixtures/tests. Own internal algorithm types are allowed; no duplicate public wire DTOs or @floodops/contracts imports. Defer scenario loader, assignment/movement/metrics/calibration, domain operations and real datasets until fresh contracts-ready and a follow-up receipt."
+    }
+  ],
+  "rules": [
+    "These receipts permit only their partial include paths, minus central protected files; role-wide ownership does not enlarge this scope.",
+    "No @floodops/contracts, apps, API schema or image-review implementation imports/edits in these independent slices.",
+    "No full phase, ui-libraries-ready, simulation-ready, calibration or application acceptance claim from a partial delivery.",
+    "Default remote/deployment permissions remain false; one writer per worktree. All later dependent slices need updated receipts and actual contracts-ready."
+  ]
+}

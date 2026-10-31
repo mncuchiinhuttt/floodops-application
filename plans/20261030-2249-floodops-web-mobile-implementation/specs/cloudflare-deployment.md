@@ -6,6 +6,8 @@
 
 **Out of scope for Cloudflare:** `apps/mobile` iOS/Android binaries, signing, and store distribution are handled by EAS. Native apps call the same `/api/v1` API and retain only their capability in platform secure storage. Do not upload app binaries/signing keys to Workers or R2.
 
+The optional dispatcher-only image-review contract is defined in [ai-assisted-image-review.md](ai-assisted-image-review.md); all entries here remain proposed until the specified gates/evidence exist.
+
 No D1, KV, or Queues in the MVP. DO SQLite supplies per-session transactional state; R2 supplies blob storage; current requirements do not require a durable cross-session job broker or global cache. Add one only if a specified feature cannot be met by this boundary.
 
 ## 2. Future files and ownership
@@ -17,6 +19,7 @@ No D1, KV, or Queues in the MVP. DO SQLite supplies per-session transactional st
 | `apps/api/src/index.ts` | Hono app, middleware, `/api/v1` routing, JSON 404/error mapping; no global catch-all that can mask API 404s. |
 | `apps/api/src/features/session/` | Session HTTP handlers and feature policy; delegates persistence to the session runtime. |
 | `apps/api/src/features/media/` | Upload-intent/content/completion handlers and authorized media read; delegates normalized blobs to R2. |
+| `apps/api/src/features/reports/review/` | ReviewRewards-owned manual review and advisory image-review endpoints/service; obtains safe normalized media and durable metadata hooks through public ports. |
 | `apps/api/src/features/scenario-assets/` | Read-only feature access to approved immutable fixture assets. |
 | `apps/api/src/session-runtime/session-object.ts` | SQLite DO owner; synchronous transaction boundary, schema initialization, alarms, reset tombstone, expiry. |
 | `apps/api/src/session-runtime/schema.ts` | Application schema-version tracking and forward-only per-object SQL migrations. |
@@ -53,6 +56,7 @@ Use the root config for local development and named `preview`/`production` envir
 | `IMAGES` | Images binding configured for local test/dev | Preview Images binding | Production Images binding |
 | `APP_ENV` | `development` | `preview` | `production` |
 | Model secret | Local-only `.dev.vars` if enabled | `OPENAI_API_KEY` secret | Separate `OPENAI_API_KEY` secret |
+| Image-review model config | Optional non-secret `OPENAI_IMAGE_REVIEW_MODEL` | Optional non-secret `OPENAI_IMAGE_REVIEW_MODEL` | Optional non-secret `OPENAI_IMAGE_REVIEW_MODEL` |
 | Public origin/cookie policy | Local origin | Preview hostname allowlist | Production hostname allowlist |
 
 Representative `apps/api/wrangler.jsonc` layout. `apps/web` builds once to `apps/web/dist`; relative to the API config that is `../web/dist`. Root `migrations` is the one append-only history; named environments repeat runtime bindings but do not duplicate migration tags.
@@ -88,6 +92,9 @@ Representative `apps/api/wrangler.jsonc` layout. `apps/web` builds once to `apps
 
 Keep secrets out of `vars`, Vite client env, and committed files. Use `wrangler secret put OPENAI_API_KEY --env preview` and `wrangler secret put OPENAI_API_KEY --env production` only if the model integration is enabled; local development uses only a local secret file. Secret rotation must keep the previous Worker version operational for its rollback window. Deploy does not create/rotate R2 buckets; provisioning is explicit. `IMAGES` availability/entitlement and metadata-stripping transformation support are release gates. The snippet is a planning shape: validate it against the pinned Wrangler schema and current environment inheritance rules before implementation. Never copy production resource IDs into preview. Sources: [Wrangler configuration](https://developers.cloudflare.com/workers/wrangler/configuration/), [Wrangler environments](https://developers.cloudflare.com/workers/wrangler/environments/), [Secrets](https://developers.cloudflare.com/workers/configuration/secrets/), [Images transformations](https://developers.cloudflare.com/images/transformations/).
 
+For image review, set `OPENAI_IMAGE_REVIEW_MODEL` only as non-secret server-side config after verifying image-input and strict structured-output compatibility. Reuse the existing `OPENAI_API_KEY`; do not expose model/config in Vite or native bundles. Apply per-session concurrency/call/output bounds plus provider/account hard cap and operator kill switch. Before any live image request, record permitted image source, consent, actual account data-handling and retention evidence; do not claim zero retention without evidence. No provider call or deployment is performed by this plan amendment.
+
+
 ## 5. Durable session, transaction, reset, and expiry
 
 ### DO data contract
@@ -96,7 +103,7 @@ Use `SESSIONS.idFromName(session_id)` where `session_id` is a server-generated h
 
 Commands use the existing shared API contract: scoped capability authorization, `Idempotency-Key`, and `If-Match`/expected operational revision where required. Role in request JSON grants no authority. Read responses include the real revision. A single `transactionSync()` applies a reducer and writes the snapshot, revision increment, success event with next `event_sequence`, and idempotency outcome together. A thrown policy/constraint error leaves no partial commit. Keep only bounded synchronous deterministic work inside the transaction; no `await`, LLM, image processing, R2, or cross-DO call. SQLite operations and transaction requirements are documented in [SQLite storage API](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/) and [DO rules](https://developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects/).
 
-LLM flow: load a committed snapshot/revision → call provider outside the transaction → validate output as untrusted proposal → call DO commit with snapshot revision and generation → recheck revision, evidence, approval, policy, and feasibility in the transaction → commit or return stale/conflict. A delayed completion after a state change or reset is rejected. Provider timeout/failure produces a structured error/audit record and no proposed operational mutation. The external call must not rely on holding an HTTP request or DO transaction for an unbounded interval.
+LLM flow: load a committed snapshot/revision → call provider outside the transaction → validate output as untrusted proposal → call DO commit with snapshot revision and generation → recheck revision, evidence, approval, policy, and feasibility in the transaction → commit or return stale/conflict. A delayed completion after a state change or reset is rejected. Provider timeout/failure produces a structured error/audit record and no proposed operational mutation. The external call must not rely on holding an HTTP request or DO transaction for an unbounded interval. Image-review jobs use their separate metadata-only lease/current-binding protocol; do not bind validity to operational revision alone.
 
 ### Reset boundary
 
@@ -164,10 +171,10 @@ Preview local state uses a separate persistence path. Secret commands are intera
 
 1. **Routing:** build `apps/web/dist`; `GET /` and `/dispatch/deep/link` return SPA HTML through Worker assets; a real asset returns its bytes/content type; unknown `/api/v1/nope` returns Hono JSON 404, never SPA HTML. Vite preview tests the client; Wrangler dev tests Worker + assets together.
 2. **DO persistence/atomicity:** state survives a new stub/request and local runtime restart; a transaction exception leaves snapshot, revision, event sequence, and idempotency outcome unchanged; simultaneous writes with the same expected revision yield one success and one structured stale result.
-3. **LLM race:** delay model response, commit a newer report/operation/reset, then release response; stale completion cannot change state/proposal/revision. Provider failure leaves prior accepted report/execution intact.
-4. **Replay/idempotency/reset/realtime:** repeated idempotency key returns the same outcome without duplicate event; `GET /events` returns ordered JSON catch-up and a gap requires snapshot; `/events/stream` sends SSE IDs and reconnects from cursor. Test web and Expo `fetch` readers, abort, auth headers, resume/reconnect, and JSON polling fallback. Reset returns a new ID, invalidates old token/response, retries safely, and old ID returns `SESSION_RESET` without exposing new capability.
-5. **Expiry/alarms:** expired access denied dù alarm chưa chạy; duplicate/late cleanup safe; chỉ xóa REPORT_MEDIA keys của session, không xóa shared SCENARIO_ASSETS. Advance watchdog khi lease expired marks failed/unlocks **không advance clock**; late continuation fenced. Cleanup retry không hứa alarm deadline.
-6. **Media:** reserve → `PUT /api/v1/sessions/{session_id}/media-uploads/{upload_id}/content` → completion cùng session path → `GET /api/v1/sessions/{session_id}/media/{media_id}` qua generated client. Check body cap/MIME/decoder metadata/orphans/retry và other-session denial. Approved fixture route đọc SCENARIO_ASSETS read-only, no global unscoped media aliases.
+3. **LLM and image-review races:** delay model response, commit a newer report/operation/manual review/Reset, then release response; stale completion cannot change current advice, operational state, proposal, revision or awards. Preserve a valid image-review running→completed transition at the same operational revision when its generation/report/job/input digest still matches.
+4. **Replay/idempotency/reset/realtime:** repeated idempotency key returns the same outcome without duplicate event; `GET /events` returns ordered JSON catch-up and a gap requires snapshot; `/events/stream` sends SSE IDs and reconnects from cursor. Test web and Expo `fetch` readers, abort, auth headers, resume/reconnect, and JSON polling fallback. Reset returns a new ID, invalidates old token/response, retries safely, and old ID returns `SESSION_RESET` without exposing new capability. Dispatcher-only `image_review_changed` refetches progress by event sequence and current job binding, even when `revision` is unchanged.
+5. **Expiry/alarms:** expired access denied dù alarm chưa chạy; duplicate/late cleanup safe; chỉ xóa REPORT_MEDIA keys của session, không xóa shared SCENARIO_ASSETS. Advance watchdog khi lease expired marks failed/unlocks **không advance clock**; image-review deadline/crash recovery also releases its slot without auto-retry; late continuation fenced.
+6. **Media:** reserve → `PUT /api/v1/sessions/{session_id}/media-uploads/{upload_id}/content` → completion cùng session path → `GET /api/v1/sessions/{session_id}/media/{media_id}` qua generated client. Check body cap/MIME/decoder metadata/orphans/retry and other-session denial. Image review consumes only the authorized normalized derivative/readiness port, never raw staging or a public R2 URL. Approved fixture route reads SCENARIO_ASSETS read-only, no global unscoped media aliases.
 7. **Isolation:** preview DO namespace and both R2 bucket names/resources are separate from production; each remote environment has its configured Images binding. No preview command deploys production config accidentally; cross-origin request never grants capability.
 8. **Tooling:** Vitest Workers pool executes DO + R2 integration tests; `vite preview` covers the SPA only, while Wrangler dev with the built assets covers API/static routing together.
 
@@ -193,3 +200,5 @@ A Worker rollback changes Worker version, not DO rows, R2 objects, class migrati
 - DO alarms can be delayed and retried; session access checks enforce wall TTL. Simulation time is independent of wall time.
 - SQLite transaction atomicity is per object only. Reset handoff and R2+DO writes span separate resources; make retries/idempotency and orphan cleanup explicit rather than promising a distributed transaction.
 - Worker rollback does not roll back data. No provider, Worker, R2, or EAS availability guarantee is asserted.
+
+This file documents a proposed release path only; it is not evidence of a Worker/EAS deployment, paid provider call, or provider retention setting.

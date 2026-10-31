@@ -1,0 +1,59 @@
+{
+  "mode": "approved-amendment",
+  "source_commit": "dee4dfb00af173eb3cccc2a0df75e67fa1577734",
+  "contracts_ready": false,
+  "artifacts": [
+    {
+      "path": "FloodOps/prd.md",
+      "sha256": "3241248570a1cdbc6df295a95b11ea391191c1073ed36e54593658ec12190f98"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/api-index.md",
+      "sha256": "6a01265372b2913c7de1743746e6d1ef7506c640159b2779124c082d061d672b"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/contract-examples.json",
+      "sha256": "9b13babf8d53b25a952cdf11b43180b765cfb22c2f8c8bad304996703ac7ad4c"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/openapi.json",
+      "sha256": "123ae42179e90de8ee999c58f1eff3490a12c28cc5819629ea63b77e46de1f07"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-contracts.json",
+      "sha256": "37337eccd24af36de29fd15fd336435d51c1dcb987b0f349f75b7b4f150a60b9"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-examples.json",
+      "sha256": "9c04d6c5cf25611a54a960e867e8d5f8f36fc2e895d7e129aa9a8bc3906a809e"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/ai-assisted-image-review.md",
+      "sha256": "96171376e57482a2ebbe2b2fba2544af73df7269ef6f4d5f36467eb0946645a9"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/api-conventions-security.md",
+      "sha256": "5681f2891cf5f04aad8611b334390c6b12145bac21d5fc20cb3ff92af60274bc"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/concurrency-realtime.md",
+      "sha256": "87810c4b92c9cf9e546ab581aab016ffcb6a925e5a04f709b01c186e562404ea"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/domain-model.md",
+      "sha256": "7eeb5ef67cd38230d6ea65395c5efad5d2e5e1eda1e840a1b2bd3b1c19177a28"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/policy-rules.md",
+      "sha256": "8a62b39f0f4d83e91ea9ed5194970262eb5e92a6c5245e558ba9d04967b4f284"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/testing-strategy.md",
+      "sha256": "c6f98bf0c5836d5885f348156f83137829fd275da1e2445310ae73e77586f382"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/producer-interfaces.md",
+      "sha256": "0a368abc8f65ba13021b92db7297421eb19bdbab49784535bdeb3d6b44e734ee"
+    }
+  ]
+}

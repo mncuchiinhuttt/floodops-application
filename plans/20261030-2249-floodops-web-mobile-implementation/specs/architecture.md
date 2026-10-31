@@ -23,6 +23,7 @@ flowchart LR
 - SQLite-backed DO và R2 là thiết kế session persistence đã ghi trong plan, thay cho prototype in-process/no-DB: web/mobile dùng cùng authority, reconnect và atomicity theo PRD §3.4/9.1. Không thêm D1, Redis, KV, microservices hoặc event bus.
 - DO storage không biến demo thành logistics production. Dữ liệu phiên có expiry; Reset không giữ ledger cũ trong phiên mới.
 - Native binaries phát hành EAS; Cloudflare chỉ host web/API/assets, không host executable iOS/Android.
+- US-30 vision advisory chạy riêng trong feature reports/review: một ảnh normalized + context tối thiểu → typed rubric/match/reasons → server derive score/recommendation. Không cấp8 Commander tools hoặc commit permission cho vision call; [image review spec](ai-assisted-image-review.md) chốt durable metadata-only job và late-result guards.
 
 ## Workspace và luật import
 - Toolchain dùng Bun 1.4.0, root `package.json.workspaces` và `bun.lock`; ngoại lệ Wrangler/Expo theo [Bun decision](../../../docs/architecture/bun-toolchain.md). Domain/simulation không import Bun API chỉ vì tooling dùng Bun.

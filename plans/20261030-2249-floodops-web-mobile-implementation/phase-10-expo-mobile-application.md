@@ -2,7 +2,7 @@
 
 ## Context links
 - [Plan](plan.md) · [PRD](../../FloodOps/prd.md) · [Coverage](specs/requirements-coverage.md) · [API](contracts/api-index.md)
-- [web-mobile-feature-surfaces.md](specs/web-mobile-feature-surfaces.md) · [design-system.md](specs/design-system.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [concurrency-realtime.md](specs/concurrency-realtime.md)
+- [web-mobile-feature-surfaces.md](specs/web-mobile-feature-surfaces.md) · [design-system.md](specs/design-system.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [concurrency-realtime.md](specs/concurrency-realtime.md) · [ai-assisted-image-review.md](specs/ai-assisted-image-review.md)
 
 ## Overview
 - Status: pending. Priority: P1 implementation phase (khác US product priorities).
@@ -31,21 +31,21 @@
 
 ## Implementation steps
 1. Create Expo SDK-compatible RN app, Expo Router stacks/tabs including [sessionId], shared api-client/native fetch adapter and SecureStore credentials; no BrowserRouter/shadcn imports.
-2. Implement full dispatcher mobile overview/map/impact/plans/approval/Execute/review/source/conflict/results/clock/reset, not reporting-only companion.
+2. Implement full dispatcher mobile overview/map/impact/plans/approval/Execute/review/source/conflict/results/clock/reset, not reporting-only companion; Review detail shares the web advisory card using `quality_score`, `quality_ratings`, `report_match` (`yes/no/unclear`), `visible_summary`, `mismatch_notes`, `reasons` and separate manual Accept/Reject actions.
 3. Use react-native-svg for calibrated map and @floodops/icons native entrypoint, accessible list alternative, native safe-area/large text and touch actions.
 4. Driver workspace: own committed assignment/orders/stops/route/ETA + quick/text report and own report status, no accept/reject-job or turn-by-turn flow. Contributor: photo picker/manual location/vehicle/time, own report list/status/reasons and simulated points. Permission denial/cancel preserves input; no background GPS.
-5. Offline app-private drafts/images only; persist with session/generation/capture metadata; explicit review/send after refresh; no offline approval/execution/clock/reset outbox.
-6. Use expo/fetch SSE foreground with abort/reconnect/cursor; polling fallback same semantics; stale session drafts never auto-submit replacement.
+5. Offline app-private drafts/images only; persist with session/generation/capture metadata; explicit review/send after refresh; no offline approval/execution/clock/reset outbox and no image-review job queue.
+6. Use expo/fetch SSE foreground with abort/reconnect/cursor; polling fallback same semantics; stale session drafts never auto-submit replacement; dispatcher-only `image_review_changed` refetches current job even at unchanged operational revision.
 7. Configure dev/preview/prod API origins without API secret, universal/deep link invite fragment handshake, EAS update runtimeVersion guard and platform permissions copy.
 8. Device E2E iOS+Android binary using actual backend; photo/draft restart/reconnect/Reset, unauthorized role and VoiceOver/TalkBack proof; Expo Go alone not binary-release evidence.
 
 ## Todo list
 - [ ] Step 10.01: Create Expo SDK-compatible RN app, Expo Router stacks/tabs including [sessionId], shared api-client/native fetch adapter and SecureStore credentials
-- [ ] Step 10.02: Implement full dispatcher mobile overview/map/impact/plans/approval/Execute/review/source/conflict/results/clock/reset, not reporting-only companion.
+- [ ] Step 10.02: Implement full dispatcher mobile overview/map/impact/plans/approval/Execute/review/source/conflict/results/clock/reset, including advisory image-review card with separate manual actions.
 - [ ] Step 10.03: Use react-native-svg for calibrated map and @floodops/icons native entrypoint, accessible list alternative, native safe-area/large text and touch actions.
 - [ ] Step 10.04: Implement driver own assignment/route/ETA/report workspace and contributor photo submission/own report status/simulated points.
-- [ ] Step 10.05: Offline app-private drafts/images only
-- [ ] Step 10.06: Use expo/fetch SSE foreground with abort/reconnect/cursor
+- [ ] Step 10.05: Offline app-private drafts/images only; never queue image-review jobs or operational commands.
+- [ ] Step 10.06: Use expo/fetch SSE foreground with abort/reconnect/cursor and same-revision image-review refetch by event_sequence/current job binding
 - [ ] Step 10.07: Configure dev/preview/prod API origins without API secret, universal/deep link invite fragment handshake, EAS update runtimeVersion guard and platform permissions copy.
 - [ ] Step 10.08: Device E2E iOS+Android binary using actual backend
 
@@ -54,6 +54,7 @@
 - No commands queued offline or old token applied after Reset. Image permission denial no data loss or auto location tracking.
 - Native dev build installed on both platforms and relevant T01..T15 + offline/security paths observed.
 - Native là một app với workspace theo capability, không ba app theo role và không Expo web/PWA/WebView. Thực hiện mobile dispatcher Execute → web/driver cùng committed outcome và mobile contributor report → web review → mobile feedback theo PRD §3.4.
+- Image-review card presents `quality_score` as ordinal rubric points `0–100`, not calibrated probability, Observation confidence, authenticity or safe-road percentage; pending/error/stale jobs show no fabricated value, and manual review remains available without an AI result.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.
