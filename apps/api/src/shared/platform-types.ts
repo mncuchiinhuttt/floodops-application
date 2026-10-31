@@ -38,7 +38,7 @@ export interface TransitionContext { snapshot: Snapshot; actor: Actor; now: numb
 export interface EventInput { type: Event["type"]; resource_ids?: string[]; reason_code?: string | null; audience?: Role[]; participantIds?: string[]; replacement_session_id?: string }
 export interface Transition { pointers?: Record<string, string | null>; leases?: DurableLease[]; data: unknown; values?: Record<string, unknown>; events?: EventInput[]; mediaKeys?: string[]; cleanupKeys?: string[]; status?: SessionMeta["status"]; simMinute?: number }
 export interface ReducerDefinition {
-  permission: Permission; operational: boolean; validate: (value: unknown) => unknown;
+  permission: Permission; operational: boolean; requireCas?: boolean; validate: (value: unknown) => unknown;
   reduce: (context: TransitionContext, input: unknown) => Transition;
 }
 export interface ViewDefinition { permission: Permission; roles: Role[]; project: (context: TransitionContext) => unknown }
