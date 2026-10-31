@@ -10,7 +10,7 @@ const publicImports = [
 
 export default [
   {
-    ignores: ["**/dist/**", "**/build/**", "**/coverage/**", "**/node_modules/**", "**/.wrangler/**", "**/.expo/**"]
+    ignores: ["**/dist/**", "**/build/**", "coverage/**", "apps/*/coverage/**", "packages/*/coverage/**", "**/node_modules/**", "**/.wrangler/**", "**/.expo/**"]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
