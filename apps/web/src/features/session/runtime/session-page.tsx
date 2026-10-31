@@ -17,7 +17,7 @@ export function SessionPage({ commands }: { commands: SessionCommands }) {
   const block = !context.online ? "Đang offline. Không xếp hàng lệnh." : !confirm ? "Xác nhận trước khi đổi trạng thái phiên." : null;
   const disabled = (permission: string) => block || !participant.permissions.some(value => value === permission)
     ? { disabled: true as const, disabledReason: block ?? "Capability không cấp quyền này." } : { disabled: false as const };
-  return <main><h1>Phiên của bạn</h1><Card title="Trạng thái server"><dl>
+  return <div className="grid min-w-0 gap-4"><h1>Phiên của bạn</h1><Card title="Trạng thái server"><dl>
     <dt>Session ID</dt><dd>{session.session_id}</dd><dt>Generation</dt><dd>{session.generation}</dd><dt>Revision</dt><dd>{session.revision}</dd>
     <dt>Vai trò</dt><dd>{participant.role}</dd><dt>Entity</dt><dd>{participant.bound_entity_id ?? "Không binding entity"}</dd>
     <dt>Trạng thái</dt><dd>{session.status}</dd><dt>Scenario</dt><dd>{session.scenario_id} / {session.scenario_version}</dd>
@@ -31,5 +31,5 @@ export function SessionPage({ commands }: { commands: SessionCommands }) {
       <Button {...disabled("session:delete")} variant="danger" pending={command.pending} onClick={() => void command.run(async () => { await commands.remove(); navigate("/"); })}>Đóng phiên</Button></div>
       {command.message && <Alert title="Kết quả lệnh">{command.message}</Alert>}
     </Card>
-  </main>;
+  </div>;
 }

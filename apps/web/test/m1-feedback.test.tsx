@@ -6,6 +6,7 @@ import { ContributorWorkspace } from "../src/features/reports/contributor-worksp
 import { ReviewScreen } from "../src/features/reports/review-screen";
 import { PlanningJobPanel } from "../src/features/planning/planning-job-panel";
 import { contributorDashboard, identity, now, report, session } from "./fixtures";
+import { chooseOption } from "./select-helpers";
 afterEach(cleanup);
 const policy = { policy_id: "policy_test001", version: "synthetic-v1", config_hash: "c".repeat(64) };
 const reviewed = { status: "accepted", review_result_id: "review_test001", reviewed_at: "2026-10-31T00:13:00Z" };
@@ -28,8 +29,7 @@ test("missing reward policy does not block valid manual review or place policy i
   const onReview = vi.fn(async () => undefined);
   render(<ReviewScreen context={{ identity: identity("dispatcher"), online: true, now }} session={session} report={report}
     imageReview={{ status: "loading" }} imageBinding={null} normalizedImageReady onReview={onReview} onAiRequest={vi.fn()} />);
-  fireEvent.change(screen.getByLabelText("Vehicle xác nhận"), { target: { value: "motorbike" } });
-  fireEvent.change(screen.getByLabelText("Tình trạng xác nhận"), { target: { value: "normal" } });
+  chooseOption("Vehicle xác nhận", "Xe máy"); chooseOption("Tình trạng xác nhận", "Normal");
   fireEvent.change(screen.getByLabelText("Lý do review"), { target: { value: "Manual synthetic review" } });
   fireEvent.click(screen.getByRole("button", { name: "Accept" }));
   await waitFor(() => expect(onReview).toHaveBeenCalledWith({ decision: "accept", reason: "Manual synthetic review", mapped_segment_id: report.segment_id, vehicle_types: ["motorbike"], condition: "normal" }));

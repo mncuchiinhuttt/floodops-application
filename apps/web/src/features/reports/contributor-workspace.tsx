@@ -11,7 +11,7 @@ export function ContributorWorkspace({ context, resource }: { context: AccessCon
     const reason = ownDataReason(context, dashboard.session, dashboard.contributor_id);
     if (reason || dashboard.own_reports.some(report => report.participant_id !== context.identity.participant.participant_id) ||
       dashboard.awards.some(award => award.contributor_id !== dashboard.contributor_id)) return <Denied reason={reason ?? "Dữ liệu không thuộc contributor hiện tại."} />;
-    return <main><SimulationBanner session={dashboard.session} provenance={context.provenance} />
+    return <div className="grid min-w-0 gap-4"><SimulationBanner session={dashboard.session} provenance={context.provenance} />
       <h1>Báo cáo của tôi</h1><ReportList reports={dashboard.own_reports} />
       <Card title="Điểm mô phỏng" description="Simulated · Ledger server; báo cáo accepted chưa chắc đủ điều kiện thưởng.">
         <p>Tổng: {dashboard.points_total}</p><DataTable caption="Ledger của tôi" rows={dashboard.awards} rowKey={award => award.award_id}
@@ -21,6 +21,6 @@ export function ContributorWorkspace({ context, resource }: { context: AccessCon
             { key: "policy", label: "Policy / Review", render: award => <>{award.reward_policy.policy_id} · {award.reward_policy.version}<p>{award.reward_policy.config_hash}</p><p>{award.review_result_id}</p></> },
             { key: "gap", label: "Gap đã lấp", render: award => award.filled_gap_ids.join(", ") },
           ]} />
-      </Card></main>;
+      </Card></div>;
   }}</ResourceView>;
 }

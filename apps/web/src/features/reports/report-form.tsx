@@ -1,21 +1,24 @@
 import { useEffect, useId, useState } from "react";
-import { DriverReportInputSchema, CitizenReportInputSchema, type SubmitReportInput } from "@floodops/contracts";
+import { DriverReportInputSchema, CitizenReportInputSchema, type Graph, type SubmitReportInput } from "@floodops/contracts";
 import { Alert, Button, Form, SelectField, TextArea, TextField, type FormError } from "@floodops/ui-web";
 import { accessReason, type AccessContext } from "../../shared/access";
 import { Denied, SimulationBanner } from "../../shared/feature-state";
 import { useCommand } from "../../shared/use-command";
+import { LocationPicker } from "../operations-map/location-picker";
 
 export interface ReportMediaChoice { id: string; kind: "media" | "fixture"; label: string }
 export interface ReportFormProps {
   kind: "driver" | "citizen"; context: AccessContext;
   mediaChoices?: readonly ReportMediaChoice[]; preferredMediaId?: string | null; submissionBlockedReason?: string;
+  /** Scenario road geometry; when present the form offers an OpenStreetMap picker and device location. */
+  graph?: Graph | null;
   onSubmit: (input: SubmitReportInput) => Promise<unknown>;
 }
 export function ReportForm(props: ReportFormProps) {
   const { session, participant } = props.context.identity;
   return <ReportFormDetail key={`${session.session_id}:${session.generation}:${participant.participant_id}:${participant.bound_entity_id}:${props.kind}`} {...props} />;
 }
-function ReportFormDetail({ kind, context, mediaChoices = [], preferredMediaId, submissionBlockedReason, onSubmit }: ReportFormProps) {
+function ReportFormDetail({ kind, context, mediaChoices = [], preferredMediaId, submissionBlockedReason, graph, onSubmit }: ReportFormProps) {
   const prefix = useId();
   const [description, setDescription] = useState("");
   const [segment, setSegment] = useState("");
@@ -61,25 +64,30 @@ function ReportFormDetail({ kind, context, mediaChoices = [], preferredMediaId, 
     if (!blocked && result.success && !next.length) void command.run(() => onSubmit(result.data));
   }
   const fieldError = (name: string) => errors.find(error => error.fieldId === `${prefix}-${name}`)?.message;
-  return <section><SimulationBanner session={context.identity.session} provenance={context.provenance} />
-    <h1>{kind === "driver" ? "Báo cáo đường" : "Gửi báo cáo ảnh"}</h1>
-    <p>Chưa gửi. Server quyết định validation/review; ảnh và báo cáo chưa cấp quyền mở đường hoặc cộng điểm.</p>
-    <Form aria-label="Gửi báo cáo" errors={errors} submissionKey={attempt} onSubmit={submit}>
+  return <section className="grid max-w-3xl gap-4"><SimulationBanner session={context.identity.session} provenance={context.provenance} />
+    <header className="grid gap-1"><h1>{kind === "driver" ? "Báo cáo đường" : "Gửi báo cáo ảnh"}</h1>
+    <p className="text-muted-foreground">Chưa gửi. Server quyết định validation/review; ảnh và báo cáo chưa cấp quyền mở đường hoặc cộng điểm.</p></header>
+    <Form aria-label="Gửi báo cáo" errors={errors} submissionKey={attempt} onSubmit={submit} className="rounded-xl border bg-card p-4 sm:p-5">
       {simulatedSubmit && <TextField id={`${prefix}-reporter`} label="Contributor giả lập (theo scenario)" hint="Simulation submit-as; backend giữ nguyên participant thực đã gửi." error={fieldError("reporter")} value={reporterEntity} onChange={event => setReporterEntity(event.target.value)} required />}
-      <TextField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onChange={event => setSegment(event.target.value)} required />
-      <TextField id={`${prefix}-coordinate`} label="Kinh độ WGS84" type="number" min="-180" max="180" step="any" error={fieldError("coordinate")} hint="Nhập vị trí quan sát; thiếu tọa độ có thể cần clarification. Không tự lấy vị trí thiết bị." value={longitude} onChange={event => setLongitude(event.target.value)} />
+      {graph && <LocationPicker graph={graph} segmentId={segment} longitude={longitude} latitude={latitude} disabled={!!blocked}
+        onPick={picked => { setLongitude(String(picked.longitude)); setLatitude(String(picked.latitude)); setCapturedAt(value => value || new Date().toISOString()); if (picked.segmentId) setSegment(picked.segmentId); }} />}
+      {graph ? <SelectField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onValueChange={setSegment} required
+        hint="Tự điền khi bạn chọn trên bản đồ; có thể đổi tay." options={[{ value: "", label: "Chọn đoạn đường" },
+          ...graph.segments.map(item => ({ value: item.segment_id, label: `${item.segment_id} · ${Math.round(item.length_m)} m` }))]} />
+        : <TextField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onChange={event => setSegment(event.target.value)} required />}
+      <TextField id={`${prefix}-coordinate`} label="Kinh độ WGS84" type="number" min="-180" max="180" step="any" error={fieldError("coordinate")} hint="Nhập, chọn trên bản đồ hoặc bấm Dùng vị trí của tôi; thiếu tọa độ có thể cần clarification." value={longitude} onChange={event => setLongitude(event.target.value)} />
       <TextField id={`${prefix}-latitude`} label="Vĩ độ WGS84" type="number" min="-90" max="90" step="any" value={latitude} onChange={event => setLatitude(event.target.value)} />
       <TextField id={`${prefix}-capture`} label="Thời gian chụp RFC3339" error={fieldError("capture")} hint="Ví dụ định dạng: YYYY-MM-DDTHH:mm:ssZ" value={capturedAt} onChange={event => setCapturedAt(event.target.value)} required />
       <TextField id={`${prefix}-minute`} label="Phút mô phỏng lúc ghi nhận" error={fieldError("minute")} type="number" min="0" step="any" value={minute} onChange={event => setMinute(event.target.value)} required />
-      <SelectField id={`${prefix}-vehicle`} label="Loại xe quan sát" error={fieldError("vehicle")} value={vehicle} onChange={event => setVehicle(event.target.value)} options={[
+      <SelectField id={`${prefix}-vehicle`} label="Loại xe quan sát" error={fieldError("vehicle")} value={vehicle} onValueChange={setVehicle} options={[
         { value: "", label: "Chưa xác định" }, { value: "motorbike", label: "Xe máy" }, { value: "car", label: "Ô tô" }, { value: "truck", label: "Xe tải" },
       ]} />
       {kind === "driver" ? <>
-        <SelectField label="Cách báo cáo" value={mode} onChange={event => setMode(event.target.value)} options={[{ value: "text", label: "Văn bản" }, { value: "quick", label: "Báo nhanh" }]} />
-        {mode === "quick" && <SelectField label="Tình trạng quan sát" value={condition} onChange={event => setCondition(event.target.value)} options={[
+        <SelectField label="Cách báo cáo" value={mode} onValueChange={setMode} options={[{ value: "text", label: "Văn bản" }, { value: "quick", label: "Báo nhanh" }]} />
+        {mode === "quick" && <SelectField label="Tình trạng quan sát" value={condition} onValueChange={setCondition} options={[
           { value: "unknown", label: "Chưa rõ" }, { value: "normal", label: "Khô / đi được" }, { value: "caution", label: "Cần thận trọng" }, { value: "impassable", label: "Nước sâu / không đi được" },
         ]} />}
-      </> : <SelectField id={`${prefix}-media`} label="Ảnh được phép" error={fieldError("media")} value={mediaKey} onChange={event => setMediaKey(event.target.value)} options={[
+      </> : <SelectField id={`${prefix}-media`} label="Ảnh được phép" error={fieldError("media")} value={mediaKey} onValueChange={setMediaKey} options={[
         { value: "", label: "Chọn ảnh" }, ...mediaChoices.map(media => ({ value: `${media.kind}:${media.id}`, label: `${media.label} (${media.kind})` })),
       ]} />}
       <TextArea id={`${prefix}-description`} label="Mô tả" error={fieldError("description")} maxLength={2000} value={description} onChange={event => setDescription(event.target.value)} />

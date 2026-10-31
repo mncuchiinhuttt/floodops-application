@@ -18,7 +18,7 @@ export function PlanningWorkspaceRoute() {
   const jobId = selected?.job_id ?? "";
   const query = useQuery({ ...readOptions(runtime, "getPlanningJob", "operations:read", "dispatcher", { path: { ...path, job_id: jobId } }), enabled: !!jobId });
   const job = query.isSuccess ? query.data.body.data : selected;
-  return <main><h1>Kế hoạch server</h1>
+  return <div className="grid min-w-0 gap-4"><h1>Kế hoạch server</h1>
     <PlanningJobPanel context={context} job={job} refreshing={query.isFetching || snapshot.isFetching}
       unavailable={query.isError ? failureText(query.error) : snapshot.isError ? failureText(snapshot.error) : undefined}
       onStart={async () => {
@@ -28,5 +28,5 @@ export function PlanningWorkspaceRoute() {
     {job?.plan_id && <Link to={job.plan_id}>Mở plan projected {job.plan_id}</Link>}
     <ResourceView resource={resourceOf(plans)}>{data => <ul>{data.items.map(plan =>
       <li key={plan.plan_id}><Link to={plan.plan_id}>{plan.plan_id}</Link> · {plan.status} · Projected</li>)}</ul>}</ResourceView>
-  </main>;
+  </div>;
 }

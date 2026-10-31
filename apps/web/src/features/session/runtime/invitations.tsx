@@ -21,7 +21,7 @@ export function Invitations({ commands, participants }: { commands: SessionComma
       setError(""); setInvite(null); setShowToken(false); void command.run(async () => {
         const result = await commands.invite(body.data); setInvite(result.body.data); await runtime.refresh();
       });
-    }}><SelectField label="Vai trò invitation" value={role} onChange={event => setRole(event.target.value)} options={options} />
+    }}><SelectField label="Vai trò invitation" value={role} onValueChange={setRole} options={options} />
       <TextField id={`${prefix}-entity`} label="Entity ID được phép trong scenario" value={entity} onChange={event => setEntity(event.target.value)} />
       <Button type="submit" pending={command.pending} {...(blocked ? { disabled: true, disabledReason: blocked } : { disabled: false })}>Tạo invitation</Button>
     </Form>{error && <Alert title="Kiểm tra invitation">{error}</Alert>}{command.message && <Alert title="Trạng thái invitation">{command.message}</Alert>}

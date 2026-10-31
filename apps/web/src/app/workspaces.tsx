@@ -27,8 +27,8 @@ export function PlanListRoute() { return <PlanningWorkspaceRoute />; }
 export function ReportsListRoute() {
   const runtime = useRuntime(); useRuntimeSnapshot(); const { session } = runtime.context().identity;
   const query = useQuery(readOptions(runtime, "listReports", "reports:review", "dispatcher", { path: { session_id: session.session_id } }));
-  return <main><h1>Review báo cáo</h1><ResourceView resource={resourceOf(query)}>{data => <ul>{data.items.map(report =>
-    <li key={report.report_id}><Link to={report.report_id}>{report.report_id}</Link> · {report.status}</li>)}</ul>}</ResourceView></main>;
+  return <div className="grid min-w-0 gap-4"><h1>Review báo cáo</h1><ResourceView resource={resourceOf(query)}>{data => <ul>{data.items.map(report =>
+    <li key={report.report_id}><Link to={report.report_id}>{report.report_id}</Link> · {report.status}</li>)}</ul>}</ResourceView></div>;
 }
 export function useResourceParams() {
   const params = useParams(); if (!params.sessionId) throw new Error("Missing session route"); return params;
@@ -38,10 +38,10 @@ export function failedResource<T>(message: string): Resource<T> { return { statu
 export function ResultsRoute() {
   const runtime = useRuntime(); useRuntimeSnapshot(); const { session } = runtime.context().identity;
   const query = useQuery(readOptions(runtime, "getResults", "results:read", "dispatcher", { path: { session_id: session.session_id } }));
-  return <main><h1>Kết quả từ server</h1><ResourceView resource={resourceOf(query)}>{data => <>
+  return <div className="grid min-w-0 gap-4"><h1>Kết quả từ server</h1><ResourceView resource={resourceOf(query)}>{data => <>
     <p>{data.label} · H={data.horizon_minute} · Observed={data.observed_until_minute} · Calibration {data.calibration_status}</p>
     {data.branches.map(branch => <Card key={branch.branch_id} title={branch.branch_id}><p>{branch.completed_at_horizon ? "Đã tới H" : "Chưa tới H"}</p>
       <dl>{Object.entries(branch.metrics).map(([name, value]) => <div key={name}><dt>{name}</dt><dd>{value}</dd></div>)}</dl></Card>)}
     <p>Late reduction: {data.late_reduction_ratio === null ? "Chưa xác định" : data.late_reduction_ratio}</p>
-  </>}</ResourceView></main>;
+  </>}</ResourceView></div>;
 }

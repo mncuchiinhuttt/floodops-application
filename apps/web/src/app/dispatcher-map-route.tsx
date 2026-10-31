@@ -7,6 +7,7 @@ import { useRuntime, useRuntimeSnapshot } from "./context";
 import { readOptions, resourceOf } from "./queries";
 import { ResourceView } from "../shared/feature-state";
 import { GeometryMap } from "../features/operations-map/geometry-map";
+import { OsmOverview } from "../features/operations-map/osm-overview";
 import { failureText } from "./failure";
 
 export function DispatcherMapRoute() {
@@ -31,18 +32,22 @@ export function DispatcherMapRoute() {
     },
   });
   const knowledgeCurrent = knowledge.isSuccess && current(knowledge.data.body.meta);
-  return <main><h1>Bản đồ geometry server</h1>
-    <div className="feature-actions"><SelectField label="Loại xe trên map" value={vehicle} onChange={event => {
-      const value = event.target.value; if (value === "motorbike" || value === "car" || value === "truck") setVehicle(value);
+  return <div className="grid min-w-0 gap-4"><h1>Bản đồ geometry server</h1>
+    <div className="feature-actions"><SelectField label="Loại xe trên map" value={vehicle} onValueChange={value => {
+      if (value === "motorbike" || value === "car" || value === "truck") setVehicle(value);
     }} options={[{ value: "motorbike", label: "Xe máy" }, { value: "car", label: "Ô tô" }, { value: "truck", label: "Xe tải" }]} />
-      <SelectField label="Nhánh vận hành" value={branch?.branch_id ?? ""} disabled={!operationData} onChange={event => setBranchId(event.target.value)}
+      <SelectField label="Nhánh vận hành" value={branch?.branch_id ?? ""} disabled={!operationData} onValueChange={setBranchId}
         options={operationData?.branches.map(item => ({ value: item.branch_id, label: item.branch_id })) ?? [{ value: "", label: "Operations unavailable" }]} />
     </div>
     {!knowledgeCurrent && <Alert title="Knowledge unavailable / chưa current">{knowledge.isError ? failureText(knowledge.error) : "Đang làm mới knowledge theo loại xe."} Closure đã nhận vẫn giữ; phần còn lại hiển thị unknown.</Alert>}
     {!operationData && <Alert title="Fleet / operations unavailable">{operations.isError ? failureText(operations.error) : "Chưa có snapshot vận hành đúng revision."} Không vẽ fleet giả.</Alert>}
     {routes.isError && <Alert title="Route unavailable">{failureText(routes.error)}</Alert>}
-    <ResourceView resource={resourceOf(graph)}>{data => <GeometryMap key={`${session.session_id}:${session.generation}:${data.graph_hash}`} graph={data}
-      knowledge={knowledge.data?.body.data ?? null} knowledgeCurrent={knowledgeCurrent} branch={branch} vehicle={vehicle} minute={session.sim_minute}
-      routes={routes.isSuccess && !routes.isFetching ? routes.data : []} />}</ResourceView>
-  </main>;
+    <ResourceView resource={resourceOf(graph)}>{data => <>
+      <OsmOverview graph={data} knowledge={knowledge.data?.body.data ?? null} knowledgeCurrent={knowledgeCurrent} branch={branch} vehicle={vehicle} minute={session.sim_minute}
+        routes={routes.isSuccess && !routes.isFetching ? routes.data : []} />
+      <details className="rounded-xl border bg-card p-4"><summary className="cursor-pointer text-sm font-medium">Sơ đồ SVG, chú giải và danh sách thực thể</summary>
+        <div className="mt-4"><GeometryMap key={`${session.session_id}:${session.generation}:${data.graph_hash}`} graph={data}
+          knowledge={knowledge.data?.body.data ?? null} knowledgeCurrent={knowledgeCurrent} branch={branch} vehicle={vehicle} minute={session.sim_minute}
+          routes={routes.isSuccess && !routes.isFetching ? routes.data : []} /></div></details></>}</ResourceView>
+  </div>;
 }

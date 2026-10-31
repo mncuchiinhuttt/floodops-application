@@ -4,6 +4,7 @@ import { ContributorWorkspace, DriverWorkspace, ImageReviewCard, PlanScreen, Rep
 import { executionReason } from "../src/features/planning/plan-actions";
 import { contributorDashboard, driverDashboard, driverRoute, identity, imageBinding, imageReview, now, report, session } from "./fixtures";
 import { plan } from "./plan-fixture";
+import { chooseOption } from "./select-helpers";
 import type { ImageReviewState, SubmitReportInput } from "@floodops/contracts";
 afterEach(cleanup);
 const context = (role: "driver" | "contributor" | "dispatcher") => ({ identity: identity(role), online: true, now });
@@ -55,7 +56,7 @@ test("report form focuses errors, retains content and submits validated first me
   expect(submit).not.toHaveBeenCalled();
   expect(document.activeElement).toBe(screen.getByRole("alert", { name: "Check the form" }));
   expect((screen.getByLabelText("Mô tả") as HTMLTextAreaElement).value).toBe("Nội dung được giữ");
-  fillReport(); fireEvent.change(screen.getByLabelText("Ảnh được phép"), { target: { value: "fixture:photo_fixture001" } });
+  fillReport(); chooseOption("Ảnh được phép", "Allowed fixture (fixture)");
   fireEvent.submit(screen.getByRole("form", { name: "Gửi báo cáo" }));
   await waitFor(() => expect(submit).toHaveBeenCalledTimes(1));
   expect(submit.mock.calls[0]?.[0]).toMatchObject({ kind: "citizen", fixture_photo_id: "photo_fixture001", media_id: null, segment_id: "segment_E270001" });
@@ -146,7 +147,7 @@ test("media selection follows stable ID across reordering and rejects removed ph
   const first = { id: "photo_alpha001", kind: "fixture" as const, label: "Photo A" }, second = { id: "photo_beta001", kind: "fixture" as const, label: "Photo B" };
   const props = { kind: "citizen" as const, context: context("contributor"), onSubmit: submit };
   const { rerender } = render(<ReportForm {...props} mediaChoices={[first, second]} />);
-  fillReport(); fireEvent.change(screen.getByLabelText("Ảnh được phép"), { target: { value: "fixture:photo_alpha001" } });
+  fillReport(); chooseOption("Ảnh được phép", "Photo A (fixture)");
   rerender(<ReportForm {...props} mediaChoices={[second, first]} />);
   fireEvent.submit(screen.getByRole("form", { name: "Gửi báo cáo" }));
   await waitFor(() => expect(submit).toHaveBeenCalledWith(expect.objectContaining({ fixture_photo_id: "photo_alpha001" })));

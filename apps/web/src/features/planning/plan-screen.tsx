@@ -34,7 +34,7 @@ function PlanDetail({ context, plan, onDecision, onExecute, onDryRun, commandBlo
   const candidateReason = staleReason ?? accessReason(context, "planning:execute", "dispatcher", true) ?? (!groups.length ? "Chọn group để kiểm tra." : null);
   const executeReason = candidateReason ?? executionReason(plan, groups);
   const disabled = (value: string | null) => value ? { disabled: true as const, disabledReason: value } : { disabled: false as const };
-  return <main><SimulationBanner session={session} provenance={context.provenance} /><h1>Kế hoạch {plan.plan_id}</h1>
+  return <div className="grid min-w-0 gap-4"><SimulationBanner session={session} provenance={context.provenance} /><h1>Kế hoạch {plan.plan_id}</h1>
     <Alert title="Projected">{plan.status} · Revision đầu vào {plan.input_revision}. Approve/Reject chỉ ghi quyết định. Execute riêng mới có thể commit.</Alert>
     {staleReason && <Alert title="Needs replan">{staleReason}</Alert>}
     <PlanActions plan={plan} selected={selected} onChange={(id, checked) => setSelected(values => checked ? [...values, id] : values.filter(value => value !== id))} />
@@ -55,5 +55,5 @@ function PlanDetail({ context, plan, onDecision, onExecute, onDryRun, commandBlo
       { key: "after", label: "ETA projected", render: entry => etaLabel(entry.after_eta_minute) },
       { key: "reason", label: "Lý do / evidence", render: entry => `${entry.reason} · ${entry.evidence_ids.join(", ")}` },
     ]} />{command.message && <Alert title="Kết quả lệnh">{command.message}</Alert>}
-  </main>;
+  </div>;
 }

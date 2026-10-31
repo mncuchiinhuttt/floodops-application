@@ -13,7 +13,7 @@ export function DriverWorkspace({ context, resource, routes = { status: "loading
     if (reason || dashboard.driver.driver_id !== dashboard.driver_id || dashboard.assigned_orders.some(order => order.driver_id !== dashboard.driver_id) ||
       dashboard.own_reports.some(report => report.participant_id !== context.identity.participant.participant_id))
       return <Denied reason={reason ?? "Dữ liệu không thuộc driver hiện tại."} />;
-    return <main><SimulationBanner session={dashboard.session} provenance={context.provenance} />
+    return <div className="grid min-w-0 gap-4"><SimulationBanner session={dashboard.session} provenance={context.provenance} />
       <h1>Việc của tôi</h1><p>Committed · {dashboard.driver.vehicle_type} · {dashboard.driver.status}</p>
       <Card title="Đơn đã phân công"><DataTable caption="Đơn của tôi" rows={dashboard.assigned_orders} rowKey={order => order.order_id}
         emptyLabel="Chưa có đơn được phân công." columns={[
@@ -27,6 +27,6 @@ export function DriverWorkspace({ context, resource, routes = { status: "loading
       </li>)}</ol>{!dashboard.driver.ordered_stops.length && <p>Chưa có điểm dừng.</p>}
         <p>Tuyến gắn với dashboard: {dashboard.route_ids.join(", ") || "Đang chờ"}</p>
       </Card><DriverRoutes dashboard={dashboard} resource={routes} /><ReportList reports={dashboard.own_reports} />
-    </main>;
+    </div>;
   }}</ResourceView>;
 }

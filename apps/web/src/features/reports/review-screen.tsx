@@ -47,7 +47,7 @@ function ReviewDetail({ context, session, report, imageReview, imageBinding, onR
   }
   const bindingMatchesReport = imageBinding?.reportId === report.report_id && imageBinding.sessionId === session.session_id && imageBinding.generation === session.generation && imageBinding.reportInputRevision === report.input_revision && imageBinding.reportContext === reportImageContext(report);
   const safeImageReview = report.status === "pending_review" && bindingMatchesReport ? imageReview : { status: "stale" as const };
-  return <main><SimulationBanner session={session} provenance={context.provenance} /><h1>Review báo cáo {report.report_id}</h1>
+  return <div className="grid min-w-0 gap-4"><SimulationBanner session={session} provenance={context.provenance} /><h1>Review báo cáo {report.report_id}</h1>
     <Card title="Báo cáo"><p>{report.description}</p><p>{report.status} · Chụp {report.captured_at} · Phút {report.captured_sim_minute}</p>
       <p>Vehicle: {report.vehicle_types.join(", ") || "Chưa xác định"} · {report.reason_codes.join(", ")}</p></Card>
     <RewardFeedback report={report} />
@@ -57,10 +57,10 @@ function ReviewDetail({ context, session, report, imageReview, imageBinding, onR
     <Card title="Quyết định thủ công" description="Review, hiệu lực quan sát và thưởng là các quyết định server riêng. AI không tự Accept/Reject.">
       <ErrorSummary errors={errors} submissionKey={attempt} />
       <TextField id={`${prefix}-segment`} label="Đoạn đường xác nhận" value={segment} onChange={event => setSegment(event.target.value)} />
-      <SelectField label="Vehicle xác nhận" value={vehicle} onChange={event => setVehicle(event.target.value)} options={[
+      <SelectField label="Vehicle xác nhận" value={vehicle} onValueChange={setVehicle} options={[
         { value: "", label: "Chọn loại xe" }, { value: "motorbike", label: "Xe máy" }, { value: "car", label: "Ô tô" }, { value: "truck", label: "Xe tải" },
       ]} />
-      <SelectField disabled={report.input_mode === "quick"} label="Tình trạng xác nhận" value={condition} onChange={event => setCondition(event.target.value)} options={[
+      <SelectField disabled={report.input_mode === "quick"} label="Tình trạng xác nhận" value={condition} onValueChange={setCondition} options={[
         { value: "", label: "Chọn tình trạng" }, { value: "normal", label: "Normal" }, { value: "caution", label: "Caution" },
         { value: "impassable", label: "Impassable" }, { value: "unknown", label: "Unknown" },
       ]} />
@@ -69,5 +69,5 @@ function ReviewDetail({ context, session, report, imageReview, imageBinding, onR
         <Button {...disabled(blocked)} variant="danger" pending={manual.pending} onClick={() => decide("reject")}>Reject</Button></div>
       {manual.message && <Alert title="Kết quả review">{manual.message}</Alert>}
     </Card>
-  </main>;
+  </div>;
 }
