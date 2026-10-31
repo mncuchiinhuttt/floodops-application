@@ -1,13 +1,13 @@
-/* Flow: sticky stage on the right, steps scroll on the left. */
+/* Flow: the stage is sticky and fills the viewport below the nav, so its image sits in the vertical middle; each step is one viewport tall and centred the same way. */
 .flow-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 6vw, 6rem); margin-top: clamp(2.5rem, 5vw, 4rem); }
 .flow-steps { display: grid; }
-.flow-step { display: grid; align-content: center; justify-items: start; gap: .85rem; min-height: 62dvh; opacity: .38; transition: opacity .6s var(--ease); }
+.flow-step { display: grid; align-content: center; justify-items: start; gap: .85rem; min-height: calc(100dvh - 68px); opacity: .38; transition: opacity .6s var(--ease); }
 .flow-step[data-active="true"] { opacity: 1; }
 .flow-icon { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid var(--line-strong); border-radius: 14px; background: var(--glass); color: var(--accent); }
 .flow-step h3 { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.15; }
 .flow-step p { max-width: 38ch; color: var(--muted); line-height: 1.65; }
 .landing-shell .flow-inline { display: none; }
-.flow-stage { position: sticky; top: 6.5rem; height: fit-content; align-self: start; }
+.flow-stage { position: sticky; top: 68px; display: grid; align-items: center; height: calc(100dvh - 68px); align-self: start; }
 .flow-frame { position: relative; aspect-ratio: 1800 / 1125; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 24px; background: var(--panel);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .1), 0 40px 90px -40px rgb(0 0 0 / .85); }
 .flow-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.015); transition: opacity .7s var(--ease), transform .9s var(--ease); }
