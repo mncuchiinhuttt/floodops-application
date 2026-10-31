@@ -12,6 +12,8 @@ function cssValue(name: string, value: string | number): string {
   return String(value);
 }
 const variables = declarations.map(([name, value]) => `  --fo-${name}: ${cssValue(name, value)};`);
+const shadow = source.elevation.panel;
+variables.push(`  --fo-shadow-panel: ${shadow["offset-x"]}px ${shadow["offset-y"]}px ${shadow.blur}px color-mix(in srgb, var(--fo-elevation-panel-color) ${shadow.opacity * 100}%, transparent);`);
 const theme = declarations.flatMap(([name, value]) => {
   if (typeof value === "string" && value.startsWith("#")) {
     return [`  --color-${name.replace(/^semantic-/, "")}: var(--fo-${name});`];
@@ -21,6 +23,7 @@ const theme = declarations.flatMap(([name, value]) => {
   if (name.startsWith("type-size-")) return [`  --text-${name.slice(10)}: var(--fo-${name});`];
   return [];
 });
+theme.push("  --shadow-panel: var(--fo-shadow-panel);");
 const pack = (lines: string[]) => lines.reduce<string[]>((rows, line, index) => {
   if (index % 2 === 0) rows.push(line);
   else rows[rows.length - 1] += ` ${line.trim()}`;

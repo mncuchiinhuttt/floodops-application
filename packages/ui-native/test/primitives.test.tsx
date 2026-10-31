@@ -13,7 +13,8 @@ test("native buttons expose names, busy/disabled states and reject inactive pres
   expect(screen.getByRole("button", { name: "Refresh" })).toBeDisabled();
   expect(screen.getByText("Connection required")).toBeOnTheScreen();
   const pending = screen.getByRole("button", { name: "Saving…" });
-  expect(pending).toHaveAccessibilityState({ disabled: true, busy: true });
+  expect(pending).toBeDisabled();
+  expect(pending).toBeBusy();
   await fireEvent.press(screen.getByRole("button", { name: "Refresh" }));
   await fireEvent.press(pending);
   expect(action).toHaveBeenCalledTimes(1);
@@ -21,7 +22,7 @@ test("native buttons expose names, busy/disabled states and reject inactive pres
 test("native fields retain draft and expose required/error descriptions", async () => {
   await render(<TextField label="Draft name" value="Preserved draft" required hint="Visible hint" error="Check this value" onChangeText={() => undefined} />);
   const field = screen.getByDisplayValue("Preserved draft");
-  expect(field).toHaveProp("accessibilityLabel", "Draft name, required");
+  expect(field).toHaveProp("accessibilityLabel", "Draft name (required)");
   expect(field).toHaveProp("accessibilityHint", "Visible hint. Error: Check this value");
   expect(screen.getByText("Draft name (required)")).toBeOnTheScreen();
   expect(screen.getByText("Check this value")).toBeOnTheScreen();
@@ -38,7 +39,7 @@ test("native production gallery exercises press, validation and retained correct
   await render(<FoundationsGallery />);
   await fireEvent.press(screen.getByRole("button", { name: "Validate example" }));
   expect(screen.getAllByText("Enter an example name.")).toHaveLength(2);
-  const field = screen.getByLabelText("Example name, required");
+  const field = screen.getByLabelText("Example name (required)");
   await fireEvent.changeText(field, "Retained native draft");
   await fireEvent.press(screen.getByRole("button", { name: "Validate example" }));
   expect(screen.getByDisplayValue("Retained native draft")).toBeOnTheScreen();

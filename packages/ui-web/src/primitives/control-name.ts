@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
-
-/** Rich content needs an explicit name; plain visible text supplies its own name. */
+function visibleText(content: ReactNode): string {
+  if (typeof content === "string" || typeof content === "number") return String(content);
+  if (Array.isArray(content)) return content.map(visibleText).join("");
+  return "";
+}
+/** Plain text fragments supply a name. Opaque rich content needs an explicit label. */
 export function requireControlName(content: ReactNode, label?: string): void {
-  const name = label ?? (typeof content === "string" || typeof content === "number" ? String(content) : "");
-  if (!name.trim()) throw new Error("Control requires visible text or a non-empty aria-label.");
+  if (!(label ?? visibleText(content)).trim()) throw new Error("Control requires visible text or a non-empty aria-label.");
 }

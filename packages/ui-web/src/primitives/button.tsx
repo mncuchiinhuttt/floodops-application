@@ -13,6 +13,7 @@ export type ButtonProps = ButtonBase & Disabled;
 export function Button({ children, variant = "primary", pending = false, pendingLabel = "Working…",
   disabled, disabledReason, className = "", type = "button", ...props }: ButtonProps) {
   requireControlName(children, props["aria-label"]);
+  if (disabled && !disabledReason?.trim()) throw new Error("Disabled controls require a visible disabled reason.");
   if (pending && !pendingLabel.trim()) throw new Error("Pending buttons require a visible status label.");
   const reasonId = useId();
   const describedBy = [props["aria-describedby"], disabledReason ? reasonId : ""].filter(Boolean).join(" ") || undefined;

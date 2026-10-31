@@ -64,3 +64,33 @@ textarea.fo-input { min-height: calc(var(--fo-target-web) * 2); resize: vertical
   .fo-data-table th, .fo-data-table td { display: table-cell; text-align: start; padding: var(--fo-space-3); border-bottom: var(--fo-stroke-default) solid var(--fo-semantic-border-default); overflow-wrap: anywhere; }
   .fo-cell-label { display: none; }
 }
+.fo-modal-overlay { position: fixed; inset: 0; z-index: 40; background: color-mix(in srgb, var(--fo-semantic-surface-inverse) 50%, transparent); }
+.fo-modal-panel { box-sizing: border-box; position: fixed; z-index: 50; top: 50%; left: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; gap: var(--fo-space-3); width: min(32rem,calc(100vw - var(--fo-space-6))); max-height: calc(100dvh - var(--fo-space-6)); overflow: auto; padding: var(--fo-space-4); background: var(--fo-semantic-surface-raised); color: var(--fo-semantic-text-primary); border: var(--fo-stroke-default) solid var(--fo-semantic-border-strong); border-radius: var(--fo-radius-lg); }
+.fo-modal-title { font-size: var(--fo-type-size-title); margin: 0; line-height: var(--fo-type-line-height-heading); }
+.fo-modal-body { min-width: 0; overflow-wrap: anywhere; }
+.fo-sheet { top: auto; bottom: 0; transform: translateX(-50%); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.fo-tabs-list { display: flex; flex-wrap: wrap; gap: var(--fo-space-2); border-bottom: var(--fo-stroke-default) solid var(--fo-semantic-border-default); padding-bottom: var(--fo-space-2); }
+.fo-tab { min-width: var(--fo-target-web); min-height: var(--fo-target-web); padding: var(--fo-space-2) var(--fo-space-3); font: inherit; color: var(--fo-semantic-action-secondary-fg); background: var(--fo-semantic-action-secondary-bg); border: var(--fo-stroke-default) solid var(--fo-semantic-border-default); border-radius: var(--fo-radius-sm); cursor: pointer; }
+.fo-tab[data-state="active"] { color: var(--fo-semantic-action-primary-fg); background: var(--fo-semantic-action-primary-bg); }
+.fo-tab:disabled { color: var(--fo-semantic-action-disabled-fg); background: var(--fo-semantic-action-disabled-bg); cursor: not-allowed; }
+.fo-tab:focus-visible, .fo-tab-panel:focus-visible, .fo-modal-panel:focus-visible { outline: var(--fo-stroke-focus) solid var(--fo-semantic-focus-ring); outline-offset: var(--fo-stroke-focus-offset); }
+.fo-tab-panel { padding-block: var(--fo-space-4); }
+.fo-tooltip { z-index: 60; max-width: min(24rem,calc(100vw - var(--fo-space-6))); padding: var(--fo-space-3); border-radius: var(--fo-radius-sm); background: var(--fo-semantic-surface-inverse); color: var(--fo-semantic-text-inverse); font-size: var(--fo-type-size-sm); overflow-wrap: anywhere; }
+.fo-tooltip-arrow { fill: var(--fo-semantic-surface-inverse); }
+.fo-simulation { padding: var(--fo-space-3); border: var(--fo-stroke-default) solid var(--fo-semantic-provenance-simulated-border); border-radius: var(--fo-radius-sm); color: var(--fo-semantic-provenance-simulated-fg); background: var(--fo-semantic-provenance-simulated-bg); }
+.fo-rule { display: inline-block; font-size: var(--fo-type-size-sm); font-weight: var(--fo-type-weight-medium); }
+.fo-metric { font-size: var(--fo-type-size-title); font-weight: var(--fo-type-weight-bold); }
+.fo-toast { border: var(--fo-stroke-default) solid var(--fo-semantic-border-default); border-radius: var(--fo-radius-sm); padding: var(--fo-space-3); background: var(--fo-semantic-surface-panel); color: var(--fo-semantic-text-primary); }
+.fo-map { margin: 0; }
+.fo-map svg { display: block; width: 100%; height: auto; border: var(--fo-stroke-default) solid var(--fo-semantic-border-default); border-radius: var(--fo-radius-sm); }
+.fo-legend { display: flex; flex-wrap: wrap; gap: var(--fo-space-2); padding: 0; list-style: none; }
+.fo-actions { display: flex; flex-wrap: wrap; gap: var(--fo-space-3); }
+.fo-modal-panel { box-shadow: var(--fo-shadow-panel); }
+.fo-legend-item { display: inline-flex; align-items: center; gap: var(--fo-space-2); }
+.fo-modal-body { display: grid; gap: var(--fo-space-3); }
+.fo-form, .fo-error-summary, .fo-toast, .fo-map, section[aria-label="Evidence"] { min-width: 0; overflow-wrap: anywhere; }
+.fo-error-summary a { max-width: 100%; min-width: 0; }
+.fo-map svg { box-sizing: border-box; }
+.fo-card { display: grid; gap: var(--fo-space-3); }
+.fo-card > * { min-width: 0; }
+.fo-card > h2, .fo-card > p { margin: 0; }

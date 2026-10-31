@@ -72,6 +72,10 @@
   --fo-target-native: 48px; --fo-density-compact: 36px;
   --fo-density-comfortable: 48px; --fo-motion-fast: 120ms;
   --fo-motion-standard: 180ms; --fo-motion-reduced: 0ms;
+  --fo-elevation-panel-color: #12212B; --fo-elevation-panel-opacity: 0.14;
+  --fo-elevation-panel-offset-x: 0; --fo-elevation-panel-offset-y: 4;
+  --fo-elevation-panel-blur: 12; --fo-elevation-panel-native: 4;
+  --fo-shadow-panel: 0px 4px 12px color-mix(in srgb, var(--fo-elevation-panel-color) 14.000000000000002%, transparent);
 }
 @theme inline {
   --color-surface-canvas: var(--fo-semantic-surface-canvas); --color-surface-panel: var(--fo-semantic-surface-panel);
@@ -118,7 +122,8 @@
   --text-body: var(--fo-type-size-body); --text-lg: var(--fo-type-size-lg);
   --text-title: var(--fo-type-size-title); --text-title-lg: var(--fo-type-size-title-lg);
   --radius-sm: var(--fo-radius-sm); --radius-md: var(--fo-radius-md);
-  --radius-lg: var(--fo-radius-lg);
+  --radius-lg: var(--fo-radius-lg); --color-elevation-panel-color: var(--fo-elevation-panel-color);
+  --shadow-panel: var(--fo-shadow-panel);
 }
 @media (prefers-reduced-motion: reduce) {
   :root { --fo-motion-fast: 0ms; --fo-motion-standard: 0ms; }

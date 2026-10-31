@@ -58,3 +58,7 @@ test("blank labels fail before creating unnamed controls", () => {
   expect(() => render(<TextField label=" " />)).toThrow("non-empty visible label");
   expect(() => render(<Button>{null}</Button>)).toThrow("non-empty aria-label");
 });
+
+test("disabled controls cannot omit their explanation at runtime", () => {
+  expect(() => render(<Button disabled disabledReason=" ">Save</Button>)).toThrow("visible disabled reason");
+});
