@@ -1,0 +1,72 @@
+{
+  "base_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe",
+  "launch_sha": "containing metadata commit supplied out-of-band",
+  "status": "ready-to-resume-existing-workers",
+  "workers": [
+    {
+      "role_id": "session-platform",
+      "existing_thread_id": "01a19032-cee6-734a-a967-a1f593f4b0ef",
+      "work_item": "session-platform-reset-stream-v4",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/04-session-platform",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/session-platform/session-platform-reset-stream-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/session-platform-reset-stream-v4.md",
+      "safe_checkpoint_required": false
+    },
+    {
+      "role_id": "planner-safety",
+      "existing_thread_id": "01a19064-2e3c-7691-91cf-390aad9e00d0",
+      "work_item": "planner-safety-domain-correction-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/06-planner-safety",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/planner-safety/planner-safety-domain-correction-v2.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/planner-safety-domain-correction-v2.md",
+      "safe_checkpoint_required": false
+    },
+    {
+      "role_id": "review-rewards",
+      "existing_thread_id": "01a19064-77ea-75c7-a498-357c523c30d1",
+      "work_item": "review-rewards-domain-correction-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/07-review-rewards",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/review-rewards/review-rewards-domain-correction-v2.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/review-rewards-domain-correction-v2.md",
+      "safe_checkpoint_required": false
+    },
+    {
+      "role_id": "results-evaluation",
+      "existing_thread_id": "01a19067-7930-716f-ae49-5f01c568f0f8",
+      "work_item": "results-evaluation-runtime-foundations-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/08-results-evaluation",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/results-evaluation/results-evaluation-runtime-foundations-v2.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/results-evaluation-runtime-foundations-v2.md",
+      "safe_checkpoint_required": false
+    },
+    {
+      "role_id": "web-console",
+      "existing_thread_id": "01a19068-0ad0-7386-90ae-8db6b43150cf",
+      "work_item": "web-console-runtime-continuation-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/09-web-console",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/web-console/web-console-runtime-continuation-v2.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/web-console-runtime-continuation-v2.md",
+      "safe_checkpoint_required": false
+    },
+    {
+      "role_id": "expo-mobile",
+      "existing_thread_id": "01a19067-c8ea-7435-9e24-fdaea01120e0",
+      "work_item": "expo-mobile-runtime-continuation-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/10-expo-mobile",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/expo-mobile/expo-mobile-runtime-continuation-v2.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/expo-mobile-runtime-continuation-v2.md",
+      "safe_checkpoint_required": false
+    },
+    {
+      "role_id": "sources-media",
+      "existing_thread_id": "01a19063-dc77-760e-9f33-7534e3b6c0e3",
+      "work_item": "sources-media-phase-05-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/05-sources-media",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/sources-media/sources-media-phase-05-v2.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/sources-media-phase-05-v2.md",
+      "safe_checkpoint_required": true
+    }
+  ],
+  "parent_action": "Resume existing SessionPlatform/PlannerSafety/ReviewRewards/ResultsEvaluation immediately, plus Web/Expo runtime independent work; safely quiesce active Sources and amend producer baseline without duplicate writer. Backend full completion priority. No pending-only placeholder tasks.",
+  "critical_path": "FullSources -> actual source gate -> fullPlanner+fullReview -> fullResults/final composition -> genuine frontend E2E"
+}
