@@ -1,0 +1,91 @@
+{
+  "amendment_id": "m1-deterministic-cutover-v1",
+  "status": "authorized",
+  "source_prd_commit": "9036f6332f810eda5366dd63a60d4bb615f38374",
+  "authority": "User requested latest main PRD read/reconcile/implementation and correct rapid MVP; parent verified explicit M1 web/deterministic supersession and instructed scoped worker packets.",
+  "work_items": [
+    {
+      "role_id": "session-platform",
+      "work_item_id": "session-platform-review-hooks-v5",
+      "include_prefixes": [
+        "apps/api/src/session-runtime/",
+        "apps/api/src/shared/",
+        "apps/api/test/capabilities/",
+        "apps/api/test/commands/",
+        "apps/api/test/replay/",
+        "apps/api/test/reset/",
+        "apps/api/test/expiry/"
+      ],
+      "include_files": [
+        "apps/api/test/runtime-worker.ts"
+      ],
+      "scope": "Implement TWO concrete internal platform blockers now; no public wire/schema delta. (1) ReducerDefinition optional requireCas independent of operational revision increment: enforce If-Match in same genuine DO synchronous transaction, after exact idempotency replay and before reduce, even operational:false. Existing operational:true retains CAS+revision semantics. Test metadata reject-style command stale412/missing428/current200, unchanged revision, exactly-once event and replay, auth/CSRF/Reset/race. (2) ImageReviewMetadataPort.failQueued(context, reportId, jobId, lease, error_code) compatible with Review QueuedImageFailurePort. Add strict internal dispatch schema/handler/client and trusted lease extraction. Only current queued UNSTARTED job with matching authenticated dispatcher reports:review/session/generation/report/current job/inputdigest/lease nonce/unexpired deadline can terminal-fail; failure result=null plus canonical safe image event. Provider call counter unchanged (reserve never charged; start alone charges). Never simulate start, decrement/refund budget or accept result/success here. Reject running/started/completed/wrong actor/stale/Reset/digest/nonce/expired. Test persisted restart, provider budget before/after, equal revision, terminal event privacy and manual review independence using real Workerd. Do NOT edit Review business files, contracts, root config or change public 66 endpoints. Image v0.5 new depth semantics remain Contracts cutover pending; generic hooks are independent and keep current strict advice shape. Return exact public hook and property names early; final source C -> report-only R."
+    },
+    {
+      "role_id": "contracts-client",
+      "work_item_id": "contracts-client-m1-cutover-v4",
+      "include_prefixes": [
+        "packages/contracts/src/",
+        "packages/contracts/test/",
+        "packages/contracts/scripts/",
+        "packages/api-client/src/",
+        "packages/api-client/test/",
+        "plans/20261030-2249-floodops-web-mobile-implementation/contracts/"
+      ],
+      "include_files": [],
+      "scope": "Read pinned PRD v0.5 (source main9036f6332f810eda5366dd63a60d4bb615f38374) and current schemas/client. IMPLEMENT minimal coherent M1 contract refreeze now, not only audit/report. M1=31 US:01..11,13..26,28..32,34; web three capability workspaces, deterministic bounded planner -> gate/manual decisions/Execute, free reports -> optional photo advice/manual review -> knowledge/simple points -> replan -> expiry/Reset/results. Native/campaign/student/forecast/hub-defer/P2 are M2, calibration/pilot M3; do not add campaign/student/forecast endpoints. Remove runtime AI Commander/model driver parser/AI mission grading semantics; former8 tools are typed INTERNAL deterministic services, not model-callable tools. Preserve current useful DTOs/operationIds unless exact PRD needs delta; explicitly publish resulting actual op/schema/internal-service counts, before/after and new-session migration strategy. Legacy66/194/8 is NOT v0.5-refrozen. Update design OpenAPI/examples and generated Zod/client together, tests+codegen drift/browser bundle/smoke. Keep exact public exports compatibility where safe for current consumers, mark legacy model tool getters deprecated if retaining temporarily, never expose model-call authority. M1 free report needs no mission: pin demo reward policy/version at receipt; absent config => pending_config eligibility, but manual review/knowledge commit still allowed; do not synthesize points0 or retroactively apply new policy. Define minimal strict typed report/review/ledger/status semantics that allow producer implementation; policy numeric values only when actually specified, no invented default. US30/6.3.1 image changes (depth/visual-reference target vs old rubric) require minimal honest explicit cutover; no numerical depth from unsupported model/data, no fake provider evidence. AI remains advisory only and manual review independent. New-session cutover preferred to speculative migration; no dropping auth/CAS/idempotency/Reset/event ownership. Deliver C/R and exact consumer delta promptly for Lead to publish new contracts-ready; until integrated v0.5 freeze, other receipts only independently scoped code and legacy wire-compatible helpers. No package manifests/lock/root config/protected files edits."
+    },
+    {
+      "role_id": "sources-media",
+      "work_item_id": "sources-media-review-adapter-v3",
+      "include_prefixes": [
+        "apps/api/src/features/sources/",
+        "apps/api/src/features/scenario/",
+        "apps/api/src/features/reports/",
+        "apps/api/src/features/knowledge/",
+        "apps/api/src/features/media/",
+        "apps/api/test/sources/",
+        "apps/api/test/media/",
+        "apps/api/test/observations/"
+      ],
+      "include_files": [],
+      "scope": "Implement genuine canonical SourceReviewPort adapter now, unchanged old public wire; no new reward-policy semantics before Contracts v0.5 ready. Source owns its state namespace/core; no Lead ad-hoc production source-state writes or copying synthetic Review fixture. Export factory via your public reports/index or sources/index with injected SourcesPorts/scenario catalog/simulation persistence. Satisfy existing public SourceReviewPort exported reports/review/index: read(TransitionContext)->reports/knowledge/conflicts/pairs/relevantScope/evidence; report(snapshot,rid); reportContext(ctx,report) from STORED originalSubmitter/captureepochs/sourceId/received time/boundvehicles, never current reviewer as submitter; image(snapshot,report)->real normalized readiness/digest/duplicate/prepared binding; apply(ctx,{reports,observations,knowledge,conflicts})->pure proposed values preserving unrelated namespaces and source metadata, updating canonical run checkpoint consistently. Use real frozen functional-v2 driver-ready scenario/catalog and existing normalized-image port. No R2/network awaits inside DO transaction, no arbitrary URL/raw bytes fallback. If prepared image binding requires async digest, provide precise public preparation/persistence port to Lead/Review rather than fake digest or mutation. Do not commit awards/review decisions in adapter; reducer owner atomically combines proposed source state with review ledger under genuine DO. Keep recovery outbox/wrapper intact. Test actual source submit/normalize -> public review transition with genuine source adapter -> canonical persisted knowledge and original actor, epochs/vehicle/conflict/duplicate/Reset fences. You may import Review PUBLIC types only; do not edit reports/review or knowledge/conflict-review. Capture new PRD free-report receipt-policy request for next contract version, do not inject unknown strict DTO fields yet. Return exact public factory early and C/R, no full sources/review gate claim."
+    },
+    {
+      "role_id": "review-rewards",
+      "work_item_id": "review-rewards-source-compat-v4",
+      "include_prefixes": [
+        "apps/api/src/features/reports/review/",
+        "apps/api/test/review/"
+      ],
+      "include_files": [],
+      "scope": "Narrow concrete compatibility correction NOW, not another planning report: API typecheck currently TS2367 at reports/review/state.ts:39 because SourceDomainError no longer includes SOURCE_SCOPE_INCOMPATIBLE after integrated producer correction. Update error mapping against actual PUBLIC SourceDomainError union and add targeted valid-error regression, run standard API typecheck and own tests, deliver C/R quickly. Do not weaken typed guards or fork Source errors. Do NOT implement changed v0.5 reward semantics yet: policy pin at report receipt/pending_config/knowledge independent awaits Contracts refreeze and Source producer. Session hooks and canonical SourceReviewPort are separately assigned and not present at launch; do not fake hooks, copy producer state or apply moving HEAD. After this small signed delivery parent/Lead will issue fresh continuation for Reject CAS/failQueued/real source wiring plus v0.5 reward semantics when ports/schema integrated. Current Review runtime intact; no full review-ready claim."
+    },
+    {
+      "role_id": "planner-safety",
+      "work_item_id": "planner-safety-deterministic-core-v4",
+      "include_prefixes": [
+        "packages/domain/src/planning/",
+        "apps/api/src/features/incidents/",
+        "apps/api/src/features/planning/",
+        "apps/api/src/features/operations/",
+        "apps/api/test/planning/",
+        "apps/api/test/execution/",
+        "apps/api/test/policy/"
+      ],
+      "include_files": [],
+      "scope": "PRD v0.5 supersedes prior runtime AI Commander. At safe checkpoint preserve own existing v3 WIP in scoped commit/history, receive exact new launch, no reset/stash/rebase. Implement deterministic M1 planner CORE NOW using current typed Plan/action DTOs and existing simulator/policy ports; this is independent algorithm slice, not permission to refreeze/mount new public wire before Contracts v0.5 delivery. Remove runtime LLM selection/provider prerequisite: bounded reproducible code search with explicit bounds/cancellation/stable tie-break, real route/assignment/ETA/impact/objective computation, no canned fixed-plan result. Existing 8 tool operations become internal deterministic services. Raw driver free text must not call model or gain operational authority; quick structured flow remains. Preserve current proposal vs before vs baseline isolation, groups/closure/capacity/vehicle/conflict/expiry/tier and latest plan/job/approval/manual Execute rules. Export genuine server-owned committed movement policy first (current knowledge + persisted executed route/action grants) to unblock clock advance; baseline/reroute_only own rules, no proposed/approved authority before Execute. New versioned public DTO/event/runtimecontroller adoption waits Contracts refreeze; existing valid deterministic phase06 components stay, do not discard working commits. Hub/defer/P2 not M1 blocker, no further AI provider adapter work. Do not edit integrations/openai or other owner files. Tests run actual evaluator/simulator with varied inputs/stable ties/unsafe/no feasible/cancel/Reset, not mocked successful plan. Return minimal exact public constructors/ports early and source C -> report R. Parent controls your safe resume so do not duplicate writer."
+    }
+  ],
+  "supersedes_for_future_work": [
+    "Old receipts that require native parity/AI Commander/M2 campaigns for M1 completion; historical evidence/commits are not edited or invalidated retroactively.",
+    "Affected scope adopts this exact new receipt. Active worker preserves WIP and quiesces before controlled merge; parent controls resume."
+  ],
+  "rules": [
+    "No new M1 contract-ready claim: ContractsClient must deliver coherent schema/client/docs/test refreeze, Lead verifies/merges then publishes fresh consumer receipts.",
+    "Independent internal hooks/source-state adapter/type correction/deterministic algorithm may code now; no fabricated missing public contracts or provider authority.",
+    "New free-report reward policy is pinned on receipt; missing config pending_config must not block manual evidence/knowledge commit; no fake zero/retroactive new policy. Producer rollout after refreeze.",
+    "No M2 campaign/student/forecast/native polish; preserve existing valid code. No account/paid/model/device/main/deploy/credential grant.",
+    "Role exclusions and central protected files unchanged, no sibling WIP/deep imports; one writer per role. Existing AGENTS policy hash unchanged under current explicit user M1 scope authority."
+  ]
+}
