@@ -7,6 +7,7 @@ import { styles } from "./styles";
 
 type Pair = { fg: string; bg: string; border: string; icon: string; pattern: string };
 function Badge({ pair, label }: { pair: Pair; label: string }) {
+  if (!label.trim()) throw new Error("Status badges require a visible label.");
   const borderStyle = pair.pattern === "dashed" ? "dashed" : pair.pattern === "dotted" ? "dotted" : "solid";
   return <View accessible accessibilityLabel={label} style={[styles.badge, {
     backgroundColor: pair.bg, borderColor: pair.border, borderStyle

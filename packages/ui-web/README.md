@@ -1,19 +1,22 @@
-# FloodOps web foundations
+# FloodOps web UI
 
-Generic production source: Button/IconButton/LinkButton, TextField/TextArea, StatusBadge/ProvenanceBadge/PriorityBadge, Card/Alert/Skeleton. `src/foundations-gallery.tsx` uses these same components for review; examples are labelled component states and have no API/domain dependency. Lead must add React/DOM/types, token/icon workspace dependencies, JSX configuration and public exports before this package can render in the workspace. `@floodops/ui-web/styles.css` should point to `src/styles.css`; load tokens CSS first. Existing CSS variables work directly; the token `@theme` block integrates with Tailwind v4.
+Public root exports: Button/IconButton/LinkButton, TextField/TextArea/SelectField, StatusBadge/ProvenanceBadge/PriorityBadge, Card/Alert/Skeleton, Form/ErrorSummary, DataTable/KeyValueList, with public prop types. React 19.3, token/icon workspace dependencies, JSX and exports are reviewed and installed via the frozen lock. Load `@floodops/design-tokens/styles.css`, then `@floodops/ui-web/styles.css` once. Semantic CSS works directly; the token `@theme inline` block is ready for the requested Tailwind v4 compiler.
 
-Props are exported through `src/index.ts`. Button defaults to `type="button"`; submit is explicit. `disabled=true` requires a visible reason. Pending disables activation and exposes busy/status text; caller controls pending lifecycle. Button/LinkButton require plain visible text or an explicit non-empty aria-label for rich content; blank field labels and pending labels are rejected. IconButton requires a non-empty label. LinkButton is a real anchor and requires href. Fields retain caller-controlled values, always show a label and connect hint/error IDs. No mutation, approval, Execute, score, capability or operational state is inferred here.
+Button defaults to type=button. Disabled controls require a visible reason at the type boundary; IconButton preserves exactly the same union and has compile-time regression cases. Rich button/link content needs an explicit non-empty aria-label; plain text supplies its own name. Pending prevents activation, exposes busy state and visible status text. Refs reach the actual button. Field labels cannot be blank; hints/errors are linked and values stay caller-controlled.
 
-| State | Generic contract |
+Form prevents browser navigation and invokes the supplied submit handler. Consumers validate, update `errors`, and increment `submissionKey` on a failed submission; ErrorSummary then focuses itself and its links focus the corresponding field IDs. Do not increment the key on each keystroke. Client validation never grants capability, approval or Execute authority. SelectField uses semantic HTML select/options and preserves browser keyboard interaction.
+
+DataTable requires caption and labelled columns. Error takes precedence over loading, then empty/ready rows. One semantic table tree retains header associations at every width. At 48rem and above it is a conventional table; narrower screens show labelled card rows without rendering cell contents twice. Row keys must be stable and cell render functions pure. KeyValueList accepts labelled values. Native has a distinct AccessibleList implementation.
+
+| State | Contract |
 | --- | --- |
-| Ready | Explicit text and check icon with ready tone |
-| Pending | Busy, disabled button and caller-provided pending label |
-| Blocked/unknown/conflict/replan | Visible caller label, stable icon and paired contrast color |
-| Accepted/rejected | Caller chooses explicit label and ready/blocked tone; no review decision occurs |
-| Zero points/offline/stale | Caller provides explicit text in Card/Alert; no reward or freshness is derived |
-| Disabled | Native HTML disabled plus visible reason; preserved field values |
-| Field error | Visible text, aria-invalid and described-by link |
+| Ready/pending/blocked/unknown/conflict/replan | Explicit label + stable symbol + paired semantic color/pattern |
+| Accepted/rejected | Caller-provided label; ready/blocked tone does not perform review |
+| Zero points/offline/stale | Explicit consumer text; primitives derive no reward/freshness |
+| Disabled | Programmatic disabled state plus visible reason |
+| Error | Visible text, linked descriptions and submit-summary focus |
+| Alert | Semantic `tone`, with polite status by default or explicit urgent alert |
 
-Controls default to 44px minimum targets, wrap at narrow width and show keyboard focus on supported backgrounds. Static badges do not announce every update. Alert chooses polite status or explicit urgent alert. No nonessential animation is used. Use a page error summary and focus management in the consumer form; this package does not invent submit policy. Native uses a different package.
+Every control targets 44px minimum, wraps at narrow widths and has visible keyboard focus. Static badges do not announce every change. No nonessential animation. `bun packages/ui-web/dev/serve-gallery.ts` runs real production components at 127.0.0.1:6006 and refuses dependencies outside this worktree. `bun run --cwd packages/ui-web test` runs real DOM behavior tests; `bun --bun run tsc -p packages/ui-web/test/tsconfig.json` checks disabled-prop boundaries. Browser smoke covers actual keyboard submit/error focus, correction persistence and 320px row reflow.
 
-This partial slice does not install shadcn/Radix Dialog/Sheet/Tabs/Tooltip, Storybook or feature patterns. Those dependencies and follow-up scope must be supplied by Lead. Run `bun packages/ui-web/dev/serve-gallery.ts` after the dependency amendment; it builds the actual React gallery and rejects dependencies resolved from outside this worktree. React browser interaction, axe, 320px/zoom and manual keyboard/AT evidence remain pending; syntax/lint is not render evidence.
+Pending Lead dependencies: Radix Dialog/Sheet, Tabs and Tooltip wrappers, Tailwind v4 build integration, Storybook/React framework/a11y addon and axe. These are unfinished full-phase deliverables, not replaced by fake components. React DOM tests, contrast and browser smoke are not complete WCAG or native AT evidence. Breaking public props require an approved version/migration with both consumers before merge; no silent aliases or schema forks.

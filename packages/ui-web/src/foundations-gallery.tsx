@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { Icon } from "@floodops/icons/web";
-import { Alert, Button, Card, IconButton, LinkButton, PriorityBadge, ProvenanceBadge, Skeleton, StatusBadge, TextArea, TextField } from "./index";
+import { Button, IconButton } from "./primitives/button";
+import { LinkButton } from "./primitives/link-button";
+import { TextField, TextArea } from "./primitives/text-field";
+import { SelectField } from "./primitives/select-field";
+import { Alert, Card, Skeleton } from "./primitives/content";
+import { StatusBadge, ProvenanceBadge, PriorityBadge } from "./primitives/badge";
+import { Form } from "./patterns/form";
+import { DataTable } from "./patterns/data-table";
 
 /** Development-only gallery; examples are component states, not operational data. */
 export function FoundationsGallery() {
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [pressed, setPressed] = useState(0);
+  const [attempt, setAttempt] = useState(0);
   return <main style={{ maxWidth: 960, margin: "auto", padding: "var(--fo-space-4)", display: "grid", gap: "var(--fo-space-4)" }}>
     <h1>FloodOps foundations</h1>
     <p>Simulation · component review gallery</p>
@@ -21,12 +29,14 @@ export function FoundationsGallery() {
       </div><p role="status">Example activations: {pressed}</p>
     </Card>
     <Card title="Labels, errors and preserved input">
-      <form id="fields" noValidate onSubmit={event => { event.preventDefault(); setSubmitted(true); }} style={{ display: "grid", gap: "var(--fo-space-4)" }}>
-        <TextField label="Example name" required value={name} onChange={event => setName(event.target.value)} hint="A visible label remains present."
+      <Form id="fields" onSubmit={() => { setSubmitted(true); setAttempt(value => value + 1); }} submissionKey={attempt}
+        errors={submitted && !name.trim() ? [{ fieldId: "example-name", message: "Enter an example name." }] : []}>
+        <TextField id="example-name" label="Example name" required value={name} onChange={event => setName(event.target.value)} hint="A visible label remains present."
           error={submitted && !name.trim() ? "Enter an example name." : undefined} />
         <TextArea label="Example notes" hint="Optional" defaultValue="Preserved example text" />
+        <SelectField label="Density example" defaultValue="comfortable" options={[{ value: "comfortable", label: "Comfortable" }, { value: "compact", label: "Compact" }]} />
         <Button type="submit">Validate example</Button>
-      </form>
+      </Form>
     </Card>
     <Card title="States and provenance">
       <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--fo-space-2)" }}>
@@ -36,6 +46,10 @@ export function FoundationsGallery() {
         <ProvenanceBadge tone="reference" /><ProvenanceBadge tone="replayed" /><ProvenanceBadge tone="simulated" />
         <PriorityBadge tone="critical" /><PriorityBadge tone="food" /><PriorityBadge tone="standard" />
       </div>
+    </Card>
+    <Card title="Responsive data">
+      <DataTable caption="Example component rows" rowKey={row => row.id} rows={[{ id: "one", label: "Example one", state: "Ready" }, { id: "two", label: "Example two", state: "Unknown" }]}
+        columns={[{ key: "label", label: "Name", render: row => row.label }, { key: "state", label: "State", render: row => row.state }]} />
     </Card>
     <Card title="Original artwork">
       {(["hub", "parcel", "motorbike", "car", "water", "source"] as const).map(name => <Icon key={name} name={name} label={name} size={64} />)}
