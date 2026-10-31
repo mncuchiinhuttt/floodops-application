@@ -4,14 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "dependencies": {
-    "@floodops/contracts": "workspace:*"
+    "@floodops/contracts": "workspace:*",
+    "@floodops/simulation": "workspace:*"
   },
   "exports": {
     "./operations": "./src/operations/index.ts",
     "./public-ports": "./src/public-ports.ts",
     "./sources": "./src/sources/index.ts",
     "./knowledge": "./src/knowledge/index.ts",
-    "./reporting": "./src/reporting/index.ts"
+    "./reporting": "./src/reporting/index.ts",
+    "./planning": "./src/planning/index.ts",
+    "./rewards": "./src/rewards/index.ts"
   },
   "scripts": {
     "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json"
