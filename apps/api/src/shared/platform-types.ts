@@ -6,6 +6,10 @@ export interface PlatformBindings {
   REPORT_MEDIA?: R2Bucket;
   WEB_ORIGIN: string;
   APP_ENV: string;
+  OPENAI_API_KEY?: string;
+  OPENAI_IMAGE_REVIEW_MODEL?: string;
+  OPENAI_IMAGE_REVIEW_ENABLED?: string;
+  OPENAI_IMAGE_REVIEW_MAX_OUTPUT_TOKENS?: string;
   SESSION_LOCATOR_KEY: string;
   CAPABILITY_SEAL_KEY_ACTIVE: string;
   CAPABILITY_SEAL_KEY_ID: string;

@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { env as workerEnv } from "cloudflare:workers";
 import { parseSchema } from "@floodops/contracts";
 import { deriveUsefulCoverage } from "@floodops/domain/rewards";
 import { createRun, loadScenario, type ScenarioManifest, type SimulationRun } from "@floodops/simulation";
@@ -7,12 +8,14 @@ import type { ScenarioReference, SimulationPersistence } from "@floodops/domain/
 import manifest from "../../../data/scenarios/functional-v2/manifest.json";
 import legacyManifest from "../../../data/scenarios/functional-v1/manifest.json";
 import { createApp } from "./app/index";
-import { fail, type SessionSeed, type RuntimeRegistry, type TransitionContext } from "./shared/index";
+import { fail, type PlatformBindings, type SessionSeed, type RuntimeRegistry, type TransitionContext } from "./shared/index";
 import { createSimulationRuntime } from "./features/simulation/index";
 import { createResultsRouter, createResultsView, createWorkspaceViews, RESULTS_VIEW, type WorkspacePlanning } from "./features/results/index";
 import { createSourcesFeature } from "./features/sources/index";
 import { createPlanningRuntime, DEFAULT_SEARCH_LIMITS, searchLimits } from "./features/planning/index";
 import { createReviewSeed, createSourceBackedReviewRuntime, reconcileReviewGaps } from "./features/reports/review/index";
+import { imageReviewConfigFromEnv } from "./features/reports/review/image/environment-config";
+import { createResponsesImageReviewPort } from "./features/reports/review/image/responses-image-review";
 import { createEvaluationRuntime } from "./features/evaluations/index";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
@@ -72,8 +75,15 @@ function sessionSeed(id: string, version: string): SessionSeed {
 export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> { return sessionSeed(id, version); }
 const ports = { scenarioCatalog, simulationPersistence };
 const sources = createSourcesFeature(ports);
-// Missing numeric reward policy remains pending_config; missing vision provider stays unavailable.
-const review = createSourceBackedReviewRuntime(ports, {});
+// Image review stays unavailable unless its explicit backend Worker bindings are complete.
+const imageReviewSettings = imageReviewConfigFromEnv(workerEnv as unknown as PlatformBindings);
+const imageReviewProvider = imageReviewSettings.providerConfig
+  ? createResponsesImageReviewPort(imageReviewSettings.providerConfig, fetch)
+  : undefined;
+const review = createSourceBackedReviewRuntime(ports, {
+  imageConfig: imageReviewSettings.imageConfig,
+  imageProvider: imageReviewProvider ? () => imageReviewProvider : undefined,
+});
 function coverageInput(context: TransitionContext) {
   const state = review.source.read(context);
   return { scope: state.relevantScope, knowledge: state.knowledge, observations: state.evidence.observations,

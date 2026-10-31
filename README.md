@@ -32,7 +32,7 @@ Remote GitHub phải PRIVATE. Production, store submission và promotion sau imp
 
 ## Local OpenAI configuration
 
-User fills `/Users/vominhlong/seahackathon/floodops-application/.env` locally; it is ignored and not copied into worktrees. `.env.example` contains no secret. Provider is the backend-only OpenAI Responses photo adapter; planner stays deterministic. Set key/model there, keep `OPENAI_IMAGE_REVIEW_ENABLED=false` until the separate live-test budget/data approval. `MAX_OUTPUT_TOKENS` is an output limit, not a USD cap. The current M1 serializer/provider composition rollout must finish before claiming photo AI runs; no real vision test is implied by this template.
+The backend-only OpenAI Responses photo adapter is disabled by default; it activates only when `OPENAI_IMAGE_REVIEW_ENABLED=true` and both `OPENAI_API_KEY` and `OPENAI_IMAGE_REVIEW_MODEL` are nonempty Worker bindings. `OPENAI_IMAGE_REVIEW_MAX_OUTPUT_TOKENS` defaults to 512 and accepts integers from 1 to 1000; invalid values disable the adapter. This limits generated tokens, not spend. Keep it disabled until the separate live-test budget/data approval; configuration is not a live-provider test or a claim that the M1 source submit-to-review flow is ready.
 
 From the implementation integration root, the installed Wrangler supports loading that exact user-owned file without copying or shell-sourcing it:
 
@@ -41,4 +41,6 @@ node apps/api/node_modules/wrangler/bin/wrangler.js dev --config tooling/runtime
 ```
 
 This is explicitly local synthetic test configuration, not deployment: isolated SQLite/private R2/Images, public synthetic local signing values, web origin127.0.0.1:5174. For ordinary non-synthetic dev, use the API-local config with operator-supplied session secrets. Running Bun does not automatically expose its `.env` to Workerd; `--env-file` passes it into the Worker binding environment. The installed Wrangler4.156.0 CLI was checked for this option. Automatic `.env` search otherwise uses the Wrangler config directory, and `.dev.vars` takes precedence; do not duplicate real keys across files. See [Cloudflare local environment docs](https://developers.cloudflare.com/workers/local-development/environment-variables/). Never print bindings/process.env or prefix this secret with VITE_/EXPO_PUBLIC_.
+
+For remote deployments, use `wrangler secret put OPENAI_API_KEY` for the key and configure `OPENAI_IMAGE_REVIEW_MODEL`, `OPENAI_IMAGE_REVIEW_ENABLED`, and optional `OPENAI_IMAGE_REVIEW_MAX_OUTPUT_TOKENS` as Worker variables. Keep the key out of Wrangler config and browser-prefixed variables.
 
