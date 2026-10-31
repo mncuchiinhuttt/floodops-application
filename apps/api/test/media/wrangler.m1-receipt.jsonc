@@ -1,0 +1,19 @@
+{
+  "name": "floodops-source-m1-receipt-test",
+  "main": "./m1-receipt-worker.ts",
+  "compatibility_date": "2026-10-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": { "bindings": [{ "name": "SESSIONS", "class_name": "SessionDO" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SessionDO"] }],
+  "r2_buckets": [
+    { "binding": "REPORT_MEDIA", "bucket_name": "source-m1-receipt-media", "remote": false },
+    { "binding": "SCENARIO_ASSETS", "bucket_name": "source-m1-receipt-assets", "remote": false }
+  ],
+  "images": { "binding": "IMAGES", "remote": false },
+  "vars": {
+    "APP_ENV": "test", "WEB_ORIGIN": "https://floodops.test",
+    "SESSION_LOCATOR_KEY": "synthetic-source-m1-test-locator-never-use-remotely",
+    "CAPABILITY_SEAL_KEY_ACTIVE": "synthetic-source-m1-test-seal-never-use-remotely",
+    "CAPABILITY_SEAL_KEY_ID": "source-m1-test-v1"
+  }
+}

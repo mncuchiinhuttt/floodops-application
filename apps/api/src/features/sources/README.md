@@ -29,3 +29,5 @@ Public server image seam: `createNormalizedImagePort(env).read(SessionRequestCon
 The media harness uses real local Workerd, SQLite DO, separate private R2 bindings and local Images. Its synthetic test credentials/images are never production configuration. Tests inject controlled failures/history states for races; those do not claim another role's missing endpoint is implemented.
 
 M1 review adapter: consume `createSourceReviewPort` and the authenticated image preparation/media factories from `reports/index`; see `../reports/README.md`. Full canonical source receipts are used, with atomic Review-owned ledger/audit commit and unchanged wire.
+
+M1 receipt rollout: inject optional `SourcesPorts.receiptRewardPolicy` from explicit retained server config; omitted provider yields permanent pending_config/null policy and no award. New reports include canonical reward and null review identity until a genuine decision. See reports/README for exact provider shape and current quick-driver/Review M1 serialization blockers. This delivery does not publish a new gate or silently rewrite legacy sessions.

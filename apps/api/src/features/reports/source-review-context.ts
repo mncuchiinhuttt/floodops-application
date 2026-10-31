@@ -13,7 +13,7 @@ export function originalReportContext(ports: SourcesPorts, context: TransitionCo
   const image = sourceImage(context.snapshot, report);
   return { ...sourceEnvironment(ports, context.snapshot), nowWall: context.now, participant: structuredClone(stored.originalSubmitter),
     reportId: report.report_id, sourceId: stored.sourceId, inputRevision: context.snapshot.meta.revision,
-    receivedAt: report.received_at, epochs: structuredClone(stored.capturedEpochs), boundVehicleTypes: [...stored.boundVehicleTypes],
+    receivedAt: stored.report.received_at, receiptRewardPolicy: structuredClone(stored.report.reward.policy), epochs: structuredClone(stored.capturedEpochs), boundVehicleTypes: [...stored.boundVehicleTypes],
     dispatcherEntities: [...context.snapshot.seed.entities.driver.map(entity_id => ({ entity_id, kind: "driver" as const,
       vehicle_types: [drivers.find(driver => driver.driver_id === entity_id)?.vehicle_type ?? fail(503, "CONFIG_INCOMPLETE")] })),
       ...context.snapshot.seed.entities.contributor.map(entity_id => ({ entity_id, kind: "citizen" as const, vehicle_types: allVehicles }))],
