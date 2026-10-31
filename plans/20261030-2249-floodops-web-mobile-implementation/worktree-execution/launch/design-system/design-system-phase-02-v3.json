@@ -1,0 +1,40 @@
+{
+  "work_item_id": "design-system-phase-02-v3",
+  "role_id": "design-system",
+  "phase_ids": [
+    2
+  ],
+  "base_sha": "ba41d3d2d7dace7bef961713d523afe6bd4a34e6",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/contracts-ready-v1-index.json",
+    "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca",
+    "sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    }
+  ],
+  "expected_branch": "feat/floodops-design-system",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "design-system-completion-dependencies-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}
