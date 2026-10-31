@@ -1,4 +1,4 @@
-import { fail } from "../../shared/index";
+import { fail, PlatformError } from "../../shared/index";
 import { boundedBytes } from "./bounded-bytes";
 import { MEDIA_LIMITS } from "./media-types";
 import type { ImageShape } from "./media-types";
@@ -30,7 +30,7 @@ export async function normalizeImage(images: ImagesBinding | undefined, bytes: U
     if (shape.width !== expected.width || shape.height !== expected.height) fail(422, "INVALID_IMAGE");
     return { bytes: normalized, ...shape };
   } catch (error) {
-    if (error instanceof Error && error.name === "PlatformError") throw error;
+    if (error instanceof PlatformError) throw error;
     if (error && typeof error === "object" && "code" in error && error.code === 9412) fail(422, "INVALID_IMAGE");
     fail(503, "MEDIA_PROCESSING_UNAVAILABLE");
   }

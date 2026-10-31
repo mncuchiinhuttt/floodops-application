@@ -15,7 +15,7 @@ Public server image seam: `createNormalizedImagePort(env).read(SessionRequestCon
 ## Known integration prerequisites
 
 - The canonical scn_functional1/v1 bundle has no configured driver source. Actual canonical quick report fails503CONFIG_INCOMPLETE. SimulationData/Lead must publish a driver observation Source in the frozen registry, referencing an explicitly justified low-confidence TTL/location profile, then update hashes/receipt before adoption. The separate test-authored scn_drivercase1 proves quick/text/scoped-reopening/delayed-capture behavior without modifying canonical data or claiming calibration.
-- Legacy shared multi-vehicle observations with a conflict in only some scopes retain SOURCE_SCOPE_INCOMPATIBLE until the exact SimulationData correction is integrated and this worker receives a fresh receipt. New reports split observations by vehicle and work through the current public port.
+- The v2 baseline integrates the exact SimulationData per-vehicle correction; source consumer tests cover shared flags, real bike conflict, known car, closure, explicit resolution and expiry without route/award effects. The temporary guard was removed only after this receipt cutover.
 - Lead owns central router/class composition, config, manifests and gate publication. No feature gate, production Images entitlement, real provider/model/device, D04/calibration or release/security acceptance is asserted here.
 
 ## Verification

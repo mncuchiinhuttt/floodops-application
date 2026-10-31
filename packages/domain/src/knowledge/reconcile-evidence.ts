@@ -9,10 +9,6 @@ export function reconcileEvidence(pairs: readonly KnowledgePair[], context: Evid
     && context.nowSimMinute < item.expires_sim_minute && item.vehicle_types.some(vehicle => !pairs.some(pair =>
       pair.segment_id === item.segment_id && pair.vehicle_type === vehicle))) fail("INVALID_TRANSITION");
   const knowledge = deriveKnowledgeSnapshot(pairs, context);
-  for (const item of context.observations) {
-    const scopes = knowledge.filter(pair => pair.observation_ids.includes(item.observation_id));
-    if (scopes.some(pair => pair.state === "unresolved_conflict") && scopes.some(pair => pair.state === "known")) fail("SOURCE_SCOPE_INCOMPATIBLE");
-  }
   const observations = context.observations.map(item => ({ ...structuredClone(item), has_conflict: knowledge.some(pair =>
     pair.state === "unresolved_conflict" && pair.observation_ids.includes(item.observation_id)) }));
   return { knowledge, observations };

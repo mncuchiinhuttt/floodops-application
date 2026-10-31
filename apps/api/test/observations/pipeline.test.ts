@@ -3,7 +3,7 @@ import { createFunctionalScenario, createReportCases } from "@floodops/test-fixt
 import { advanceRun, applyKnowledgeTransition, createRun, loadScenario, sealScenarioDraft } from "@floodops/simulation";
 import type { SimulationPolicy, SimulationRun } from "@floodops/simulation";
 import { submitReport } from "@floodops/domain/reporting";
-import { proposeObservationAcceptance, reconcileEvidence } from "@floodops/domain/knowledge";
+import { proposeConflictResolution, proposeObservationAcceptance, reconcileEvidence } from "@floodops/domain/knowledge";
 import { observation, participant } from "../sources/test-context.ts";
 
 export const hash = (text: string) => new Bun.CryptoHasher("sha256").update(text).digest("hex");
@@ -67,4 +67,31 @@ test("new multi-vehicle report splits evidence so bike conflict cannot poison ca
   expect(proposal.observations.find(item => item.observation_id === "obs_splitauto1")?.has_conflict).toBe(false);
   expect(proposal.report.observation_ids).toHaveLength(2);
   expect(proposeObservationAcceptance(proposal.report, "impassable", run.knowledge, { ...context, observations: proposal.observations }).kind).toBe("redelivery");
+});
+
+test("integrated producer preserves per-vehicle conflict/closure/expiry without route or award effects", () => {
+  const run = runFixture(), pairs = run.knowledge.map(pair => pair.segment_id === "seg_edge27" ? { ...pair, knowledge_epoch: 1 } : pair);
+  const shared = observation({ observation_id: "obs_legacyshared1", source_id: "src_seedcam1", confidence_band: "high", vehicle_types: ["motorbike", "car"],
+    expires_at: "2026-10-31T00:21:00Z", expires_sim_minute: 21 });
+  const contrary = observation({ observation_id: "obs_legacybike1", condition: "impassable" });
+  const closed = { ...shared, observation_id: "obs_sharedclosed1", segment_id: "seg_edge17" };
+  const context = { ...pipelineContext(run), observations: [...run.sourceSnapshot.observations, shared, contrary, closed] };
+  const reconciled = reconcileEvidence(pairs, context);
+  expect(reconcileEvidence(pairs, { ...context, observations: [...context.observations].reverse() }).knowledge).toEqual(reconciled.knowledge);
+  const next = applyKnowledgeTransition(run, reconciled.knowledge, { reasonId: "legacy-scoped-consumer", sourceSnapshot: { ...run.sourceSnapshot, observations: reconciled.observations } });
+  expect(next.knowledge.find(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type === "motorbike")?.state).toBe("unresolved_conflict");
+  expect(next.knowledge.find(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type === "car")).toMatchObject({ state: "known", confidence_band: "high" });
+  expect(next.sourceSnapshot.observations.find(item => item.observation_id === shared.observation_id)?.has_conflict).toBe(true);
+  expect(next.knowledge.filter(pair => pair.segment_id === "seg_edge17").every(pair => pair.state === "authoritative_closed")).toBe(true);
+  expect(next.branches.floodops!.operations).toEqual(run.branches.floodops!.operations);
+  expect(reconciled).not.toHaveProperty("awards");
+  const pair = pairs.find(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type === "motorbike")!;
+  const resolved = proposeConflictResolution({ pair, pairs, keepObservationIds: ["obs_bike001", shared.observation_id],
+    supersedeObservationIds: [contrary.observation_id], reasonId: "human-scoped-resolution" }, context);
+  const afterResolution = applyKnowledgeTransition(run, resolved.knowledge, { reasonId: resolved.reasonId, sourceSnapshot: { ...run.sourceSnapshot, observations: resolved.observations } });
+  expect(afterResolution.knowledge.filter(pair => pair.segment_id === "seg_edge27" && ["motorbike", "car"].includes(pair.vehicle_type)).every(pair => pair.state === "known")).toBe(true);
+  const advanced = advanceRun(next, 6, highOnly).run, expired = reconcileEvidence(advanced.knowledge, { ...pipelineContext(advanced), observations: advanced.sourceSnapshot.observations });
+  const afterExpiry = applyKnowledgeTransition(advanced, expired.knowledge, { reasonId: "legacy-scoped-expiry", sourceSnapshot: { ...advanced.sourceSnapshot, observations: expired.observations } });
+  expect(afterExpiry.knowledge.filter(pair => pair.segment_id === "seg_edge27" && ["motorbike", "car"].includes(pair.vehicle_type)).every(pair => pair.state === "known" && pair.confidence_band === "high")).toBe(true);
+  expect(afterExpiry.sourceSnapshot.observations.find(item => item.observation_id === shared.observation_id)?.has_conflict).toBe(false);
 });

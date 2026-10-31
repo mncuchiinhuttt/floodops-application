@@ -6,7 +6,7 @@ export function sourceDomain<T>(action: () => T): T {
     if (!(error instanceof SourceDomainError)) throw error;
     if (error.code === "FORBIDDEN") throw new PlatformError(403, "FORBIDDEN");
     if (error.code === "UNKNOWN_SOURCE" || error.code === "UNKNOWN_SEGMENT") throw new PlatformError(404, "NOT_FOUND");
-    if (["CONFIG_INCOMPLETE", "SOURCE_UNAVAILABLE", "SOURCE_SCOPE_INCOMPATIBLE"].includes(error.code)) throw new PlatformError(503, "CONFIG_INCOMPLETE");
+    if (["CONFIG_INCOMPLETE", "SOURCE_UNAVAILABLE"].includes(error.code)) throw new PlatformError(503, "CONFIG_INCOMPLETE");
     if (["STALE_EPOCH", "INVALID_TRANSITION"].includes(error.code)) throw new PlatformError(409, "STATE_CONFLICT");
     if (error.code === "INVALID_IMAGE" || error.code === "DUPLICATE_IMAGE") throw new PlatformError(422, error.code);
     throw new PlatformError(422, "INVALID_SCHEMA");

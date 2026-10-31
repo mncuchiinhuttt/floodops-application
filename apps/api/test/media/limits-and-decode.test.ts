@@ -34,6 +34,13 @@ describe("actual image limits and metadata stripping", () => {
     }
     const malformed = png(); malformed[40] = malformed[40]! ^ 1; const upload = await reserve(owner,malformed); expect((await put(owner,upload,malformed)).status).toBe(422);
   });
+  it("preserves explicit invalid-image and oversized-output wire errors from deterministic guards", async () => {
+    const wrongShape = { info:async () => ({ width:65,height:48 }) } as unknown as ImagesBinding;
+    await expect(normalizeImage(wrongShape,png(),"image/png")).rejects.toMatchObject({ status:422,code:"INVALID_IMAGE" });
+    const tooLarge = { info:async () => ({ width:64,height:48 }),input:() => ({ output:async () => ({
+      image:() => new Blob([new Uint8Array(5_242_881)]).stream(),contentType:() => "image/png" }) }) } as unknown as ImagesBinding;
+    await expect(normalizeImage(tooLarge,png(),"image/png")).rejects.toMatchObject({ status:413,code:"IMAGE_TOO_LARGE" });
+  });
   it("reports absent or broken decoder as service unavailable, without a raw fallback", async () => {
     await expect(normalizeImage(undefined,png(),"image/png")).rejects.toMatchObject({ status:503,code:"MEDIA_PROCESSING_UNAVAILABLE" });
     const broken = { info:async () => { throw new Error("synthetic decoder outage"); } } as unknown as ImagesBinding;

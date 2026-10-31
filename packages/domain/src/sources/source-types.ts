@@ -21,7 +21,7 @@ export interface EvidenceContext extends SourceEnvironment {
 export type SourceFailure = "INVALID_SCHEMA" | "CONFIG_INCOMPLETE" | "UNKNOWN_SOURCE" | "SOURCE_UNAVAILABLE"
   | "SOURCE_ROLE_MISMATCH" | "UNSUPPORTED_UNIT" | "INVALID_TIME" | "UNKNOWN_SEGMENT" | "LOCATION_MISMATCH"
   | "NEEDS_CLARIFICATION" | "FORBIDDEN" | "FUTURE_CAPTURE" | "EXPIRED" | "INVALID_IMAGE"
-  | "DUPLICATE_IMAGE" | "STALE_EPOCH" | "INVALID_TRANSITION" | "SOURCE_SCOPE_INCOMPATIBLE";
+  | "DUPLICATE_IMAGE" | "STALE_EPOCH" | "INVALID_TRANSITION";
 export class SourceDomainError extends Error {
   constructor(readonly code: SourceFailure) { super(code); this.name = "SourceDomainError"; }
 }
