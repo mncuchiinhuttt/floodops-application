@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import type { SegmentKnowledge } from "@floodops/contracts";
 import { checkEntry } from "@floodops/simulation";
 import { evaluateRoadEntry, createPlanningPolicy } from "../../../../packages/domain/src/planning/index.ts";
-import { approval, authority, makePlan, moto, car, runFixture } from "../planning/planning-context.ts";
+import { approval, authority, makePlan, moto, car, runFixture, highOnly } from "../planning/planning-context.ts";
 function context() {
   const run = runFixture(), plan = makePlan(), auth = authority(run, plan);
   const knowledge = structuredClone(run.knowledge.find(k => k.segment_id === "seg_edge17" && k.vehicle_type === "motorbike")!);
@@ -70,7 +70,7 @@ test.each([NaN, Infinity, -1])("invalid clock %s is blocked", atMinute => {
 test("simulator expiry normalization cannot revive a captured evidence approval", () => {
   const { run, plan, input } = context(); input.authority.approvals = [approval(plan)];
   const driver = run.branches.floodops!.operations.drivers[0]!;
-  const policy = createPlanningPolicy(run, input.authority, { [moto]: input.actionIds });
+  const policy = createPlanningPolicy(run, input.authority, { [moto]: input.actionIds }, highOnly);
   expect(checkEntry(run, "floodops", driver, input.segmentId, 21 * 60_000, policy)).toEqual({ allowed: false, reason: "EVIDENCE_EXPIRED" });
 });
 test("road inputs and caller-owned approval lists are never mutated", () => {

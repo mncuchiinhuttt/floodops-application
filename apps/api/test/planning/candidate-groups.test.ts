@@ -1,11 +1,11 @@
 import { expect, test } from "bun:test";
 import { advanceRun } from "@floodops/simulation";
 import { createPlanningPolicy, evaluateCandidate, evaluateRoadEntry } from "../../../../packages/domain/src/planning/index.ts";
-import { approval, authority, car, critical, food, hash, makeAction, makePlan, makeRoute, moto, runFixture, standard, stopsFor } from "./planning-context.ts";
+import { approval, authority, car, critical, food, highOnly, hash, makeAction, makePlan, makeRoute, moto, runFixture, standard, stopsFor } from "./planning-context.ts";
 function context() {
   const run = runFixture(), plan = makePlan();
   return { run, plan, routes: [makeRoute(run)], selectedGroupIds: plan.groups.map(g => g.group_id),
-    authority: authority(run, plan), deferLimitMinute: 3 as number | null, hash };
+    authority: authority(run, plan), currentPolicy: highOnly, deferLimitMinute: 3 as number | null, hash };
 }
 function unknownMotorbike(input: ReturnType<typeof context>) {
   for (const k of input.run.knowledge) if (k.vehicle_type === "motorbike") {
@@ -69,7 +69,7 @@ test("reassign and hub-change actions combine into one consistent assignment", (
   const result = evaluateCandidate(input);
   expect(result.status).toBe("ready"); expect(result.compiled!.candidate.assignments).toEqual(route.assignment_overrides);
   const projected = advanceRun(result.projection!.candidateRun, 20,
-    createPlanningPolicy(result.projection!.candidateRun, input.authority, result.compiled!.actionIdsByDriver)).run;
+    createPlanningPolicy(result.projection!.candidateRun, input.authority, result.compiled!.actionIdsByDriver, input.currentPolicy)).run;
   expect(projected.log.some(log => log.branch === "floodops" && log.kind === "pickup" && log.orderId === standard)).toBe(true);
   const order = projected.branches.floodops!.operations.orders.find(o => o.order_id === standard)!;
   expect(order.pickup_hub_id).toBe("hub_beta01"); expect(order.delivered_at_minute).not.toBeNull();

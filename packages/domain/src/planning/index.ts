@@ -1,4 +1,5 @@
 export { checkProposalIdentity } from "./proposal-identity.ts";
+export { createCurrentPolicy } from "./current-policy.ts";
 export { evaluateRoadEntry, createPlanningPolicy } from "./road-policy.ts";
 export { selectDependencyGroups } from "./dependency-groups.ts";
 export { compileCandidate } from "./compile-candidate.ts";
