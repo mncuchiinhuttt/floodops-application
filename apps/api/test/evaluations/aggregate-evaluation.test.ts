@@ -103,3 +103,12 @@ test("sparse measurements and sample arrays are rejected instead of invented", (
   expect(() => nearestRankP95(Array<number | null>(10))).toThrow("finite nonnegative");
   expect(() => aggregate(Array<EvaluationTrial>(10))).toThrow();
 });
+
+
+test("execution errors cannot masquerade as nonfailed trials, even when first proposal was invalid", () => {
+  for (const error_code of ["MODEL_TIMEOUT", "MODEL_REFUSED", "MODEL_INVALID_OUTPUT", "MODEL_UNAVAILABLE", "POLICY_BLOCKED"] as const) {
+    const samples = trials();
+    samples[0] = { ...samples[0]!, first_proposal_valid: false, failed: false, error_code };
+    expect(() => aggregate(samples)).toThrow("execution error");
+  }
+});
