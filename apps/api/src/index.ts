@@ -9,6 +9,8 @@ import { fail, type SessionSeed, type RuntimeRegistry } from "./shared/index";
 import { createSimulationRuntime } from "./features/simulation/index";
 import { createResultsRouter, createResultsView, RESULTS_VIEW } from "./features/results/index";
 import { createSourcesFeature } from "./features/sources/index";
+import { createPlanningRuntime, DEFAULT_SEARCH_LIMITS } from "./features/planning/index";
+import { createReviewSeed } from "./features/reports/review/index";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
 const legacyScenario = loadScenario(legacyManifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
@@ -47,26 +49,41 @@ export const simulationPersistence: SimulationPersistence<SimulationRun, RunStat
 export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> {
   if (id !== scenarioReference.scenario_id || version !== scenarioReference.scenario_version) fail(404, "NOT_FOUND");
   scenarioCatalog.get(id, version);
+  const run = createRun(scenario, "run_initial");
+  const reviewRewardsSeed = createReviewSeed({
+    scope: scenario.manifest.config.relevant_scope_pairs.map(pair => ({ ...pair,
+      knowledge_epoch: run.knowledge.find(item => item.segment_id === pair.segment_id && item.vehicle_type === pair.vehicle_type)?.knowledge_epoch
+        ?? fail(503, "CONFIG_INCOMPLETE") })),
+    knowledge: run.knowledge, observations: run.sourceSnapshot.observations,
+    sources: run.sourceSnapshot.sources, now_sim_minute: run.nowMs / 60000
+  });
   return {
     scenario_id: id, scenario_version: version,
     horizon_minute: scenario.manifest.config.horizon_minute,
     calibration_status: scenario.manifest.config.scenario.calibration_status,
     // Explicit synthetic admission roster; not a source/caption-derived identity or an account.
     entities: { driver: scenario.manifest.initial.drivers.map(driver => driver.driver_id), contributor: ["contributor_functional1"] },
-    values: simulationPersistence.write({ runtime_contract: { serialization: "m1-v1", version: "0.5.0-m1" } }, createRun(scenario, "run_initial"))
+    values: simulationPersistence.write({ runtime_contract: { serialization: "m1-v1", version: "0.5.0-m1" }, reviewRewardsSeed }, run)
   };
 }
-// Real read projections are available now. Advance stays fail-closed until the
-// Planner owner publishes the independent committed policy; never inject a test policy.
-const simulation = createSimulationRuntime({ persistence: simulationPersistence });
+// Genuine bounded deterministic runtime; no provider/key/model transport is injected.
+const planning = createPlanningRuntime({ persistence: simulationPersistence, search: DEFAULT_SEARCH_LIMITS });
+const simulation = createSimulationRuntime({ persistence: simulationPersistence, committedPolicy: planning.committedPolicy });
 const sources = createSourcesFeature({ scenarioCatalog, simulationPersistence });
 const registry: RuntimeRegistry = {
   ...simulation.registry,
-  commands: { ...sources.registry.commands, ...simulation.registry.commands },
-  views: { ...sources.registry.views, ...simulation.registry.views, [RESULTS_VIEW]: createResultsView(simulationPersistence) }
+  commands: { ...sources.registry.commands, ...simulation.registry.commands, ...planning.registry.commands },
+  views: { ...sources.registry.views, ...simulation.registry.views, ...planning.registry.views, [RESULTS_VIEW]: createResultsView(simulationPersistence) },
+  onLeaseExpired(snapshot, lease, now) {
+    let values = snapshot.values;
+    for (const feature of [sources, simulation, planning]) {
+      if (feature.registry.onLeaseExpired) values = feature.registry.onLeaseExpired({ ...snapshot, values }, lease, now);
+    }
+    return values;
+  }
 };
 // Preserve media recovery intents/table/alarm around the full combined registry.
 const RegisteredSessionDO = sources.createSessionObject(registry);
 export class SessionDO extends RegisteredSessionDO {}
-export default createApp([...sources.routers, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
+export default createApp([...sources.routers, planning.router, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
 
