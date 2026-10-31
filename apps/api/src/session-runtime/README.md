@@ -1,0 +1,31 @@
+# SessionPlatform public seam
+
+`../app/index.ts` exports `createApp(featureRouters, ports)` and HTTP helpers. The factory mounts session routes at `/api/v1`, then injected feature Hono routers under the same prefix. Feature routes use `runtimeCall` → `invoke` → `send`. `send` deliberately never exposes an internal job lease/effect. Production entrypoint and Wrangler bindings remain IntegrationLead-owned.
+
+`./index.ts` exports `SessionDO`, `createSessionObject(registry)` and transition types. Lead composes pure command reducers, view projections, `imageBinding`, and `onLeaseExpired` inside the DO class with `createSessionObject`; closures never cross RPC. Missing scenario or projection implementations return a typed dependency failure instead of fabricated domain state. `PlatformPorts.loadScenario` must return the frozen scenario seed, entities, initial values, horizon and calibration status.
+
+`../shared/index.ts` exports `createSessionRuntimeClient`, `ImageReviewMetadataPort`, actor/auth types and safe HTTP/error helpers. The RPC wire is JSON strings: `install` is the internal initialization boundary; `dispatch` accepts serialized server-generated calls. These are binding-only APIs, not public HTTP endpoints. Domain code must never receive a client-selected actor or capability token. Registered reducers receive the server-derived participant and a cloned snapshot.
+
+## Atomic transitions and jobs
+
+A command definition supplies permission, strict validator, operational flag and pure reducer. Auth/CSRF precedes output; participant/key digest replay precedes CAS. Snapshot, events, idempotent outcome, pointers, leases and cleanup intents commit together through SQLite `transactionSync`. Exceptions roll back every write. Do not return a Promise from a reducer or perform network, provider, R2 or image processing in it.
+
+`Transition.pointers` supports `latest_requested_job_id`, `latest_plan_id`, `active_advance_job_id`. A new requested planning job clears the current plan. Approve/dry-run/Execute reducers must pass `Call.expectedPointers` as well as their domain guard; exact committed replay runs first. `Call.fence` checks nonce digest, generation, current job, deadline and optional revision. A continuation that advances revision must update its lease revision in the same transition.
+
+`Transition.leases` stores generic planning/advance leases. Register `onLeaseExpired(snapshot, lease, now)` to update the feature job metadata; it must remain synchronous and preserve domain clock/operations. Watchdogs mark expired attempts failed, release only the matching current advance lock and never call a provider or advance time. Feature-specific job DTO projections/reducers remain with their owners.
+
+ImageReviewMetadataPort reserves one durable current job per report/current input, returns an internal one-use lease for the new attempt, and reuses active/completed current jobs across keys. `start` rechecks the binding and increments the call budget exactly once before provider I/O. `complete` rechecks binding/deadline/lease and validates derived advice; no result uses null. The registered `imageBinding` resolver derives immutable digest/model/rubric from authoritative report metadata. ReviewRewards owns model/service code and must call `start` immediately before the effect. Manual review updates authoritative report state; image advice is then superseded independently of unrelated revision changes. No automatic provider retries occur.
+
+## Storage, transport and integration
+
+Required bindings: `SESSIONS`, `WEB_ORIGIN`, `APP_ENV`, server secrets `SESSION_LOCATOR_KEY`, `CAPABILITY_SEAL_KEY_ACTIVE`, key ID `CAPABILITY_SEAL_KEY_ID`; optional previous secret keyring `CAPABILITY_SEAL_KEYS` (JSON ID→secret). Keep old seal keys through all credential replay/rollback windows. `REPORT_MEDIA` enables cleanup only; there is no shared scenario bucket mutation.
+
+Create rate limits use durable IP/hour counters, HMAC-hashed IP locators and opaque client nonce/key. Production must retain the platform-provided CF-Connecting-IP trust boundary; `clientAddress` override is for trusted local integration only. Capability tokens are independent random 256-bit values; auth tables store digests, credential outcomes use AES-GCM with session/participant/key/request AAD. Runtime keys accept bounded opaque base64url/UUID-style values with at least 22 characters; client entropy cannot be measured by the server. Client scope additionally requires the wire minimum 32 characters.
+
+Current resource defaults follow the frozen operational limits: idle 3600s, absolute 86400s, create 10/IP/hour, commands 120/participant/minute, invitations 100/session with 60–900s TTL, streams 5/session and 60s lifetime/15s heartbeat, event retention 10000 and pages ≤500, image attempts 50/session with one active and 20s deadline. These are local implementation defaults, not release/calibration evidence.
+
+Store report media under `sessions/<session_id>/...`. Register session-owned keys with `Transition.mediaKeys`; `Transition.cleanupKeys` additionally enqueues deletion in the persistent cleanup outbox. Both enforce this namespace. Cleanup deletes bounded batches from private REPORT_MEDIA, retains failed intents, and never touches SCENARIO_ASSETS. Expiry is checked on access; alarms only reconcile/cleanup. Closed sessions discard domain/media data after cleanup and retain credential replay/tombstone records until the original absolute expiry.
+
+SSE and JSON share the same audience filter and scan cursor; dispatcher-only image events contain IDs, never image/advice text. Hidden pages emit cursor frames. Streams reauthorize while polling, stop on expiry/revoke/reset, enforce slots and release them on cancellation. Actual native reader/device acceptance remains downstream work.
+
+Local validation: `bun run --cwd apps/api test:runtime`; `bun run --cwd apps/api typecheck`; `bun --bun run tsc --noEmit -p apps/api/test/capabilities/tsconfig.json`. The test Worker uses a synthetic scenario, reducers and explicit failure injection only for boundary tests. It never calls a provider and is not a production entrypoint.
