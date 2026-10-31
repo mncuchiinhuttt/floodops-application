@@ -1,3 +1,5 @@
+import { clientFailure } from "../../shared/client-failure";
+import { ReportRewardFeedback } from "./report-reward-feedback";
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { Alert, Button, Form, TextArea, TextField } from "@floodops/ui-native";
@@ -20,6 +22,7 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [receipt, setReceipt] = useState<{ report: Report; sessionId: string; generation: number } | null>(null);
   const lock = useRef(false);
   const current = useRef(context); current.current = context;
   const stale = draftNeedsRelink(draft, context);
@@ -31,7 +34,7 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
   async function run(action: () => Promise<void>) {
     if (lock.current) return;
     lock.current = true; setBusy(true);
-    try { await action(); } catch { setMessage("Action unavailable or rejected. Your draft is preserved; review and try again explicitly."); }
+    try { await action(); } catch (cause) { setMessage(`${clientFailure(cause).message} Your draft is preserved.`); }
     finally { lock.current = false; setBusy(false); }
   }
   function stillCurrent(start: MobileContext) {
@@ -65,6 +68,7 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
       setMessage("Session changed during submission. Inspect the original server report; this draft requires review before reuse."); return;
     }
     setSubmitted(true);
+    if (result) setReceipt({ report: result, sessionId: start.session.session_id, generation: start.session.generation });
     setMessage(result ? `Report ${result.report_id}: ${result.status}. Reasons: ${result.reason_codes.join(", ") || "None"}. Review and simulated awards remain separate server outcomes.`
       : "Report submitted to the server. Review status and any award come from a refreshed authorized view.");
   }
@@ -100,9 +104,10 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
         onPress={() => void run(async () => { if (draftPort) { const start = context; await draftPort.save(draft); if (stillCurrent(start)) setMessage("Draft saved privately. It will never send automatically."); } })} />
       <CommandButton label="Send report" reason={reason} pending={busy} onPress={() => void run(submit)} />
       {submitted && <CommandButton label="Start new report" reason={baseReason ?? (!createNewDraft ? "Refresh scenario capture configuration before starting a new report." : null)} onPress={() => {
-        if (createNewDraft) { setDraft(createNewDraft()); setSubmitted(false); setMessage(null); }
+        if (createNewDraft) { setDraft(createNewDraft()); setSubmitted(false); setMessage(null); setReceipt(null); }
       }} />}
       {message && <Alert title="Report status">{message}</Alert>}
+      {receipt && receipt.sessionId === context.session.session_id && receipt.generation === context.session.generation && <ReportRewardFeedback report={receipt.report} />}
     </Form>
   </ScreenFrame>;
 }

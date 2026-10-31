@@ -7,7 +7,7 @@ export const fixtureSession: SessionMeta = {
   created_at: "2026-10-31T00:00:00Z", expires_at: "2026-11-01T00:00:00Z",
 };
 export function fixtureContext(role: Role = "dispatcher"): MobileContext {
-  const permissions = role === "dispatcher" ? ["session:read", "operations:read", "knowledge:read", "planning:decide", "planning:execute", "reports:review", "simulation:advance", "simulation:reset", "results:read"] as const
+  const permissions = role === "dispatcher" ? ["session:read", "operations:read", "knowledge:read", "planning:request", "planning:decide", "planning:execute", "reports:review", "simulation:advance", "simulation:reset", "results:read"] as const
     : role === "driver" ? ["driver:self:read", "reports:submit"] as const : role === "contributor" ? ["contributor:self:read", "reports:submit"] as const : ["session:read"] as const;
   return { session: { ...fixtureSession }, participant: { participant_id: `par_${role}01`, role, bound_entity_id: role === "driver" ? "drv_fixture01" : "con_fixture01",
     expires_at: "2026-11-01T00:00:00Z", permissions: [...permissions], is_owner: false },
@@ -17,7 +17,8 @@ export function fixtureReport(): Report {
   return { report_id: "rep_fixture01", participant_id: "par_contributor01", kind: "citizen", segment_id: "seg_fixture01", coordinate: null,
     captured_at: "2026-10-31T00:10:00Z", captured_sim_minute: 10, received_at: "2026-10-31T00:11:00Z", vehicle_types: ["motorbike"],
     description: "Synthetic road photo description", media_id: "med_fixture01", fixture_photo_id: null, status: "pending_review", reason_codes: [],
-    observation_ids: [], award_id: null, input_revision: 3, observation_candidates: [], input_mode: "photo", quick_condition: null, reporter_entity_id: "con_fixture01" };
+    observation_ids: [], award_id: null, reward: { status: "pending_config", policy: null, reason_code: "POLICY_NOT_CONFIGURED", award_id: null },
+    review_result_id: null, reviewed_at: null, input_revision: 3, observation_candidates: [], input_mode: "photo", quick_condition: null, reporter_entity_id: "con_fixture01" };
 }
 export function fixtureDriver(): DriverDashboard {
   return { driver_id: "drv_fixture01", session: { ...fixtureSession }, driver: {

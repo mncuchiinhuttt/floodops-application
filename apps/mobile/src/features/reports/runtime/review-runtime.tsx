@@ -1,5 +1,5 @@
 import { Alert } from "@floodops/ui-native";
-import { IdSchema } from "@floodops/contracts";
+import { assertReceiptRewardPolicyUnchanged, IdSchema } from "@floodops/contracts";
 import type { Report } from "@floodops/contracts";
 import type { MobileContext } from "../../../shared/session-context";
 import { accessReason } from "../../../shared/session-context";
@@ -26,7 +26,8 @@ function AdviceReview({ context, report }: { context: MobileContext; report: Rep
   return <>{command.error && <Alert title="Review request status">{command.error}</Alert>}
     {report.media_id && <PrivateReportPhoto context={context} mediaId={report.media_id} />}
     <ReviewScreen context={context} report={report} advice={advice} pending={command.pending}
-      onReview={input => void command.run(() => runtime.client!.reviewReport(report.report_id, input, nativeKey()))}
+      onReview={input => void command.run(async () => { const result = await runtime.client!.reviewReport(report.report_id, input, nativeKey());
+        assertReceiptRewardPolicyUnchanged(report.reward, result.body.data.report.reward); })}
       onAiRequest={() => void command.run(async () => { await runtime.client!.requestImageReview(report.report_id, nativeKey()); refreshAdvice(); })} />
   </>;
 }

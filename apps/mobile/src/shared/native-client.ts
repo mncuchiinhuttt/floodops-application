@@ -1,5 +1,5 @@
 import { ApiClient, ApiError, TransportError, RequestScope, nativeCredentials, type FetchAdapter } from "@floodops/api-client";
-import { formatEtag, operations, type OperationId, type OperationInputs, type OperationOutputs, type Permission, type SessionMeta } from "@floodops/contracts";
+import { ContractValidationError, formatEtag, operations, type OperationId, type OperationInputs, type OperationOutputs, type Permission, type SessionMeta } from "@floodops/contracts";
 import { accessReason, commandReason, type MobileContext } from "./session-context";
 export interface NativeCredentialPort { readToken(sessionId: string): Promise<string | null> }
 /** SecureStore is supplied by the future native bootstrap, never replaced by local storage here. */
@@ -33,7 +33,7 @@ export class NativeSessionClient {
       return result;
     } catch (error) {
       if (error instanceof ApiError && [401, 403, 410].includes(error.status)) this.invalidate();
-      if (error instanceof TransportError || (error instanceof ApiError && [409, 412].includes(error.status))) this.requiresRefresh = true;
+      if (error instanceof TransportError || (error instanceof ContractValidationError && !error.boundary.endsWith(".request")) || (error instanceof ApiError && [409, 412].includes(error.status))) this.requiresRefresh = true;
       throw error;
     }
   }
@@ -52,6 +52,9 @@ export class NativeSessionClient {
     return this.context.participant.role === "dispatcher" ? "reports:review" : this.context.participant.role === "driver" ? "driver:self:read" : "contributor:self:read";
   }
   results() { return this.read("getResults", { path: this.path }, "results:read"); }
+  requestPlan(key: string) {
+    return this.command("createPlanningJob", { path: this.path, body: { cause: "manual", cause_entity_ids: [] }, headers: this.headers(key) }, "planning:request");
+  }
   decidePlan(planId: string, body: OperationInputs["decidePlanActions"]["body"], key: string) {
     return this.command("decidePlanActions", { path: { ...this.path, plan_id: planId }, body, headers: this.headers(key) }, "planning:decide");
   }

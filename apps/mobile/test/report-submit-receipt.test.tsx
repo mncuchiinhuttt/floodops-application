@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { ContractValidationError } from "@floodops/contracts";
 import type { Report } from "@floodops/contracts";
 import { ReportForm } from "../src/features/reports/report-form";
 import { newReportDraft } from "../src/features/reports/report-draft";
@@ -57,4 +58,19 @@ test("only explicit Start new report clears sent input and takes capture default
   expect(screen.queryByRole("button", { name: "Start new report" })).toBeNull();
   expect(screen.getByRole("button", { name: "Send report" })).toBeEnabled();
   expect(screen.queryByText(/Report rep_fixture01:/)).toBeNull();
+});
+
+
+test("an invalid M1 response preserves input and shows inspection guidance without inventing a receipt", async () => {
+  const context = { ...fixtureContext("driver"), online: true };
+  const draft = newReportDraft(context, captureTime(t0, context.session.sim_minute));
+  draft.segment = "seg_fixture01"; draft.description = "Preserved uncertain report"; draft.vehicles = ["motorbike"];
+  const send = jest.fn(async () => { throw new ContractValidationError("submitReport.response", [{ path: "data.reward", code: "missing" }]); });
+  await render(<ReportForm context={context} initialDraft={draft} onSubmit={send} />);
+  await fireEvent.press(screen.getByRole("button", { name: "Send report" }));
+  await waitFor(() => expect(screen.getByText(/Inspect the outcome; legacy data requires a new session or explicit Reset/)).toBeOnTheScreen());
+  expect(screen.getByDisplayValue(draft.description)).toBeOnTheScreen();
+  expect(screen.queryByText(/Reward status:/)).toBeNull();
+  expect(screen.queryByRole("button", { name: "Start new report" })).toBeNull();
+  expect(send).toHaveBeenCalledTimes(1);
 });
