@@ -1,0 +1,12 @@
+{
+  "provenance": "documented_assumption",
+  "calibration": "incomplete",
+  "note": "Placeholder: 3 simulated points for an accepted citizen photo report that first fills an open community-evidence gap. This simulated ledger has no payout and no real-world value.",
+  "reward": {
+    "policy_id": "policy_demo_m1_v1",
+    "version": "demo-reward-policy-v1",
+    "basis": "per_report",
+    "points_per_report": 3,
+    "eligible_source_ids": ["src_citizen1"]
+  }
+}

@@ -1,9 +1,12 @@
 import { ApiClient, ApiError, nativeCredentials } from "@floodops/api-client";
 const baseUrl = process.env.FLOODOPS_API_URL ?? "http://127.0.0.1:8760/api/v1", key = () => crypto.randomUUID();
-const output: { stage: string; status: string; http?: number }[] = [];
+const expectPendingConfig = process.env.FLOODOPS_EXPECT_PENDING_CONFIG === "1";
+const output: { stage: string; status: string; http?: number; reason?: string; award_id?: string; points?: number; award_count?: number }[] = [];
 let stage = "catalog", cleanup: (() => Promise<void>) | undefined;
 function check(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
-function mark(name: string, http?: number) { output.push({ stage: name, status: "pass", ...(http ? { http } : {}) }); }
+function mark(name: string, http?: number, detail: { award_id?: string; points?: number; award_count?: number } = {}) {
+  output.push({ stage: name, status: "pass", ...(http ? { http } : {}), ...detail });
+}
 const wait = () => new Promise(resolve => setTimeout(resolve, 20));
 async function run() {
   const guest = new ApiClient({ baseUrl, credentials: () => ({ kind: "none" }), getRetry: { maxRetries: 0 } });
@@ -34,17 +37,48 @@ async function run() {
       segment_id: "seg_edge27", coordinate: [106.701, 10.7705], captured_at: config.t0, captured_sim_minute: 0,
       vehicle_types: ["motorbike"], description: "Project-authored synthetic M1 workflow probe" } });
   check(submitted.body.data.status === "pending_review" && submitted.body.data.award_id === null, "Submission mutated review/award prematurely");
+  const receipt = submitted.body.data.reward;
+  check(expectPendingConfig ? receipt.status === "pending_config" && receipt.policy === null
+    : receipt.status === "pending_review" && receipt.policy?.version === "demo-reward-policy-v1", "Receipt did not pin the expected demo policy");
   mark(stage, submitted.status);
   if (Bun.argv.includes("--source-only")) return;
   stage = "manual-review";
   const reviewPath = { ...path(), report_id: submitted.body.data.report_id };
-  const reviewed = await owner.request("reviewReport", { path: reviewPath, headers: { "Idempotency-Key": key(), "If-Match": await cas() },
-    body: { decision: "accept", reason: "Synthetic manual workflow test; not model safety proof", mapped_segment_id: "seg_edge27", vehicle_types: ["motorbike"], condition: "normal" } });
-  check(reviewed.body.data.report.status === "accepted" && reviewed.body.data.report.observation_ids.length > 0, "Manual review did not commit real evidence");
-  mark(stage, reviewed.status);
+  const reviewInput = { path: reviewPath, headers: { "Idempotency-Key": key(), "If-Match": await cas() },
+    body: { decision: "accept" as const, reason: "Synthetic manual workflow test; not model safety proof", mapped_segment_id: "seg_edge27",
+      vehicle_types: ["motorbike"], condition: "normal" as const } };
+  const reviewed = await owner.request("reviewReport", reviewInput), reviewResult = reviewed.body.data;
+  check(reviewResult.report.status === "accepted" && reviewResult.report.observation_ids.length > 0, "Manual review did not commit real evidence");
+  const firstAwards = await owner.request("listAwards", { path: path() });
+  if (expectPendingConfig) {
+    check(reviewResult.report.reward.status === "pending_config" && reviewResult.report.award_id === null
+      && reviewResult.award === null && firstAwards.body.data.items.length === 0, "Missing policy created a guessed award");
+    mark(stage, reviewed.status, { award_count: firstAwards.body.data.items.length });
+  } else {
+    const award = reviewResult.award;
+    check(award !== null && award.points === 3 && reviewResult.report.reward.status === "committed"
+      && reviewResult.report.award_id === award.award_id, "Accepted receipt did not commit its configured award");
+    check(firstAwards.body.data.items.length === 1 && firstAwards.body.data.items[0]?.award_id === award.award_id,
+      "Award ledger does not contain exactly one committed award");
+    mark(stage, reviewed.status, { award_id: award.award_id, points: award.points, award_count: firstAwards.body.data.items.length });
+  }
+  stage = "review-replay";
+  const reviewReplay = await owner.request("reviewReport", reviewInput);
+  const replayAwards = await owner.request("listAwards", { path: path() });
+  check(replayAwards.body.data.items.length === firstAwards.body.data.items.length, "Review replay duplicated ledger awards");
+  check(reviewReplay.body.data.report.reward.status === reviewResult.report.reward.status
+    && reviewReplay.body.data.report.award_id === reviewResult.report.award_id, "Review replay changed reward outcome");
+  if (expectPendingConfig) {
+    mark(stage, reviewReplay.status, { award_count: replayAwards.body.data.items.length });
+  } else {
+    const award = reviewResult.award;
+    check(award !== null && reviewReplay.body.data.award?.award_id === award.award_id
+      && replayAwards.body.data.items[0]?.award_id === award.award_id, "Review replay changed or duplicated its committed award");
+    mark(stage, reviewReplay.status, { award_id: award.award_id, points: award.points, award_count: replayAwards.body.data.items.length });
+  }
   stage = "knowledge";
   const knowledge = await owner.request("getKnowledge", { path: path() });
-  check(reviewed.body.data.report.observation_ids.every(id => knowledge.body.data.observations.some(item => item.observation_id === id)), "Reviewed observations absent from knowledge");
+  check(reviewResult.report.observation_ids.every(id => knowledge.body.data.observations.some(item => item.observation_id === id)), "Reviewed observations absent from knowledge");
   mark(stage, knowledge.status);
   stage = "deterministic-plan";
   let job = (await owner.request("createPlanningJob", { path: path(), headers: { "Idempotency-Key": key(), "If-Match": await cas() },
@@ -83,13 +117,17 @@ async function run() {
   check(sessionId !== oldId, "Reset reused session identity");
   try { await owner.request("getSession", { path: { session_id: oldId } }); throw new Error("Old session remained readable"); }
   catch (error) { check(error instanceof ApiError && [401, 403, 410].includes(error.status), "Old session fence failed"); }
-  mark(stage, replacement.status);
+  const freshAwards = await owner.request("listAwards", { path: path() });
+  check(freshAwards.body.data.items.length === 0, "Reset retained an award from the previous generation");
+  mark(stage, replacement.status, { award_count: freshAwards.body.data.items.length });
 }
 try { await run(); }
 catch (error) {
-  output.push({ stage, status: error instanceof ApiError ? `blocked:${error.response.error.code}` : "failed:contract-or-invariant", ...(error instanceof ApiError ? { http: error.status } : {}) });
+  output.push({ stage, status: error instanceof ApiError ? `blocked:${error.response.error.code}` : "failed:contract-or-invariant",
+    ...(error instanceof ApiError ? { http: error.status } : error instanceof Error ? { reason: error.message } : { reason: "Unknown failure" }) });
   process.exitCode = 1;
 } finally {
   if (cleanup) try { await cleanup(); mark("cleanup"); } catch { output.push({ stage: "cleanup", status: "failed" }); process.exitCode = 1; }
-  console.log(JSON.stringify({ qualification: "Actual loopback typed-client HTTP probe; not browser E2E, participant parity, expiry or live model proof", mode: Bun.argv.includes("--source-only") ? "source-only" : "M1-core", stages: output }, null, 2));
+  console.log(JSON.stringify({ qualification: "Actual loopback typed-client HTTP probe; not browser E2E, participant parity, expiry or live model proof",
+    mode: Bun.argv.includes("--source-only") ? "source-only" : expectPendingConfig ? "M1-pending-config" : "M1-core", stages: output }, null, 2));
 }

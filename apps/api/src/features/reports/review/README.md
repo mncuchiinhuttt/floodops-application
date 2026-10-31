@@ -10,4 +10,11 @@ Source-backed image POST prepares its binding through the real authenticated Sou
 
 `createResponsesImageReviewPort` targets the fixed OpenAI Responses endpoint with strict model-only output, no tools, bounded bytes/time and no retries. No live provider calls or credential setup are included.
 
-At rollout V3, Source's submit producer still omits the required M1 report fields and its review apply guard still freezes reward/review identity. Source must migrate these paths and preserve receipt policy before real submit-to-review E2E can pass. The worker does not bypass that guard or claim M1/backend readiness.
+## Runnable demo reward assumption
+The root demo loads `data/policies/demo-reward-policy-v1.json`, explicitly marked `documented_assumption` with `calibration: incomplete`.
+It awards 3 simulated points per accepted citizen photo report that first fills an open gap from the configured community source `src_citizen1`.
+The immutable reward-policy reference is SHA-256-derived from the strict policy payload and is pinned on each report at receipt.
+Set `DEMO_REWARD_POLICY_ENABLED=false` to disable the demo policy; malformed policy data also fails closed.
+Reports received without valid configuration remain `pending_config` forever, but manual review and knowledge commits remain available.
+M1 free reports need no mission, and AI photo advice never changes points.
+These placeholder points exist only in a simulated ledger: no payout and no real-world value.

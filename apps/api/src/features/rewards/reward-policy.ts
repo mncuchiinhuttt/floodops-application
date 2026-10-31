@@ -22,6 +22,27 @@ export function prepareRewardPolicy(payload: RewardPolicyPayload): RewardConfig 
   return Object.freeze({ policy: Object.freeze(policy), points_per_report: payload.points_per_report,
     eligible_source_ids: Object.freeze(sourceIds) });
 }
+/** Strictly load the versioned demo document; malformed or disabled config is absent. */
+export function loadDemoRewardPolicy(document: unknown, enabled = true): RewardConfig | null {
+  if (!enabled || typeof document !== "object" || document === null || Array.isArray(document)) return null;
+  const fields = document as Record<string, unknown>, keys = Object.keys(fields);
+  if (keys.length !== 4 || keys.some(key => !["provenance", "calibration", "note", "reward"].includes(key))
+    || fields.provenance !== "documented_assumption" || fields.calibration !== "incomplete"
+    || typeof fields.note !== "string" || fields.note.length < 40 || fields.note.length > 280) return null;
+  const rawReward = fields.reward;
+  if (typeof rawReward !== "object" || rawReward === null || Array.isArray(rawReward)) return null;
+  const reward = rawReward as Record<string, unknown>, rewardKeys = Object.keys(reward);
+  const eligibleSourceIds = reward.eligible_source_ids;
+  if (rewardKeys.length !== 5 || rewardKeys.some(key => !["policy_id", "version", "basis", "points_per_report", "eligible_source_ids"].includes(key))
+    || typeof reward.policy_id !== "string" || typeof reward.version !== "string" || reward.basis !== "per_report"
+    || typeof reward.points_per_report !== "number" || !Array.isArray(eligibleSourceIds)
+    || eligibleSourceIds.some(sourceId => typeof sourceId !== "string")) return null;
+  try {
+    return prepareRewardPolicy({ policy_id: reward.policy_id, version: reward.version, basis: reward.basis,
+      points_per_report: reward.points_per_report, eligible_source_ids: eligibleSourceIds.map(sourceId => parseSchema("Id", sourceId)) });
+  } catch { return null; }
+}
+
 const same = (a: RewardPolicyRef, b: RewardPolicyRef) => a.policy_id === b.policy_id && a.version === b.version && a.config_hash === b.config_hash;
 /** Missing/corrupt archives cannot block human review or create guessed points. */
 export function resolvePinnedReward(options: ReviewOptions, receipt: RewardPolicyRef | null): RewardConfig | null {

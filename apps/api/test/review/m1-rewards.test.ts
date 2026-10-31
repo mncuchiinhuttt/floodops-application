@@ -2,8 +2,8 @@ import { expect, test } from "bun:test";
 import { assertReceiptRewardPolicyUnchanged, parseM1ReviewResult } from "@floodops/contracts";
 import { proposeReportReward } from "@floodops/domain/rewards";
 import type { ReviewOptions } from "../../src/features/reports/review/index";
-import { prepareRewardPolicy } from "../../src/features/rewards/reward-policy";
-import { resolvePinnedReward } from "../../src/features/rewards/reward-policy";
+import { loadDemoRewardPolicy, prepareRewardPolicy, resolvePinnedReward } from "../../src/features/rewards/reward-policy";
+import demoRewardPolicyDocument from "../../../../data/policies/demo-reward-policy-v1.json";
 import { attachAward, humanReview } from "../../src/features/reports/review/review-result";
 import { context, openedLedger, report, rewardInput, source } from "../rewards/fixtures";
 
@@ -73,4 +73,16 @@ test("explicit policy payload validates positive per-report amount and determini
   const second = prepareRewardPolicy({ ...payload, eligible_source_ids: ["src_fixture002", source.source_id] });
   expect(first.policy).toEqual(second.policy);
   expect(prepareRewardPolicy({ ...payload, version: "test-v2" }).policy.config_hash).not.toBe(configured.policy.config_hash);
+});
+test("demo policy document loads strictly and disabled or malformed config stays absent", () => {
+  const loaded = loadDemoRewardPolicy(demoRewardPolicyDocument);
+  expect(loaded?.policy.policy_id).toBe("policy_demo_m1_v1");
+  expect(loaded?.points_per_report).toBe(3);
+  expect(loaded?.eligible_source_ids).toEqual(["src_citizen1"]);
+  expect(loaded?.policy.config_hash).toMatch(/^[0-9a-f]{64}$/);
+  expect(loadDemoRewardPolicy(demoRewardPolicyDocument, false)).toBeNull();
+  expect(loadDemoRewardPolicy({ ...demoRewardPolicyDocument, extra: true })).toBeNull();
+  expect(loadDemoRewardPolicy({ ...demoRewardPolicyDocument, provenance: "unsupported" })).toBeNull();
+  expect(loadDemoRewardPolicy({ ...demoRewardPolicyDocument,
+    reward: { ...demoRewardPolicyDocument.reward, points_per_report: 0 } })).toBeNull();
 });

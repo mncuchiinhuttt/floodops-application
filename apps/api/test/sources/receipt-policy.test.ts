@@ -11,7 +11,7 @@ import type { SourcesPorts } from "../../src/features/scenario/index.ts";
 import { driverContext, reportContext } from "./test-context.ts";
 
 // Loader shim only; no DO is instantiated and no Review runtime is mocked or executed.
-mock.module("cloudflare:workers", () => ({ DurableObject: class {} }));
+mock.module("cloudflare:workers", () => ({ DurableObject: class {}, env: {} }));
 const { scenarioCatalog, simulationPersistence, loadSessionScenario } = await import("../../src/index.ts");
 const { createSourcesFeature } = await import("../../src/features/sources/index.ts");
 const { createSourceReviewPort } = await import("../../src/features/reports/index.ts");
