@@ -4,10 +4,10 @@ import { freezeValue } from "@floodops/domain/operations";
 import type { ScenarioReference, SimulationPersistence } from "@floodops/domain/public-ports";
 import manifest from "../../../data/scenarios/functional-v1/manifest.json";
 import { createApp } from "./app/index";
-import { createSessionObject } from "./session-runtime/index";
 import { fail, type SessionSeed, type RuntimeRegistry } from "./shared/index";
 import { createSimulationRuntime } from "./features/simulation/index";
 import { createResultsRouter, createResultsView, RESULTS_VIEW } from "./features/results/index";
+import { createSourcesFeature } from "./features/sources/index";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
 export const scenarioReference: ScenarioReference = Object.freeze({
@@ -54,11 +54,14 @@ export async function loadSessionScenario(id: string, version: string): Promise<
 // Real read projections are available now. Advance stays fail-closed until the
 // Planner owner publishes the independent committed policy; never inject a test policy.
 const simulation = createSimulationRuntime({ persistence: simulationPersistence });
+const sources = createSourcesFeature({ scenarioCatalog, simulationPersistence });
 const registry: RuntimeRegistry = {
   ...simulation.registry,
-  views: { ...simulation.registry.views, [RESULTS_VIEW]: createResultsView(simulationPersistence) }
+  commands: { ...sources.registry.commands, ...simulation.registry.commands },
+  views: { ...sources.registry.views, ...simulation.registry.views, [RESULTS_VIEW]: createResultsView(simulationPersistence) }
 };
-const RegisteredSessionDO = createSessionObject(registry);
+// Preserve media recovery intents/table/alarm around the full combined registry.
+const RegisteredSessionDO = sources.createSessionObject(registry);
 export class SessionDO extends RegisteredSessionDO {}
-export default createApp([simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
+export default createApp([...sources.routers, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
 
