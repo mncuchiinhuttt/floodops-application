@@ -1,9 +1,9 @@
 # Deterministic M1 planning core
 
 Public constructor: `createPlanningRuntime<State>({persistence, search?, deadlineMs?, observationProposal?, validateCause?})`.
-Returns `{registry, router, committedPolicy}`. No model/provider/key is needed. Legacy provider/model
+Returns `{registry, router, committedPolicy, planner}`. No model/provider/key is needed. Legacy provider/model
 options are ignored; the public planning entrypoint does not import/export the OpenAI adapter or Commander.
-Historical controller/provider tests remain isolated regressions, not an M1 runtime path.
+Historical adapters remain preserved. The canonical contract disables operational model tools; the legacy controller fails before timer/transport. Neither adapter/controller is an M1 runtime path.
 
 IntegrationLead composition:
 
@@ -53,15 +53,28 @@ Internal SearchEvidence records selected structural key, evaluated count, bounds
 including driver/order/stop scope limits. Outcomes distinguish candidate, no_feasible_plan and no_change
 (all work delivered). Neither empty outcome applies operations.
 
-## Compatibility and safety
+## M1 wire and serialization
 
-This receipt authorizes the internal algorithm before Contracts M1 refreeze. No new public DTO/status/
-event field was invented. Current strict Plan/PlanningJob wire remains valid: empty results are represented
-by a completed job with an empty blocked proposal; precise no_change/no_feasible_plan is retained in
-private server search metadata until its new typed wire is published. Historical required job
-model/model_config_hash fields hold algorithm version/config hash. Historical MODEL_TIMEOUT/
-MODEL_INVALID_OUTPUT literals remain wire-compatible failure codes; no model is called.
-Lead must adapt these fields/outcomes only after the new Contracts receipt.
+PlanningJob uses only `planner:{kind:"deterministic",algorithm_version,config_hash,search_limit}`;
+no model/model_config_hash fields are serialized. `planning.planner` exposes the same frozen metadata
+for Root/Results composition. The search_limit is the actual configured evaluation bound.
+
+Bounded exhaustion becomes failed/null-plan/NO_FEASIBLE_PLAN with completion time. It stores search
+audit metadata without a Plan/routes/latest-plan/proposal event or operational effect. A deadline
+becomes failed/null-plan/PLANNER_TIMEOUT. Cancelled/superseded results retain null plan/error and a populated terminal timestamp. All complete/cancel/expire paths validate
+the current strict PlanningJob. No-change completes with a real immutable empty/no-op Plan.
+
+Owned state access checks `values.runtime_contract={serialization:"m1-v1",version:"0.5.0-m1"}` before
+parsing/initializing jobs; uncached legacy requests return STATE_CONFLICT without rewriting values.
+The expiry hook skips legacy values unchanged. Full legacy cached-replay/read/callback isolation
+requires the generic pre-replay Platform fence, which is outside this role. At this exact launch,
+Platform's planning lease/SSE watchdog reason still uses MODEL_TIMEOUT; SessionPlatform/Lead must
+change it to PLANNER_TIMEOUT. The owned job hook already serializes PLANNER_TIMEOUT. Neither central
+dependency is bypassed or claimed complete.
+
+The typed operations use public InternalServiceInput/Output, parseInternalServiceInput/Output and
+getInternalServiceDefinitions/internalServices contracts. No provider registrations are generated.
+Current66 HTTP signatures, capabilities, CSRF, CAS, idempotency and Reset remain unchanged.
 
 Human decisions/dry-run are metadata-only. Execute rechecks current/latest/revision/closure/evidence/
 physical/objective constraints inside the genuine DO transaction and writes assignments, routes, ETA,
@@ -76,5 +89,4 @@ road events only. Hub/defer regressions are retained as historical M2 coverage, 
 
 Owned Workerd harness explicitly creates frozen functional-v2; immutable v1 remains in domain fixtures.
 Tests separately exercise deterministic search (no transport), explicit unknown/low approval/Execute
-guards, conflict, real movement, CAS/auth, supersession, replay and Reset. Central wiring and new public
-M1 contract/browser acceptance remain IntegrationLead/Contracts/QA gates.
+guards, conflict, real movement, CAS/auth, supersession, replay and Reset. Central serialization/watchdog fixes and combined browser/native acceptance remain IntegrationLead/SessionPlatform/QA gates.

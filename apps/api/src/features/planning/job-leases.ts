@@ -1,8 +1,9 @@
+import { parseSchema } from "@floodops/contracts";
 import { createHash } from "node:crypto";
 import { fail } from "../../shared/index";
 import type { DurableLease, Snapshot, TransitionContext } from "../../shared/index";
 import type { PlanningRecord } from "./runtime-types";
-import { planningValues, readPlanningState } from "./runtime-state";
+import { planningValues, readPlanningState, isM1PlanningSnapshot } from "./runtime-state";
 export interface JobAuthority { job_id: string; lease_id: string; nonce: string; attempt_id: string }
 export function jobAuthority(raw: unknown): JobAuthority {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) fail(422, "INVALID_SCHEMA");
@@ -21,10 +22,10 @@ export function assertJobAuthority(context: TransitionContext, record: PlanningR
   return lease;
 }
 export function expirePlanning(snapshot: Snapshot, lease: DurableLease, now: number): Record<string, unknown> {
-  if (lease.kind !== "planning") return snapshot.values;
+  if (lease.kind !== "planning" || !isM1PlanningSnapshot(snapshot)) return snapshot.values;
   const state = readPlanningState(snapshot), record = state.jobs[lease.job_id];
   if (!record || record.leaseId !== lease.lease_id || !["queued", "running"].includes(record.job.status)) return snapshot.values;
-  record.job = { ...record.job, status: lease.status === "superseded" ? "superseded" : "failed",
-    error_code: lease.status === "superseded" ? null : "MODEL_TIMEOUT", completed_at: new Date(now).toISOString() };
+  record.job = parseSchema("PlanningJob", { ...record.job, plan_id: null, status: lease.status === "superseded" ? "superseded" : "failed",
+    error_code: lease.status === "superseded" ? null : "PLANNER_TIMEOUT", completed_at: new Date(now).toISOString() });
   return planningValues(snapshot, state);
 }

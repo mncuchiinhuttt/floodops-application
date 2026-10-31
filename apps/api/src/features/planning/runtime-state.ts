@@ -1,4 +1,4 @@
-import { parseSchema } from "@floodops/contracts";
+import { CONTRACT_VERSION, parseSchema } from "@floodops/contracts";
 import { fail } from "../../shared/index";
 import type { Snapshot } from "../../shared/index";
 import type { PlanningState } from "./runtime-types";
@@ -6,7 +6,12 @@ import { PLANNING_KEY } from "./runtime-types";
 function record(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
+export function isM1PlanningSnapshot(snapshot: Snapshot): boolean {
+  const version = snapshot.values.runtime_contract;
+  return record(version) && version.serialization === "m1-v1" && version.version === CONTRACT_VERSION;
+}
 export function readPlanningState(snapshot: Snapshot): PlanningState {
+  if (!isM1PlanningSnapshot(snapshot)) fail(409, "STATE_CONFLICT", snapshot);
   const raw = snapshot.values[PLANNING_KEY];
   if (raw === undefined) return { version: 1, session_id: snapshot.meta.session_id, generation: snapshot.meta.generation,
     jobs: {}, plans: {}, routes: {}, approvals: [], approvalHistory: [], executions: {}, notifications: {}, incidents: [], committedRoutes: {}, grants: [] };
