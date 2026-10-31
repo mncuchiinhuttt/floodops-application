@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { PlanningSearchStopped } from "./deterministic-types";
 import type { PlanningJob } from "@floodops/contracts";
+import { PlatformError } from "../../shared/index";
 import type { Call, Reply, TransitionContext } from "../../shared/index";
 import type { PlanningMaterial, ResolvedPlanningOptions } from "./runtime-types";
 import { PLAN_BEGIN, PLAN_COMPLETE, PLANNING_VIEW } from "./runtime-types";
@@ -31,11 +32,15 @@ export async function drivePlanning<State>(dispatch: PlanningDispatch, call: Cal
       return fresh.status === 200 && view.latest_requested_job_id === material.jobId
         && view.jobs.some(job => job.job_id === material.jobId && job.status === "running");
     } });
-    outcome = { ...authority, proposal, search: proposal.search };
+    outcome = proposal.search.outcome === "no_feasible_plan"
+      ? { ...authority, search: proposal.search, error_code: "NO_FEASIBLE_PLAN" }
+      : { ...authority, proposal, search: proposal.search };
   } catch (error) {
     if (error instanceof PlanningSearchStopped && error.reason === "cancelled") return;
-    // Legacy wire error literals stay until the separately owned M1 contract refreeze.
-    outcome = { ...authority, error_code: error instanceof PlanningSearchStopped ? "MODEL_TIMEOUT" : "MODEL_INVALID_OUTPUT" };
+    const code = error instanceof PlanningSearchStopped ? "PLANNER_TIMEOUT" : error instanceof PlatformError
+      && ["CONFIG_INCOMPLETE", "STATE_CONFLICT", "STALE_PROPOSAL", "SESSION_RESET", "SESSION_EXPIRED", "STORAGE_UNAVAILABLE"].includes(error.code)
+      ? error.code : "STATE_CONFLICT";
+    outcome = { ...authority, error_code: code };
   }
   try { await invoke(PLAN_COMPLETE, outcome); } catch { /* Durable lease watchdog resolves interrupted delivery; no operation is applied. */ }
 }

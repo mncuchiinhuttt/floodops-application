@@ -1,7 +1,7 @@
 import { fail } from "../../shared/index";
 import type { SimulationCandidate, SimulationRun } from "@floodops/simulation";
-import type { Stop, ToolInput } from "@floodops/contracts";
-export function candidateForRoute(run: SimulationRun, input: ToolInput<"compute_route">, id: (value: unknown) => string): SimulationCandidate {
+import type { Stop, InternalServiceInput } from "@floodops/contracts";
+export function candidateForRoute(run: SimulationRun, input: InternalServiceInput<"compute_route">, id: (value: unknown) => string): SimulationCandidate {
   const ops = run.branches.floodops!.operations, driver = ops.drivers.find(d => d.driver_id === input.driver_id);
   if (!driver || driver.position.kind !== "node" || driver.position.node_id !== input.origin_node_id) fail(422, "UNKNOWN_ENTITY");
   const effective = ops.orders.map(order => {

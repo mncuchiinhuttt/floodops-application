@@ -1,4 +1,4 @@
-import { parseSchema } from "@floodops/contracts";
+import { CONTRACT_VERSION, parseSchema } from "@floodops/contracts";
 const base = "http://127.0.0.1:8786/api/v1";
 let token = "", sessionId = "", etag = "";
 const key = () => crypto.randomUUID();
@@ -51,6 +51,7 @@ const incident = parseSchema("IncidentResponse", await incidentResponse.json()).
 parseSchema("ImpactResponse", await (await call(prefix + "/impact")).json());
 parseSchema("IncidentListResponse", await (await call(prefix + "/incidents")).json());
 console.log(JSON.stringify({ incidentRecorded: incident.incident_id.length > 0, runtime: "actual local Hono/SQLite DO HTTP", planner: "actual deterministic bounded search; no model transport",
+  contractVersion: CONTRACT_VERSION, scenarioVersion: created.session.scenario_version, plannerMetadata: job.planner,
   jobStatus: "completed", proposalStatus: plan.status, executeReplaySameId: true,
   executeRevision: execution.after_revision, advancedTo: now, predictedCriticalCompletion: expectedCritical, actualCriticalCompletion: order.delivered_at_minute,
-  qualification: "Local deterministic M1 core smoke; public M1 refreeze/full web acceptance remain separate." }, null, 2));
+  qualification: "Local M1 planner wire/runtime smoke; central legacy fences, Sources migration and full web/native acceptance remain separate." }, null, 2));

@@ -39,9 +39,13 @@ export function completePlanning<State>(options: ResolvedPlanningOptions<State>)
       record.search = structuredClone(search);
     }
     if (!!input.proposal === !!input.error_code) fail(422, "INVALID_SCHEMA");
-    if (input.error_code) {
-      if (!["MODEL_TIMEOUT", "MODEL_REFUSED", "MODEL_INVALID_OUTPUT", "MODEL_UNAVAILABLE"].includes(input.error_code)) fail(422, "INVALID_SCHEMA");
-      record.job = { ...record.job, status: "failed", error_code: input.error_code as "MODEL_TIMEOUT", completed_at: new Date(context.now).toISOString() };
+    const errorCode = input.error_code ?? (input.search?.outcome === "no_feasible_plan" ? "NO_FEASIBLE_PLAN" : null);
+    if (errorCode) {
+      if (!["NO_FEASIBLE_PLAN", "PLANNER_TIMEOUT", "CONFIG_INCOMPLETE", "STATE_CONFLICT", "STALE_PROPOSAL",
+        "SESSION_RESET", "SESSION_EXPIRED", "STORAGE_UNAVAILABLE"].includes(errorCode)
+        || (errorCode === "NO_FEASIBLE_PLAN" && input.search?.outcome !== "no_feasible_plan")) fail(422, "INVALID_SCHEMA");
+      record.job = parseSchema("PlanningJob", { ...record.job, status: "failed", plan_id: null,
+        error_code: errorCode, completed_at: new Date(context.now).toISOString() });
     } else {
       const draft = parseSchema("Plan", input.proposal!.plan), routes = input.proposal!.routes.map(r => parseSchema("Route", r));
       if (draft.plan_id !== record.planId || draft.planning_job_id !== record.job.job_id || draft.input_revision !== record.job.input_revision
@@ -49,13 +53,13 @@ export function completePlanning<State>(options: ResolvedPlanningOptions<State>)
       const plan = assemblePlan(context, runtimeRun(context, options), { ...state, routes: { ...state.routes, ...routeTable(routes) } },
         record.job.job_id, record.planId, draft.actions, routes);
       state.plans[plan.plan_id] = plan; Object.assign(state.routes, routeTable(routes));
-      record.job = { ...record.job, status: "completed", plan_id: plan.plan_id, completed_at: new Date(context.now).toISOString() };
+      record.job = parseSchema("PlanningJob", { ...record.job, status: "completed", plan_id: plan.plan_id, error_code: null, completed_at: new Date(context.now).toISOString() });
     }
     return { data: record.job, values: planningValues(context.snapshot, state),
-      pointers: input.proposal ? { latest_plan_id: record.planId } : undefined,
-      leases: [{ ...lease, status: "completed" }],
-      events: [{ type: "planning_job_changed", resource_ids: [input.job_id], audience: ["dispatcher"] },
-        ...(input.proposal ? [{ type: "proposal_changed" as const, resource_ids: [record.planId], audience: ["dispatcher" as const] }] : [])] };
+      pointers: { latest_plan_id: errorCode ? null : record.planId },
+      leases: [{ ...lease, status: errorCode ? "failed" : "completed", error_code: errorCode }],
+      events: [{ type: "planning_job_changed", resource_ids: [input.job_id], reason_code: errorCode, audience: ["dispatcher"] },
+        ...(!errorCode ? [{ type: "proposal_changed" as const, resource_ids: [record.planId], audience: ["dispatcher" as const] }] : [])] };
   } };
 }
 export function cancelPlanning(): ReducerDefinition {
@@ -63,7 +67,7 @@ export function cancelPlanning(): ReducerDefinition {
     const state = readPlanningState(context.snapshot), record = state.jobs[input as string];
     if (!record) fail(404, "NOT_FOUND");
     if (!["queued", "running", "cancelled"].includes(record.job.status)) fail(409, "STATE_CONFLICT");
-    record.job = { ...record.job, status: "cancelled", error_code: null, completed_at: new Date(context.now).toISOString() };
+    record.job = parseSchema("PlanningJob", { ...record.job, status: "cancelled", plan_id: null, error_code: null, completed_at: new Date(context.now).toISOString() });
     const lease = context.snapshot.leases[record.leaseId];
     return { data: record.job, values: planningValues(context.snapshot, state), leases: lease ? [{ ...lease, status: "superseded" }] : [],
       pointers: context.snapshot.pointers.latest_requested_job_id === record.job.job_id ? { latest_requested_job_id: null, latest_plan_id: null } : undefined,
