@@ -15,8 +15,8 @@ export function createReportClient(client: BoundClient) {
       return { dashboard, routes: routes.map(route => route.body.data) };
     },
     contributorDashboard: () => client.read("getOwnContributorDashboard", "contributor:self:read", "contributor", { path: { session_id: client.sessionId() } }),
-    submit: (body: SubmitReportInput, key: string) => client.prepare("submitReport", "reports:submit",
-      body.kind === "driver" ? "driver" : "contributor", context => ({
+    submit: (body: SubmitReportInput, key: string, role: "driver" | "contributor" | "dispatcher" = body.kind === "driver" ? "driver" : "contributor") => client.prepare("submitReport", "reports:submit",
+      role, context => ({
         path: { session_id: context.identity.session.session_id }, headers: client.headers(context, key), body,
       })),
     review: (reportId: string, body: ReviewInput, key: string) => client.prepare("reviewReport", "reports:review", "dispatcher", context => ({

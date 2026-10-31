@@ -1,13 +1,14 @@
 import type { Permission, Role } from "@floodops/contracts";
 import { accessReason, type AccessContext } from "../../shared/access";
 
-export interface FeatureDestination { id: string; label: string; path: string; permission: Permission; role: Role }
+export interface FeatureDestination { id: string; label: string; path: string; permission: Permission; role: Role; requires?: readonly Permission[] }
 const destinations: readonly FeatureDestination[] = [
   { id: "driver", label: "Việc của tôi", path: "driver", permission: "driver:self:read", role: "driver" },
   { id: "driver-report", label: "Báo cáo đường", path: "driver/report", permission: "reports:submit", role: "driver" },
   { id: "community", label: "Báo cáo của tôi", path: "community/reports", permission: "contributor:self:read", role: "contributor" },
   { id: "community-new", label: "Gửi báo cáo ảnh", path: "community/new", permission: "reports:submit", role: "contributor" },
   { id: "points", label: "Điểm mô phỏng", path: "community/points", permission: "contributor:self:read", role: "contributor" },
+  { id: "dispatch-report", label: "Gửi ảnh mô phỏng", path: "dispatch/report", permission: "reports:submit", role: "dispatcher", requires: ["simulation:submit_as"] },
   { id: "map", label: "Điều phối", path: "dispatch/map", permission: "operations:read", role: "dispatcher" },
   { id: "plans", label: "Kế hoạch", path: "dispatch/plans", permission: "operations:read", role: "dispatcher" },
   { id: "review", label: "Review báo cáo", path: "dispatch/reports", permission: "reports:review", role: "dispatcher" },
@@ -15,5 +16,5 @@ const destinations: readonly FeatureDestination[] = [
 ];
 /** Data for the future Data Mode router; it does not perform navigation or grant authorization. */
 export function capabilityDestinations(context: AccessContext): readonly FeatureDestination[] {
-  return destinations.filter(item => !accessReason(context, item.permission, item.role));
+  return destinations.filter(item => !accessReason(context, item.permission, item.role) && !item.requires?.some(permission => accessReason(context, permission, item.role)));
 }

@@ -37,6 +37,7 @@ export function createRoutes(runtime: WebRuntime, commands = new SessionCommands
         { path: "community/reports", loader: authorized("contributor:self:read", "contributor"), lazy: async () => ({ Component: (await import("./app/workspaces")).ContributorRoute }) },
         { path: "community/points", loader: authorized("contributor:self:read", "contributor"), lazy: async () => ({ Component: (await import("./app/workspaces")).ContributorRoute }) },
         { path: "community/new", loader: authorized("reports:submit", "contributor"), lazy: async () => ({ Component: (await import("./app/report-submit-route")).CitizenReportRoute }) },
+        { path: "dispatch/report", loader: authorized("simulation:submit_as", "dispatcher"), lazy: async () => ({ Component: (await import("./app/report-submit-route")).CitizenReportRoute }) },
         { path: "dispatch/map", loader: authorized("operations:read", "dispatcher"), lazy: async () => ({ Component: (await import("./app/workspaces")).DispatcherRoute }) },
         { path: "dispatch/results", loader: authorized("results:read", "dispatcher"), lazy: async () => ({ Component: (await import("./app/workspaces")).ResultsRoute }) },
         { path: "dispatch/plans", loader: authorized("operations:read", "dispatcher"), lazy: async () => ({ Component: (await import("./app/workspaces")).PlanListRoute }) },
