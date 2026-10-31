@@ -33,6 +33,7 @@
     "test": "bun test test"
   },
   "dependencies": {
-    "@floodops/design-tokens": "workspace:*"
+    "@floodops/design-tokens": "workspace:*",
+    "@babel/runtime": "7.29.7"
   }
 }

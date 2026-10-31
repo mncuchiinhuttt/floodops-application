@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./gallery": "./src/foundations-gallery.tsx"
   },
   "dependencies": {
     "@floodops/design-tokens": "workspace:*",
