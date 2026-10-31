@@ -1,3 +1,4 @@
+import type { ComponentRef, Ref } from "react";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import type { PressableProps } from "react-native";
@@ -8,7 +9,7 @@ import { styles } from "./styles";
 
 type Disabled = { disabled?: false; disabledReason?: never } | { disabled: true; disabledReason: string };
 export type ButtonProps = Omit<PressableProps, "children" | "disabled" | "style" | "accessibilityRole"> & Disabled & {
-  label: string; variant?: "primary" | "secondary" | "danger"; pending?: boolean; pendingLabel?: string; icon?: IconName;
+  ref?: Ref<ComponentRef<typeof View>>; label: string; variant?: "primary" | "secondary" | "danger"; pending?: boolean; pendingLabel?: string; icon?: IconName;
 };
 export function Button({ label, variant = "primary", pending = false, pendingLabel = "Working…", disabled,
   disabledReason, icon, onFocus, onBlur, accessibilityState, accessibilityHint, ...props }: ButtonProps) {

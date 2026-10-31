@@ -5,6 +5,7 @@ import type { IconName } from "@floodops/icons/web";
 
 type BadgePair = { fg: string; bg: string; border: string; icon: string; pattern: string };
 function Badge({ pair, label }: { pair: BadgePair; label: string }) {
+  if (!label.trim()) throw new Error("Status badges require a visible label.");
   return <span className="fo-badge" data-pattern={pair.pattern}
     style={{ color: pair.fg, backgroundColor: pair.bg, borderColor: pair.border }}>
     <Icon name={pair.icon as IconName} size={16} decorative />{label}

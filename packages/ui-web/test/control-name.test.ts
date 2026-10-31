@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { expect, test } from "vitest";
 import { requireControlName } from "../src/primitives/control-name";
 
 test("empty or rich unlabeled content cannot create an unnamed control", () => {
