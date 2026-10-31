@@ -1,0 +1,52 @@
+{
+  "amendment_id": "rapid-runnable-demo-v1",
+  "status": "authorized",
+  "authority": "Latest explicit user asks runnable demo quickly, relaxes business completeness; parent requests ancestry-correct existing frontendWIP and minimal Sources decision.",
+  "work_items": [
+    {
+      "role_id": "expo-mobile",
+      "work_item_id": "expo-mobile-m1-wire-v4",
+      "include_prefixes": [
+        "apps/mobile/src/",
+        "apps/mobile/app/",
+        "apps/mobile/test/",
+        "apps/mobile/preview/"
+      ],
+      "include_files": [
+        "apps/mobile/README.md",
+        "apps/mobile/app.config.ts",
+        "apps/mobile/metro.config.cjs"
+      ],
+      "scope": "ANCESTRY UNBLOCK ONLY: prior verified native v3 Rb711b4f32362e36b8892e9c5d2cb8baa88337b0e is now an ancestor of exact new launch, and current real Source/Planner/Review/Results/Session M1 deliveries are integrated. Preserve existing M1 WIP/commits, merge exact launch retaining history and already owned delta (no reset/stash/rebase). Do not redoUI. Finish/sign existing M1 serializers/fixtures/scaffold and write fresh sourceC/report-onlyR under this exact receipt/hash; historical v3 report is in launch, not a new unauthorized report change. Previously39relatedtests/types/lint and localbundle200 are evidence only at stated source; minimal compile/startup after merge, no exhaustive newmatrix. Device still unavailable (CLTonly, no Xcode/AndroidSDK); ExpoGo58/connection needs operator. No install/EAS/LAN/tunnel/provider calls. Report real runnable commands, explicit remainingdemo gaps, not full device/E2E."
+    },
+    {
+      "role_id": "web-console",
+      "work_item_id": "web-console-m1-wire-v4",
+      "include_prefixes": [
+        "apps/web/src/",
+        "apps/web/test/"
+      ],
+      "include_files": [],
+      "scope": "ANCESTRY UNBLOCK ONLY: verified upload/map v3 R648e166e20dd7975a30d60f28c8402c863e55899 is now an ancestor of exact launch. Preserve prior signed M1UIcode50308c2 and its WIP/history; do not resubmit rejected old R6765 as valid or weaken verifier. Merge exact launch, retain only owned existing delta, then fresh sourceC and directreportR referencingC/newreceipt. No newUIfeatures/polish or broadmatrix; existing56tests/build proof retained with sourcequalification and minimal compile/startup smoke after merge. Root actual backend now accepts free report/manualreview, deterministicplan/Approve/Execute/advance/results/Reset (typed HTTP fullprobe passed), liveLead5170/API8760; your own preview5189 stays separate and clearlyfixture. Do not bypass any pending browser approval/recipient action, no repeated logout/invitation attempts after uncertain outcomes without checking. Parent separatelycoordinatesClaudeCLIpolish, not this task."
+    },
+    {
+      "role_id": "sources-media",
+      "work_item_id": "sources-media-demo-driver-v5",
+      "include_prefixes": [
+        "packages/domain/src/reporting/",
+        "apps/api/src/features/reports/",
+        "apps/api/test/media/",
+        "apps/api/test/sources/"
+      ],
+      "include_files": [],
+      "scope": "FAST DEMO DECISION: current strict M1 Report requires genuine review_result_id+reviewed_at for ALL accepted/rejected kinds. No invented dispatcher/system-human review identity, no schema weakening. User explicitly prioritizes runnable demo over business completion. For valid driver quick reports select existing pending_review + null review identity/time BEFORE automatic observation acceptance/knowledge/award side effects. Return201 with stored report, no active observation IDs/knowledge/operations/award mutation until actual manual Review; retain original driver source/vehicle/epoch/capture evidence for later manual review. This is a clearly disclosed temporary manual-review demo path, not proof autoquick originallycomplete. Keep auth/serverbounddriver/CSRF/CAS/idempotency/TTL/duplicate/media safety and immutable receipt policy. Do not add enums/endpoints or require new product grading/points. Source receipt R102d303 alreadyintegrated; Root fullsyntheticHTTP citizenreport→manualreview200→knowledge→plan→Execute/replay→clock/results→Reset nowPASS, so do not undo working apply guards or add new Review409 repairs without repro. Minimal targeted quicksubmit201pending/noobservations/replay test and source-only compile; no extra fullmatrix. Original reports/review and knowledge/conflict-review exclusions apply. Finish narrow C/R promptly."
+    }
+  ],
+  "rules": [
+    "Keep basic security/keyprivacy/auth/dataisolation/destructivesafety; no fake backend/model/points/safety completion.",
+    "No fullacceptance needed for clearly labelled disconnectedfixture/demo; do not masquerade fixture as live backend.",
+    "Driver pendingmanual path uses existing C1schema/status, wire unchanged; genuine humanreview only produces terminalreviewidentity.",
+    "No owner duplicate, manifests/lock/APIindex/config remainLead. No production/paid/provider/device/CLIpolish/contact or approvalbypass grant."
+  ],
+  "trusted_user_evidence": "<transcript_evidence>\nUser: \"không cần chạy đúng nghiệp vụ gì đâu chạy lẹ lẹ đi\"\nUser: \"đẩy lẹ triển khai cho xong đi đừng đúng nghiệp vụ hay gì nữa hết\"\n</transcript_evidence>"
+}
