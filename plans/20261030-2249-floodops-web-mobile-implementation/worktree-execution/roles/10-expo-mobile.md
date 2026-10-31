@@ -20,13 +20,14 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - [Root plan](../../plan.md) · [PRD v0.3](../../../../FloodOps/prd.md).
 - [Ownership](../ownership.md) · [Shared contracts](../shared-contracts.md) · [Work item/delivery](../work-items-and-handoff.md).
 - [Producer interfaces](../producer-interfaces.md): exact public exports chốt ở producer gate, không deep-import private implementation.
-- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md).
+- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md) · [Image review](../../specs/ai-assisted-image-review.md).
 - Đọc spec/contracts liên quan trong phase; không suy schema bằng câu chat hoặc tự dùng bản PRD cũ.
 
 ## Prerequisites
 - Required predecessor deliveries: DesignSystem, SimulationData, SessionPlatform, SourcesMedia, PlannerSafety, ReviewRewards, ResultsEvaluation.
 - Tất cả phải **merged** ở required gate SHAs và là ancestors của launch checkout; branch chưa merge không là input authority.
 - Contract ref/hash và BASE_SHA lấy từ receipt, không giả HEAD/latest main là baseline đúng.
+- Implement image-review UI only after IntegrationLead publishes the explicit baseline amendment/contract hash and reissues affected launch refs; do not build against unmerged plan text or silently alter client contracts.
 - CWD/branch/clean state đúng. User dirty/unexpected changes giữ nguyên, stop hoặc báo Lead; không auto-reset/clean/stash.
 
 ## Scope
@@ -34,6 +35,8 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Một app cài iOS/Android, ba workspace theo server capability: dispatcher đầy đủ; driver own committed assignment/route/ETA + reports; contributor photo/own report status/points theo [PRD §3.4](../../../../FloodOps/prd.md) / [surface matrix](../../specs/web-mobile-feature-surfaces.md). Không responsive-only/Expo web/WebView, accept/reject cuốc hoặc turn-by-turn.
 - Native shared tokens/UI/SVG adapter, SecureStore capability, foreground SSE+cursor/poll fallback, photo permissions/manual location.
 - Offline chỉ drafts/images; no approval/Execute/reset/advance queue, explicit send/relink after refresh.
+- In the existing dispatcher Report-review detail, share the web `quality_score`/`quality_ratings`/`report_match`/`visible_summary`/`mismatch_notes`/`reasons` advisory presentation (`Chất lượng ảnh: n/100`) and separate always-usable manual Accept/Reject. Pending/error/stale states have no fake score; image-review actions require online explicit dispatch and never enter offline drafts/command outbox.
+- Handle dispatcher-only `image_review_changed` progress by event_sequence and current session/generation/report/job/input digest; do not discard a valid same-revision completion or show stale Reset output.
 - EAS/app permission/runtime config requests do Lead commit; không tự Expo install/root lockfile thay đổi, no DOM/Radix import.
 
 ## File ownership

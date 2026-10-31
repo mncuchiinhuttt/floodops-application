@@ -3737,6 +3737,204 @@
         }
       }
     },
+    "/sessions/{session_id}/reports/{report_id}/image-review-jobs": {
+      "post": {
+        "operationId": "createReportImageReview",
+        "summary": "Request advisory image review for a pending report",
+        "tags": [
+          "sessions"
+        ],
+        "description": "Dispatcher-only explicit request for advisory image review. Requires a pending report and authorized normalized owned image or approved normalized fixture; accepts only an empty object and requires Idempotency-Key. No operational If-Match is required. The model cannot accept/reject reports or change operational state. The server reads one private normalized image and minimal report text; no raw media URL is returned.",
+        "x-roles": [
+          "dispatcher"
+        ],
+        "x-requires-operational-revision": false,
+        "x-idempotent-command": true,
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          },
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "$ref": "#/components/parameters/CsrfToken"
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageReviewJobInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Image-review job accepted or an idempotent current job reused",
+            "headers": {
+              "ETag": {
+                "description": "Current strong session revision ETag; image-review metadata does not advance operational revision",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store for private/session/credential response"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageReviewJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error410"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error422"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/sessions/{session_id}/reports/{report_id}/image-review": {
+      "get": {
+        "operationId": "getReportImageReview",
+        "summary": "Read the current advisory image-review state",
+        "tags": [
+          "sessions"
+        ],
+        "description": "Dispatcher-only read of the current report image-review state. Returns job=null when no request has been made. Private response is no-store; stale or superseded advice is not published as current.",
+        "x-roles": [
+          "dispatcher"
+        ],
+        "x-requires-operational-revision": false,
+        "x-idempotent-command": false,
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          },
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current image-review state, with nullable job",
+            "headers": {
+              "ETag": {
+                "description": "Current strong session revision ETag; image-review metadata does not advance operational revision",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store for private/session/credential response"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageReviewStateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "410": {
+            "$ref": "#/components/responses/Error410"
+          },
+          "429": {
+            "$ref": "#/components/responses/Error429"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
     "/sessions/{session_id}/media-uploads": {
       "post": {
         "operationId": "reserveMediaUpload",
@@ -11560,7 +11758,8 @@
               "session_reset",
               "session_expired",
               "advance_changed",
-              "capability_revoked"
+              "capability_revoked",
+              "image_review_changed"
             ]
           },
           "actor": {
@@ -12690,6 +12889,451 @@
           },
           "data": {
             "$ref": "#/components/schemas/ReportReviewResult"
+          },
+          "error": {
+            "type": "null"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "error",
+          "meta"
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewQualityRatings": {
+        "type": "object",
+        "description": "Ordinal image-quality ratings under image-quality-v1. They describe visible image quality only, not authenticity, observation confidence, passability, or safety probability.",
+        "properties": {
+          "sharpness": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2,
+            "description": "0: no readable detail; 1: blurred but partly visible; 2: relatively clear detail."
+          },
+          "lighting": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2,
+            "description": "0: insufficient light; 1: uneven light with some visibility; 2: enough light for visible content."
+          },
+          "scene_visibility": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2,
+            "description": "0: relevant road scene absent or obscured; 1: only part visible; 2: relevant scene relatively clear."
+          },
+          "detail": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2,
+            "description": "0: insufficient detail to assess; 1: few relevant details; 2: details support the visible-content description."
+          }
+        },
+        "required": [
+          "sharpness",
+          "lighting",
+          "scene_visibility",
+          "detail"
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewModelOutput": {
+        "type": "object",
+        "description": "Strict model-only output. quality_score, recommendation, confidence, condition, points, accept/reject, and execute fields are forbidden; unknown fields are rejected.",
+        "properties": {
+          "quality_ratings": {
+            "$ref": "#/components/schemas/ImageReviewQualityRatings"
+          },
+          "visible_summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "report_match": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "no",
+              "unclear"
+            ],
+            "description": "Whether visible content matches the submitted description; unclear when information is missing or insufficient. It does not establish place, time, authenticity, or passability."
+          },
+          "mismatch_notes": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "reasons": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
+        },
+        "required": [
+          "quality_ratings",
+          "visible_summary",
+          "report_match",
+          "mismatch_notes",
+          "reasons"
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewAdvice": {
+        "type": "object",
+        "description": "Flat strict server advice schema. quality_score is derived as floor(100 * sum(quality_ratings) / 8 + 0.5); recommendation is server-derived by image-quality-v1: score<50 or match=unclear => insufficient_evidence; otherwise match=no => needs_manual_check; otherwise score>=75 => looks_consistent; otherwise needs_manual_check. Score is an ordinal image-quality rubric score, not probability, observation confidence, authenticity, or safe-road percentage. JSON shape alone does not establish score/recommendation consistency; the server must recompute both.",
+        "properties": {
+          "quality_ratings": {
+            "$ref": "#/components/schemas/ImageReviewQualityRatings"
+          },
+          "visible_summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 600
+          },
+          "report_match": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "no",
+              "unclear"
+            ]
+          },
+          "mismatch_notes": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "reasons": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "quality_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Server-derived ordinal image-quality score, not a calibrated probability or safety percentage."
+          },
+          "recommendation": {
+            "type": "string",
+            "enum": [
+              "looks_consistent",
+              "needs_manual_check",
+              "insufficient_evidence"
+            ],
+            "description": "Server-derived advisory only; never accepts/rejects a report or changes operational authority."
+          }
+        },
+        "required": [
+          "quality_ratings",
+          "visible_summary",
+          "report_match",
+          "mismatch_notes",
+          "reasons",
+          "quality_score",
+          "recommendation"
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewJobInput": {
+        "type": "object",
+        "description": "Explicit request body must be exactly {}. Image, model, report identity, ratings, score, status, role, and threshold are server-controlled and not accepted from clients.",
+        "properties": {},
+        "required": [],
+        "maxProperties": 0,
+        "additionalProperties": false
+      },
+      "ImageReviewJob": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "session_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "generation": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "report_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "input_digest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "model": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "model_config_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "rubric_version": {
+            "const": "image-quality-v1"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed",
+              "superseded"
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImageReviewAdvice"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MODEL_TIMEOUT",
+                  "MODEL_REFUSED",
+                  "MODEL_INVALID_OUTPUT",
+                  "MODEL_UNAVAILABLE",
+                  "STORAGE_UNAVAILABLE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deadline_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "job_id",
+          "session_id",
+          "generation",
+          "report_id",
+          "input_digest",
+          "model",
+          "model_config_hash",
+          "rubric_version",
+          "status",
+          "result",
+          "error_code",
+          "created_at",
+          "deadline_at",
+          "completed_at"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "completed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "$ref": "#/components/schemas/ImageReviewAdvice"
+                },
+                "error_code": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "type": "null"
+                },
+                "error_code": {
+                  "type": "string",
+                  "enum": [
+                    "MODEL_TIMEOUT",
+                    "MODEL_REFUSED",
+                    "MODEL_INVALID_OUTPUT",
+                    "MODEL_UNAVAILABLE",
+                    "STORAGE_UNAVAILABLE"
+                  ]
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "queued",
+                    "running"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "type": "null"
+                },
+                "error_code": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "superseded"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "result": {
+                  "type": "null"
+                },
+                "error_code": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewState": {
+        "type": "object",
+        "properties": {
+          "report_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "job": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImageReviewJob"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null means no image-review request has been made; it is not failure or score zero."
+          }
+        },
+        "required": [
+          "report_id",
+          "job"
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewJobResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ImageReviewJob"
+          },
+          "error": {
+            "type": "null"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "error",
+          "meta"
+        ],
+        "additionalProperties": false
+      },
+      "ImageReviewStateResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ImageReviewState"
           },
           "error": {
             "type": "null"

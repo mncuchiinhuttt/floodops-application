@@ -1,9 +1,11 @@
 # Atomic commands, versioning và realtime
 
+Image-review job lifecycle follows [the canonical advisory contract](ai-assisted-image-review.md); it is independent of operational planning/revision.
+
 ## Version identities
 - Session metadata có `session_id`, `generation`, `revision`, `event_sequence`, `schema_version`; ID mới khi Reset.
-- ETag strong `"s:<session_id>:g:<generation>:r:<revision>"`; `If-Match` cho operational mutations/review/approval/execution/reset/report như OpenAPI. Upload reserve/bytes/completion là metadata-only, không cần CAS và không đổi operational revision.
-- `event_sequence` tăng cả audit/job/proposal/approval; revision chỉ tăng domain state inputs/knowledge/clock/operations. Snapshot response và mutations trả exact revision/seq.
+- ETag strong `"s:<session_id>:g:<generation>:r:<revision>"`; `If-Match` for operational mutations/review/approval/execution/reset/report as OpenAPI. Upload reserve/bytes/completion and image-review job metadata are metadata-only, need no operational CAS, and do not change operational revision.
+- `event_sequence` increases for audit/job/proposal/approval; revision increases only for domain-state inputs/knowledge/clock/operations. Image-review state changes increment `event_sequence` only. Snapshot response and mutations return exact revision/seq.
 - New proposal không tự tăng revision. Replan job mới cùng revision supersede old plan **ngay khi job accepted**, giữ latest_requested_job_id/latest_plan_id; Approve, dry-run và Execute đều kiểm pointer trong transaction. New-key old-plan request =>409 STALE_PROPOSAL; exact committed idempotent replay vẫn trả execution cũ.
 
 ## Transaction protocol
@@ -24,13 +26,22 @@
 - Return refusal/incomplete/schema/unknown ID/tool limit/provider timeout thành failed typed result. Unavailable model giữ domain accepted observations.
 - Response commit chỉ khi session generation+revision+active_job_id còn khớp. Không gate pass => publish proposed blocked reasons, không execute.
 
+## Advisory image-review jobs
+- POST creation uses `Idempotency-Key`, not operational `If-Match`; same key + same request digest replays the original outcome. With a new key, a queued/running job or valid completed job with the same server-derived current `input_digest` reuses that job/result without another provider call. A failed job is retried only by an explicit user action with a new key; no automatic retry.
+- Persist the current per-report job pointer, immutable context binding, lease/deadline, and per-session concurrency/call-budget reservation in short DO transactions. Never await model/R2 work inside `transactionSync()`. Before the paid call and before publishing, recheck session/generation, pending report, normalized image digest, report description/segment/capture/vehicle context, model/config/rubric version, current job pointer, and deadline.
+- Human Accept/Reject, report/input changes, model/rubric changes, Reset, expiry, or a newer current job supersede old work; late output is discarded and cannot replace the decision/result. A change in unrelated operational revision alone does not supersede an unchanged image-review binding or trigger a rerun.
+- On activation/authorized GET/housekeeping, reconcile expired leases/deadlines **only for queued/running jobs** to failed `MODEL_TIMEOUT` or superseded, persist completion metadata, release the concurrency slot, and never invoke the provider again automatically after a crash. GET reconciles current binding before returning advice; a valid completed result remains readable after its provider-request deadline.
+- Metadata/job changes advance `event_sequence`, not `revision`. `image_review_changed` is dispatcher-only and is a safe invalidation/refetch signal. Client caches bind the state to session + generation + report + job/input digest; accept a running→completed update even when operational revision is unchanged, but still reject a stale generation/job/report binding.
+
+
 ## Chosen stream: SSE fetch
 - Contract GET `/sessions/{session_id}/events/stream?after=<sequence>`; `Accept: text/event-stream`; bearer header native, HttpOnly cookie web. Không token trong query URL.
 - Web fetch streaming và native `expo/fetch` theo tài liệu Expo đã đối chiếu; fallback GET `/events?after=` cùng cursor. Reader/Abort/header/reconnect phải smoke trên iOS/Android thực.
-- Event schema chuẩn trong OpenAPI: event_id/sequence/session/generation/revision/sim_minute/type/actor/resource refs. Visibility là filter server, không gửi private payload. SSE `id` cho Event frames; `event:cursor` data `{next_sequence}` advance qua hidden-only scanned page; heartbeat comment không có seq.
-- Typed SSE control cursor không mutate domain state. Cookie/bearer được kiểm lại; no full photo/token/model prompt. JSON catch-up và SSE có cùng next-sequence/filter semantics.
+- Event schema `type` enum includes `image_review_changed`; server filters visibility to dispatchers. Event payloads contain safe resource/job references only, never full photo/advice/capability/model prompt. SSE `id` is sequence; `event:cursor` advances across hidden-only pages.
+- Typed SSE control cursor does not mutate domain state. Cookie/bearer is rechecked; no full photo/token/model prompt. JSON catch-up and SSE have the same next-sequence/filter semantics.
 - Snapshot hoặc **own driver/contributor dashboard** theo role rồi subscribe after meta.event_sequence. Duplicates drop; cursor gap catch-up; session/generation mismatch clear query cache và rejoin.
 - Cursor too old=>410 EVENT_CURSOR_EXPIRED; refresh authorized full view của role rồi subscribe. Heartbeat không tăng seq; slot connection cleanup và quota bounded.
+- On `image_review_changed`, invalidate/refetch the dispatcher’s report-review query using current session/generation/report/job binding and `event_sequence`; do not drop a job-progress update just because `revision` is equal. A superseded binding remains stale even if its event arrives late.
 - Native foreground reconnect + jitter; abort stream on unmount/background; polling while foreground nếu stream unavailable. Offline không phán state mới.
 - Expiry/revoke checks tại handshake và heartbeat; hết capability đóng stream, không subscription sống vô hạn.
 

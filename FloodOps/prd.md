@@ -120,7 +120,7 @@ Người dùng chính là **dispatcher / trưởng ca** ở bàn vận hành; m�
 2. **Sự cố và tác động:** chọn kịch bản mưa / triều / kết hợp, xem đơn và tài xế bị ảnh hưởng.
 3. **Kế hoạch AI:** xem lý do, evidence, thay đổi tuyến / phân công / ETA; Approve / Reject khi cần, rồi Execute riêng để áp dụng.
 4. **Nguồn và dữ liệu:** độ mới, phạm vi phương tiện, khoảng trống thông tin và conflict.
-5. **Review báo cáo:** kiểm ảnh / mô tả / vị trí / thời gian; Accept / Reject và lý do. Accept không tự cấp quyền đi đường.
+5. **Review báo cáo:** kiểm ảnh / mô tả / vị trí / thời gian; khối **AI nhận xét** tùy chọn hiển thị chất lượng0–100, mô tả khớp Có/Không/Chưa đủ thông tin và lý do theo 6.3.1. Dispatcher vẫn Accept / Reject thủ công; điểm AI không cấp quyền đi đường.
 6. **Timeline, clock và Reset:** theo dõi sự kiện → quyết định → thực thi, điều khiển phiên đúng quyền.
 7. **Kết quả:** so baseline / FloodOps từ runner, phân biệt projected và committed / measured, xem giới hạn D04.
 8. **Workspace tài xế:** xem phân công / tuyến / ETA của chính tài xế được gắn capability, gửi report nhanh / văn bản và xem report của mình.
@@ -134,7 +134,7 @@ App có navigation theo capability, tối ưu thao tác chạm và đọc trên 
 
 - **Tài xế:** màn công việc của tôi (đơn / điểm dừng / tuyến / ETA đã commit); bản đồ / chi tiết tuyến được phân; form report nhanh hoặc văn bản và trạng thái report của mình. “Nhận phân công” là thấy cập nhật sau Execute, **không** có luồng nhận / từ chối cuốc, bằng chứng giao hàng, tự đổi đơn hoặc turn-by-turn navigation. Không live GPS / tracking nền.
 - **Người đóng góp:** màn gửi ảnh / fixture kèm đoạn đường, vị trí chọn thủ công, thời gian và mô tả; danh sách / chi tiết báo cáo của tôi (pending / accepted / rejected và lý do); ledger điểm giả lập. Không xem đơn / đội xe, review người khác hoặc rút tiền.
-- **Dispatcher:** đủ overview / map / impact, plan / diff / Approve / Reject / Execute, sources / coverage / conflict / review, timeline / clock / results / Reset như web. Đây là luồng điều phối đầy đủ khi rời bàn, không chỉ read-only; mọi lệnh vẫn cần online và đúng capability.
+- **Dispatcher:** đủ overview / map / impact, plan / diff / Approve / Reject / Execute, sources / coverage / conflict / review, timeline / clock / results / Reset như web; Review có cùng khối AI nhận xét ảnh và score theo 6.3.1. Đây là luồng điều phối đầy đủ khi rời bàn, không chỉ read-only; mọi lệnh cần online và đúng capability.
 
 Driver / contributor có thể lưu nháp report và ảnh chưa gửi khi offline; kết nối lại phải kiểm phiên và người dùng chủ động gửi. Không queue Approve, Execute, Reset, clock hoặc tự gửi ảnh nền. UI giữ nhãn `Simulation`; app native không biến mô phỏng thành dịch vụ logistics production.
 
@@ -260,7 +260,7 @@ US là mã yêu cầu; mỗi dòng mô tả việc cần làm và cách xác nh�
 | US-18 | Thấy thay đổi sau replan. | Diff action thêm / bỏ / đổi, lý do gắn report / evidence; fixture đạt K6 / T15. Scenario đánh giá báo đúng kể cả không đổi hoặc xấu hơn; proposal cũ không overwrite proposal mới. | P0 |
 | US-28 | Nhiều nguồn. | Source registry, camera fixture và context / report ngoài khác, gồm mưa và triều / mực nước. Hiển thị provider, type, simulated flag, time; không API live. | P0 |
 | US-29 | Citizen photo. | Contributor giả lập, photo / fixture ID, location / segment, capture time, vehicle scope nếu có, mô tả; pending review trước sử dụng. | P0 |
-| US-30 | Validate / review. | Schema, ảnh load được, vị trí, timestamp, duplicate; reason codes rõ. Dùng fixture metadata + dispatcher review, không claim chống giả GPS / ảnh thực. | P0 |
+| US-30 | Validate / review + AI nhận xét ảnh. | Schema, ảnh, vị trí, timestamp, duplicate do code kiểm; dispatcher Accept/Reject. AI theo 6.3.1 hỗ trợ chất lượng/mô tả/mismatch, có score0–100 và yes/no/unclear kèm lý do; không tự duyệt, mở đường, cộng điểm hoặc Execute. AI lỗi/chậm vẫn review thủ công; không claim xác thực GPS/ảnh hoặc xác suất an toàn. | P0 |
 | US-31 | Points. | Accepted, fresh report lấp active gap mới được award một lần theo 6.4; redundant = 0. Retry / ảnh trùng không nhân điểm. | P0 |
 | US-32 | Data gaps. | Các cặp segment / vehicle relevant thiếu observation còn hạn / đủ chất lượng; coverage từ state, không số ảnh. Một edge có thể đủ thông tin cho xe máy nhưng còn gap cho ô tô. | P0 |
 | US-34 | Mưa và triều. | Chạy được rain-only, tide-only và combined; source context không tự sửa edge condition. Mực nước có unit / datum / location; không so khác datum như cùng chuẩn. | P0 |
@@ -297,6 +297,7 @@ US là mã yêu cầu; mỗi dòng mô tả việc cần làm và cách xác nh�
 | Scenario / Parameter provenance | Scenario ID / version, vùng / kỳ dữ liệu, T0 / timezone, replay mapping, calibration_status; mỗi parameter có value, unit, source / reference date, phạm vi vehicle / geography / valid time, measured / derived / assumed, phương pháp và sai số / mức bất định. |
 | Plan / Action / Approval | Plan ID, session / input revision; action ID / type / targets, route ID, evidence, reason, dependencies / group, status, projected changes. Approval lưu action ID / plan ID / revision / decision. |
 | Report / Gap / Reward | Report ID, contributor, photo_hash, capture metadata / review; gap ID theo segment / vehicle và lần mở; award ID, report ID, filled_gap_ids, points, award_time. |
+| Image review job / advice | Session/generation/report + digest ảnh/nội dung/model/rubric; status/deadline; bốn quality ratings0–2, score0–100 do server tính, report_match yes/no/unclear, mô tả/mismatch/lý do và gợi ý. Advice tách khỏi Observation.confidence, report decision và reward; pending/failed/superseded có result null. |
 
 Simulation time là phút kể từ T0 của ca, cho phép phần lẻ; đổi từ giây / giờ phải tường minh. Một phút mô phỏng biểu diễn một phút vận hành. Playback có thể tăng tốc đồng đều, ví dụ hành trình 15 phút phát ở 30× mất 30 giây wall clock nhưng ETA vẫn là 15 phút. Travel, service, SLA, defer, TTL và incident time cùng đồng hồ đó. Wall clock đo API latency / rehearsal. Replay giữ timestamp gốc và mapping sang T0; không ghép dữ liệu khác ngày thành một sự kiện thực. State có session ID và revision; không dùng thời gian nhận thay thời gian quan sát. Không cộng / so sánh mưa mm, mực nước m theo datum và discharge m³/s như cùng một đại lượng.
 
@@ -363,6 +364,26 @@ Reason codes: INVALID_SCHEMA, INVALID_IMAGE, UNKNOWN_SEGMENT, LOCATION_MISMATCH,
 Không evidence đủ điều kiện → **ordinary unknown**, có thể xét duyệt theo POL-02. **Unresolved conflict** là trạng thái riêng, chặn route mới qua edge tới khi review giải quyết; replan đơn thuần không xóa conflict. Authoritative closure không được supersede bằng review report.
 
 Đối với useful coverage / gap, evidence đủ chất lượng là accepted, còn hạn, đúng segment / vehicle / epoch, condition khác unknown và không conflict. **Low-confidence được tính coverage**, nhưng route dùng nó vẫn cần approval. Nhận điểm không tự cấp quyền đi đường.
+
+#### 6.3.1 AI hỗ trợ review ảnh và đầu ra định lượng — US-30
+
+**Đã thống nhất:** dispatcher chủ động yêu cầu **AI nhận xét** ngay trên Review detail của web hoặc mobile. AI hỗ trợ đọc ảnh, không phải người duyệt báo cáo hay bộ kiểm tra an toàn giao thông.
+
+| Đầu ra hiển thị | Ý nghĩa và ranh giới |
+|---|---|
+| Chất lượng ảnh:0–100 | Điểm ordinal theo rubric `image-quality-v1`, không phải phần trăm ảnh thật / đường an toàn hoặc confidence của Observation. |
+| Mô tả khớp ảnh: Có / Không / Chưa đủ thông tin | `report_match=yes/no/unclear` chỉ đối chiếu mô tả với điều nhìn thấy; không xác nhận đúng địa điểm/thời gian. Không ép yes/no khi thiếu dữ liệu. |
+| Nhận xét và lý do | Độ mờ/tối/bị che/thiếu chi tiết; mô tả mặt đường/nước đọng/vật cản/phương tiện nhìn thấy; điểm không khớp và giới hạn quan sát. |
+| Gợi ý review | Phù hợp / Cần kiểm tra thêm / Không đủ bằng chứng; không phải Accept/Reject hoặc quyền chạy tuyến. |
+
+- Model chấm bốn integer0–2: độ rõ (`sharpness`), ánh sáng (`lighting`), cảnh đường nhìn thấy (`scene_visibility`), chi tiết (`detail`). **Server** tính `quality_score = floor(100 * sum(ratings) / 8 + 0.5)`; không tin score/recommendation do model hoặc client gửi.
+- Gợi ý do code derive: score<50 hoặc match=unclear → không đủ bằng chứng; còn lại match=no → cần kiểm tra thêm; còn lại score>=75 → phù hợp; còn lại → cần kiểm tra thêm. Mốc50/75 là rubric UX đề xuất, không safety threshold/D04. Ví dụ(1,2,1,2)→75/100;100/100 nhưng match=no vẫn cần kiểm tra.
+- AI không xác thực ảnh gốc/giả mạo/vị trí/thời điểm chỉ từ pixels; không đo chính xác độ sâu hay kết luận xe máy/ô tô chắc chắn đi được. Duplicate dựa hash/code; freshness/mapping/vehicle scope và points do luật server.
+- Accept/Reject vẫn riêng và dùng deterministic checks hiện có. Advice không đổi report pending, closure, knowledge, confidence, TTL, gap, points, tuyến hoặc ETA; không tự gọi Execute. Chấp nhận report cũng không tự đồng nghĩa tuyến an toàn.
+- Model thiếu quyền/credits, chậm, refusal hoặc output sai → status/reason và `result=null`, không fake điểm0 hoặc kết quả thành công. Dispatcher có thể review thủ công ngay cả khi model đang chạy. Không tự retry/gọi AI nền từ upload; chỉ ảnh normalized được phép, có budget.
+- Kết quả phải bind đúng session/generation/report/ảnh/mô tả/model/rubric. Human review, Reset/expiry hoặc input đổi khiến output muộn bị superseded, không áp vào dữ liệu mới hoặc rollback quyết định người dùng.
+- Bản JSON field/rubric/API/ownership và các ca IR-01–IR-12 được chốt tại [AI-assisted image review spec](../plans/20261030-2249-floodops-web-mobile-implementation/specs/ai-assisted-image-review.md). Model thật phải được kiểm riêng trên ảnh được phép; schema pass hoặc score75/100 không chứng minh tính đúng hay xác suất hiệu chuẩn.
+
 
 ### 6.4 Community Reporting & Rewards
 
@@ -432,9 +453,9 @@ Incident / accepted report kích hoạt Commander nhận snapshot và đề xu�
 
 | Vai trò | Trách nhiệm |
 |---|---|
-| LLM | Hiểu văn bản, tóm tắt impact, chọn tools, đề xuất kế hoạch và giải thích. |
-| Code tất định | Tính route / ETA / feasibility, chuẩn hóa dữ liệu, gán policy / TTL, xét điểm, kiểm ID và commit. |
-| Dispatcher | Review report, duyệt / từ chối rủi ro được phép và Execute. |
+| LLM | Hiểu văn bản, tóm tắt impact, chọn tools, đề xuất kế hoạch và giải thích; vision call tách biệt chỉ nhận xét ảnh/mô tả + rubric theo 6.3.1, không có tool ghi state. |
+| Code tất định | Tính route / ETA / feasibility, chuẩn hóa dữ liệu, derive quality_score/recommendation từ rubric, gán policy / TTL, xét điểm, kiểm ID và commit. |
+| Dispatcher | Đọc AI advice nếu có, review report thủ công; duyệt / từ chối rủi ro được phép và Execute riêng. Không buộc chờ hoặc chấp nhận gợi ý AI. |
 
 | Tool | Input → output | Side effect |
 |---|---|---|
@@ -674,6 +695,8 @@ Mục tiêu 100% IDs hợp lệ; gate phải từ chối mọi ID sai. Đưa pro
 
 Test hành vi bên ngoài: seam chính scenario runner với Commander stub cho logic deterministic; seam phụ gate nhận arbitrary proposal. Rehearsal LLM thật riêng cho latency / chất lượng; không test câu chữ prompt.
 
+**US-30 bổ sung IR-01–IR-12:** kiểm rubric/rounding/yes-no-unclear, unknown/authority fields, mismatch dù score100, idempotency/budget, manual review khi timeout, human decision/Reset/input race, OCR injection, role/media isolation và parity web/native. Toàn bộ ca ở [spec AI review](../plans/20261030-2249-floodops-web-mobile-implementation/specs/ai-assisted-image-review.md) là acceptance bắt buộc bên cạnh T01–T15; chưa phải kết quả chạy. Chất lượng vision cần bộ ảnh human-labelled, ghi đủ model/prompt/hash/failure và agreement/forbidden-claim metrics; không dùng stub hoặc quality score để claim model đã đúng.
+
 ---
 
 ## 9. Technical Constraints, Delivery & Risks
@@ -740,7 +763,7 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 
 **Definition of Done:** P0 có evidence nghiệm thu, gồm K6 / T15; 5 invariants pass; D04 có hồ sơ nguồn / sai số và T14 đạt trong phạm vi chốt; báo K1/K2 thực từ runner kể cả không đạt target; rehearsal K4; log K5; mọi input có nhãn provenance, points ghi simulated; Reset lặp lại; không secret. Thiếu hiệu chuẩn, P0 hoặc bằng chứng phải ghi rõ, chưa đánh dấu complete.
 
-**Definition of Done cho bản triển khai hai nền tảng:** thêm bằng chứng web + iOS + Android và luồng liên thiết bị ở 3.4.3; toàn bộ phạm vi P0/P1/P2 của implementation plan được thực hiện, có disabled reason nếu thiếu config hợp lệ. Chỉ xong web hoặc chỉ có form report mobile không phải hoàn tất sản phẩm; cut-line thi ở 9.2 không tự thay phạm vi hiện hành.
+**Definition of Done cho bản triển khai hai nền tảng:** thêm bằng chứng web + iOS + Android và luồng liên thiết bị ở 3.4.3; toàn bộ phạm vi P0/P1/P2 của implementation plan được thực hiện, có disabled reason nếu thiếu config hợp lệ. US-30 gồm AI review card và IR-01–IR-12, manual fallback; model thật/ảnh/credits chưa có thì phần vision-quality evidence còn thiếu, không fake pass. Chỉ xong web hoặc chỉ có form report mobile không phải hoàn tất sản phẩm; cut-line thi ở 9.2 không tự thay phạm vi hiện hành.
 
 ### 9.5 Bằng chứng theo sáu tiêu chí chấm
 
@@ -765,7 +788,7 @@ Theo [briefing lưu trong repo](../%5BVN%5D%202026%20Sea%20x%20OpenAI%20Codex%20
 | D02 | **Đã thống nhất:** MVP source fixtures, citizen photo, checks / review / points; không live / tiền thật. | US-28–US-32 P0 trong seed / demo / acceptance; US-34 ghi nhận mưa / triều. |
 | D03 | **Đã thống nhất cho bản hợp nhất:** hub / defer P1; before-after, clock / expiry demo, Reset / labels P0. | Cắt P2 rồi P1 nếu thiếu giờ, giữ 5 invariants cho chức năng bật. Thay đổi phạm vi phải cập nhật US / DoD đồng bộ. |
 | D04 | **Đã thống nhất:** mô phỏng phải đúng tỉ lệ ngoài đời về hình học / khoảng cách, thời gian và tải vận hành trong khu vực TP.HCM được chọn; chỉ playback được tăng tốc đồng đều. Số liệu / nguồn cụ thể và ngưỡng sai số **TBD**, theo 6.5. | Hiệu chuẩn / đối chiếu T14 trước tuyên bố đạt. Bỏ config vật lý tùy ý; thiếu dữ liệu hiện Calibration incomplete. Freeze config trước so baseline; KPI là kết quả tính, không chỉnh thông số để ép đạt. |
-| D05 | **Đã chốt nền tảng:** web React/React Router/Tailwind v4/shadcn, native Expo/React Native, Hono/Cloudflare theo implementation plan và 3.4. **Còn mở:** model / credits / keys, exact dependency patches, dữ liệu / account và quyền deploy. | Hai client dùng chung API/session rules; web và native là hai deliverable bắt buộc. Kiểm structured output / latency và secrets server-side; chưa có access không chứng minh LLM thật hoặc release đã chạy. |
+| D05 | **Đã chốt nền tảng:** web React/React Router/Tailwind v4/shadcn, native Expo/React Native, Hono/Cloudflare theo plan/3.4; vision advisory theo6.3.1. **Còn mở:** Commander/vision model hỗ trợ image+strict output, credits/keys, exact patches, dữ liệu/account/quyền deploy. | Hai client bắt buộc, cùng API/session; OPENAI_IMAGE_REVIEW_MODEL dùng secret server và budget được cấp. Chưa kiểm live không chứng minh chất lượng ảnh/LLM, zero-retention hoặc release; thiếu model vẫn manual review. |
 | D06 | **Đề xuất:** UI English, report tiếng Việt; critical seed có đơn thuốc ưu tiên. | Xác nhận trước polish; không quy tất cả thuốc ngoài đời thành critical. |
 | D07 | **TBD trước sử dụng:** nguồn / quyền lưu snapshot bản đồ, vận hành và sự kiện để đáp ứng D04. Connector live / mapping thủy văn station / tide / street thuộc sau MVP. | Catalog không phải tuyên bố đã kết nối hoặc có dữ liệu hiệu chuẩn. Không suy street depth từ tide; thiếu quyền / dữ liệu thì chưa đáp ứng D04. |
 | D08 | **TBD sau MVP:** tiền / voucher, người tài trợ, ngân sách, adoption / anti-fraud thực. | Demo points, không hứa tiền thật. |

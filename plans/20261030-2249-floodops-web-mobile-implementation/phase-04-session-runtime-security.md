@@ -2,7 +2,7 @@
 
 ## Context links
 - [Plan](plan.md) · [PRD](../../FloodOps/prd.md) · [Coverage](specs/requirements-coverage.md) · [API](contracts/api-index.md)
-- [architecture.md](specs/architecture.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [concurrency-realtime.md](specs/concurrency-realtime.md) · [cloudflare-deployment.md](specs/cloudflare-deployment.md)
+- [architecture.md](specs/architecture.md) · [api-conventions-security.md](specs/api-conventions-security.md) · [concurrency-realtime.md](specs/concurrency-realtime.md) · [cloudflare-deployment.md](specs/cloudflare-deployment.md) · [ai-assisted-image-review.md](specs/ai-assisted-image-review.md)
 
 ## Overview
 - Status: pending. Priority: P1 implementation phase (khác US product priorities).
@@ -35,24 +35,25 @@
 1. Create Hono app factory with injected feature routers and typed bindings; exact JSON404 for /api, auth before private data, CSRF/Origin and request limits.
 2. Implement per-session SQLite DO, schema-version migrations, snapshot/idempotency/event/outbox transactionSync with no external await; unique constraints and CAS errors as spec.
 3. Create isolated session + scoped participant capabilities/invites; web HttpOnly cookie/native bearer response, secure digest, owner/driver/contributor bindings server-derived.
-4. Implement metadata-only vs operational revision handling, latest plan/job pointer slots, role-projected views/events and pagination filters; snapshot+replay eliminates missed updates.
-5. Implement explicit reset saga old/new DO with persisted stages/replacement credentials, tombstone/expiry/revoke, idempotent resume and stream closure.
-6. Bound SSE60s/15s heartbeat, same visibility/cursor JSON fallback, concurrency connection quotas; no token URL.
-7. Expiry check every access; scheduled cleanup only wall housekeeping, R2 orphan outbox retained until delete succeeds; no alarm simulation authority.
+4. Implement metadata-only vs operational revision handling, latest plan/job and image-review current-job pointers, durable lease/deadline/quota hooks, role-projected views/events and pagination filters; image-review metadata increments event_sequence only, never operational revision.
+5. Implement explicit reset saga old/new DO with persisted stages/replacement credentials, tombstone/expiry/revoke, idempotent resume and stream closure; fence and supersede image-review jobs on Reset/expiry without publishing stale output.
+6. Bound SSE60s/15s heartbeat, same visibility/cursor JSON fallback, concurrency connection quotas; project `image_review_changed` only to dispatchers as metadata-only invalidation/refetch, no image/advice payload.
+7. Expiry check every access; scheduled cleanup only wall housekeeping, R2 orphan outbox retained until delete succeeds; reconcile overdue/crashed image-review leases, release slots, and never auto-retry provider calls.
 
 ## Todo list
 - [ ] Step 04.01: Create Hono app factory with injected feature routers and typed bindings
 - [ ] Step 04.02: Implement per-session SQLite DO, schema-version migrations, snapshot/idempotency/event/outbox transactionSync with no external await
 - [ ] Step 04.03: Create isolated session + scoped participant capabilities/invites
-- [ ] Step 04.04: Implement metadata-only vs operational revision handling, latest plan/job pointer slots, role-projected views/events and pagination filters
-- [ ] Step 04.05: Implement explicit reset saga old/new DO with persisted stages/replacement credentials, tombstone/expiry/revoke, idempotent resume and stream closure.
-- [ ] Step 04.06: Bound SSE60s/15s heartbeat, same visibility/cursor JSON fallback, concurrency connection quotas
-- [ ] Step 04.07: Expiry check every access
+- [ ] Step 04.04: Implement metadata-only vs operational revision handling, latest plan/job and image-review current-job pointers, durable lease/deadline/quota hooks, role-projected views/events and pagination filters
+- [ ] Step 04.05: Implement explicit reset saga old/new DO with persisted stages/replacement credentials, tombstone/expiry/revoke, idempotent resume and stream closure; fence image-review jobs on Reset/expiry.
+- [ ] Step 04.06: Bound SSE60s/15s heartbeat, same visibility/cursor JSON fallback, concurrency connection quotas; dispatcher-only metadata `image_review_changed` invalidation/refetch.
+- [ ] Step 04.07: Expiry check every access; recover overdue/crashed image-review jobs without automatic provider retry.
 
 ## Success criteria
 - Missing/wrong role/cross-session capabilities cannot read or mutate; CSRF attack web cookie rejected, native bearer valid.
 - Crash after commit before response replay returns same result; duplicate key different body409; stale412/missing428.
 - Two resets same key produce one replacement; old caps/jobs/streams cannot operate new session.
+- Image-review persistence is metadata-only: result/job updates advance `event_sequence` but preserve operational `revision`; authorize the current dispatcher/report binding and latest job before publication, reconcile deadline/lease failures, and never perform provider/R2 I/O in `transactionSync()`.
 
 ## Risk assessment
 - Scope drift / missing source: đọc PRD v0.3, coverage và prerequisite register trước phần phụ thuộc; không im lặng shrink.

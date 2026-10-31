@@ -20,19 +20,21 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - [Root plan](../../plan.md) · [PRD v0.3](../../../../FloodOps/prd.md).
 - [Ownership](../ownership.md) · [Shared contracts](../shared-contracts.md) · [Work item/delivery](../work-items-and-handoff.md).
 - [Producer interfaces](../producer-interfaces.md): exact public exports chốt ở producer gate, không deep-import private implementation.
-- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md).
+- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md) · [Image review](../../specs/ai-assisted-image-review.md).
 - Đọc spec/contracts liên quan trong phase; không suy schema bằng câu chat hoặc tự dùng bản PRD cũ.
 
 ## Prerequisites
 - Required predecessor deliveries: ContractsClient.
 - Tất cả phải **merged** ở required gate SHAs và là ancestors của launch checkout; branch chưa merge không là input authority.
 - Contract ref/hash và BASE_SHA lấy từ receipt, không giả HEAD/latest main là baseline đúng.
+- For image-review work, wait until IntegrationLead publishes the explicit baseline amendment/contract hash and reissues affected launch refs; this role does not authorize itself from unmerged plan text.
 - CWD/branch/clean state đúng. User dirty/unexpected changes giữ nguyên, stop hoặc báo Lead; không auto-reset/clean/stash.
 
 ## Scope
 - Implement phase04 Hono factory+actual local Workerd test harness, per-session SQLite DO reducer boundary, scopes/invites/CSRF/native bearer.
 - Atomic revision/idempotency/outbox protocol và exact role-projected views/streams; no await network inside transaction.
 - Reset persisted lock-before-await/fixed target và body-loss-after-cookie recovery; expiry/revoke/cleanup ownership chuẩn.
+- Under that amendment, own generic DO metadata/current-job/lease/deadline/quota hooks and dispatcher-only `image_review_changed` projection for ReviewRewards. Preserve event_sequence-only updates and current binding; no provider/R2 I/O or image bytes in `transactionSync()`. Lead owns central schemas/bindings/config; do not implement image-review service here.
 - Đưa binding/type/route registration request cho Lead; không tự ghi production index/wrangler/API package manifests.
 
 ## File ownership
@@ -69,6 +71,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Local harness chạy Hono→real DO, capability isolation/412/428/idempotent retry và reset crash/recovery có focused proof.
 - Publish platform-ready APIs/ports mà source/planner/reward services có thể inject.
 - Không global mutable session, no token query/log, no public R2 raw image access.
+- Image-review jobs reconcile crash/deadline/Reset/expiry and release their slot without auto-retry; a valid same-revision result update remains current only when session/generation/report/job/input digest still matches.
 - Commit owned source C, commit report SourceEvidence R riêng với source_sha=C (không SHA của chính R); gửi delivery_sha=R out-of-band cho Lead. Báo base/launch/hash, actual checks/smoke/public exports/requests/prerequisites; Lead ghi DeliveryReceipt sau khi R tồn tại.
 - Stage explicit owned files, commit focused. Không merge siblings/main hoặc rewrite shared history. Không tự sửa plan/phase/gate state; Lead cập nhật sau review/merge.
 - Xong scope thì dừng và trả report; không tự chuyển sang role/phase khác hoặc chạy root cook.

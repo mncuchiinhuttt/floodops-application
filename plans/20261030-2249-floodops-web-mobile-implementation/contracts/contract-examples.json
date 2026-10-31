@@ -1,5 +1,5 @@
 {
-  "purpose": "Design contract examples, not executed app/API results. IDs synthetic, geographic coordinate illustrative not calibration.",
+  "purpose": "Design contract examples, not executed app/API results. IDs synthetic, geographic coordinate illustrative not calibration. For appended ImageReviewAdvice examples, valid means JSON-schema shape only; semantic score/recommendation correctness is external and requires rubric recomputation, not JSON-shape validation.",
   "examples": [
     {
       "name": "create_native_session",
@@ -284,6 +284,567 @@
         ],
         "late_reduction_ratio": null,
         "label": "Simulation result"
+      }
+    },
+    {
+      "name": "image_review_model_output_matching_yes",
+      "schema": "ImageReviewModelOutput",
+      "valid": true,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 1,
+          "lighting": 2,
+          "scene_visibility": 1,
+          "detail": 2
+        },
+        "visible_summary": "Standing water is visible along the road edge.",
+        "report_match": "yes",
+        "mismatch_notes": [],
+        "reasons": [
+          "The visible standing water is consistent with the submitted description."
+        ]
+      }
+    },
+    {
+      "name": "image_review_model_output_mismatch_no",
+      "schema": "ImageReviewModelOutput",
+      "valid": true,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 2,
+          "lighting": 2,
+          "scene_visibility": 2,
+          "detail": 2
+        },
+        "visible_summary": "Standing water covers much of the visible roadway.",
+        "report_match": "no",
+        "mismatch_notes": [
+          "The submitted description says dry pavement, but standing water is visible."
+        ],
+        "reasons": [
+          "Visible content differs from the submitted description."
+        ]
+      }
+    },
+    {
+      "name": "image_review_model_output_match_unclear",
+      "schema": "ImageReviewModelOutput",
+      "valid": true,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 1,
+          "lighting": 0,
+          "scene_visibility": 1,
+          "detail": 0
+        },
+        "visible_summary": "Only a small, dark portion of the road scene is visible.",
+        "report_match": "unclear",
+        "mismatch_notes": [],
+        "reasons": [
+          "Occlusion and low light prevent a reliable comparison."
+        ]
+      }
+    },
+    {
+      "name": "image_review_quality_ratings_lower_bounds",
+      "schema": "ImageReviewQualityRatings",
+      "valid": true,
+      "payload": {
+        "sharpness": 0,
+        "lighting": 0,
+        "scene_visibility": 0,
+        "detail": 0
+      }
+    },
+    {
+      "name": "image_review_quality_ratings_upper_bounds",
+      "schema": "ImageReviewQualityRatings",
+      "valid": true,
+      "payload": {
+        "sharpness": 2,
+        "lighting": 2,
+        "scene_visibility": 2,
+        "detail": 2
+      }
+    },
+    {
+      "name": "image_review_quality_rating_above_bound",
+      "schema": "ImageReviewQualityRatings",
+      "valid": false,
+      "payload": {
+        "sharpness": 3,
+        "lighting": 0,
+        "scene_visibility": 0,
+        "detail": 0
+      }
+    },
+    {
+      "name": "image_review_quality_rating_numeric_string",
+      "schema": "ImageReviewQualityRatings",
+      "valid": false,
+      "payload": {
+        "sharpness": "1",
+        "lighting": 2,
+        "scene_visibility": 1,
+        "detail": 2
+      }
+    },
+    {
+      "name": "image_review_model_output_forbidden_derived_and_authority_fields",
+      "schema": "ImageReviewModelOutput",
+      "valid": false,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 1,
+          "lighting": 2,
+          "scene_visibility": 1,
+          "detail": 2
+        },
+        "visible_summary": "Standing water is visible along the road edge.",
+        "report_match": "yes",
+        "mismatch_notes": [],
+        "reasons": [
+          "The visible standing water is consistent with the submitted description."
+        ],
+        "quality_score": 75,
+        "recommendation": "looks_consistent",
+        "confidence": 0.9,
+        "condition": "normal",
+        "points": 50,
+        "accept": true,
+        "execute": true
+      }
+    },
+    {
+      "name": "image_review_advice_score75_semantic_check_external_to_json_shape",
+      "schema": "ImageReviewAdvice",
+      "valid": true,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 1,
+          "lighting": 2,
+          "scene_visibility": 1,
+          "detail": 2
+        },
+        "visible_summary": "Standing water is visible along the road edge.",
+        "report_match": "yes",
+        "mismatch_notes": [],
+        "reasons": [
+          "The visible standing water is consistent with the submitted description."
+        ],
+        "quality_score": 75,
+        "recommendation": "looks_consistent"
+      }
+    },
+    {
+      "name": "image_review_advice_score100_mismatch_semantic_check_external_to_json_shape",
+      "schema": "ImageReviewAdvice",
+      "valid": true,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 2,
+          "lighting": 2,
+          "scene_visibility": 2,
+          "detail": 2
+        },
+        "visible_summary": "Standing water covers much of the visible roadway.",
+        "report_match": "no",
+        "mismatch_notes": [
+          "The submitted description says dry pavement, but standing water is visible."
+        ],
+        "reasons": [
+          "Visible content differs from the submitted description."
+        ],
+        "quality_score": 100,
+        "recommendation": "needs_manual_check"
+      }
+    },
+    {
+      "name": "image_review_advice_unclear_requires_insufficient_evidence",
+      "schema": "ImageReviewAdvice",
+      "valid": true,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 0,
+          "lighting": 1,
+          "scene_visibility": 0,
+          "detail": 1
+        },
+        "visible_summary": "A dark, mostly obscured image shows little assessable detail.",
+        "report_match": "unclear",
+        "mismatch_notes": [],
+        "reasons": [
+          "The available image content is insufficient for comparison."
+        ],
+        "quality_score": 25,
+        "recommendation": "insufficient_evidence"
+      }
+    },
+    {
+      "name": "image_review_advice_forbidden_authority_fields",
+      "schema": "ImageReviewAdvice",
+      "valid": false,
+      "payload": {
+        "quality_ratings": {
+          "sharpness": 2,
+          "lighting": 2,
+          "scene_visibility": 2,
+          "detail": 2
+        },
+        "visible_summary": "Standing water is visible.",
+        "report_match": "yes",
+        "mismatch_notes": [],
+        "reasons": [
+          "The road surface is visible."
+        ],
+        "quality_score": 100,
+        "recommendation": "looks_consistent",
+        "condition": "impassable",
+        "points": 100,
+        "accept": true,
+        "execute": true
+      }
+    },
+    {
+      "name": "image_review_job_input_empty",
+      "schema": "ImageReviewJobInput",
+      "valid": true,
+      "payload": {}
+    },
+    {
+      "name": "image_review_job_input_rejects_client_controlled_fields",
+      "schema": "ImageReviewJobInput",
+      "valid": false,
+      "payload": {
+        "image_url": "https://example.invalid/private-photo.jpg",
+        "model": "client-selected-model",
+        "report_id": "report_example001",
+        "quality_ratings": {
+          "sharpness": 2,
+          "lighting": 2,
+          "scene_visibility": 2,
+          "detail": 2
+        },
+        "quality_score": 100,
+        "status": "completed",
+        "role": "dispatcher",
+        "threshold": 0
+      }
+    },
+    {
+      "name": "image_review_job_running_null_result_error_and_completion",
+      "schema": "ImageReviewJob",
+      "valid": true,
+      "payload": {
+        "job_id": "job_image_review001",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "running",
+        "result": null,
+        "error_code": null,
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": null
+      }
+    },
+    {
+      "name": "image_review_job_failed_null_result_with_error",
+      "schema": "ImageReviewJob",
+      "valid": true,
+      "payload": {
+        "job_id": "job_image_review002",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "failed",
+        "result": null,
+        "error_code": "MODEL_TIMEOUT",
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:20Z"
+      }
+    },
+    {
+      "name": "image_review_job_failed_rejects_fake_nonnull_result",
+      "schema": "ImageReviewJob",
+      "valid": false,
+      "payload": {
+        "job_id": "job_image_review003",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "failed",
+        "result": {
+          "quality_ratings": {
+            "sharpness": 2,
+            "lighting": 2,
+            "scene_visibility": 2,
+            "detail": 2
+          },
+          "visible_summary": "Standing water covers much of the visible roadway.",
+          "report_match": "yes",
+          "mismatch_notes": [],
+          "reasons": [
+            "The road surface is clearly visible."
+          ],
+          "quality_score": 100,
+          "recommendation": "looks_consistent"
+        },
+        "error_code": "MODEL_TIMEOUT",
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:20Z"
+      }
+    },
+    {
+      "name": "image_review_job_completed_with_advice_and_no_error",
+      "schema": "ImageReviewJob",
+      "valid": true,
+      "payload": {
+        "job_id": "job_image_review004",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "completed",
+        "result": {
+          "quality_ratings": {
+            "sharpness": 1,
+            "lighting": 2,
+            "scene_visibility": 1,
+            "detail": 2
+          },
+          "visible_summary": "Standing water is visible along the road edge.",
+          "report_match": "yes",
+          "mismatch_notes": [],
+          "reasons": [
+            "The visible standing water is consistent with the submitted description."
+          ],
+          "quality_score": 75,
+          "recommendation": "looks_consistent"
+        },
+        "error_code": null,
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:04Z"
+      }
+    },
+    {
+      "name": "image_review_job_completed_rejects_null_result",
+      "schema": "ImageReviewJob",
+      "valid": false,
+      "payload": {
+        "job_id": "job_image_review005",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "completed",
+        "result": null,
+        "error_code": null,
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:04Z"
+      }
+    },
+    {
+      "name": "image_review_job_running_rejects_completed_state_fields",
+      "schema": "ImageReviewJob",
+      "valid": false,
+      "payload": {
+        "job_id": "job_image_review006",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "running",
+        "result": null,
+        "error_code": "MODEL_TIMEOUT",
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:20Z"
+      }
+    },
+    {
+      "name": "image_review_job_superseded_null_result_error_with_completion",
+      "schema": "ImageReviewJob",
+      "valid": true,
+      "payload": {
+        "job_id": "job_image_review007",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "superseded",
+        "result": null,
+        "error_code": null,
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:05Z"
+      }
+    },
+    {
+      "name": "image_review_job_superseded_rejects_nonnull_result",
+      "schema": "ImageReviewJob",
+      "valid": false,
+      "payload": {
+        "job_id": "job_image_review008",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "superseded",
+        "result": {
+          "quality_ratings": {
+            "sharpness": 2,
+            "lighting": 2,
+            "scene_visibility": 2,
+            "detail": 2
+          },
+          "visible_summary": "Standing water is visible.",
+          "report_match": "yes",
+          "mismatch_notes": [],
+          "reasons": [
+            "Visible road detail is present."
+          ],
+          "quality_score": 100,
+          "recommendation": "looks_consistent"
+        },
+        "error_code": null,
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": "2026-10-31T10:00:05Z"
+      }
+    },
+    {
+      "name": "image_review_state_unrequested_null_job",
+      "schema": "ImageReviewState",
+      "valid": true,
+      "payload": {
+        "report_id": "report_example001",
+        "job": null
+      }
+    },
+    {
+      "name": "image_review_job_response_running_envelope",
+      "schema": "ImageReviewJobResponse",
+      "valid": true,
+      "payload": {
+        "success": true,
+        "data": {
+          "job_id": "job_image_review009",
+          "session_id": "session_example001",
+          "generation": 0,
+          "report_id": "report_example001",
+          "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "model": "gpt-vision-contract-example",
+          "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "rubric_version": "image-quality-v1",
+          "status": "running",
+          "result": null,
+          "error_code": null,
+          "created_at": "2026-10-31T10:00:00Z",
+          "deadline_at": "2026-10-31T10:00:20Z",
+          "completed_at": null
+        },
+        "error": null,
+        "meta": {
+          "request_id": "request_image_review001",
+          "session_id": "session_example001",
+          "generation": 0,
+          "revision": 7,
+          "event_sequence": 42
+        }
+      }
+    },
+    {
+      "name": "image_review_state_response_unrequested_null_job_envelope",
+      "schema": "ImageReviewStateResponse",
+      "valid": true,
+      "payload": {
+        "success": true,
+        "data": {
+          "report_id": "report_example001",
+          "job": null
+        },
+        "error": null,
+        "meta": {
+          "request_id": "request_image_review002",
+          "session_id": "session_example001",
+          "generation": 0,
+          "revision": 7,
+          "event_sequence": 42
+        }
+      }
+    },
+    {
+      "name": "image_review_job_queued_null_result_error_and_completion",
+      "schema": "ImageReviewJob",
+      "valid": true,
+      "payload": {
+        "job_id": "job_image_review010",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "queued",
+        "result": null,
+        "error_code": null,
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": null
+      }
+    },
+    {
+      "name": "image_review_job_queued_rejects_error",
+      "schema": "ImageReviewJob",
+      "valid": false,
+      "payload": {
+        "job_id": "job_image_review011",
+        "session_id": "session_example001",
+        "generation": 0,
+        "report_id": "report_example001",
+        "input_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model": "gpt-vision-contract-example",
+        "model_config_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rubric_version": "image-quality-v1",
+        "status": "queued",
+        "result": null,
+        "error_code": "MODEL_UNAVAILABLE",
+        "created_at": "2026-10-31T10:00:00Z",
+        "deadline_at": "2026-10-31T10:00:20Z",
+        "completed_at": null
       }
     }
   ]

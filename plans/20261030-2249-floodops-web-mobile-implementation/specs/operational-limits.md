@@ -2,6 +2,8 @@
 
 Những con số ở đây là **đề xuất security/resource limits**, không phải thông số vật lý/calibration D04 hoặc thời gian phân bổ công việc. Implementation đặt cùng một config có validation cho API, DO và clients.
 
+Image-review limits and enablement follow [ai-assisted-image-review.md](ai-assisted-image-review.md); values are proposed resource bounds, not calibration thresholds.
+
 | Setting | Giá trị khởi điểm đề xuất | Behavior khi chạm giới hạn |
 |---|---|---|
 | SESSION_IDLE_SECONDS | 3600 | Authenticated successful access/command refresh idle tới absolute cap; public probe không refresh |
@@ -23,8 +25,16 @@ Những con số ở đây là **đề xuất security/resource limits**, không
 | MODEL_TOOL_CALL_LIMIT | 12 | Typed budget error, real-eval failure retained |
 | MODEL_TURN_LIMIT | 6 | Stop controller, manual replan possible |
 | ADVANCE_EVENTS_PER_TURN | 100 | Persist reached target/progress, resume bounded job, no skipped events |
-- Per-account model spend cap và provider token limits phải cấu hình theo credit thực trước bật model; không invent giá tiền/model throughput. Disabled model trả MODEL_UNAVAILABLE, deterministic suite vẫn chạy có nhãn.
-- Deployment rate-limit storage must be edge/binding-backed for create/IP and session-local DO for participant/session counters; no in-memory cross-isolate promise. Nếu global spend service chưa có: reserve budget do account provider hard cap, operator killswitch, serialized per-session limit và test explicit limitation; không claim strict global distributed dollar ledger.
+| IMAGE_REVIEW_CONCURRENCY_PER_SESSION | 1 | One active image-review provider call per session; release slot on terminal/deadline recovery |
+| MAX_IMAGE_REVIEW_CALLS_PER_SESSION | 50 | Count every actual provider call; same-key/current-input reuse does not call again; deny new calls at cap before provider |
+| IMAGE_REVIEW_MAX_OUTPUT_TOKENS | 1000 | Bound structured output; invalid/refused output is a typed failure, never a fallback score |
+- Per-account model spend cap and provider token limits must be configured from actual credit/account terms before enabling a model; do not invent costs or throughput. Disabled image review returns `MODEL_UNAVAILABLE`; deterministic tests remain explicitly labelled.
+- Rate-limit storage must be edge/binding-backed for create/IP and session-local DO for participant/session counters; no in-memory cross-isolate promise. Use account provider hard cap + operator kill switch + serialized per-session limit if no global spend service; do not claim a strict global distributed dollar ledger.
+
+## Image-review privacy and enablement
+- `OPENAI_IMAGE_REVIEW_MODEL` is non-secret server configuration for an image-capable model that passes strict structured-output compatibility; reuse `OPENAI_API_KEY`, add no provider/key/account, and expose no model/threshold input to clients.
+- Only an explicit dispatcher action may send one authorized normalized derivative plus minimal report context. Before live use, record image permission/consent, provider-account data handling and actual retention terms; do not infer or claim zero retention. Use synthetic or explicitly permitted images for tests/evaluation, and keep raw images/advice out of event/log payloads.
+
 
 ## Capability routing và ownership
 - Create request có X-Client-Request-Scope random128bit+, Idempotency-Key. SESSION_LOCATOR_KEY HMAC(app_env, nonce,key) xác định session object ổn định qua retry. Locator không cấp quyền; capability random độc lập.

@@ -20,13 +20,14 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - [Root plan](../../plan.md) · [PRD v0.3](../../../../FloodOps/prd.md).
 - [Ownership](../ownership.md) · [Shared contracts](../shared-contracts.md) · [Work item/delivery](../work-items-and-handoff.md).
 - [Producer interfaces](../producer-interfaces.md): exact public exports chốt ở producer gate, không deep-import private implementation.
-- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md).
+- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md) · [Image review](../../specs/ai-assisted-image-review.md).
 - Đọc spec/contracts liên quan trong phase; không suy schema bằng câu chat hoặc tự dùng bản PRD cũ.
 
 ## Prerequisites
 - Required predecessor deliveries: DesignSystem, SimulationData, SessionPlatform, SourcesMedia, PlannerSafety, ReviewRewards, ResultsEvaluation.
 - Tất cả phải **merged** ở required gate SHAs và là ancestors của launch checkout; branch chưa merge không là input authority.
 - Contract ref/hash và BASE_SHA lấy từ receipt, không giả HEAD/latest main là baseline đúng.
+- Implement image-review UI only after IntegrationLead publishes the explicit baseline amendment/contract hash and reissues affected launch refs; do not build against unmerged plan text or silently alter client contracts.
 - CWD/branch/clean state đúng. User dirty/unexpected changes giữ nguyên, stop hoặc báo Lead; không auto-reset/clean/stash.
 
 ## Scope
@@ -34,6 +35,7 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - Real geometry map/list, impact/plans/diff/reasons/Approve/Execute, sources/reports/review/gaps/points, clock/Reset/results.
 - Web ưu tiên dispatcher nhưng cũng có own driver assignment/route/ETA/report workspace và contributor own reports/status/points theo [PRD §3.4](../../../../FloodOps/prd.md) / [surface matrix](../../specs/web-mobile-feature-surfaces.md). Không suy platform thành quyền; không thêm accept/reject cuốc hoặc turn-by-turn.
 - No optimistic committed assignments/points; correct401/410/412/422, private image display and same-origin cookie/CSRF.
+- In the existing dispatcher Report-review detail, show derived `quality_score` as `Chất lượng ảnh: n/100`, `quality_ratings` (sharpness, lighting, scene_visibility, detail), `report_match` yes/no/unclear, `visible_summary`, `mismatch_notes`, `reasons` and the AI-advisory label. Keep manual Accept/Reject separate and available during pending/failure; no stale/null/timeout score, automatic decision, probability or safety badge. Refetch dispatcher job progress from `image_review_changed` by current binding/event_sequence even at equal revision.
 - Use ui-web/design tokens public APIs. Missing UI/schema/dependency => request owner, không copy/fork primitives or wire types.
 
 ## File ownership

@@ -3,6 +3,8 @@
 ## Những gì user vừa chốt
 React web, React Router, Tailwind CSS v4, shadcn, isometric icons, Hono API, Expo/React Native mobile, Cloudflare Workers, feature-based architecture, full contracts/rules/tests, không chia thời gian. Không triển khai ứng dụng ở bước plan.
 
+- New advisory image-review scope is fixed by [ai-assisted-image-review.md](ai-assisted-image-review.md); planning text is not implementation, provider-call or deployment evidence.
+
 ## Proposed technical decisions (không giả làm yêu cầu cũ)
 | ID | Quyết định | Lý do / hệ quả |
 |---|---|---|
@@ -14,20 +16,20 @@ React web, React Router, Tailwind CSS v4, shadcn, isometric icons, Hono API, Exp
 | A06 | SSE fetch + polling catch-up | Unidirectional state stream, commands qua HTTP CAS; verify Expo transport |
 | A07 | API /api/v1, OpenAPI 3.1.1, strict typed schema | Generate shared clients/types, future implementation diffs canonical artifact |
 | A08 | All P1/P2 specified, flags only enable after acceptance/config | Không giảm scope “full application”; missing defer calibration stays disabled until filled |
-| A09 | English UI keys + Vietnamese reports + i18n strings | D06 còn đề xuất; mặc định EN không hardcode toàn app, VI localization namespace |
-| A10 | Model runtime configured via env, Responses strict tools | Không đồng nhất Codex build với runtime; models change without package rewrite |
+| A09 | English UI keys + Vietnamese reports + i18n strings | D06 remains proposed; default EN with VI localization namespace |
+| A10 | Model runtime configured via env, Responses strict tools; optional image review uses compatible `OPENAI_IMAGE_REVIEW_MODEL` with the same existing `OPENAI_API_KEY` | Keep provider credentials server-only; no extra provider/key/account or client model/threshold input |
 
 ## External prerequisite register
 | ID | Cần có | Owner role | Khi thiếu / không được bịa |
 |---|---|---|---|
 | E01 | Khu vực TP.HCM, geometry snapshot/licence, mapping real road aliases | Product/data owner | Functional fixture có label; D04 release gate blocked |
 | E02 | Travel/service/traffic/vehicle/workload/capacity/SLA/H/TTL/source-quality/location tolerance independent samples và sai số chốt | Domain/data owner | `Calibration incomplete`; không số tự đặt để “đạt” K1/K2 |
-| E03 | Quyền ảnh/fixtures/community và retained routing/traffic snapshot | Data/privacy owner | Dùng synthetic/có phép, không scrape camera hay restricted portal |
-| E04 | Cloudflare account, Workers/DO/R2 permissions, domain, Images transform capability nếu chọn | Release owner | Local Worker smoke có thể làm; chưa deploy thì không ghi deploy success |
-| E05 | OpenAI runtime key/model structured tools/spend cap | AI owner | Deterministic stub suite có nhãn; model eval và K4 chưa pass |
+| E03 | Rights for photos/fixtures/community and retained routing/traffic snapshots, including permission/consent for external image-model processing | Data/privacy owner | Use synthetic/explicitly permitted images; document actual provider-account data handling and retention, no zero-retention assumption |
+| E04 | Cloudflare account, Workers/DO/R2 permissions, domain, Images transform capability if selected | Release owner | Local Worker smoke may run; no deployment success claim until actual evidence |
+| E05 | OpenAI runtime key/model compatibility/structured output/spend cap; for image review, image-input + strict-output support, `OPENAI_IMAGE_REVIEW_MODEL`, account hard cap and operator kill switch | AI owner | Same `OPENAI_API_KEY`; if missing/unsupported/disabled, return unavailable; deterministic stubs do not pass model evaluation |
 | E06 | Expo/EAS project, iOS signing/Apple team, Android keystore/store access | Mobile release owner | Dev build/emulator evidence, store release blocked, không giả EAS account |
 | E07 | Isometric icon asset/package licence confirmed | Design owner | SVG export licensed + native adapter, no nonexistent import |
-| E08 | Reviewer quyết scope high-risk authority/source profiles/retention | Product/security owner | Default deny/low-confidence, không grant quyền từ provider name |
+| E08 | Reviewer resolves high-risk authority/source profiles and provider image-data retention/consent policy | Product/security owner | Default deny/low-confidence; verify actual account terms before live evaluation, never claim zero retention without evidence |
 
 ## Scope parity và exclusions
 - Website/mobile/API đều có kịch bản rain/tide/combined, report-review-reward-replan, plan approval/execute, clock/reset/results.

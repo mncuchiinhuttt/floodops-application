@@ -430,6 +430,12 @@
       "verification_owner": "quality-security"
     },
     {
+      "phase": 7,
+      "name": "Prove quantified advisory image review cannot accept reports or alter safety/rewards",
+      "primary_agent": "review-rewards",
+      "verification_owner": "quality-security"
+    },
+    {
       "phase": 12,
       "name": "Prove compatible deployment rollback and EAS binaries",
       "blocked_by_external": [
@@ -439,6 +445,16 @@
       ],
       "primary_agent": "release-ops",
       "verification_owner": "quality-security"
+    }
+  ],
+  "feature_amendments": [
+    {
+      "id": "US-30-image-review-v1",
+      "spec": "specs/ai-assisted-image-review.md",
+      "operation_ids": ["createReportImageReview", "getReportImageReview"],
+      "acceptance_ids": ["IR-01", "IR-02", "IR-03", "IR-04", "IR-05", "IR-06", "IR-07", "IR-08", "IR-09", "IR-10", "IR-11", "IR-12"],
+      "affected_roles": ["integration-lead", "contracts-client", "session-platform", "sources-media", "review-rewards", "web-console", "expo-mobile", "quality-security", "release-ops"],
+      "requires_lead_baseline_amendment": true
     }
   ],
   "worktree_execution": {

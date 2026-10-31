@@ -20,19 +20,22 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; verify polic
 - [Root plan](../../plan.md) · [PRD v0.3](../../../../FloodOps/prd.md).
 - [Ownership](../ownership.md) · [Shared contracts](../shared-contracts.md) · [Work item/delivery](../work-items-and-handoff.md).
 - [Producer interfaces](../producer-interfaces.md): exact public exports chốt ở producer gate, không deep-import private implementation.
-- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md).
+- [Architecture](../../specs/architecture.md) · [Coverage](../../specs/requirements-coverage.md) · [API index](../../contracts/api-index.md) · [Testing](../../specs/testing-strategy.md) · [Image review](../../specs/ai-assisted-image-review.md).
 - Đọc spec/contracts liên quan trong phase; không suy schema bằng câu chat hoặc tự dùng bản PRD cũ.
 
 ## Prerequisites
 - Required predecessor deliveries: WebConsole, ExpoMobile.
 - Tất cả phải **merged** ở required gate SHAs và là ancestors của launch checkout; branch chưa merge không là input authority.
 - Contract ref/hash và BASE_SHA lấy từ receipt, không giả HEAD/latest main là baseline đúng.
+- Resume QA only after IntegrationLead publishes the explicit baseline amendment/contract hash and all affected producer/consumer launch refs are refreshed; do not alter QA gates, permissions or manifests.
 - CWD/branch/clean state đúng. User dirty/unexpected changes giữ nguyên, stop hoặc báo Lead; không auto-reset/clean/stash.
 
 ## Scope
 - Implement phase11 consumer-level integration/security/accessibility checks trên frozen integrated candidate, not feature service edits.
 - Drive actual Worker+builtweb+native: webreview→mobileplan, nativereport→webaward/replan, CAS two dispatchers, reset/expiry/image/modelfail.
 - All T01..15/POL/I and E-HUB-01,24/25schema cases current contract source, D04/rehearsal prerequisites marked honestly.
+- Add all IR-01–IR-12 to the existing acceptance plan without replacing the 34 US/15 T suites: deterministic stubs prove schema/arithmetic/state plumbing; only separately authorized permitted real-image/model evaluation can evidence vision agreement. Keep this role verification-only; do not edit feature services or clients.
+- Verify model budget, dispatcher-only APIs/events, consent and actual provider-account retention evidence; no zero-retention claim or deployment/live-call claim without evidence.
 - Bugs gửi failing scenario+owner; không sửa application source, gate logic, fixture outcomes hoặc re-pin incidental tests để xanh.
 
 ## File ownership

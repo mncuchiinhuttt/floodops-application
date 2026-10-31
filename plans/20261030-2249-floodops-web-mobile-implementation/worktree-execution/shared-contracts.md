@@ -37,3 +37,9 @@ Trước UI, DesignSystem + Lead công bố token names/platform adapters/icon I
 - Chỉ Lead cập nhật package manifests/lockfile. Worker dùng frozen install, không Expo/shadcn generator auto-edit protected files.
 - App/package public export/config requests có owner; không thêm catch-all barrel để lách giới hạn file/ownership.
 - Generated spec/type output phải match source và baseline hash; không regenerate bằng version khác rồi overwrite đồng đội.
+
+## US-30 image-review contract amendment
+- [Feature spec](../specs/ai-assisted-image-review.md) bổ sung2 API operations và8 typed schemas vào canonical API; giữ8 Commander tools và public Report/manual review payloads. Đây là user-approved amendment, không phải worker tự thêm API.
+- C1 phải publish contract/client/event source hash mới; producers/consumers nhận approved baseline amendment trước khi implementation tiếp tục. Không sửa active receipts/gates trong working tree để giả đã được cấp quyền.
+- Bốn rubric ratings0–2 do model đề xuất, quality_score0–100/recommendation do server derive; yes/no/unclear chỉ là description match. Schema-valid Advice vẫn phải semantic-check derived fields; không confidence/safety/acceptance/reward authority từ numeric score.
+- Image-review event/job metadata không tăng operational revision. Client cache phải nhận cùng-revision job progress qua event_sequence/job/input_digest; stale/reset/manual-decision guard vẫn bắt buộc. IR-01–IR-12 bổ sung các acceptance hiện có.
