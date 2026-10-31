@@ -1,0 +1,44 @@
+{
+  "work_item_id": "review-rewards-domain-foundations-v1",
+  "role_id": "review-rewards",
+  "phase_ids": [
+    7
+  ],
+  "base_sha": "8074d280b8c315b96df7ba018311690e050a718b",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/sources-domain-foundations-v1-index.json",
+    "commit_sha": "3ec303eae32f899edef0909527ca72195fdbff9f",
+    "sha256": "69cb1d52e620d0bad6e4732c7d73f5e72b58281bf443265cd6fa79cc1e7aa40e"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "simulation-ready",
+      "commit_sha": "30e058252d4176c76a8b17b40e25786f34b50b4c"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    }
+  ],
+  "expected_branch": "feat/floodops-review-rewards",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/07-review-rewards",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "independent-downstream-domain-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "status": "authorized-exact-partial-scopes",
+  "base_sha": "8074d280b8c315b96df7ba018311690e050a718b",
+  "launch_sha": "containing commit supplied out-of-band for PlannerSafety/ReviewRewards; SourcesMedia exact existingc77d7296fd0b384b1e5f0c9df1bece6a1a8bf142",
+  "partial_workers": [
+    {
+      "role": "sources-media",
+      "worktree": "05-sources-media",
+      "work_item": "sources-media-domain-foundations-v1",
+      "launch_sha": "c77d7296fd0b384b1e5f0c9df1bece6a1a8bf142"
+    },
+    {
+      "role": "planner-safety",
+      "worktree": "06-planner-safety",
+      "work_item": "planner-safety-domain-foundations-v1",
+      "launch_sha": "containing metadata commit"
+    },
+    {
+      "role": "review-rewards",
+      "worktree": "07-review-rewards",
+      "work_item": "review-rewards-domain-foundations-v1",
+      "launch_sha": "containing metadata commit"
+    }
+  ],
+  "separate_repair": {
+    "role": "session-platform",
+    "thread_id": "01a19032-cee6-734a-a967-a1f593f4b0ef",
+    "work_item": "session-platform-phase-04-v3",
+    "launch_sha": "d14dc05ff0a944639b699eae5b1de4b42c690e67"
+  },
+  "actual_launch_owner": "Parent cloud task API; sol/ultra/service_tier fast, verify started. Lead created no actual worker or duplicate writer.",
+  "qualifications": "No role/wave full gate from partial work. Full Sources API/media waits real platform-ready, Planner/Review full integration waits actual sources-ready. Existing13roles/9waves preserved."
+}
