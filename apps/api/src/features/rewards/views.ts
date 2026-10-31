@@ -2,7 +2,7 @@ import { parseSchema } from "@floodops/contracts";
 import { deriveUsefulCoverage, projectActiveGaps } from "@floodops/domain/rewards";
 import { fail } from "../../shared/index";
 import type { ViewDefinition } from "../../shared/index";
-import type { ReviewOptions } from "../reports/review/runtime-types";
+import { REVIEW_CONFLICTS, REVIEW_COVERAGE, REVIEW_GAPS, type ReviewOptions } from "../reports/review/runtime-types";
 import { coverageState, readReviewStore } from "../reports/review/state";
 
 export function createRewardViews(options: ReviewOptions): Record<string, ViewDefinition> {
@@ -19,6 +19,12 @@ export function createRewardViews(options: ReviewOptions): Record<string, ViewDe
       const store = readReviewStore(context), state = options.source.read(context);
       return { awards: store.ledger.awards, gaps: projectActiveGaps(store.ledger, state.relevantScope) };
     } },
+    [REVIEW_CONFLICTS]: { permission: "knowledge:read", roles: ["dispatcher"], project: context => options.source.read(context).conflicts },
+    // Open rows only: filled_by_report_id/first_award_id are null, so no other participant's report or award id is exposed.
+    [REVIEW_GAPS]: { permission: "session:read", roles: ["dispatcher", "driver", "contributor", "viewer"],
+      project: context => projectActiveGaps(readReviewStore(context).ledger, options.source.read(context).relevantScope) },
+    [REVIEW_COVERAGE]: { permission: "session:read", roles: ["dispatcher", "driver", "contributor", "viewer"],
+      project: context => deriveUsefulCoverage(coverageState(context, options.source.read(context))).coverage },
     "contributor-dashboard": { permission: "contributor:self:read", roles: ["contributor"], project(context) {
       const entity = context.actor.participant.bound_entity_id;
       if (!entity) fail(403, "FORBIDDEN");

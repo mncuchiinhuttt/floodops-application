@@ -34,3 +34,4 @@ export interface ReviewOptions {
 }
 export const REVIEW_ACCEPT = "review:accept", REVIEW_REJECT = "review:reject", REVIEW_RESOLVE = "review:resolve";
 export const REVIEW_AWARDS = "review:awards", REVIEW_DASHBOARD = "contributor-dashboard", REVIEW_IMAGE_CONTEXT = "review:image-context";
+export const REVIEW_CONFLICTS = "review:conflicts", REVIEW_GAPS = "review:gaps", REVIEW_COVERAGE = "review:coverage";

@@ -43,3 +43,4 @@ export { createPlanningServices } from "./internal-services";
 export { runDeterministicPlanner } from "./deterministic-planner";
 export { DEFAULT_SEARCH_LIMITS, PLANNER_VERSION, PlanningSearchStopped, searchLimits } from "./deterministic-types";
 export type { SearchLimits, SearchEvidence, DeterministicProposal } from "./deterministic-types";
+export { runtimeRun, idle as assertPlanningIdle } from "./runtime-context";

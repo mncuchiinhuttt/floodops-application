@@ -11,8 +11,9 @@ import { fail, type SessionSeed, type RuntimeRegistry, type TransitionContext } 
 import { createSimulationRuntime } from "./features/simulation/index";
 import { createResultsRouter, createResultsView, createWorkspaceViews, RESULTS_VIEW, type WorkspacePlanning } from "./features/results/index";
 import { createSourcesFeature } from "./features/sources/index";
-import { createPlanningRuntime, DEFAULT_SEARCH_LIMITS } from "./features/planning/index";
+import { createPlanningRuntime, DEFAULT_SEARCH_LIMITS, searchLimits } from "./features/planning/index";
 import { createReviewSeed, createSourceBackedReviewRuntime, reconcileReviewGaps } from "./features/reports/review/index";
+import { createEvaluationRuntime } from "./features/evaluations/index";
 
 const scenario = loadScenario(manifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
 const legacyScenario = loadScenario(legacyManifest as unknown as ScenarioManifest, text => createHash("sha256").update(text).digest("hex"));
@@ -83,6 +84,8 @@ function projected(registry: RuntimeRegistry, name: string, context: TransitionC
 }
 // Genuine bounded deterministic runtime; no provider/key/model transport is injected.
 const planning = createPlanningRuntime({ persistence: simulationPersistence, search: DEFAULT_SEARCH_LIMITS });
+// Deterministic replay runner reuses the committed planner configuration; it never calls a model or mutates the live session.
+const evaluation = createEvaluationRuntime({ persistence: simulationPersistence, planner: planning.planner, limits: searchLimits(DEFAULT_SEARCH_LIMITS) });
 const simulation = createSimulationRuntime({ persistence: simulationPersistence, committedPolicy: planning.committedPolicy,
   afterAdvance: ({ context, values }) => ({ ...values, reviewRewards: reconcileReviewGaps(context, coverageInput(context)) }) });
 const workspaces = createWorkspaceViews({ persistence: simulationPersistence,
@@ -101,9 +104,10 @@ const workspaces = createWorkspaceViews({ persistence: simulationPersistence,
 const registry: RuntimeRegistry = {
   ...simulation.registry,
   ...review.registry, serialization: "m1-v1", seedForReset: previous => sessionSeed(previous.scenario_id, previous.scenario_version),
-  commands: { ...sources.registry.commands, ...simulation.registry.commands, ...planning.registry.commands, ...review.registry.commands },
+  commands: { ...sources.registry.commands, ...simulation.registry.commands, ...planning.registry.commands, ...review.registry.commands,
+    ...evaluation.registry.commands },
   views: { ...sources.registry.views, ...simulation.registry.views, ...planning.registry.views, ...review.registry.views,
-    ...workspaces, [RESULTS_VIEW]: createResultsView(simulationPersistence) },
+    ...evaluation.registry.views, ...workspaces, [RESULTS_VIEW]: createResultsView(simulationPersistence) },
   onLeaseExpired(snapshot, lease, now) {
     let values = snapshot.values;
     for (const feature of [sources, simulation, planning]) {
@@ -115,5 +119,5 @@ const registry: RuntimeRegistry = {
 // Preserve media recovery intents/table/alarm around the full combined registry.
 const RegisteredSessionDO = sources.createSessionObject(registry);
 export class SessionDO extends RegisteredSessionDO {}
-export default createApp([...sources.routers, planning.router, review.router, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
+export default createApp([...sources.routers, planning.router, review.router, evaluation.router, simulation.router, createResultsRouter()], { loadScenario: loadSessionScenario });
 
