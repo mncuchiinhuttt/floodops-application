@@ -26,11 +26,20 @@
     {
       "binding": "REPORT_MEDIA",
       "bucket_name": "floodops-local-report-media"
+    },
+    {
+      "binding": "SCENARIO_ASSETS",
+      "bucket_name": "floodops-local-scenario-assets",
+      "remote": false
     }
   ],
   "vars": {
     "APP_ENV": "development",
     "WEB_ORIGIN": "http://127.0.0.1:5170"
+  },
+  "images": {
+    "binding": "IMAGES",
+    "remote": false
   }
 }
 

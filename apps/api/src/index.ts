@@ -13,6 +13,14 @@ export const scenarioReference: ScenarioReference = Object.freeze({
   scenario_version: scenario.manifest.config.scenario.version,
   bundle_hash: scenario.bundleHash
 });
+/** Private immutable producer catalog, not a client authorization boundary. */
+export const scenarioCatalog = {
+  list: () => [scenario] as const,
+  get(id: string, version: string) {
+    if (id !== scenarioReference.scenario_id || version !== scenarioReference.scenario_version) fail(404, "NOT_FOUND");
+    return scenario;
+  }
+};
 type RunState = Omit<SimulationRun, "scenario">;
 /** Server-owned persistence only; never use as an authorized client projection. */
 export const simulationPersistence: SimulationPersistence<SimulationRun, RunState> = {
@@ -31,7 +39,7 @@ export const simulationPersistence: SimulationPersistence<SimulationRun, RunStat
   }
 };
 export async function loadSessionScenario(id: string, version: string): Promise<SessionSeed> {
-  if (id !== scenarioReference.scenario_id || version !== scenarioReference.scenario_version) fail(404, "NOT_FOUND");
+  scenarioCatalog.get(id, version);
   return {
     scenario_id: id, scenario_version: version,
     horizon_minute: scenario.manifest.config.horizon_minute,

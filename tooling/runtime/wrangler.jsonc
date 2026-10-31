@@ -25,6 +25,11 @@
     {
       "binding": "REPORT_MEDIA",
       "bucket_name": "floodops-composition-test-media"
+    },
+    {
+      "binding": "SCENARIO_ASSETS",
+      "bucket_name": "floodops-composition-test-scenario-assets",
+      "remote": false
     }
   ],
   "vars": {
@@ -33,5 +38,9 @@
     "SESSION_LOCATOR_KEY": "synthetic-test-locator-never-use-remotely",
     "CAPABILITY_SEAL_KEY_ACTIVE": "synthetic-test-sealing-never-use-remotely",
     "CAPABILITY_SEAL_KEY_ID": "test-v1"
+  },
+  "images": {
+    "binding": "IMAGES",
+    "remote": false
   }
 }
