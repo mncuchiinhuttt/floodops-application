@@ -1,0 +1,75 @@
+{
+  "amendment_id": "results-client-independent-foundations-v1",
+  "status": "authorized",
+  "authority": "User requested additional parallel later-wave agents; parent authorized exact independent result math and client screen/form/adapter slices. No full role dependency/gate is bypassed,13 roles/9 waves unchanged.",
+  "required_gates": [
+    "contracts-ready",
+    "simulation-ready"
+  ],
+  "deferred_gates": [
+    "platform-ready",
+    "sources-ready",
+    "planner-ready",
+    "review-ready",
+    "backend-ready",
+    "ui-libraries-ready"
+  ],
+  "work_items": [
+    {
+      "role_id": "results-evaluation",
+      "work_item_id": "results-evaluation-domain-foundations-v1",
+      "include_prefixes": [
+        "apps/api/src/features/results/pure/",
+        "apps/api/src/features/evaluations/pure/",
+        "apps/api/test/metrics/",
+        "apps/api/test/evaluations/"
+      ],
+      "include_files": [],
+      "scope": "Pure comparable result projection using public simulator metrics and pure10-sample evaluation aggregation, actual tests. No routers/clock jobs/leases/provider or fabricated evidence files."
+    },
+    {
+      "role_id": "web-console",
+      "work_item_id": "web-console-screen-foundations-v1",
+      "include_prefixes": [
+        "apps/web/src/features/",
+        "apps/web/src/shared/",
+        "apps/web/preview/",
+        "apps/web/test/"
+      ],
+      "include_files": [
+        "apps/web/vite.partial.config.ts",
+        "apps/web/README.md"
+      ],
+      "scope": "Typed capability-bound navigation definitions/client adapters and real rendered presentational feature screens/forms, separate explicit fixture preview/tests only. No production router/bootstrap/backend integration or fake app-ready."
+    },
+    {
+      "role_id": "expo-mobile",
+      "work_item_id": "expo-mobile-screen-foundations-v1",
+      "include_prefixes": [
+        "apps/mobile/src/features/",
+        "apps/mobile/src/shared/",
+        "apps/mobile/preview/",
+        "apps/mobile/test/"
+      ],
+      "include_files": [
+        "apps/mobile/README.md"
+      ],
+      "scope": "Native React Native feature screens/forms and typed capability/navigation/client adapter/draft-state definitions with real Jest interaction tests, separate fixture preview. No app/router/bootstrap/config/device/build/backend integration or fake app-ready."
+    }
+  ],
+  "dependencies": {
+    "source_commit": "44df91f060d6f117f6ff1328df1c294ddb23355a",
+    "registry_versions_new": [],
+    "cached_reuse": "Existing reviewed Vitest/jsdom/RTL/Vite/Tailwind and matching Expo58/RN0.88/Jest/RNTL/Babel pins; workspace contracts/client/UI/tokens/icons links and JSX supplied centrally. API/root test-fixtures workspace supplied for upcoming full Sources and pure Results tests.",
+    "deferred": "React Router Data Mode/Expo Router, TanStack/SecureStore/image-picker/real persistence package integration require reviewed central pins and follow-up receipt. Implement route definitions/props/screens now, not an ad-hoc alternate router or fake credential store.",
+    "install": "Frozen Bun1.4.0 --ignore-scripts pass1215packages; no new registry version or lifecycle executed; SecureCoder sidecar/env absent, skill says skip scan, no safety certification."
+  },
+  "rules": [
+    "No source edits outside exact partial include minus protected files; DesignSystem and API-client/contracts owners untouched, no source copy/fork/private imports.",
+    "One mobile app with role workspaces, not3 apps; server capability determines permission, never platform/persona/local role selector. Driver own committed assignments/orders/stops/route/ETA/reports only, no accept/reject ride. Contributor own photo/report state/reasons/simulated points. Dispatcher full screen surfaces including separate Approve/Execute and manual AI-assisted review.",
+    "AI advice card is ordinal server quality_score, never confidence/authenticity/safe-road probability; null/error/stale show no fabricated number. Manual Accept/Reject independent of AI pending/failure; no offline operational/image-review command queue.",
+    "Mocks only under preview/test with prominent Fixture preview—not connected to live backend; no mock imports/default fallback in production feature data path or invented KPI/fleet values.",
+    "Do not claim backend-ready/ui/device/native binary/model/D04/security/release acceptance from schema/render/math tests. Current root health header-red regression belongs SessionPlatform v3; no weakening/fixing outside scope.",
+    "No worker remote push/main promotion/deploy/paid provider/model/account/key/resource/Images/device actions. Fresh continuation required for full runtime integration and delayed provider gates."
+  ]
+}
