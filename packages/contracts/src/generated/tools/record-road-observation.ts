@@ -14,5 +14,6 @@ export const recordRoadObservation = {
   "evidence_ids": z.array(z.string().refine(v => [...v].length <= 128, "String too long").regex(new RegExp("^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$"))).refine(v => v.length >= 1, "Too few items"),
 }),
   output: ObservationSchema,
+  modelCallable: false, milestone: "M1",
   sideEffect: "validated_transition_proposal_only",
 } as const;

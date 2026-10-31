@@ -10,5 +10,6 @@ export const proposeOrderDeferral = {
   "evidence_ids": z.array(z.string().refine(v => [...v].length <= 128, "String too long").regex(new RegExp("^[a-z][a-z0-9_]{1,23}_[A-Za-z0-9_-]{6,96}$"))).refine(v => v.length >= 1, "Too few items"),
 }),
   output: PlanActionSchema,
+  modelCallable: false, milestone: "M2",
   sideEffect: "proposal_only",
 } as const;

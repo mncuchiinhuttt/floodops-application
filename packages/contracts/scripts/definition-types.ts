@@ -28,6 +28,8 @@ interface Tool {
   output_schema: Schema;
   side_effect: string;
   strict: true;
+  milestone: "M1" | "M2";
+  model_callable: false;
 }
 export interface Definition {
   "openapi.json": ApiDefinition;

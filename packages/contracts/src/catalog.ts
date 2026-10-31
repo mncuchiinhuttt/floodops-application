@@ -18,3 +18,9 @@ export const tools = Object.freeze(Object.fromEntries(Object.values(exportedTool
 };
 export type ToolInput<N extends ToolName> = z.infer<(typeof tools)[N]["input"]>;
 export type ToolOutput<N extends ToolName> = z.infer<(typeof tools)[N]["output"]>;
+
+/** PRD v0.5: operation schemas for deterministic server services, never model tools. */
+export const internalServices = tools;
+export type InternalServiceName = ToolName;
+export type InternalServiceInput<N extends InternalServiceName> = ToolInput<N>;
+export type InternalServiceOutput<N extends InternalServiceName> = ToolOutput<N>;
