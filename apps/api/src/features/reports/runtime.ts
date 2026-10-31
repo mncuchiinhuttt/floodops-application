@@ -1,10 +1,8 @@
 import { parseSchema, ReportSchema } from "@floodops/contracts";
 import { proposeReportSubmission, sourceState } from "@floodops/domain/reporting";
-import { proposeObservationAcceptance } from "@floodops/domain/knowledge";
-import { applyKnowledgeTransition } from "@floodops/simulation";
 import type { RuntimeRegistry, TransitionContext } from "../../shared/index";
 import { fail } from "../../shared/index";
-import { object, sourceEnvironment } from "../scenario/index";
+import { object } from "../scenario/index";
 import { adaptSourceRegistry } from "../scenario/index";
 import type { SourcesPorts } from "../scenario/index";
 import { MEDIA_LIMITS } from "../media/index";
@@ -15,18 +13,12 @@ function submit(ports: SourcesPorts, context: TransitionContext, raw: unknown) {
   if (Object.keys(state.reports).length >= MEDIA_LIMITS.reports) fail(429, "RATE_LIMITED");
   if (state.reports[reportId]) fail(409, "STATE_CONFLICT");
   const environment = reportContext(ports, context, input, reportId), submission = proposeReportSubmission(input, environment);
-  let report = submission.report, values = { ...context.snapshot.values };
+  let report = submission.report;
+  const values = context.snapshot.values;
   const currentPairs = ports.simulationPersistence.read(values).knowledge;
   if (submission.capturedEpochs.some(epoch => !currentPairs.some(pair => pair.segment_id === epoch.segment_id && pair.vehicle_type === epoch.vehicle_type && pair.knowledge_epoch === epoch.knowledge_epoch)))
     report = { ...report, status: "needs_clarification", reason_codes: [...report.reason_codes, "NEEDS_CLARIFICATION"] };
-  if (report.kind === "driver" && report.input_mode === "quick" && report.status === "pending_review") {
-    const run = ports.simulationPersistence.read(values);
-    const accepted = proposeObservationAcceptance(report, report.quick_condition!, run.knowledge, { ...sourceEnvironment(ports, context.snapshot), ...environment,
-      observationIds: report.vehicle_types.map(vehicle_type => ({ vehicle_type, observation_id: `observation_${reportId.split("_")[1]}_${vehicle_type}` })), reasonId: reportId });
-    report = accepted.report;
-    values = ports.simulationPersistence.write(values, applyKnowledgeTransition(run, accepted.knowledge,
-      { sourceSnapshot: { ...run.sourceSnapshot, observations: accepted.observations }, reasonId: reportId }));
-  }
+  // Demo path: quick reports retain their receipt and await a genuine manual review before any evidence commit.
   if (report.input_mode === "text" && report.status === "normalizing") report = { ...report, status: "needs_clarification", reason_codes: ["NEEDS_CLARIFICATION"] };
   let normalizedDigest: string | null = null;
   if (report.media_id) normalizedDigest = Object.values(state.uploads).find(item => item.media?.media_id === report.media_id)?.media?.sha256 ?? null;
