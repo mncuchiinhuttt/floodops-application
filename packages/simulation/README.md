@@ -8,7 +8,7 @@ or owned by later producers. Runtime logic imports no Bun, Node, Hono, React or 
 
 | Import | Public seam |
 | --- | --- |
-| `@floodops/simulation` | `loadScenario`, `createRun`, `advanceRun`, `computeRoute`, `projectCandidate`, `projectCurrent`, `applyExecutedCandidate`, `retryCommittedRoute`, `checkEntry`, `calculateObservedMetrics`, `relativeReduction`, `objectiveFromEtas`, `compareObjectives`, `assessCalibration`; manifest/run/policy/projection types |
+| `@floodops/simulation` | `loadScenario`, `createRun`, `applyKnowledgeTransition`, `advanceRun`, `computeRoute`, `projectCandidate`, `projectCurrent`, `applyExecutedCandidate`, `retryCommittedRoute`, `checkEntry`, `calculateObservedMetrics`, `relativeReduction`, `objectiveFromEtas`, `compareObjectives`, `assessCalibration`; manifest/run/policy/projection types |
 | `@floodops/simulation/graph` | immutable graph construction, turn-aware FIFO routing, geometry/profile algorithms and internal types |
 | `@floodops/simulation/clock` | immutable generic event queue and explicit minute/millisecond adapters |
 | `@floodops/domain/operations` | canonical operational validation, isolated assignment candidates, deferral and exact quantity-vector operations |
@@ -42,6 +42,15 @@ mutate the run. Core closure/impassable/conflict/vehicle/turn guards remain hard
 removes current observation IDs, condition and confidence; a later ordinary-unknown authorization
 must be a new owner-bound decision. Old evidence-bound approvals must fail in the policy adapter.
 The simulator does not implement participant auth, manual review, rewards, LLM control or API CAS.
+`applyKnowledgeTransition(run, fullKnowledge, {sourceSnapshot,reasonId})` consumes an already normalized
+server transition at the committed simulation time. It validates current support, frozen source registry,
+nondecreasing epochs and actual reopening proof, updates shared runtime knowledge/source records and
+invalidates the affected physical path. It does not mutate the frozen scenario/config/bundle hashes,
+advance time, Execute a candidate or award points. Existing source inputs/restrictions/observation facts
+are immutable; only explicit review status/conflict fields may change. A future stale fixture observation
+cannot overwrite runtime knowledge. Newly effective authority advances the current epoch instead of
+being discarded; a rebased reopening becomes unknown until fresh evidence/approval exists. SessionPlatform must fence this pure transition
+with its session/generation/revision/CAS transaction together with the source/review transition.
 
 A blocked route remains waiting with null ETA. `retryCommittedRoute` is an explicit owner-authorized
 wake of an existing route; approval alone does not execute a proposed plan. Physical checks run again

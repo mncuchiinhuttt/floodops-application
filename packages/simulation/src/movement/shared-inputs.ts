@@ -1,5 +1,5 @@
 import type { BranchId, SimulationRun } from "./run-types.ts";
-import { hasAuthorizedReopening } from "../scenario/validate-knowledge.ts";
+import { hasAuthorizedReopening, KnowledgeProjectionError, validateKnowledgeProjection } from "../scenario/validate-knowledge.ts";
 import { appendLog } from "./run-log.ts";
 import { minutesToMilliseconds, millisecondsToMinutes } from "../clock/index.ts";
 
@@ -11,9 +11,27 @@ export function applySharedInputs(run: SimulationRun): void {
       const next = structuredClone(event.knowledge);
       const index = run.knowledge.findIndex(item => item.segment_id === next.segment_id && item.vehicle_type === next.vehicle_type);
       const previous = run.knowledge[index];
-      if (previous && next.knowledge_epoch < previous.knowledge_epoch) throw new Error("Stale scenario knowledge epoch.");
+      if (previous && next.knowledge_epoch < previous.knowledge_epoch) {
+        if (next.state === "authoritative_closed") {
+          next.knowledge_epoch = previous.knowledge_epoch + 1;
+        } else if (event.kind === "reopening") {
+          next.knowledge_epoch = previous.knowledge_epoch + 1;
+          next.state = "ordinary_unknown"; next.condition = "unknown"; next.confidence_band = null;
+          next.observation_ids = []; next.restriction_ids = []; next.expires_sim_minute = null;
+        } else {
+          appendLog(run, null, "input", { reason: `STALE_FIXTURE_PROJECTION:${event.id}` });
+          continue;
+        }
+        if (!Number.isSafeInteger(next.knowledge_epoch)) throw new Error("Knowledge epoch overflow.");
+      }
+      try { validateKnowledgeProjection({ ...run.scenario.manifest, sourceSnapshot: run.sourceSnapshot }, next, event.atMinute); }
+      catch (error) {
+        if (!(error instanceof KnowledgeProjectionError)) throw error;
+        appendLog(run, null, "input", { reason: `STALE_FIXTURE_PROJECTION:${event.id}` });
+        continue;
+      }
       if (event.kind === "reopening") {
-        if (!hasAuthorizedReopening(run.scenario.manifest, event) || previous?.state !== "authoritative_closed" || !previous.restriction_ids.length
+        if (!hasAuthorizedReopening({ ...run.scenario.manifest, sourceSnapshot: run.sourceSnapshot }, event) || previous?.state !== "authoritative_closed" || !previous.restriction_ids.length
           || previous.restriction_ids.some(id => !event.supersedesRestrictionIds.includes(id))) throw new Error("Reopening must supersede the current authoritative restriction.");
       } else if (previous?.state === "authoritative_closed" && next.state !== "authoritative_closed") {
         next.state = previous.state; next.condition = previous.condition; next.restriction_ids = [...previous.restriction_ids];

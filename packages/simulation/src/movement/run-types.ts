@@ -18,6 +18,7 @@ export interface RunLog {
 export interface PickupUsage { hubId: string; atMinute: number; orderId: string }
 export interface SimulationRun {
   scenario: LoadedScenario; runId: string; nowMs: number;
+  sourceSnapshot: LoadedScenario["manifest"]["sourceSnapshot"];
   branches: Partial<Record<BranchId, BranchState>>;
   knowledge: SegmentKnowledge[]; inputCursor: number; incidentSeen: boolean;
   log: RunLog[]; nextSequence: number; pickupUsage: Partial<Record<BranchId, PickupUsage[]>>;

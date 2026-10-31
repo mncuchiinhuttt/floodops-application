@@ -14,7 +14,7 @@ export function createRun(scenario: LoadedScenario, runId: string, includeRerout
         cursor: 0, incoming: null, serviceEndMs: null, activeStop: null, wakeAtMs: null, needsReroute: false };
     }
   }
-  const run: SimulationRun = { scenario, runId, nowMs: 0, branches, knowledge: structuredClone(scenario.manifest.initialKnowledge),
+  const run: SimulationRun = { scenario, runId, nowMs: 0, sourceSnapshot: structuredClone(scenario.manifest.sourceSnapshot), branches, knowledge: structuredClone(scenario.manifest.initialKnowledge),
     inputCursor: 0, incidentSeen: false, log: [], nextSequence: 1, pendingTargetMs: null,
     pickupUsage: { static: [], floodops: [], ...(includeRerouteOnly ? { reroute_only: [] } : {}) } };
   for (const [id, branch] of Object.entries(branches)) for (const order of branch.operations.orders) {

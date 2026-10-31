@@ -2,6 +2,7 @@ export { loadScenario } from "./scenario/load-scenario.ts";
 export { sealScenarioDraft } from "./scenario/author-fixture.ts";
 export { canonicalJson, scenarioHashes } from "./scenario/fingerprint.ts";
 export { assessCalibration } from "./calibration/assess-calibration.ts";
+export { applyKnowledgeTransition } from "./movement/apply-knowledge-transition.ts";
 export { createRun } from "./movement/create-run.ts";
 export { retryCommittedRoute } from "./movement/retry-committed-route.ts";
 export { advanceRun } from "./movement/advance-run.ts";

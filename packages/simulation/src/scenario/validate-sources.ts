@@ -2,7 +2,7 @@ import { SourceSchema, InputEventSchema, ObservationSchema, RestrictionSchema } 
 import { hasAuthorizedReopening, validateKnowledgeProjection } from "./validate-knowledge.ts";
 import type { ScenarioManifest } from "./scenario-types.ts";
 
-export function validateSourceSnapshot(manifest: ScenarioManifest): void {
+export function validateSourceSnapshot(manifest: ScenarioManifest, initialMinute = 0): void {
   const snapshot = manifest.sourceSnapshot, profiles = manifest.config.source_policy_profiles;
   snapshot.sources.forEach(source => SourceSchema.parse(source)); snapshot.inputEvents.forEach(event => InputEventSchema.parse(event));
   snapshot.observations.forEach(observation => ObservationSchema.parse(observation)); snapshot.restrictions.forEach(restriction => RestrictionSchema.parse(restriction));
@@ -35,7 +35,7 @@ export function validateSourceSnapshot(manifest: ScenarioManifest): void {
       || (event.restriction_id !== null && !snapshot.restrictions.some(item => item.restriction_id === event.restriction_id && item.authority_profile_id === source.policy_profile_id))) throw new Error("Invalid input source/fixture/restriction.");
   }
   for (const event of manifest.events) if (event.kind === "reopening" && !hasAuthorizedReopening(manifest, event)) throw new Error("Reopening needs actual authorized source restriction.");
-  for (const knowledge of manifest.initialKnowledge) validateKnowledgeProjection(manifest, knowledge, 0);
+  for (const knowledge of manifest.initialKnowledge) validateKnowledgeProjection(manifest, knowledge, initialMinute);
   for (const event of manifest.events) if (event.knowledge) validateKnowledgeProjection(manifest, event.knowledge, event.atMinute);
   for (const knowledge of [...manifest.initialKnowledge, ...manifest.events.flatMap(event => event.knowledge ? [event.knowledge] : [])]) {
     for (const id of knowledge.observation_ids) if (!snapshot.observations.some(item => item.observation_id === id && item.segment_id === knowledge.segment_id
