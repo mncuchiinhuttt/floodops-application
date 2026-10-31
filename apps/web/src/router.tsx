@@ -24,6 +24,8 @@ export function createRoutes(runtime: WebRuntime, commands = new SessionCommands
   };
   return [{ element: <Outlet />, errorElement: <RouteFailure />, HydrateFallback: () => <Skeleton label="Đang mở phiên" />, children: [
     { path: "/", element: <JoinPage />, action: joinAction(commands) },
+    // React Router's route-level lazy contract loads this feature without pulling its screenshots into the join route.
+    { path: "/welcome", lazy: async () => ({ Component: (await import("./features/landing")).LandingPage }) },
     { path: "/sessions/:sessionId", element: <SessionShell />, errorElement: <RouteFailure />,
       loader: async ({ params, request }) => runtime.ensureIdentity(IdSchema.parse(params.sessionId), request.signal, true), children: [
         { index: true, loader: async ({ params, request }) => {

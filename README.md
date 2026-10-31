@@ -65,9 +65,17 @@ Responses carry `Cache-Control: no-store, no-transform` because the edge otherwi
 ## Security headers and environments
 
 - API JSON responses use `default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'`.
-- The SPA adds `font-src 'self'` and only `style-src-attr 'unsafe-inline'` for the built SVG map's React inline style; scripts remain self-hosted.
-- API and SPA also send `nosniff`, `no-referrer`, `X-Frame-Options: DENY`, COOP `same-origin`, and camera/microphone/geolocation restrictions.
+- The SPA allows OSM tiles only in `img-src 'self' data: blob: https://tile.openstreetmap.org` and reverse geocoding only in `connect-src 'self' https://nominatim.openstreetmap.org`; fonts stay self-hosted and `style-src-attr 'unsafe-inline'` is limited to the built SVG map's React style.
+- Both send `nosniff`, `X-Frame-Options: DENY`, and COOP `same-origin`; camera and microphone are disabled, while geolocation is self-only for the SPA and disabled for API JSON. API uses `no-referrer`; SPA uses `strict-origin-when-cross-origin` so OSM tiles receive the origin.
 - HSTS is `max-age=31536000; includeSubDomains` on HTTPS API responses and public Workers hosts; local `127.0.0.1` is excluded.
 - Wrangler observability is enabled with query strings redacted; error logs contain only request ID, operation template, status, and error code.
 - `env.preview` uses `floodops-api-preview`, its own SessionDO namespace and preview-only R2 buckets; its `WEB_ORIGIN` is a placeholder until first deploy.
 - Production remains `floodops-api` with its existing origin and production buckets; dry-runs validate both configurations without creating resources.
+
+## Landing page
+
+- Landing route: `/welcome`. The existing join page remains at `/`.
+- Page source and scoped styles live in `apps/web/src/features/landing/`.
+- App captures are stored in `apps/web/src/features/landing/assets/`; see `screenshots.md` for each capture and its source.
+- To recapture, open the local web app at `http://127.0.0.1:5170`, create a session, and use the browser to inspect the dispatcher, planning, report, and results views.
+- Capture screenshots from the live local app only. Do not use the fixture preview as a live-data substitute.

@@ -26,3 +26,12 @@ test("real workspace route exposes canonical503 instead of a fixture or fake das
   expect(fetch.mock.calls.some(([url]) => url.endsWith("/drivers/me"))).toBe(true);
   expect(screen.queryByText("order_fixture001 · critical")).toBeNull(); application.router.dispose();
 }, 15000);
+
+test("welcome landing renders its headline and demo route", async () => {
+  const { app } = runtime("dispatcher"), application = createApplication(app, ["/welcome"]);
+  render(<WebApplication application={application} />);
+  expect(await screen.findByRole("heading", { name: "Giao hàng khi đường ngập" })).toBeDefined();
+  const callsToDemo = screen.getAllByRole("link", { name: "Mở bản demo" });
+  expect(callsToDemo.every(link => link.getAttribute("href") === "/")).toBe(true);
+  application.router.dispose();
+}, 15000);
