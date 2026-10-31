@@ -1,3 +1,5 @@
-// Reading this as: a product-led simulation landing for HCMC delivery teams, using the reference's stark editorial rhythm and screenshot-led proof. DESIGN_VARIANCE 7 / MOTION_INTENSITY 5 / VISUAL_DENSITY 4.
-import "./landing.css";
+// Reading this as: product landing for logistics ops teams and hackathon judges, with a dark obsidian glass language, leaning toward custom CSS, Plus Jakarta Sans and restrained CSS-only motion. DESIGN_VARIANCE 7 / MOTION_INTENSITY 6 / VISUAL_DENSITY 4.
+import "./landing-base.css";
+import "./landing-hero.css";
+import "./landing-sections.css";
 export { LandingPage } from "./landing-page";
