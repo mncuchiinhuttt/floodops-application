@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import {
   createRewardLedger, deriveUsefulCoverage, proposeGapOpenings, proposeReportReward, proposeSourceGapFills, validateLedger, RewardProposalError,
-} from "../../../../packages/domain/src/rewards/index.ts";
+} from "@floodops/domain/rewards";
 import { bike, car, context, coverage, hashB, known, lowObservation, openedLedger, report, rewardInput, source, unknownKnowledge } from "./fixtures.ts";
 
 test("unresolved conflict remains open; later accepted resolution can fill/award once with same stored photo", () => {

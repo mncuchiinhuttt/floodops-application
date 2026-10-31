@@ -1,10 +1,9 @@
 import type { Observation, Report, SegmentKnowledge, Source } from "@floodops/contracts";
-// Published frozen fixture entrypoint; workspace dependency mapping remains Lead-owned.
-import { createFunctionalScenario } from "../../../../packages/test-fixtures/src/index.ts";
+import { createFunctionalScenario } from "@floodops/test-fixtures";
 import {
   createRewardLedger, proposeGapOpenings,
   type CoverageInput, type CoverageScope, type RewardInput,
-} from "../../../../packages/domain/src/rewards/index.ts";
+} from "@floodops/domain/rewards";
 
 export const scenario = createFunctionalScenario();
 export const bike = { segment_id: "seg_edge27", vehicle_type: "motorbike", knowledge_epoch: 1 } as const;

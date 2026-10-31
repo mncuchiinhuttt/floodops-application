@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import type { Observation, SegmentKnowledge, Source } from "@floodops/contracts";
 import { CoverageSchema } from "@floodops/contracts";
-import { deriveUsefulCoverage, proposeGapOpenings, createRewardLedger, RewardProposalError } from "../../../../packages/domain/src/rewards/index.ts";
+import { deriveUsefulCoverage, proposeGapOpenings, createRewardLedger, RewardProposalError } from "@floodops/domain/rewards";
 import { bike, car, context, coverage, known, lowObservation, openedLedger, freeze, source } from "../rewards/fixtures.ts";
 
 function current(observation: Observation = lowObservation, knowledge: SegmentKnowledge = known(observation), sources: Source[] = [source]) {
@@ -24,7 +24,7 @@ test.each(["ordinary_unknown", "unresolved_conflict", "authoritative_closed"] as
 });
 test("conflict, epoch, vehicle, unknown, future and unlinked evidence stay uncovered", () => {
   const invalid: Observation[] = [
-    { ...lowObservation, has_conflict: true }, { ...lowObservation, knowledge_epoch: 0 },
+    { ...lowObservation, knowledge_epoch: 0 },
     { ...lowObservation, vehicle_types: ["truck"] }, { ...lowObservation, condition: "unknown" },
     { ...lowObservation, observed_sim_minute: 4 }, { ...lowObservation, expires_sim_minute: 3 },
     { ...lowObservation, segment_id: "seg_other001" },
@@ -55,4 +55,8 @@ test("gap openings are deterministic, preserve prior ledger, replay and require 
   expect(() => proposeGapOpenings(empty, input, { ...context, event_sequence: 1 }, [])).toThrow(RewardProposalError);
   expect(() => proposeGapOpenings(empty, input, { ...context, generation: 2 }, [{ ...bike, gap_id: "gap_bike001" }, { ...car, gap_id: "gap_car0001" }])).toThrow(RewardProposalError);
   expect(() => proposeGapOpenings(empty, input, { ...context, event_sequence: 0 }, [{ ...bike, gap_id: "gap_bike001" }, { ...car, gap_id: "gap_car0001" }])).toThrow(RewardProposalError);
+});
+
+test("an aggregate conflict flag without a matching current contradiction does not remove useful coverage", () => {
+  expect(deriveUsefulCoverage(current({ ...lowObservation, has_conflict: true })).coverage.covered_pairs).toBe(1);
 });

@@ -2,8 +2,9 @@ import { IdSchema, ReportSchema, AwardSchema, validate } from "@floodops/contrac
 import type { Report } from "@floodops/contracts";
 import type { CoverageInput, RewardInput, UsefulPair } from "./types.ts";
 import { RewardProposalError } from "./types.ts";
-import { unique } from "./validation.ts";
+import { scopeKey, unique } from "./validation.ts";
 import { assertCoverageTransition } from "./coverage.ts";
+import { currentScopeEvidence } from "./current-evidence.ts";
 
 export function validateRewardInput(input: RewardInput): void {
   const config = input.config;
@@ -27,13 +28,16 @@ export function reportEvidence(report: Report, pair: UsefulPair, input: Coverage
     && item.observed_sim_minute === report.captured_sim_minute);
 }
 export function hasReportConflict(input: RewardInput): boolean {
-  return input.after.observations.some(item => input.report.observation_ids.includes(item.observation_id)
-    && item.has_conflict && item.validation === "accepted" && item.segment_id === input.report.segment_id
-    && item.observed_sim_minute <= input.after.now_sim_minute && input.after.now_sim_minute < item.expires_sim_minute
-    && input.after.knowledge.some(current => current.segment_id === item.segment_id && current.knowledge_epoch === item.knowledge_epoch
-      && item.vehicle_types.includes(current.vehicle_type) && input.report.vehicle_types.includes(current.vehicle_type)))
-    || input.after.knowledge.some(item => item.segment_id === input.report.segment_id
-      && input.report.vehicle_types.includes(item.vehicle_type) && item.state === "unresolved_conflict");
+  const scopes = new Map([...input.after.scope, ...input.after.knowledge].filter(pair =>
+    pair.segment_id === input.report.segment_id && input.report.vehicle_types.includes(pair.vehicle_type))
+    .map(pair => [scopeKey(pair), pair]));
+  return [...scopes.values()].some(scope => {
+    const current = input.after.knowledge.find(item => scopeKey(item) === scopeKey(scope));
+    if (current?.state === "unresolved_conflict") return true;
+    const facts = currentScopeEvidence(input.after, scope);
+    return new Set(facts.map(item => item.condition)).size > 1
+      || (current?.state === "known" && facts.some(item => item.condition !== current.condition));
+  });
 }
 export function isReportExpired(input: RewardInput): boolean {
   const observations = input.after.observations.filter(item => input.report.observation_ids.includes(item.observation_id));

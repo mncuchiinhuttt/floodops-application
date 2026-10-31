@@ -1,5 +1,5 @@
 import { deriveImageReviewAdvice } from "../../src/features/reports/review/rubric/index.ts";
-import { deriveUsefulCoverage, proposeReportReward } from "../../../../packages/domain/src/rewards/index.ts";
+import { deriveUsefulCoverage, proposeReportReward } from "@floodops/domain/rewards";
 import { openedLedger, rewardInput, scenario } from "./fixtures.ts";
 
 const input = rewardInput();
