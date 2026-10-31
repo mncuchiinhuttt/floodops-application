@@ -1,6 +1,7 @@
-import json, os, signal, socket, subprocess, tempfile, time, urllib.request, urllib.error, uuid
+import json, os, signal, socket, subprocess, sys, tempfile, time, urllib.request, urllib.error, uuid
 from pathlib import Path
 cwd=str(Path(__file__).resolve().parents[2])
+versioned="--versioned" in sys.argv
 probe=socket.socket(); probe.bind(("127.0.0.1",8784)); probe.close()
 state=tempfile.mkdtemp(prefix="floodops-v5-smoke-")
 log=open(state+"/worker.log","w+")
@@ -21,7 +22,7 @@ try:
             raise RuntimeError("Health status "+str(status))
         except (urllib.error.URLError,ConnectionError,TimeoutError,json.JSONDecodeError): time.sleep(.2)
     else: raise RuntimeError("Local Worker did not start")
-    status,h,created=req("/sessions",{"scenario_id":"scenario_platform01","scenario_version":"1","client_type":"native"},{"Idempotency-Key":str(uuid.uuid4()),"X-Client-Request-Scope":str(uuid.uuid4())})
+    status,h,created=req("/sessions",{"scenario_id":"scenario_versioned01" if versioned else "scenario_platform01","scenario_version":"1","client_type":"native"},{"Idempotency-Key":str(uuid.uuid4()),"X-Client-Request-Scope":str(uuid.uuid4())})
     assert status==201, "Create status "+str(status)
     session=created["data"]["session"]; sid=session["session_id"]; token=created["data"]["credential"]["access_token"]
     etag='"s:'+sid+':g:'+str(session["generation"])+':r:0"'
@@ -37,7 +38,16 @@ try:
     assert req(path,{"amount":2},{**base,"If-Match":etag})[0]==409
     status,h,page=req("/sessions/"+sid+"/events?after=0&limit=500",extra={"Authorization":"Bearer "+token})
     assert status==200 and len(page["data"]["events"])==2
-    print(json.dumps({"smoke":"actual local Hono+Workerd+SQLite metadata CAS","missing":428,"stale":412,"current":200,"revision_after_metadata":0,"replay_after_operational_revision":200,"changed_body":409,"events":2,"security_headers":True,"provider_calls":0,"credentials_logged":False}))
+    if versioned:
+        current='"s:'+sid+':g:'+str(session["generation"])+':r:1"'
+        status,h,reset_result=req("/sessions/"+sid+"/resets",{"confirm":True,"client_type":"native"},{**base,"Idempotency-Key":str(uuid.uuid4()),"If-Match":current})
+        assert status==201
+        replacement=reset_result["data"]["replacement"]; target=replacement["session"]["session_id"]
+        target_auth={"Authorization":"Bearer "+replacement["credential"]["access_token"]}
+        status,h,counter=req("/sessions/"+target+"/test-counter",extra=target_auth)
+        assert status==200 and counter["data"]==0 and counter["meta"]["generation"]==1 and counter["meta"]["revision"]==0
+        assert req("/sessions/"+sid+"/identity",extra={"Authorization":"Bearer "+token})[0]==410
+    print(json.dumps({"smoke":"actual local Hono+Workerd+SQLite metadata CAS","missing":428,"stale":412,"current":200,"revision_after_metadata":0,"replay_after_operational_revision":200,"changed_body":409,"events":2,"security_headers":True,"provider_calls":0,"credentials_logged":False,"configured_serialization":"m1-v1" if versioned else None,"fresh_reset":versioned}))
 finally:
     if process.poll() is None:
         os.killpg(process.pid,signal.SIGTERM)

@@ -5,6 +5,7 @@ import { errorReply, fail } from "../shared/platform-error";
 import type { Call, PlatformBindings, Reply, RuntimeRegistry, Snapshot } from "../shared/platform-types";
 import { migrate } from "./schema";
 import { Store } from "./store";
+import { matchesSerialization } from "./serialization";
 import { initialize, type Initialization } from "./initialize";
 import { claim, membership, type InvitationMaterial, type StoredInvite } from "./membership";
 import { issueCredentials } from "./credentials";
@@ -51,7 +52,7 @@ export class SessionDO extends DurableObject<PlatformBindings> {
       if (mutation) validateKey(call.key);
       const digest = await hash(stable({ session: call.sessionId, generation: snapshot.meta.generation,
         kind: call.kind, path: call.path, name: call.name, payload: call.payload ?? null }));
-      if (call.kind === "reset") return await resetSession(this.store, this.env, call, proof, digest);
+      if (call.kind === "reset") return await resetSession(this.store, this.env, call, proof, digest, this.registry);
       let invitation: InvitationMaterial | undefined;
       if (call.kind === "invite") {
         const input = parseSchema("InviteInput", call.payload);
@@ -105,9 +106,10 @@ export class SessionDO extends DurableObject<PlatformBindings> {
     if (!snapshot) return;
     const active = snapshot.meta.status !== "expired" && snapshot.meta.status !== "reset";
     const now = Date.now();
-    const pendingImages = this.store.list<import("../shared/platform-types").ImageRecord>("image_jobs").filter(r => ["queued", "running"].includes(r.job.status));
+    const compatible = matchesSerialization(snapshot.seed, this.registry);
+    const pendingImages = compatible ? this.store.list<import("../shared/platform-types").ImageRecord>("image_jobs").filter(r => ["queued", "running"].includes(r.job.status)) : [];
     const deadlines = pendingImages.map(r => r.leaseExpires);
-    deadlines.push(...Object.values(snapshot.leases ?? {}).filter(l => l.status === "active").map(l => l.expires_at));
+    if (compatible) deadlines.push(...Object.values(snapshot.leases ?? {}).filter(l => l.status === "active").map(l => l.expires_at));
     if (active) await this.ctx.storage.setAlarm(Math.max(now + 1, Math.min(now + 15000, Date.parse(snapshot.meta.expires_at), ...deadlines)));
     else if (this.store.list<{ expires: number }>("streams").some(stream => stream.expires > now)) {
       const streamDeadlines = this.store.list<{ expires: number }>("streams").map(stream => stream.expires).filter(expires => expires > now);
