@@ -21,6 +21,10 @@ export function createSessionRuntimeClient(env: PlatformBindings) {
       start(context: SessionRequestContext, reportId: string, jobId: string, lease: string): Promise<Reply> {
         return dispatch({ ...context, kind: "image-start", name: reportId, payload: { job_id: jobId, lease } });
       },
+      failQueued(context: SessionRequestContext, reportId: string, jobId: string, lease: string,
+        error_code: NonNullable<ImageReviewJob["error_code"]>): Promise<Reply> {
+        return dispatch({ ...context, kind: "image-fail-queued", name: reportId, payload: { job_id: jobId, lease, error_code } });
+      },
       complete(context: SessionRequestContext, reportId: string, jobId: string, lease: string,
         outcome: { result: ImageReviewAdvice } | { error_code: NonNullable<ImageReviewJob["error_code"]> }): Promise<Reply> {
         return dispatch({ ...context, kind: "image-complete", name: reportId, payload: { job_id: jobId, lease, ...outcome } });

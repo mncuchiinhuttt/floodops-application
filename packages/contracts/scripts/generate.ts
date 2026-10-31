@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { imports, kebab, schemaCode, type Schema } from "./schema-codegen";
@@ -8,7 +8,7 @@ import type { Definition } from "./definition-types";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const plan = resolve(root, "../../plans/20261030-2249-floodops-web-mobile-implementation/contracts");
-const canonical = resolve(root, "definition/contract-definition.json");
+const sources = ["openapi.json", "tool-contracts.json", "contract-examples.json", "tool-examples.json"];
 const check = process.argv.includes("--check");
 const json = (value: unknown) => JSON.stringify(value, null, 2) + "\n";
 const sha = (text: string) => createHash("sha256").update(text).digest("hex");
@@ -21,12 +21,12 @@ function emit(path: string, text: string) {
     writeFileSync(path, text);
   }
 }
-const sourceText = readFileSync(canonical, "utf8");
+const sourceText = json(Object.fromEntries(sources.map(file => [file, JSON.parse(readFileSync(resolve(plan, file), "utf8"))])));
 const definition = JSON.parse(sourceText) as Definition;
 const api = definition["openapi.json"];
 const tools = definition["tool-contracts.json"];
 const schemas = api.components.schemas as Record<string, Schema>;
-if (Object.keys(schemas).length !== 194 || tools.tools.length !== 8) throw new Error("Contract inventory changed");
+if (Object.keys(schemas).length !== 197 || tools.tools.length !== 8) throw new Error("Contract inventory changed");
 for (const [name, schema] of Object.entries(schemas)) {
   const refs = new Set<string>();
   const code = schemaCode(schema, refs);
@@ -36,7 +36,7 @@ for (const [name, schema] of Object.entries(schemas)) {
 emit(resolve(root, "src/generated/schemas.ts"), Object.keys(schemas).map(n => `export { ${n}Schema, type ${n} } from "./schemas/${kebab(n)}";`).join("\n") + "\n");
 for (const [path, text] of operationFiles(api)) emit(resolve(root, path), text);
 const toolExports: string[] = [];
-const providerTools: unknown[] = [];
+const internalDefinitions: unknown[] = [];
 function dereference(schema: Schema, ancestors: string[] = []): Schema {
   if (schema.$ref) {
     const ref = String(schema.$ref);
@@ -57,27 +57,32 @@ for (const tool of tools.tools) {
   const output = schemaCode(tool.output_schema, refs);
   const id = tool.name.replace(/_([a-z])/g, (_: string, ch: string) => ch.toUpperCase());
   toolExports.push(`export { ${id} } from "./tools/${tool.name.replaceAll("_", "-")}";`);
-  providerTools.push({ type: "function", name: tool.name, description: tool.description, strict: true, parameters: dereference(tool.parameters) });
-  emit(resolve(root, `src/generated/tools/${tool.name.replaceAll("_", "-")}.ts`), `${imports(refs, "../schemas/", input + output)}\n\nexport const ${id} = {\n  name: ${JSON.stringify(tool.name)},\n  input: ${input},\n  output: ${output},\n  sideEffect: ${JSON.stringify(tool.side_effect)},\n} as const;\n`);
+  internalDefinitions.push({ name: tool.name, description: tool.description, model_callable: false, milestone: tool.milestone, input_schema: dereference(tool.parameters), output_schema: dereference(tool.output_schema) });
+  emit(resolve(root, `src/generated/tools/${tool.name.replaceAll("_", "-")}.ts`), `${imports(refs, "../schemas/", input + output)}\n\nexport const ${id} = {\n  name: ${JSON.stringify(tool.name)},\n  input: ${input},\n  output: ${output},\n  modelCallable: false, milestone: ${JSON.stringify(tool.milestone)},\n  sideEffect: ${JSON.stringify(tool.side_effect)},\n} as const;\n`);
 }
 emit(resolve(root, "src/generated/tools.ts"), toolExports.join("\n") + "\n");
-emit(resolve(root, "src/generated/provider-tools.json"), json(providerTools));
+emit(resolve(root, "src/generated/internal-services.json"), json(internalDefinitions));
+const legacyProvider = resolve(root, "src/generated/provider-tools.json");
+if (existsSync(legacyProvider)) {
+  if (check) throw new Error("Legacy Commander provider registrations must be removed");
+  unlinkSync(legacyProvider);
+}
 emit(resolve(root, "src/generated/image-review-model-output.json"), json(dereference(schemas.ImageReviewModelOutput!)));
 const parameterRefs = new Set<string>();
 const parameterCode = Object.entries(api.components.parameters).map(([name, p]) => `export const ${name}ParameterSchema = ${schemaCode(p.schema, parameterRefs)};`).join("\n");
 // Parameter module is one directory above the individual schema modules.
 emit(resolve(root, "src/generated/parameters.ts"), imports(parameterRefs, "./schemas/", parameterCode).replaceAll('from "../../schema-helpers"', 'from "../schema-helpers"') + "\n" + parameterCode + "\n");
-for (const [file, value] of Object.entries(definition)) emit(resolve(plan, file), json(value));
 emit(resolve(root, "src/generated/version.ts"), `export const CONTRACT_VERSION = ${JSON.stringify(api.info.version)};\nexport const CONTRACT_SOURCE_SHA256 = ${JSON.stringify(sha(sourceText))};\n`);
-emit(resolve(root, "contract-surface.json"), json({
+emit(resolve(root, "src/generated/contract-surface.json"), json({
   contract_version: api.info.version,
   source_sha256: sha(sourceText),
   schema_names: Object.keys(schemas),
   operation_ids: Object.values(api.paths).flatMap(methods => Object.values(methods).flatMap(op => op.operationId ? [op.operationId] : [])),
-  commander_tools: tools.tools.map(tool => tool.name),
+  milestone: "M1", session_schema_version: "m1-v1", model_callable_tools: 0,
+  internal_services: tools.tools.map(tool => ({ name: tool.name, milestone: tool.milestone })),
   model_output_schema_sha256: sha(json(dereference(schemas.ImageReviewModelOutput!))),
   public_entrypoints: ["@floodops/contracts", "@floodops/api-client"],
   contracts_exports_sha256: sha(readFileSync(resolve(root, "src/index.ts"), "utf8")),
   api_client_exports_sha256: sha(readFileSync(resolve(root, "../api-client/src/index.ts"), "utf8")),
 }));
-console.log(`${check ? "Verified" : "Generated"} 194 schemas, 66 operations, 8 tools; source sha256=${sha(sourceText)}`);
+console.log(`${check ? "Verified" : "Generated"} 197 schemas, 66 operations, 8 internal services, 0 model-callable tools; source sha256=${sha(sourceText)}`);

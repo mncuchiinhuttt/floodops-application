@@ -10,9 +10,10 @@ export const auth = (f: Fixture, extra: Record<string, string> = {}) => ({ Autho
 export async function create(missing = false): Promise<Fixture> {
   const response = await request("/sessions", { method: "POST", headers: { "Content-Type": "application/json",
     "Idempotency-Key": key(), "X-Client-Request-Scope": key() },
-    body: JSON.stringify({ scenario_id: "scn_functional1", scenario_version: "1", client_type: "native" }) }, missing);
+    body: JSON.stringify({ scenario_id: "scn_functional1", scenario_version: "2", client_type: "native" }) }, missing);
   if (response.status !== 201) throw new Error("Create failed:" + response.status);
   const result = parseSchema("SessionCreatedResponse", await response.json()).data!;
+  if (result.session.scenario_version !== "2") throw new Error("Expected frozen functional-v2.");
   return { id: result.session.session_id, token: result.credential.access_token!, etag: formatEtag(result.session), missing };
 }
 export async function post(f: Fixture, suffix: string, body: unknown, id = key(), etag: string | null = f.etag) {

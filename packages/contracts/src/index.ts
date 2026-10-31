@@ -10,3 +10,8 @@ export { formatEtag, parseEtag, HTTP_ERROR_CATALOG, errorRecovery } from "./tran
 export type { SessionVersion, ErrorRecovery } from "./transport";
 export { getToolDefinitions, getImageReviewModelOutputSchema, assertStrictToolSchema, UnsupportedToolSchemaError } from "./tool-definitions";
 export { parseConsistentImageReviewAdvice } from "./image-review";
+export { internalServices } from "./catalog";
+export type { InternalServiceName, InternalServiceInput, InternalServiceOutput } from "./catalog";
+export { parseToolInput as parseInternalServiceInput, parseToolOutput as parseInternalServiceOutput } from "./validation";
+export { getInternalServiceDefinitions, RuntimeCommanderDisabledError } from "./tool-definitions";
+export { parseM1ReviewResult, assertReceiptRewardPolicyUnchanged } from "./m1-rewards";

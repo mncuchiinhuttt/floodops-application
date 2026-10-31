@@ -2,8 +2,8 @@
   "openapi": "3.1.1",
   "info": {
     "title": "FloodOps application API — implementation design contract",
-    "version": "1.0.0-plan",
-    "description": "Planning artifact, not a deployed API. Canonical PRD v0.3; role, revision, idempotency and calibration rules in companion specifications. Functional fixtures are not evidence of D04 calibration."
+    "version": "0.5.0-m1",
+    "description": "PRD v0.5 M1 web core, deterministic bounded planner, free reports and receipt-pinned rewards. New-session schema cutover; M2 extensions are not M1 delivery."
   },
   "servers": [
     {
@@ -114,7 +114,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/scenarios": {
@@ -206,7 +209,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/scenarios/{scenario_id}": {
@@ -309,7 +315,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions": {
@@ -421,7 +430,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/session-claims": {
@@ -523,7 +535,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}": {
@@ -624,7 +639,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       },
       "delete": {
         "operationId": "deleteSession",
@@ -729,7 +747,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/snapshot": {
@@ -827,7 +848,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/overview": {
@@ -926,7 +950,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/graph": {
@@ -1027,7 +1054,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/configuration": {
@@ -1128,7 +1158,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/operations": {
@@ -1226,7 +1259,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/drivers/me": {
@@ -1324,7 +1360,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/contributors/me": {
@@ -1422,7 +1461,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/invitations": {
@@ -1536,7 +1578,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/participants": {
@@ -1640,7 +1685,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/participants/{participant_id}": {
@@ -1752,7 +1800,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/resets": {
@@ -1869,7 +1920,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/incidents": {
@@ -1974,7 +2028,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       },
       "post": {
         "operationId": "triggerIncident",
@@ -2089,7 +2146,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/impact": {
@@ -2187,7 +2247,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/sources": {
@@ -2294,7 +2357,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/sources/{source_id}": {
@@ -2403,7 +2469,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/source-events": {
@@ -2508,7 +2577,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       },
       "post": {
         "operationId": "replaySourceEvent",
@@ -2623,7 +2695,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/knowledge": {
@@ -2723,7 +2798,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/observations": {
@@ -2828,7 +2906,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/restrictions": {
@@ -2934,7 +3015,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       },
       "post": {
         "operationId": "applyRestrictionFixture",
@@ -3049,7 +3133,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/conflicts": {
@@ -3153,7 +3240,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/conflicts/{conflict_id}/resolutions": {
@@ -3278,7 +3368,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/reports": {
@@ -3397,7 +3490,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       },
       "get": {
         "operationId": "listReports",
@@ -3501,7 +3597,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/reports/{report_id}": {
@@ -3609,7 +3708,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/reports/{report_id}/reviews": {
@@ -3734,7 +3836,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/reports/{report_id}/image-review-jobs": {
@@ -3844,7 +3949,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/reports/{report_id}/image-review": {
@@ -3932,7 +4040,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/media-uploads": {
@@ -4048,7 +4159,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/media-uploads/{upload_id}/content": {
@@ -4173,7 +4287,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/media-uploads/{upload_id}/completion": {
@@ -4297,7 +4414,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/media/{media_id}": {
@@ -4406,7 +4526,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/gaps": {
@@ -4513,7 +4636,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/coverage": {
@@ -4614,7 +4740,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/awards": {
@@ -4718,7 +4847,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/planning-jobs": {
@@ -4835,7 +4967,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/planning-jobs/{job_id}": {
@@ -4941,7 +5076,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/planning-jobs/{job_id}/cancellations": {
@@ -5053,7 +5191,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/plans": {
@@ -5157,7 +5298,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/plans/{plan_id}": {
@@ -5263,7 +5407,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/routes/{route_id}": {
@@ -5370,7 +5517,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/plans/{plan_id}/dry-runs": {
@@ -5495,7 +5645,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/plans/{plan_id}/decisions": {
@@ -5620,7 +5773,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/plans/{plan_id}/executions": {
@@ -5745,7 +5901,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/executions/{execution_id}": {
@@ -5851,7 +6010,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/notifications": {
@@ -5955,7 +6117,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/simulation": {
@@ -6056,7 +6221,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/simulation/advances": {
@@ -6173,7 +6341,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/simulation/advances/{advance_job_id}": {
@@ -6279,7 +6450,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/results": {
@@ -6378,7 +6552,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/evaluation-runs": {
@@ -6492,7 +6669,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/evaluation-runs/{evaluation_id}": {
@@ -6598,7 +6778,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/events": {
@@ -6713,7 +6896,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/events/stream": {
@@ -6816,7 +7002,10 @@
             "$ref": "#/components/schemas/CursorFrame"
           },
           "heartbeat": "SSE comment without id"
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/identity": {
@@ -6917,7 +7106,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/logout": {
@@ -6998,7 +7190,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     },
     "/sessions/{session_id}/fixture-assets/{asset_id}": {
@@ -7108,7 +7303,10 @@
           "503": {
             "$ref": "#/components/responses/Error503"
           }
-        }
+        },
+        "x-milestone": "M1",
+        "x-runtime-planner": "deterministic",
+        "x-model-callable": false
       }
     }
   },
@@ -7232,7 +7430,9 @@
           "MODEL_REFUSED",
           "MODEL_INVALID_OUTPUT",
           "MODEL_UNAVAILABLE",
-          "STORAGE_UNAVAILABLE"
+          "STORAGE_UNAVAILABLE",
+          "NO_FEASIBLE_PLAN",
+          "PLANNER_TIMEOUT"
         ]
       },
       "ReportReason": {
@@ -9863,6 +10063,30 @@
           },
           "reporter_entity_id": {
             "$ref": "#/components/schemas/Id"
+          },
+          "reward": {
+            "$ref": "#/components/schemas/ReportReward"
+          },
+          "review_result_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -9886,9 +10110,135 @@
           "observation_candidates",
           "input_mode",
           "quick_condition",
-          "reporter_entity_id"
+          "reporter_entity_id",
+          "reward",
+          "review_result_id",
+          "reviewed_at"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "reward": {
+                  "properties": {
+                    "status": {
+                      "const": "committed"
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "award_id": {
+                  "$ref": "#/components/schemas/Id"
+                },
+                "status": {
+                  "const": "accepted"
+                },
+                "kind": {
+                  "const": "citizen"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "reward": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "pending_review",
+                        "pending_config",
+                        "ineligible"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "award_id": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "accepted",
+                    "rejected"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "review_result_id": {
+                  "$ref": "#/components/schemas/Id"
+                },
+                "reviewed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "normalizing",
+                    "needs_clarification",
+                    "pending_review"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "review_result_id": {
+                  "type": "null"
+                },
+                "reviewed_at": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "reward": {
+                  "properties": {
+                    "status": {
+                      "const": "pending_review"
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "normalizing",
+                    "needs_clarification",
+                    "pending_review"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "description": "New-session M1 report. reward.policy is captured at receipt by the server, never caller-selected; review_result_id/reviewed_at are assigned atomically with review. Driver text uses deterministic clarification, never a model parser. No mission is required."
       },
       "ReviewInput": {
         "type": "object",
@@ -9958,7 +10308,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Id"
-            }
+            },
+            "uniqueItems": true
           },
           "award": {
             "anyOf": [
@@ -9988,7 +10339,76 @@
           "award",
           "planning_job_id"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "report": {
+                  "properties": {
+                    "reward": {
+                      "properties": {
+                        "status": {
+                          "const": "committed"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "award": {
+                  "$ref": "#/components/schemas/Award"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "report": {
+                  "properties": {
+                    "reward": {
+                      "properties": {
+                        "status": {
+                          "enum": [
+                            "pending_review",
+                            "pending_config",
+                            "ineligible"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "award": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "report": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "accepted",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "description": "Successful manual review may update observations/knowledge with reward pending_config and award=null. It must not be blocked for absent reward config or AI advice. Full reward identity equality is additionally checked by parseM1ReviewResult."
       },
       "Conflict": {
         "type": "object",
@@ -10195,7 +10615,8 @@
             "items": {
               "$ref": "#/components/schemas/Id"
             },
-            "minItems": 1
+            "minItems": 1,
+            "uniqueItems": true
           },
           "points": {
             "type": "integer",
@@ -10211,6 +10632,12 @@
           },
           "is_simulated": {
             "const": true
+          },
+          "reward_policy": {
+            "$ref": "#/components/schemas/RewardPolicyRef"
+          },
+          "review_result_id": {
+            "$ref": "#/components/schemas/Id"
           }
         },
         "required": [
@@ -10221,9 +10648,12 @@
           "points",
           "event_sequence",
           "awarded_at",
-          "is_simulated"
+          "is_simulated",
+          "reward_policy",
+          "review_result_id"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Committed positive simulated points only, bound to report, canonical review result, and immutable receipt policy. Amount and per-report/per-gap rule come from the pinned config; no default, pending row, retroactive policy assignment or campaign migration."
       },
       "ContributorDashboard": {
         "type": "object",
@@ -11257,20 +11687,22 @@
           "error_code": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorCode"
+                "type": "string",
+                "enum": [
+                  "NO_FEASIBLE_PLAN",
+                  "CONFIG_INCOMPLETE",
+                  "STATE_CONFLICT",
+                  "STALE_PROPOSAL",
+                  "SESSION_RESET",
+                  "SESSION_EXPIRED",
+                  "STORAGE_UNAVAILABLE",
+                  "PLANNER_TIMEOUT"
+                ]
               },
               {
                 "type": "null"
               }
             ]
-          },
-          "model": {
-            "type": "string",
-            "maxLength": 100
-          },
-          "model_config_hash": {
-            "type": "string",
-            "maxLength": 128
           },
           "created_at": {
             "type": "string",
@@ -11286,6 +11718,9 @@
                 "type": "null"
               }
             ]
+          },
+          "planner": {
+            "$ref": "#/components/schemas/DeterministicPlannerMetadata"
           }
         },
         "required": [
@@ -11296,12 +11731,144 @@
           "status",
           "plan_id",
           "error_code",
-          "model",
-          "model_config_hash",
           "created_at",
-          "completed_at"
+          "completed_at",
+          "planner"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "error_code": {
+                  "const": "NO_FEASIBLE_PLAN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "status": {
+                  "const": "failed"
+                },
+                "plan_id": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "completed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "plan_id": {
+                  "$ref": "#/components/schemas/Id"
+                },
+                "error_code": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "failed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "plan_id": {
+                  "type": "null"
+                },
+                "error_code": {
+                  "type": "string",
+                  "enum": [
+                    "NO_FEASIBLE_PLAN",
+                    "CONFIG_INCOMPLETE",
+                    "STATE_CONFLICT",
+                    "STALE_PROPOSAL",
+                    "SESSION_RESET",
+                    "SESSION_EXPIRED",
+                    "STORAGE_UNAVAILABLE",
+                    "PLANNER_TIMEOUT"
+                  ]
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "queued",
+                    "running"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "plan_id": {
+                  "type": "null"
+                },
+                "error_code": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "superseded",
+                    "cancelled"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "plan_id": {
+                  "type": "null"
+                },
+                "error_code": {
+                  "type": "null"
+                },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        ],
+        "description": "M1 deterministic planner job. NO_FEASIBLE_PLAN means no valid candidate found within declared bounded search; state is preserved and dispatcher may replan. It is not a proof of global infeasibility. Auth/CAS/latest-job/manual Execute fences remain."
       },
       "AdvanceInput": {
         "type": "object",
@@ -11577,7 +12144,7 @@
           "kind": {
             "type": "string",
             "enum": [
-              "model_quality",
+              "deterministic_replay",
               "latency_rehearsal"
             ]
           },
@@ -11645,7 +12212,7 @@
               }
             ]
           },
-          "model_config_hash": {
+          "planner_config_hash": {
             "type": "string",
             "maxLength": 128
           }
@@ -11657,7 +12224,7 @@
           "failed",
           "error_code",
           "plan_id",
-          "model_config_hash"
+          "planner_config_hash"
         ],
         "additionalProperties": false
       },
@@ -11679,7 +12246,7 @@
           "kind": {
             "type": "string",
             "enum": [
-              "model_quality",
+              "deterministic_replay",
               "latency_rehearsal"
             ]
           },
@@ -11707,7 +12274,7 @@
             ]
           },
           "is_real_model": {
-            "type": "boolean"
+            "const": false
           }
         },
         "required": [
@@ -11719,7 +12286,8 @@
           "p95_ms",
           "is_real_model"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "M1 deterministic replay/rehearsal, never a runtime AI Commander trial. Legacy is_real_model remains as a false-only compatibility field. Ten-trial denominator and failures remain explicit."
       },
       "Event": {
         "type": "object",
@@ -14051,13 +14619,16 @@
         "type": "object",
         "properties": {
           "defer_standard": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "M2-only feature; M1 sessions publish false. Runtime must enforce the milestone gate."
           },
           "change_pickup_hub": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "M2-only feature; M1 sessions publish false. Runtime must enforce the milestone gate."
           },
           "reroute_only_baseline": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "M2-only feature; M1 sessions publish false. Runtime must enforce the milestone gate."
           }
         },
         "required": [
@@ -14156,6 +14727,201 @@
           "session:delete",
           "simulation:submit_as"
         ]
+      },
+      "RewardPolicyRef": {
+        "type": "object",
+        "properties": {
+          "policy_id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "config_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "policy_id",
+          "version",
+          "config_hash"
+        ],
+        "additionalProperties": false,
+        "description": "Immutable server-owned policy pinned at report receipt. Null receipt policy is never silently replaced by a later configuration. No numeric default is defined."
+      },
+      "ReportReward": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending_review",
+              "pending_config",
+              "ineligible",
+              "committed"
+            ]
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RewardPolicyRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "enum": [
+              "AWAITING_REVIEW",
+              "POLICY_NOT_CONFIGURED",
+              "NOT_ELIGIBLE",
+              "AWARDED"
+            ]
+          },
+          "award_id": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Id"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "policy",
+          "reason_code",
+          "award_id"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "pending_review"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "policy": {
+                  "$ref": "#/components/schemas/RewardPolicyRef"
+                },
+                "reason_code": {
+                  "const": "AWAITING_REVIEW"
+                },
+                "award_id": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "pending_config"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "policy": {
+                  "type": "null"
+                },
+                "reason_code": {
+                  "const": "POLICY_NOT_CONFIGURED"
+                },
+                "award_id": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "ineligible"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "policy": {
+                  "$ref": "#/components/schemas/RewardPolicyRef"
+                },
+                "reason_code": {
+                  "const": "NOT_ELIGIBLE"
+                },
+                "award_id": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "committed"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "policy": {
+                  "$ref": "#/components/schemas/RewardPolicyRef"
+                },
+                "reason_code": {
+                  "const": "AWARDED"
+                },
+                "award_id": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          }
+        ],
+        "description": "M1 free-report feedback. Missing receipt policy is pending_config, not an error, award, or zero points. Manual review/knowledge may commit independently. Only committed awards appear in the points ledger."
+      },
+      "DeterministicPlannerMetadata": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "const": "deterministic"
+          },
+          "algorithm_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "config_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "search_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "kind",
+          "algorithm_version",
+          "config_hash",
+          "search_limit"
+        ],
+        "additionalProperties": false,
+        "description": "Server-declared bounded candidate-evaluation budget and frozen configuration. Stable tie-break IDs, no LLM/tool selection and no claim of global optimum. Limit is supplied explicitly; no default numeric policy."
       }
     },
     "parameters": {
@@ -14557,5 +15323,8 @@
         "description": "Expo SecureStore native credential. No JWT trust of role client input."
       }
     }
-  }
+  },
+  "x-floodops-milestone": "M1",
+  "x-session-schema-version": "m1-v1",
+  "x-migration": "Create new sessions/Reset onto m1-v1. Do not reinterpret or retro-award legacy reports; preserve old sessions/evidence until expiry."
 }

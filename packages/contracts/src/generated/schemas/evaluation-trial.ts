@@ -9,6 +9,6 @@ export const EvaluationTrialSchema = z.strictObject({
   "failed": z.boolean(),
   "error_code": z.union([ErrorCodeSchema, z.null()]),
   "plan_id": z.union([IdSchema, z.null()]),
-  "model_config_hash": z.string().refine(v => [...v].length <= 128, "String too long"),
+  "planner_config_hash": z.string().refine(v => [...v].length <= 128, "String too long"),
 });
 export type EvaluationTrial = z.infer<typeof EvaluationTrialSchema>;

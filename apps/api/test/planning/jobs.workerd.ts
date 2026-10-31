@@ -1,9 +1,10 @@
+import { motoPlan } from "./soft-candidate";
 import { afterEach, expect, it } from "vitest";
 import { reset } from "cloudflare:test";
-import { parseSchema } from "@floodops/contracts";
+import { formatEtag, parseSchema } from "@floodops/contracts";
 import type { PlanAction, Route } from "@floodops/contracts";
 import type { TransitionContext } from "../../src/shared/index";
-import { PLAN_START, PLAN_BEGIN, PLAN_COMPLETE } from "../../src/features/planning/index";
+import { PLAN_START, PLAN_BEGIN, PLAN_COMPLETE, runDeterministicPlanner, searchLimits } from "../../src/features/planning/index";
 import type { PlanningReservation } from "../../src/features/planning/index";
 import { createToolSession } from "../../src/features/planning/tool-session";
 import { simulationPersistence } from "../../src/index";
@@ -77,16 +78,32 @@ it("accepted conflict facts block proposed Execute even when cached run knowledg
     snapshot.values = simulationPersistence.write(snapshot.values, current); snapshot.meta.revision++;
   });
   f.etag = '"s:' + f.id + ':g:0:r:1"';
-  const before = await run(f), response = await post(f, "/planning-jobs", { cause: "manual", cause_entity_ids: [] });
-  expect(response.status).toBe(202);
-  const job = parseSchema("PlanningJobResponse", await response.json()).data!;
-  let proposalId: string | null = null;
-  for (let i = 0; i < 80 && !proposalId; i++) proposalId = parseSchema("PlanningJobResponse", await (await get(f, "/planning-jobs/" + job.job_id)).json()).data!.plan_id;
-  expect(proposalId).not.toBeNull();
-  const proposal = parseSchema("PlanResponse", await (await get(f, "/plans/" + proposalId)).json()).data!;
+  const before = await run(f), proposal = await motoPlan(f);
   expect(proposal.status).toBe("blocked");
   await post(f, "/plans/" + proposal.plan_id + "/decisions", { action_ids: proposal.actions.map(a => a.action_id), decision: "approve", reason: "Cannot override conflict" });
   const denied = await post(f, "/plans/" + proposal.plan_id + "/executions", { group_ids: proposal.groups.map(g => g.group_id) });
   expect(denied.status).toBe(422); expect((await run(f)).branches).toEqual(before.branches);
   expect((await snapshot(f)).meta.revision).toBe(1);
+});
+
+it("Reset while a deterministic result is unpublished rejects old completion and restores seed operations", async () => {
+  const f = await create(), seed = await run(f), reservation = (await reserve(f)).body.data as PlanningReservation;
+  const material = reservation.execution!, fence = { lease_id: material.leaseId, nonce: material.nonce };
+  const authority = { job_id: material.jobId, lease_id: material.leaseId, nonce: material.nonce, attempt_id: "attempt_reset01" };
+  const begun = await rpc(f, { kind: "command", name: PLAN_BEGIN, key: key(), payload: authority, fence,
+    expectedPointers: { latest_requested_job_id: material.jobId } });
+  expect(begun.status).toBe(200);
+  const captured = begun.body.data as { context: TransitionContext; planId: string };
+  const proposal = await runDeterministicPlanner(captured.context, simulationPersistence.read(captured.context.snapshot.values),
+    material.jobId, captured.planId, { persistence: simulationPersistence }, searchLimits({ maxCandidates: 1 }),
+    { deadline: Date.now() + 30000, current: async () => true });
+  const resetResponse = await post(f, "/resets", { client_type: "native", confirm: true });
+  expect(resetResponse.status).toBe(201);
+  const resetSession = parseSchema("ResetResultResponse", await resetResponse.json()).data!.replacement;
+  const fresh = { ...f, id: resetSession.session.session_id, token: resetSession.credential.access_token!, etag: formatEtag(resetSession.session) };
+  const stale = await rpc(f, { kind: "command", name: PLAN_COMPLETE, key: key(), payload: { ...authority, proposal }, fence });
+  expect(stale.status).toBe(410);
+  expect((await snapshot(fresh)).meta.generation).toBe(1);
+  expect((await run(fresh)).branches).toEqual(seed.branches);
+  expect(parseSchema("PlanListResponse", await (await get(fresh, "/plans")).json()).data!.items).toHaveLength(0);
 });

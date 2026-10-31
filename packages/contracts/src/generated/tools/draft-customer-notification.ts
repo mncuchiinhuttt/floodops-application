@@ -8,5 +8,6 @@ export const draftCustomerNotification = {
   "committed_revision": z.number().finite().refine(Number.isInteger, "Expected integer").min(0),
 }),
   output: NotificationSchema,
+  modelCallable: false, milestone: "M1",
   sideEffect: "preview_only",
 } as const;

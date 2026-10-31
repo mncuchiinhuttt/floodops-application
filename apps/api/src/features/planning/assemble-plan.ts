@@ -38,8 +38,8 @@ export function assemblePlan(context: TransitionContext, run: SimulationRun, sta
     objective_after: before.objective, diff: [], is_projected: true });
   const working = { ...state, routes: { ...state.routes, ...routeTable(routes) } };
   const gate = evaluatePlan(context, run, working, plan, plan.groups.map(g => g.group_id), true);
-  let after = before;
-  try {
+  let after = gate.projection ?? before;
+  if (!gate.projection) try {
     const ready = Object.fromEntries(actions.map(a => [a.action_id, "ready" as const]));
     const selection = selectDependencyGroups(actions, plan.groups, plan.groups.map(g => g.group_id), ready);
     const compiled = compileCandidate(plan, selection, routes, run), scratch = structuredClone(run);
@@ -53,7 +53,6 @@ export function assemblePlan(context: TransitionContext, run: SimulationRun, sta
         latest_plan_id: planId, latest_requested_job_id: jobId }, approvals: working.approvals, epochs: run.knowledge },
     compiled.actionIdsByDriver, policy, true));
   } catch { /* No feasible proposed transition: the projected outcome remains the actual unchanged current projection. */ }
-  if (gate.projection) after = gate.projection;
   plan = { ...plan, status: gate.status, objective_after: after.objective,
     actions: actions.map(a => {
       const eligible = gate.selection?.eligible.includes(a.dependency_group_id);

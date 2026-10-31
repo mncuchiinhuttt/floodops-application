@@ -12,5 +12,6 @@ export const computeRoute = {
   "assignment_overrides": z.array(CandidateAssignmentSchema).refine(v => v.length <= 100, "Too many items"),
 }),
   output: RouteSchema,
+  modelCallable: false, milestone: "M1",
   sideEffect: "read_only",
 } as const;

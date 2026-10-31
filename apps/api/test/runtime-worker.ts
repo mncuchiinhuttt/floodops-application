@@ -9,7 +9,7 @@ export const testSeed: SessionSeed = { scenario_id: "scenario_platform01", scena
   values: { counter: 0, report: { pending: true, digest: "a".repeat(64) } } };
 export const registry: RuntimeRegistry = {
   commands: {
-    counter: { permission: "simulation:advance", operational: true,
+    counter: { permission: "simulation:advance", operational: true, requireCas: false,
       validate(input) { const x = input as { amount: number; fail?: boolean }; if (!x || !Number.isFinite(x.amount) || Object.keys(x).some(k => !["amount", "fail"].includes(k))) fail(422, "INVALID_SCHEMA"); return x; },
       reduce({ snapshot }, input) { const x = input as { amount: number; fail?: boolean }; if (x.fail) throw new Error("Synthetic transaction failure");
         const counter = Number(snapshot.values.counter) + x.amount;
@@ -27,6 +27,13 @@ export const registry: RuntimeRegistry = {
         const value = input as { audience: Role[]; participant_ids: string[] };
         return { data: { emitted: true }, events: [{ type: "image_review_changed", resource_ids: ["report_report01", "imagejob_job0001"],
           audience: value.audience, participantIds: value.participant_ids }] };
+      } },
+    "metadata-reject": { permission: "reports:review", operational: false, requireCas: true,
+      validate(input) { const value = input as { amount: number }; if (!value || Object.keys(value).length !== 1 || !Number.isFinite(value.amount)) fail(422, "INVALID_SCHEMA"); return value; },
+      reduce({ snapshot }) {
+        if (!(snapshot.values.report as { pending: boolean }).pending) fail(409, "STATE_CONFLICT");
+        return { values: { ...snapshot.values, report: { pending: false, digest: "a".repeat(64) } }, data: { rejected: true },
+          events: [{ type: "report_changed", resource_ids: ["report_report01"] }] };
       } },
     metadata: { permission: "reports:review", operational: false, validate: x => x,
       reduce() { return { data: { accepted: true }, events: [{ type: "proposal_changed" }] }; } },

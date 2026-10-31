@@ -1,0 +1,14 @@
+{
+  "producer_source": "1f731d204d9b24e6839787819863c04f1c0f6548",
+  "producer_delivery": "916a64ad00797aa2ef168d7c74f1755e9b72a2af",
+  "producer_merge": "5ad6be949f693d7c12d188178fd512ca1c4bfe50",
+  "status": "schema-code-ready-consumers-migrating",
+  "tests": 89,
+  "assertions": 1024,
+  "codegen": "pass197/66/8internal/0modelcallable",
+  "package_types": "pass",
+  "api_types": "4knownownererrors",
+  "legacy_e2e": "prior source-onlyHTTPpass185ed0c, fullmanualreview404; not currentv0.5runtimepass",
+  "native_device": "blocked missing fullXcode/simulator andAndroidSDK; noinstallattempt",
+  "source_policy_config": "Canonicalscenariohasnoexplicitnumericrewardpolicy; nullpending_config mustnotblockmanualevidence. Owner may test declaredpositivefixtureconfig but production/demo value mustbeexplicit pinnedconfig, not guessed default."
+}

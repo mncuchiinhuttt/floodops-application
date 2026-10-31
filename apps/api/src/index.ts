@@ -53,7 +53,7 @@ export async function loadSessionScenario(id: string, version: string): Promise<
     calibration_status: scenario.manifest.config.scenario.calibration_status,
     // Explicit synthetic admission roster; not a source/caption-derived identity or an account.
     entities: { driver: scenario.manifest.initial.drivers.map(driver => driver.driver_id), contributor: ["contributor_functional1"] },
-    values: simulationPersistence.write({}, createRun(scenario, "run_initial"))
+    values: simulationPersistence.write({ runtime_contract: { serialization: "m1-v1", version: "0.5.0-m1" } }, createRun(scenario, "run_initial"))
   };
 }
 // Real read projections are available now. Advance stays fail-closed until the

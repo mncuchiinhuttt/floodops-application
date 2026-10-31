@@ -18,7 +18,7 @@ export function command(store: Store, registry: RuntimeRegistry, env: PlatformBi
   if (replay) return replay;
   rateLimit(store, actor, now);
   assertFence(snapshot, call, now, nonceDigest);
-  if (definition.operational) requireCas(snapshot, call.ifMatch);
+  if (definition.operational || definition.requireCas) requireCas(snapshot, call.ifMatch);
   const transition = definition.reduce({ snapshot: structuredClone(snapshot), actor: { participant: actor.participant }, now }, input);
   if (transition && typeof (transition as unknown as { then?: unknown }).then === "function") fail(503, "CONFIG_INCOMPLETE");
   updateLeases(snapshot, transition, registry);

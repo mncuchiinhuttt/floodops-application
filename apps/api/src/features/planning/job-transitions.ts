@@ -1,3 +1,5 @@
+import { PLANNER_VERSION, searchLimits } from "./deterministic-types";
+import type { SearchEvidence } from "./deterministic-types";
 import { parseSchema } from "@floodops/contracts";
 import type { Plan, Route } from "@floodops/contracts";
 import { fail } from "../../shared/index";
@@ -23,10 +25,19 @@ export function beginPlanning(): ReducerDefinition {
 }
 export function completePlanning<State>(options: ResolvedPlanningOptions<State>): ReducerDefinition {
   return { permission: "planning:request", operational: false, validate(raw) { jobAuthority(raw); return raw; }, reduce(context, raw) {
-    const input = raw as { proposal?: { plan: Plan; routes: Route[] }; error_code?: string } & ReturnType<typeof jobAuthority>;
+    const input = raw as { proposal?: { plan: Plan; routes: Route[] }; error_code?: string; search?: SearchEvidence } & ReturnType<typeof jobAuthority>;
     const state = readPlanningState(context.snapshot), record = state.jobs[input.job_id];
     if (!record) fail(404, "NOT_FOUND"); const lease = assertJobAuthority(context, record, input);
     if (record.attemptId !== input.attempt_id || record.job.status !== "running") fail(409, "STATE_CONFLICT");
+    if (input.search) {
+      const search = input.search;
+      if (search.algorithm !== PLANNER_VERSION || !["candidate", "no_feasible_plan", "no_change"].includes(search.outcome)
+        || !Number.isSafeInteger(search.evaluated) || search.evaluated < 0 || search.evaluated > options.limits.maxCandidates
+        || typeof search.truncated !== "boolean" || (search.selected_key !== null
+          && (typeof search.selected_key !== "string" || search.selected_key.length > 65536))
+        || JSON.stringify(searchLimits(search.limits)) !== JSON.stringify(options.limits)) fail(422, "INVALID_SCHEMA");
+      record.search = structuredClone(search);
+    }
     if (!!input.proposal === !!input.error_code) fail(422, "INVALID_SCHEMA");
     if (input.error_code) {
       if (!["MODEL_TIMEOUT", "MODEL_REFUSED", "MODEL_INVALID_OUTPUT", "MODEL_UNAVAILABLE"].includes(input.error_code)) fail(422, "INVALID_SCHEMA");

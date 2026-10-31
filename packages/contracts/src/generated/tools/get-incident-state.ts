@@ -7,5 +7,6 @@ export const getIncidentState = {
 
 }),
   output: SessionSnapshotSchema,
+  modelCallable: false, milestone: "M1",
   sideEffect: "read_only",
 } as const;
