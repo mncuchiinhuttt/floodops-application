@@ -1,0 +1,29 @@
+{
+  "base_sha": "cf2acdd2f845ea14641544424981760248b4d960",
+  "launch_sha": "Containingmetadatacommit suppliedoutofband",
+  "contract_sha256": "4c0567b8dbb3b5b9fce91bfcf3b1abc82db0dafe20619b4d152b03d0232ca335",
+  "workers": [
+    {
+      "role_id": "expo-mobile",
+      "work_item": "expo-mobile-m1-wire-v4",
+      "existing_thread_id": "01a19067-c8ea-7435-9e24-fdaea01120e0",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/expo-mobile/expo-mobile-m1-wire-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/expo-mobile-m1-wire-v4.md"
+    },
+    {
+      "role_id": "web-console",
+      "work_item": "web-console-m1-wire-v4",
+      "existing_thread_id": "01a19068-0ad0-7386-90ae-8db6b43150cf",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/web-console/web-console-m1-wire-v4.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/web-console-m1-wire-v4.md"
+    },
+    {
+      "role_id": "sources-media",
+      "work_item": "sources-media-demo-driver-v5",
+      "existing_thread_id": "01a19063-dc77-760e-9f33-7534e3b6c0e3",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/sources-media/sources-media-demo-driver-v5.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/sources-media-demo-driver-v5.md"
+    }
+  ],
+  "parent_action": "Resume SAME Web/Expo only to rebase authority via preservingmerge and sign existingM1WIP, no additionalUIwork. Send Sources explicit pendingmanualdriver decision and freshnarrowreceipt immediately. No duplicatewriters. ConnectedLeadWeb5170/API8760, separate workerfixture5189."
+}
