@@ -13,7 +13,7 @@ import { SessionPage } from "./features/session/runtime/session-page";
 export function RouteFailure() {
   const error = useRouteError(), revalidator = useRevalidator();
   return <main><Alert title="Không mở được màn hình">{failureText(error)}</Alert>
-    <Button onClick={() => void revalidator.revalidate()}>Thử tải lại</Button><Link to="/">Ghép nối / mở lại phiên</Link></main>;
+    <Button onClick={() => void revalidator.revalidate()}>Thử tải lại</Button><Link to="/login">Ghép nối / mở lại phiên</Link></main>;
 }
 export function createRoutes(runtime: WebRuntime, commands = new SessionCommands(runtime)): RouteObject[] {
   const authorized = (permission: Permission, role: Role) => async ({ params, request }: LoaderFunctionArgs) => {
@@ -23,9 +23,10 @@ export function createRoutes(runtime: WebRuntime, commands = new SessionCommands
     return null;
   };
   return [{ element: <Outlet />, errorElement: <RouteFailure />, HydrateFallback: () => <Skeleton label="Đang mở phiên" />, children: [
-    { path: "/", element: <JoinPage />, action: joinAction(commands) },
-    // React Router's route-level lazy contract loads this feature without pulling its screenshots into the join route.
-    { path: "/welcome", lazy: async () => ({ Component: (await import("./features/landing")).LandingPage }) },
+    { path: "/", lazy: async () => ({ Component: (await import("./features/landing")).LandingPage }) },
+    // Ghép nối phiên (portal login). The landing page is the public root; route-level lazy keeps its screenshots out of the app bundle.
+    { path: "/login", element: <JoinPage />, action: joinAction(commands) },
+    { path: "/welcome", loader: () => redirect("/") },
     { path: "/sessions/:sessionId", element: <SessionShell />, errorElement: <RouteFailure />,
       loader: async ({ params, request }) => runtime.ensureIdentity(IdSchema.parse(params.sessionId), request.signal, true), children: [
         { index: true, loader: async ({ params, request }) => {
@@ -47,7 +48,7 @@ export function createRoutes(runtime: WebRuntime, commands = new SessionCommands
         { path: "dispatch/reports", loader: authorized("reports:review", "dispatcher"), lazy: async () => ({ Component: (await import("./app/workspaces")).ReportsListRoute }) },
         { path: "dispatch/reports/:reportId", loader: authorized("reports:review", "dispatcher"), lazy: async () => ({ Component: (await import("./app/report-route")).ReviewRoute }) },
       ] },
-    { path: "*", element: <main><h1>Không có màn hình này</h1><Link to="/">Ghép nối phiên</Link></main> },
+    { path: "*", element: <main><h1>Không có màn hình này</h1><Link to="/login">Ghép nối phiên</Link></main> },
   ] }];
 }
 export function createApplication(runtime = new WebRuntime(), initialEntries?: string[]) {

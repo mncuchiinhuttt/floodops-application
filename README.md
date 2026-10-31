@@ -74,7 +74,7 @@ Responses carry `Cache-Control: no-store, no-transform` because the edge otherwi
 
 ## Landing page
 
-- Landing route: `/welcome`. The existing join page remains at `/`.
+- Routes: `/` is the landing page, `/login` is the demo sign-in (one-click Dispatcher, Driver and Resident accounts, each creating a fresh synthetic session), `/welcome` redirects to `/`.
 - Page source and scoped styles live in `apps/web/src/features/landing/`.
 - App captures are stored in `apps/web/src/features/landing/assets/`; see `screenshots.md` for each capture and its source.
 - To recapture, open the local web app at `http://127.0.0.1:5170`, create a session, and use the browser to inspect the dispatcher, planning, report, and results views.

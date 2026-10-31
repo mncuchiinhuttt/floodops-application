@@ -27,11 +27,11 @@ test("real workspace route exposes canonical503 instead of a fixture or fake das
   expect(screen.queryByText("order_fixture001 · critical")).toBeNull(); application.router.dispose();
 }, 15000);
 
-test("welcome landing renders its headline and demo route", async () => {
-  const { app } = runtime("dispatcher"), application = createApplication(app, ["/welcome"]);
+test("landing at the root renders its headline and sends demo links to /login", async () => {
+  const { app } = runtime("dispatcher"), application = createApplication(app, ["/"]);
   render(<WebApplication application={application} />);
-  expect(await screen.findByRole("heading", { name: "Giao hàng khi đường ngập" })).toBeDefined();
-  const callsToDemo = screen.getAllByRole("link", { name: "Mở bản demo" });
-  expect(callsToDemo.every(link => link.getAttribute("href") === "/")).toBe(true);
+  expect(await screen.findByRole("heading", { name: "Delivery when roads flood" })).toBeDefined();
+  const callsToDemo = screen.getAllByRole("link", { name: "Open demo" });
+  expect(callsToDemo.every(link => link.getAttribute("href") === "/login")).toBe(true);
   application.router.dispose();
 }, 15000);

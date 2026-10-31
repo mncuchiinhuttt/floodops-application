@@ -6,12 +6,12 @@ export function ClosingSection() {
   return <section className="landing-section closing" aria-labelledby="closing-title">
     <div className="landing-container">
       <div className="closing-panel" data-reveal>
-        <h2 id="closing-title" className="section-title">Chạy thử một ca ngập</h2>
-        <p className="section-lede">Tạo phiên mô phỏng, gửi báo cáo, lập kế hoạch và so sánh kết quả ngay trong trình duyệt.</p>
+        <h2 id="closing-title" className="section-title">Run a flood scenario</h2>
+        <p className="section-lede">Create a simulated session, submit reports, plan, and compare results right in your browser.</p>
         <div className="closing-actions" data-reveal style={revealDelay(80)}>
-          <Link className="landing-button" to="/">Mở bản demo<ArrowRight size={18} strokeWidth={2} aria-hidden="true" /></Link>
+          <Link className="landing-button" to="/login">Open demo<ArrowRight size={18} strokeWidth={2} aria-hidden="true" /></Link>
         </div>
-        <p className="closing-note">Mọi số liệu là mô phỏng (Simulation). Hiệu chuẩn chưa hoàn tất (Calibration incomplete), chưa dùng dữ liệu thực.</p>
+        <p className="closing-note">All figures are simulated (Simulation). Calibration is incomplete (Calibration incomplete) and no real data is used.</p>
       </div>
     </div>
   </section>;

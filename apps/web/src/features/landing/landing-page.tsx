@@ -10,7 +10,7 @@ import { useReveal } from "./use-reveal";
 export function LandingPage() {
   const shell = useRef<HTMLDivElement>(null);
   useReveal(shell);
-  return <div className="landing-shell" ref={shell} lang="vi">
+  return <div className="landing-shell" ref={shell} lang="en">
     <LandingNavigation />
     <main className="landing-page">
       <HeroSection />

@@ -26,9 +26,9 @@ export function SessionPage({ commands }: { commands: SessionCommands }) {
       <Invitations commands={commands} participants={members.data?.body.data} /></>}
     <Card title="Vòng đời phiên"><label><input type="checkbox" checked={confirm} onChange={event => setConfirm(event.target.checked)} /> Tôi đã xem lại thao tác thay đổi phiên</label>
       <div className="feature-actions"><Button {...(!context.online ? { disabled: true, disabledReason: "Đang offline. Kết nối để đăng xuất server." } : { disabled: false })} pending={command.pending}
-        onClick={() => void command.run(async () => { await commands.logout(); navigate("/"); })}>Đăng xuất</Button>
+        onClick={() => void command.run(async () => { await commands.logout(); navigate("/login"); })}>Đăng xuất</Button>
       <Button {...disabled("simulation:reset")} pending={command.pending} onClick={() => void command.run(async () => { const next = await commands.reset(); navigate(`/sessions/${next.session.session_id}/session`); })}>Reset sang phiên mới</Button>
-      <Button {...disabled("session:delete")} variant="danger" pending={command.pending} onClick={() => void command.run(async () => { await commands.remove(); navigate("/"); })}>Đóng phiên</Button></div>
+      <Button {...disabled("session:delete")} variant="danger" pending={command.pending} onClick={() => void command.run(async () => { await commands.remove(); navigate("/login"); })}>Đóng phiên</Button></div>
       {command.message && <Alert title="Kết quả lệnh">{command.message}</Alert>}
     </Card>
   </div>;

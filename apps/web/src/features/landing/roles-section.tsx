@@ -16,10 +16,10 @@ export function RolesSection() {
   }
   return <section id="vai-tro" className="landing-section" aria-labelledby="roles-title">
     <div className="landing-container">
-      <h2 id="roles-title" className="section-title" data-reveal>Mỗi vai trò, một góc nhìn</h2>
-      <p className="section-lede" data-reveal style={revealDelay(60)}>Quyền được cấp từ server theo từng phiên, không dựa vào lựa chọn của giao diện.</p>
+      <h2 id="roles-title" className="section-title" data-reveal>Each role gets its own view</h2>
+      <p className="section-lede" data-reveal style={revealDelay(60)}>Permissions are issued by the server for each session, not chosen in the interface.</p>
       <div className="roles-layout" data-reveal style={revealDelay(100)}>
-        <div role="tablist" aria-orientation="vertical" aria-label="Vai trò trong phiên" className="roles-tabs">
+        <div role="tablist" aria-orientation="vertical" aria-label="Roles in a session" className="roles-tabs">
           {ROLES.map((item, index) => <button key={item.id} type="button" role="tab" id={`role-tab-${item.id}`} aria-selected={index === selected} aria-controls="role-panel"
             tabIndex={index === selected ? 0 : -1} onClick={() => setSelected(index)} onKeyDown={onKeyDown}><item.icon size={20} strokeWidth={1.75} aria-hidden="true" />{item.name}</button>)}
         </div>

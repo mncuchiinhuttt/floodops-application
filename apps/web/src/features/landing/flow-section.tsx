@@ -16,8 +16,8 @@ export function FlowSection() {
   }, []);
   return <section id="quy-trinh" className="landing-section flow" aria-labelledby="flow-title">
     <div className="landing-container">
-      <h2 id="flow-title" className="section-title" data-reveal>Từ báo cáo đến quyết định</h2>
-      <p className="section-lede" data-reveal style={revealDelay(60)}>Bốn bước trên một phiên mô phỏng. Mọi ảnh trên trang được chụp từ ứng dụng đang chạy.</p>
+      <h2 id="flow-title" className="section-title" data-reveal>From report to decision</h2>
+      <p className="section-lede" data-reveal style={revealDelay(60)}>Four steps in one simulated session. Every image on this page is captured from the running app.</p>
       <div className="flow-grid">
         <ol className="flow-steps">
           {FLOW_STEPS.map((step, index) => <li key={step.id} ref={node => { steps.current[index] = node; }} data-index={index} data-active={index === active} className="flow-step">

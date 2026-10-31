@@ -27,7 +27,7 @@ export function SessionShell() {
     const release = runtime.registerStream(stream); void followSession(runtime, stream, setStreamMessage);
     return () => { stream.cancel(); release(); };
   }, [runtime, state.epoch, state.online, state.eventsPaused, visible, identity?.participant.participant_id, session?.session_id, session?.generation]);
-  if (!identity || identity.session.session_id !== params.sessionId) return <main className="mx-auto grid max-w-md gap-3 p-6"><Alert title="Cần ghép nối lại">Phiên hoặc capability đã đổi.</Alert><Link to="/">Ghép nối phiên</Link></main>;
+  if (!identity || identity.session.session_id !== params.sessionId) return <main className="mx-auto grid max-w-md gap-3 p-6"><Alert title="Cần ghép nối lại">Phiên hoặc capability đã đổi.</Alert><Link to="/login">Ghép nối phiên</Link></main>;
   const context = runtime.context(), base = `/sessions/${session!.session_id}`;
   const destinations = capabilityDestinations(context);
   const active = (path: string) => location.pathname === `${base}/${path}` || location.pathname.startsWith(`${base}/${path}/`);

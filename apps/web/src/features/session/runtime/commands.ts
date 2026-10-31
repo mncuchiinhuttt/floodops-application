@@ -3,6 +3,11 @@ import { formatEtag, type ClaimInput, type CreateSessionInput, type InviteInput 
 import type { WebRuntime } from "../../../app/runtime";
 import { FeatureAccessError } from "../../../shared/client-context";
 
+export type DemoRole = "dispatcher" | "driver" | "contributor";
+/** Synthetic scenario and the entities its driver and contributor accounts bind to (same ids the runtime acceptance tests use). */
+const DEMO_SCENARIO = { id: "scn_functional1", version: "2" } as const;
+const DEMO_ENTITIES = { driver: "drv_moto01", contributor: "contributor_functional1" } as const;
+
 export class SessionCommands {
   private admission: { epoch: number; request: PreparedRequest<"createSession"> | PreparedRequest<"claimSession"> } | null = null;
   constructor(readonly runtime: WebRuntime) {}
@@ -36,6 +41,13 @@ export class SessionCommands {
     return this.runtime.bound.prepare("createInvitation", "participants:invite", "dispatcher", context => ({
       path: { session_id: context.identity.session.session_id }, headers: { "Idempotency-Key": createIdempotencyKey() }, body,
     })).send();
+  }
+  /** Prototype accounts: open a fresh synthetic session as dispatcher, or invite and claim a bound driver/contributor in that session. */
+  async demoLogin(role: DemoRole, signal?: AbortSignal) {
+    const owner = await this.create({ scenario_id: DEMO_SCENARIO.id, scenario_version: DEMO_SCENARIO.version, client_type: "web" }, signal);
+    if (role === "dispatcher") return owner;
+    const invitation = await this.invite({ role, bound_entity_id: DEMO_ENTITIES[role], expires_in_seconds: 300 });
+    return this.claim({ session_id: owner.session.session_id, claim_token: invitation.body.data.claim_token, client_type: "web" }, signal);
   }
   revoke(participantId: string) {
     return this.runtime.bound.prepare("revokeParticipant", "participants:revoke", "dispatcher", context => ({

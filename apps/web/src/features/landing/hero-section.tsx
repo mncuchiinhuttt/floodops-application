@@ -8,12 +8,12 @@ export function HeroSection() {
   return <section className="landing-hero" aria-labelledby="landing-title">
     <div className="landing-container hero-grid">
       <div className="hero-copy">
-        <span className="landing-pill" data-reveal>Bản mô phỏng vận hành</span>
-        <h1 id="landing-title" data-reveal style={revealDelay(60)}><span>Giao hàng</span>{" "}<span>khi đường ngập</span></h1>
-        <p data-reveal style={revealDelay(120)}>Mô phỏng ảnh hưởng ngập lên tuyến giao hàng, rồi cho điều phối viên duyệt kế hoạch trước khi chạy.</p>
+        <span className="landing-pill" data-reveal>Operations simulation</span>
+        <h1 id="landing-title" data-reveal style={revealDelay(60)}><span>Delivery</span>{" "}<span>when roads flood</span></h1>
+        <p data-reveal style={revealDelay(120)}>Simulate how flooding hits delivery routes, then let dispatchers review the plan before anything runs.</p>
         <div className="hero-actions" data-reveal style={revealDelay(180)}>
-          <Link className="landing-button" to="/">Mở bản demo<ArrowRight size={18} strokeWidth={2} aria-hidden="true" /></Link>
-          <a className="landing-button landing-button-ghost" href="#quy-trinh">Xem quy trình</a>
+          <Link className="landing-button" to="/login">Open demo<ArrowRight size={18} strokeWidth={2} aria-hidden="true" /></Link>
+          <a className="landing-button landing-button-ghost" href="#quy-trinh">See how it works</a>
         </div>
       </div>
       <div className="hero-stage" data-reveal style={revealDelay(140)}>
@@ -22,7 +22,7 @@ export function HeroSection() {
           <img src={SHOTS.map.src} width={SHOTS.map.width} height={SHOTS.map.height} alt={SHOTS.map.alt} fetchPriority="high" />
         </figure>
         <figure className="hero-phone">
-          <img src={phoneMap} width={PHONE_SHOT.width} height={PHONE_SHOT.height} alt="Giao diện FloodOps trên điện thoại: bản đồ OpenStreetMap và thanh tab phía dưới." />
+          <img src={phoneMap} width={PHONE_SHOT.width} height={PHONE_SHOT.height} alt="FloodOps on a phone: an OpenStreetMap map with a bottom tab bar." />
         </figure>
       </div>
     </div>
