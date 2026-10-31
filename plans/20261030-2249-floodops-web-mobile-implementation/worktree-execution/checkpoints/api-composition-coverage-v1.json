@@ -1,0 +1,488 @@
+{
+  "source_sha": "09b0a5394030de7b0d514fb18fc17d6beb99f08d",
+  "evidence": "Actual production composition Workerd route-inventory:17/66; no wildcard/ALL credit, uncontracted_routes=[]; seven actual composition tests passed.",
+  "contract_operations": 66,
+  "registered_operations": 17,
+  "working_session_operations": 13,
+  "registered_but_projection_unavailable": 4,
+  "unmounted_operations": 49,
+  "role_router_operation_counts": {
+    "session-platform": 17,
+    "sources-media": 21,
+    "planner-safety": 15,
+    "review-rewards": 7,
+    "results-evaluation": 6
+  },
+  "operations": [
+    {
+      "operation_id": "getHealth",
+      "path": "/api/v1/health",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "listScenarios",
+      "path": "/api/v1/scenarios",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getScenario",
+      "path": "/api/v1/scenarios/{scenario_id}",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "createSession",
+      "path": "/api/v1/sessions",
+      "method": "POST",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "claimSession",
+      "path": "/api/v1/session-claims",
+      "method": "POST",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "getSession",
+      "path": "/api/v1/sessions/{session_id}",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "deleteSession",
+      "path": "/api/v1/sessions/{session_id}",
+      "method": "DELETE",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "getSessionSnapshot",
+      "path": "/api/v1/sessions/{session_id}/snapshot",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-but-CONFIG_INCOMPLETE"
+    },
+    {
+      "operation_id": "getSessionOverview",
+      "path": "/api/v1/sessions/{session_id}/overview",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-but-CONFIG_INCOMPLETE"
+    },
+    {
+      "operation_id": "getSessionGraph",
+      "path": "/api/v1/sessions/{session_id}/graph",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getSessionConfiguration",
+      "path": "/api/v1/sessions/{session_id}/configuration",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getOperations",
+      "path": "/api/v1/sessions/{session_id}/operations",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getOwnDriverDashboard",
+      "path": "/api/v1/sessions/{session_id}/drivers/me",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-but-CONFIG_INCOMPLETE"
+    },
+    {
+      "operation_id": "getOwnContributorDashboard",
+      "path": "/api/v1/sessions/{session_id}/contributors/me",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-but-CONFIG_INCOMPLETE"
+    },
+    {
+      "operation_id": "createInvitation",
+      "path": "/api/v1/sessions/{session_id}/invitations",
+      "method": "POST",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "listParticipants",
+      "path": "/api/v1/sessions/{session_id}/participants",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "revokeParticipant",
+      "path": "/api/v1/sessions/{session_id}/participants/{participant_id}",
+      "method": "DELETE",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "resetSession",
+      "path": "/api/v1/sessions/{session_id}/resets",
+      "method": "POST",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "listIncidents",
+      "path": "/api/v1/sessions/{session_id}/incidents",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "triggerIncident",
+      "path": "/api/v1/sessions/{session_id}/incidents",
+      "method": "POST",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getImpact",
+      "path": "/api/v1/sessions/{session_id}/impact",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listSources",
+      "path": "/api/v1/sessions/{session_id}/sources",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getSource",
+      "path": "/api/v1/sessions/{session_id}/sources/{source_id}",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listSourceEvents",
+      "path": "/api/v1/sessions/{session_id}/source-events",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "replaySourceEvent",
+      "path": "/api/v1/sessions/{session_id}/source-events",
+      "method": "POST",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getKnowledge",
+      "path": "/api/v1/sessions/{session_id}/knowledge",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listObservations",
+      "path": "/api/v1/sessions/{session_id}/observations",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listRestrictions",
+      "path": "/api/v1/sessions/{session_id}/restrictions",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "applyRestrictionFixture",
+      "path": "/api/v1/sessions/{session_id}/restrictions",
+      "method": "POST",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listConflicts",
+      "path": "/api/v1/sessions/{session_id}/conflicts",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "resolveConflict",
+      "path": "/api/v1/sessions/{session_id}/conflicts/{conflict_id}/resolutions",
+      "method": "POST",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "submitReport",
+      "path": "/api/v1/sessions/{session_id}/reports",
+      "method": "POST",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listReports",
+      "path": "/api/v1/sessions/{session_id}/reports",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getReport",
+      "path": "/api/v1/sessions/{session_id}/reports/{report_id}",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "reviewReport",
+      "path": "/api/v1/sessions/{session_id}/reports/{report_id}/reviews",
+      "method": "POST",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "createReportImageReview",
+      "path": "/api/v1/sessions/{session_id}/reports/{report_id}/image-review-jobs",
+      "method": "POST",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getReportImageReview",
+      "path": "/api/v1/sessions/{session_id}/reports/{report_id}/image-review",
+      "method": "GET",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "reserveMediaUpload",
+      "path": "/api/v1/sessions/{session_id}/media-uploads",
+      "method": "POST",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "uploadMediaContent",
+      "path": "/api/v1/sessions/{session_id}/media-uploads/{upload_id}/content",
+      "method": "PUT",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "completeMediaUpload",
+      "path": "/api/v1/sessions/{session_id}/media-uploads/{upload_id}/completion",
+      "method": "POST",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getMedia",
+      "path": "/api/v1/sessions/{session_id}/media/{media_id}",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listGaps",
+      "path": "/api/v1/sessions/{session_id}/gaps",
+      "method": "GET",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getCoverage",
+      "path": "/api/v1/sessions/{session_id}/coverage",
+      "method": "GET",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listAwards",
+      "path": "/api/v1/sessions/{session_id}/awards",
+      "method": "GET",
+      "router_owner": "review-rewards",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "createPlanningJob",
+      "path": "/api/v1/sessions/{session_id}/planning-jobs",
+      "method": "POST",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getPlanningJob",
+      "path": "/api/v1/sessions/{session_id}/planning-jobs/{job_id}",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "cancelPlanningJob",
+      "path": "/api/v1/sessions/{session_id}/planning-jobs/{job_id}/cancellations",
+      "method": "POST",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listPlans",
+      "path": "/api/v1/sessions/{session_id}/plans",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getPlan",
+      "path": "/api/v1/sessions/{session_id}/plans/{plan_id}",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getRoute",
+      "path": "/api/v1/sessions/{session_id}/routes/{route_id}",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "dryRunPlan",
+      "path": "/api/v1/sessions/{session_id}/plans/{plan_id}/dry-runs",
+      "method": "POST",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "decidePlanActions",
+      "path": "/api/v1/sessions/{session_id}/plans/{plan_id}/decisions",
+      "method": "POST",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "executePlan",
+      "path": "/api/v1/sessions/{session_id}/plans/{plan_id}/executions",
+      "method": "POST",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getExecution",
+      "path": "/api/v1/sessions/{session_id}/executions/{execution_id}",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "listNotificationPreviews",
+      "path": "/api/v1/sessions/{session_id}/notifications",
+      "method": "GET",
+      "router_owner": "planner-safety",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getSimulationClock",
+      "path": "/api/v1/sessions/{session_id}/simulation",
+      "method": "GET",
+      "router_owner": "results-evaluation",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "advanceSimulation",
+      "path": "/api/v1/sessions/{session_id}/simulation/advances",
+      "method": "POST",
+      "router_owner": "results-evaluation",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getAdvanceJob",
+      "path": "/api/v1/sessions/{session_id}/simulation/advances/{advance_job_id}",
+      "method": "GET",
+      "router_owner": "results-evaluation",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getResults",
+      "path": "/api/v1/sessions/{session_id}/results",
+      "method": "GET",
+      "router_owner": "results-evaluation",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "createEvaluationRun",
+      "path": "/api/v1/sessions/{session_id}/evaluation-runs",
+      "method": "POST",
+      "router_owner": "results-evaluation",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getEvaluationRun",
+      "path": "/api/v1/sessions/{session_id}/evaluation-runs/{evaluation_id}",
+      "method": "GET",
+      "router_owner": "results-evaluation",
+      "status": "unmounted"
+    },
+    {
+      "operation_id": "getEvents",
+      "path": "/api/v1/sessions/{session_id}/events",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "streamEvents",
+      "path": "/api/v1/sessions/{session_id}/events/stream",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested",
+      "qualification": "Basic stream/replay tested; open-stream-to-Reset delivery regression assigned SessionPlatformv4, not yet proved."
+    },
+    {
+      "operation_id": "getIdentity",
+      "path": "/api/v1/sessions/{session_id}/identity",
+      "method": "GET",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "logout",
+      "path": "/api/v1/sessions/{session_id}/logout",
+      "method": "POST",
+      "router_owner": "session-platform",
+      "status": "registered-session-path-tested"
+    },
+    {
+      "operation_id": "getFixtureAsset",
+      "path": "/api/v1/sessions/{session_id}/fixture-assets/{asset_id}",
+      "method": "GET",
+      "router_owner": "sources-media",
+      "status": "unmounted"
+    }
+  ],
+  "projection_composition_requests": {
+    "driver-dashboard": "PlannerSafety operations factory using public own-reports projector; bound actor/driver only, no proposal routes or fleet leak.",
+    "contributor-dashboard": "ReviewRewards factory using Sources own-reports and own award ledger, server-derived points.",
+    "snapshot": "ResultsEvaluation final composed read facade after public Sources/Planner/Review projections; one authoritative context/revision, no fabricated partial Results.",
+    "overview": "ResultsEvaluation final composed viewer-safe facade using public projections; no participant/media/advice leak."
+  },
+  "qualification": "Router ownership follows existing roles; proposed projector assembly locations are preflight requests, not permission to edit another role. This report is not a backend-ready gate or per-operation success trace. No server currently running; SELF tests do not prove browser/native hardware E2E."
+}

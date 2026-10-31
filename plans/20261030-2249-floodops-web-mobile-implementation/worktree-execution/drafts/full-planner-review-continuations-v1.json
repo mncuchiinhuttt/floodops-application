@@ -1,0 +1,65 @@
+{
+  "status": "draft-not-authorized",
+  "source_sha": "09b0a5394030de7b0d514fb18fc17d6beb99f08d",
+  "not_a_launch_receipt": true,
+  "activation": "Do not launch or expand active worker scope from this draft. Lead must merge exact corrected pure C/R plus full Sources C/R, compose/tests actual Source ports, publish truthful source gate and frozen interface index, then issue fresh LaunchReceipt with exact containing L. Parent owns resumes.",
+  "prerequisites": {
+    "sources_delivery_sha": null,
+    "sources_ready_commit": null,
+    "pinned_source_port_index": null,
+    "planner_correction_delivery": null,
+    "review_correction_delivery": null
+  },
+  "central_dependencies": {
+    "already_supplied": [
+      "Hono4.13.14/WorkerdVitest",
+      "contracts66/194/8 strict tool definitions + self-contained vision output schema",
+      "domain planning/rewards public exports and simulator link",
+      "scenarioCatalog + simulationPersistence + generic SessionRuntimeClient/ImageReviewMetadataPort",
+      "REPORT_MEDIA private R2, separate SCENARIO_ASSETS, IMAGES local remote:false"
+    ],
+    "no_new_sdk_required_by_current_spec": "Existing fetch/AbortController and injected provider ports can implement server Responses adapter. If owner requires SDK, request exact reviewed package; no unreviewed dependency or provider-version assumption.",
+    "provider_config": "OPENAI_API_KEY remains server secret and unprovisioned. OPENAI_IMAGE_REVIEW_MODEL selected only after compatibility check; no guessed model ID, text-only fallback, paid call/account/key/budget grant. Missing provider returns canonical unavailable/null, manual flows still operate."
+  },
+  "work_items": [
+    {
+      "role_id": "planner-safety",
+      "proposed_item": "planner-safety-phase-06-v1",
+      "scope": "Entire original phase06 ownership, after integrated v2 corrections and actual Sources-ready. Implement incidents/impact/8tools/controller/persistent planning jobs/latest-plan+job fencing/action decisions/dryrun/atomic Execute/operation-route-notification reads. Real P1 hub/defer and branch/current authority. No source/reward/private provider cross-import.",
+      "required_public_source_ports": [
+        "Normalized current knowledge/accepted reports and server-owned config/scenario views",
+        "Pure observation/knowledge transition factory and stable key namespace",
+        "Captured run read/write reference and same-H public simulator"
+      ],
+      "mandatory_checks": [
+        "Actual Hono/DO denied roles/CSRF/CAS/idempotency replay",
+        "same-revision latest-plan/job replacement blocks stale decision/Execute",
+        "whole selected dependency closure, independent ready group; rollback/no partial commit on any hard rule",
+        "committed driver assignment/route/ETA changes only after successful Execute",
+        "all8 strict tools with captured server IDs; refusal/timeout/incomplete/tool limits; no fake model success",
+        "P1 new-hub actual route/pickup/stock/capacity/custody/defer cap/original SLA; baseline independence"
+      ],
+      "handoff": "Export exact planning/incident/operation router+registry/service factories; pure committed movement-policy public port for ResultsEvaluation; registration key/lease-kind table and constructor request. Lead alone composes index/config."
+    },
+    {
+      "role_id": "review-rewards",
+      "proposed_item": "review-rewards-phase-07-v1",
+      "scope": "Entire original phase07 ownership after integrated correction and actual Sources-ready. Human review/conflict resolution + coverage/gap/award atomic transitions, own contributor ledger and advisory image job/service/provider router. Preserve source/media core ownership.",
+      "required_public_source_ports": [
+        "Pure proposed acceptance/conflict transition with captured report input/epoch/normalized-photo digest",
+        "Authorized pending-report normalized derivative/readiness/digest accessor, no raw staging/public URL",
+        "Public source/knowledge/report context projection and expiry/change events"
+      ],
+      "mandatory_checks": [
+        "True DO race/concurrent accept/crash-after-commit -> one report award/first-filled gap/idempotent replay",
+        "Source acceptance+knowledge+gap+award in ONE synchronous transition, no network await or staged half commit",
+        "Current vehicle/epoch coverage consistent with simulator; historical gap rows retained but inactive rows excluded",
+        "Citizen pending/photo-only AI, dispatcher guard, exact current binding/reservation/budget/deadline/fence",
+        "IR01-IR11 local deterministic service/job tests, equal-revision progress, completed result after deadline stays valid, Reset/human decision supersedes late reply",
+        "AI does not mutate report/revision/knowledge/points/assignment, manual decisions independent; IR12 real vision explicitly unavailable without scoped grant"
+      ],
+      "handoff": "Export exact review/conflict/rewards routers and registry factories, imageBinding callback and normalized-image constructor needs; own contributor dashboard projection; never deep-import Planner provider. Lead composes complete registry without silent command/view/lease collisions."
+    }
+  ],
+  "critical_path": "Sources exact delivery and honest gate -> Planner+Review full services in parallel -> Results final runtime and all66 integration -> real web/Expo E2E. Current separate correction/runtime/client workers remain active at2364a58, no moving baseline sync."
+}
