@@ -12,7 +12,8 @@ export function createEvaluationRouter<State>(options: EvaluationOptions<State>)
     const call = runtimeCall(c, "command", { name: EVAL_START, payload: parseSchema("EvaluationInput", await jsonBody(c.req.raw)) });
     const reply = await invoke(c, call);
     if (reply.status !== 200) return send(c, reply);
-    c.executionCtx.waitUntil(driveEvaluation(createSessionRuntimeClient(c.env).dispatch, call, reply, options));
+    // Yield once so the 202 flushes before the CPU-bound trials start; duplicates (idempotent replay) are fenced by EVAL_BEGIN.
+    c.executionCtx.waitUntil(scheduler.wait(50).then(() => driveEvaluation(createSessionRuntimeClient(c.env).dispatch, call, reply, options)));
     return send(c, { ...reply, status: 202 }, "createEvaluationRun");
   });
   router.get("/sessions/:session_id/evaluation-runs/:evaluation_id", async c => {
