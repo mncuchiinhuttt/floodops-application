@@ -1,5 +1,7 @@
 import { operations, parseEtag, parseOperationInput, ContractValidationError, type OperationId, type OperationInputs } from "@floodops/contracts";
 
+import { normalizeDevelopmentLanOrigin } from "./development-lan-origin";
+
 export interface CapturedRequest {
   url: string;
   headers: Readonly<Record<string, string>>;
@@ -15,13 +17,18 @@ interface RequestShape {
 function invalid(path: string): never {
   throw new ContractValidationError("request", [{ path, code: "invalid_transport_input" }]);
 }
-export function validateBaseUrl(baseUrl: string): string {
+export function validateBaseUrl(baseUrl: string, developmentLanOrigin?: string): string {
+  const lanOrigin = developmentLanOrigin === undefined ? undefined
+    : typeof developmentLanOrigin === "string" ? normalizeDevelopmentLanOrigin(developmentLanOrigin) : null;
+  if (developmentLanOrigin !== undefined && lanOrigin === null) invalid("developmentLanOrigin");
   if (baseUrl.startsWith("/") && !baseUrl.startsWith("//")) {
     if (!/^\/[A-Za-z0-9/_-]+$/.test(baseUrl)) invalid("baseUrl");
   } else {
     const url = new URL(baseUrl);
+    const loopbackHttp = url.protocol === "http:" && url.hostname === "127.0.0.1";
+    const optedInLanHttp = url.protocol === "http:" && lanOrigin !== undefined && url.origin === lanOrigin;
     if (url.username || url.password || url.search || url.hash ||
-      (url.protocol !== "https:" && !(url.protocol === "http:" && url.hostname === "127.0.0.1"))) invalid("baseUrl");
+      (url.protocol !== "https:" && !loopbackHttp && !optedInLanHttp)) invalid("baseUrl");
   }
   return baseUrl.replace(/\/$/, "");
 }

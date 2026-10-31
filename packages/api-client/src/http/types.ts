@@ -22,6 +22,8 @@ export interface PreparedRequest<I extends OperationId> {
 export interface RetryPolicy { maxRetries: number; baseDelayMs: number; maxDelayMs: number }
 export interface ClientOptions {
   baseUrl: string;
+  /** Restricts development HTTP to one exact RFC1918 origin. */
+  developmentLanOrigin?: string;
   fetch?: FetchAdapter;
   credentials: CredentialProvider;
   getRetry?: Partial<RetryPolicy>;

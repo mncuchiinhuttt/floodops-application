@@ -12,7 +12,7 @@ export class ApiClient {
   private readonly baseUrl;
   private readonly retry;
   constructor(private readonly options: ClientOptions) {
-    this.baseUrl = validateBaseUrl(options.baseUrl);
+    this.baseUrl = validateBaseUrl(options.baseUrl, options.developmentLanOrigin);
     this.retry = retryPolicy(options.getRetry);
   }
   cancelSession(sessionId: string): void { this.tracker.cancelSession(sessionId); }

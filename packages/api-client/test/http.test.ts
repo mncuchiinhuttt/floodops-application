@@ -6,6 +6,27 @@ import { errorResponse, meta, response, sessionId, state } from "./fixtures";
 const path = { session_id: sessionId, report_id: "report_test0001" };
 const credentials = nativeCredentials(() => "synthetic-token-".repeat(3));
 const baseUrl = "https://floodops.example/api/v1";
+const developmentLanOrigin = "http://192.168.225.123:8790";
+const developmentLanBaseUrl = `${developmentLanOrigin}/api/v1`;
+test("HTTP LAN access requires an exact opted-in RFC1918 origin", () => {
+  expect(new ApiClient({ baseUrl: developmentLanBaseUrl, developmentLanOrigin, credentials })).toBeInstanceOf(ApiClient);
+  expect(() => new ApiClient({ baseUrl: developmentLanBaseUrl, credentials })).toThrow(ContractValidationError);
+  for (const invalidOrigin of [
+    "http://8.8.8.8:8790", "http://localhost:8790", "http://0.0.0.0:8790",
+    "http://192.168.225.123", "http://user:pass@192.168.225.123:8790",
+    "http://192.168.225.123:8790/api/v1", "http://192.168.225.123:8790?query=1",
+    "http://192.168.225.123:8790#fragment", "http://169.254.1.1:8790", "http://[::1]:8790",
+  ]) {
+    expect(() => new ApiClient({ baseUrl: developmentLanBaseUrl, developmentLanOrigin: invalidOrigin, credentials })).toThrow(ContractValidationError);
+  }
+  for (const mismatchedBaseUrl of ["http://192.168.225.124:8790/api/v1", "http://192.168.225.123:8791/api/v1"]) {
+    expect(() => new ApiClient({ baseUrl: mismatchedBaseUrl, developmentLanOrigin, credentials })).toThrow(ContractValidationError);
+  }
+});
+test("HTTPS and loopback HTTP base URLs remain accepted without LAN opt-in", () => {
+  expect(new ApiClient({ baseUrl, credentials })).toBeInstanceOf(ApiClient);
+  expect(new ApiClient({ baseUrl: "http://127.0.0.1:8790/api/v1", credentials })).toBeInstanceOf(ApiClient);
+});
 test("GET retry bounded; bearer auth is header-only; no-store and redirect errors", async () => {
   const seen: RequestInit[] = [], waits: number[] = [];
   const client = new ApiClient({ baseUrl, credentials, random: () => 0, wait: async ms => { waits.push(ms); },

@@ -3,8 +3,8 @@ import { ContractValidationError, formatEtag, operations, type OperationId, type
 import { accessReason, commandReason, type MobileContext } from "./session-context";
 export interface NativeCredentialPort { readToken(sessionId: string): Promise<string | null> }
 /** SecureStore is supplied by the future native bootstrap, never replaced by local storage here. */
-export function createNativeApi(baseUrl: string, credentials: NativeCredentialPort, fetch?: FetchAdapter): ApiClient {
-  return new ApiClient({ baseUrl, credentials: async context => nativeCredentials(() => context.sessionId
+export function createNativeApi(baseUrl: string, credentials: NativeCredentialPort, fetch?: FetchAdapter, developmentLanOrigin?: string): ApiClient {
+  return new ApiClient({ baseUrl, developmentLanOrigin, credentials: async context => nativeCredentials(() => context.sessionId
     ? credentials.readToken(context.sessionId) : null)(context), fetch });
 }
 export class NativeAccessError extends Error { override readonly name = "NativeAccessError"; }

@@ -1,4 +1,5 @@
 export { ApiClient } from "./client";
+export { normalizeDevelopmentLanOrigin } from "./http/development-lan-origin";
 export { ApiError, TransportError, RequestCancelledError } from "./http/errors";
 export { RequestScope } from "./http/lifecycle";
 export { nativeCredentials, webCredentials } from "./http/auth";

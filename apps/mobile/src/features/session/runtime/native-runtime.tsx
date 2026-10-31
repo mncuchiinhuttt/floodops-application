@@ -20,7 +20,13 @@ const RuntimeContext = createContext<Runtime | null>(null);
 export function NativeRuntimeProvider({ children }: { children: ReactNode }) {
   const [cache] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 0, gcTime: 120_000 } } }));
   const [vault] = useState(createSecureVault);
-  const [service] = useState(() => new NativeSessionService(createNativeApi(String(Constants.expoConfig?.extra?.apiBaseUrl ?? "http://127.0.0.1:8790/api/v1"), vault, expoFetch), vault, nativeKey));
+  const developmentLanOrigin = Constants.expoConfig?.extra?.developmentLanOrigin;
+  const [service] = useState(() => new NativeSessionService(createNativeApi(
+    String(Constants.expoConfig?.extra?.apiBaseUrl ?? "http://127.0.0.1:8790/api/v1"),
+    vault,
+    expoFetch,
+    typeof developmentLanOrigin === "string" ? developmentLanOrigin : undefined,
+  ), vault, nativeKey));
   const [identity, setIdentity] = useState<Identity | null>(null);
   const [busy, setBusy] = useState(false), [error, setError] = useState<string | null>(null), [connection, setConnection] = useState("Disconnected");
   const [tick, setTick] = useState(0);
