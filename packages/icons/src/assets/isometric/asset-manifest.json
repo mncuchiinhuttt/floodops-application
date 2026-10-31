@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "externalArtwork": false,
+  "licenseFile": "../../../LICENSE.assets",
+  "distributionApproval": "Internal project use only; external licensing requires project-owner approval.",
+  "assets": [
+    {
+      "id": "hub",
+      "file": "hub.svg",
+      "viewBox": "0 0 64 64",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "isometric"
+    },
+    {
+      "id": "parcel",
+      "file": "parcel.svg",
+      "viewBox": "0 0 64 64",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "isometric"
+    },
+    {
+      "id": "motorbike",
+      "file": "motorbike.svg",
+      "viewBox": "0 0 64 64",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "isometric"
+    },
+    {
+      "id": "car",
+      "file": "car.svg",
+      "viewBox": "0 0 64 64",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "isometric"
+    },
+    {
+      "id": "water",
+      "file": "water.svg",
+      "viewBox": "0 0 64 64",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "isometric"
+    },
+    {
+      "id": "source",
+      "file": "source.svg",
+      "viewBox": "0 0 64 64",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "isometric"
+    },
+    {
+      "id": "check",
+      "file": "check.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "close",
+      "file": "close.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "blocked",
+      "file": "blocked.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "clock",
+      "file": "clock.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "warning",
+      "file": "warning.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "help",
+      "file": "help.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "refresh",
+      "file": "refresh.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    },
+    {
+      "id": "arrow",
+      "file": "arrow.svg",
+      "viewBox": "0 0 24 24",
+      "source": "FloodOps original vector geometry",
+      "author": "FloodOps project",
+      "license": "LicenseRef-FloodOps-Internal",
+      "attribution": "FloodOps original artwork",
+      "altPolicy": "Decorative: hidden from accessibility tree. Informative: caller supplies localized non-empty label.",
+      "kind": "control"
+    }
+  ]
+}

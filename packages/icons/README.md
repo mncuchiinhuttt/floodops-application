@@ -1,0 +1,9 @@
+# FloodOps original vectors
+
+Six isometric drawings (hub, parcel, motorbike, car, water, source) and eight controls share `src/geometry.ts`. `bun packages/icons/scripts/generate.ts` writes bounded SVG assets and the provenance manifest. No external artwork, fonts, emoji, URL fetch, raw HTML insertion or runtime SVG parsing is used. All paths are authored directly for this project. `LICENSE.assets` records internal project usage; external distribution/licensing still needs project-owner approval. This delivery does not claim an independently approved public artwork licence.
+
+Lead-requested public APIs: `@floodops/icons/web` and `@floodops/icons/native` export `Icon`, `IconName`, `IconProps`. Native uses `react-native-svg` Path/Svg primitives; web uses React SVG elements. Both read the same path geometry and semantic palette. Product callers must use the correct platform entrypoint once Lead publishes export/dependency maps.
+
+Use `<Icon name="hub" decorative />` beside visible text. Use `<Icon name="hub" label="Collection hub" />` only for informative imagery; blank labels throw. Decorative vectors stay out of the accessibility tree. Status controls also need visible labels; illustrations do not convey safety or authority. Default size is 24; informative artwork can use 64.
+
+`bun test packages/icons/test` checks registry/manifest/assets/label behavior and an aggregate 16KB SVG source budget. `bun packages/icons/dev/serve-gallery.ts` serves the real generated assets on `127.0.0.1:6006`; it does not load React adapters or claim native rendering. React/native adapter rendering awaits Lead's package dependencies. iOS/Android SVG and VoiceOver/TalkBack checks remain required later.
