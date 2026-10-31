@@ -28,6 +28,7 @@
     "vitest": "4.1.12",
     "@cloudflare/vitest-plugin": "1.4.11",
     "@floodops/contracts": "workspace:*",
+    "@floodops/api-client": "workspace:*",
     "@floodops/test-fixtures": "workspace:*"
   },
   "trustedDependencies": [],

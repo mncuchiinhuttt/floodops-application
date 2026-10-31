@@ -8,6 +8,7 @@
         "@cloudflare/vitest-plugin": "1.4.11",
         "@cloudflare/workers-types": "5.20261031.1",
         "@eslint/js": "10.0.1",
+        "@floodops/api-client": "workspace:*",
         "@floodops/contracts": "workspace:*",
         "@floodops/test-fixtures": "workspace:*",
         "@types/bun": "1.4.0",
