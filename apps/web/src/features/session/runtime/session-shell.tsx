@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router";
+import { Link, Navigate, Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { RequestScope } from "@floodops/api-client";
 import { Alert, AppShell, Button, cn, type ShellNavItem } from "@floodops/ui-web";
 import { capabilityDestinations } from "../navigation";
@@ -7,7 +7,8 @@ import { shellIcon } from "./shell-icons";
 import { useRuntime, useRuntimeSnapshot } from "../../../app/context";
 import { followSession } from "./foreground";
 import { failureText } from "../../../app/failure";
-import { Settings } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
+import { SessionCommands } from "./commands";
 
 /** One short word per destination so the 5-item bottom bar never truncates. */
 const SHORT_LABELS: Record<string, string> = { driver: "Việc", "driver-report": "Báo cáo", community: "Của tôi", "community-new": "Gửi ảnh", points: "Điểm",
@@ -16,6 +17,7 @@ export function SessionShell() {
   const runtime = useRuntime(), state = useRuntimeSnapshot(), params = useParams(), navigate = useNavigate(), location = useLocation();
   const [visible, setVisible] = useState(document.visibilityState === "visible");
   const [streamMessage, setStreamMessage] = useState("Luồng cập nhật chưa kết nối.");
+  const [loggingOut, setLoggingOut] = useState(false);
   const identity = state.identity, session = identity?.session;
   useEffect(() => {
     const changed = () => setVisible(document.visibilityState === "visible");
@@ -27,7 +29,12 @@ export function SessionShell() {
     const release = runtime.registerStream(stream); void followSession(runtime, stream, setStreamMessage);
     return () => { stream.cancel(); release(); };
   }, [runtime, state.epoch, state.online, state.eventsPaused, visible, identity?.participant.participant_id, session?.session_id, session?.generation]);
-  if (!identity || identity.session.session_id !== params.sessionId) return <main className="mx-auto grid max-w-md gap-3 p-6"><Alert title="Cần ghép nối lại">Phiên hoặc capability đã đổi.</Alert><Link to="/login">Ghép nối phiên</Link></main>;
+  const logout = () => {
+    setLoggingOut(true);
+    void new SessionCommands(runtime).logout().then(() => navigate("/login", { replace: true })).catch(error => setStreamMessage(failureText(error))).finally(() => setLoggingOut(false));
+  };
+  // After logout, session deletion or a capability change there is no identity to render: go back to the sign-in page.
+  if (!identity || identity.session.session_id !== params.sessionId) return <Navigate to="/login" replace />;
   const context = runtime.context(), base = `/sessions/${session!.session_id}`;
   const destinations = capabilityDestinations(context);
   const active = (path: string) => location.pathname === `${base}/${path}` || location.pathname.startsWith(`${base}/${path}/`);
@@ -41,6 +48,8 @@ export function SessionShell() {
       <span className="inline-flex h-7 items-center rounded-full border bg-card px-2.5 text-xs font-medium tabular-nums">{clock}</span>
       <span className="inline-flex h-7 items-center rounded-full bg-secondary px-2.5 text-xs font-medium">Vai trò: {identity.participant.role}</span>
       <Button variant="ghost" onClick={() => { void runtime.refresh().then(() => runtime.queries.invalidateQueries({ queryKey: ["session"] })).catch(error => setStreamMessage(failureText(error))); }}>Làm mới phiên</Button>
+      <Button variant="secondary" onClick={logout} aria-label="Log out" {...(!state.online ? { disabled: true as const, disabledReason: "You are offline. Reconnect to log out." } : loggingOut ? { pending: true, pendingLabel: "Logging out…" } : { disabled: false as const })}>
+        <LogOut className="size-4" aria-hidden="true" /><span className="hidden sm:inline">Log out</span></Button>
     </>}
     sidebarFooter={<div className="grid gap-2">
       <div role="status" className={cn("leading-snug", !visible && "text-muted-foreground")}>{visible ? streamMessage : "Tạm dừng cập nhật khi ứng dụng ở nền."}</div>
