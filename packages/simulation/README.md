@@ -92,7 +92,15 @@ and physics without changing assignment/hub/priority.
 
 Source snapshots are canonical, declared synthetic inputs. Loader consistency checks all accepted
 current matching observations, excludes future/expired/rejected/superseded evidence, and prevents a
-selected reference subset from hiding conflict. Known confidence/expiry must match supporting
+selected reference subset from hiding conflict. `Observation.has_conflict` is an aggregate
+marker across every scope on that observation; it is not a per-vehicle veto. A shared normal bike/car
+observation may carry that marker because a bike-only report conflicts, while car remains known.
+The validator derives each pair's consistency from all accepted, fresh conditions for its actual
+segment/vehicle/current epoch. Contradictory matching conditions still require unresolved_conflict,
+even if all aggregate flags are false or a contrary reference is omitted. Global metadata is preserved;
+future/expired/rejected/superseded/other-epoch/other-vehicle evidence cannot poison the current pair.
+The SourcesMedia legacy SOURCE_SCOPE_INCOMPATIBLE consumer guard remains until its owner adopts
+this integrated producer with a fresh authorized baseline. Known confidence/expiry must match supporting
 source policy/evidence. Available effective authority cannot be omitted. A reopening needs a matching
 actual authorized source restriction and input, scoped to the active closure/vehicle/segment/time;
 a label or contrary report cannot remove closure. Runtime source normalization/review remains owned
@@ -112,6 +120,7 @@ bun --bun run tsc -p packages/domain/tsconfig.json
 bun --bun run tsc -p packages/test-fixtures/tsconfig.json
 bun --bun run eslint packages/simulation/src packages/simulation/test packages/domain/src/operations packages/test-fixtures/src packages/test-fixtures/test --max-warnings=0
 bun packages/simulation/test/scenario/scenario-smoke.ts
+bun packages/simulation/test/scenario/scoped-conflict-smoke.ts
 ```
 
 The frozen bundle lives at `data/scenarios/functional-v1/manifest.json`; its README and calibration

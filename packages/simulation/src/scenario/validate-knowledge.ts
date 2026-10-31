@@ -26,8 +26,10 @@ export function validateKnowledgeProjection(manifest: ScenarioManifest, knowledg
     if (!profile || observation.confidence_band !== profile.confidence_band || profile.ttl_sim_minute === null
       || observation.expires_sim_minute - observation.observed_sim_minute > profile.ttl_sim_minute) throw new KnowledgeProjectionError("Knowledge confidence/TTL differs from configured source policy.");
   }
+  // has_conflict aggregates every scope of a shared observation. This pair's
+  // consistency depends on the current vehicle/epoch/time-filtered conditions above.
   if (knowledge.state === "known") {
-    if (!referenced.length || !observations.length || observations.some(item => item.has_conflict || item.condition !== knowledge.condition)
+    if (!referenced.length || !observations.length || observations.some(item => item.condition !== knowledge.condition)
       || knowledge.condition === "unknown") throw new KnowledgeProjectionError("Known state lacks consistent current evidence.");
     const confidence = observations.some(item => item.confidence_band === "high") ? "high" : "low";
     const preferred = [...observations].filter(item => item.confidence_band === confidence).sort((a, b) =>
