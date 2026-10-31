@@ -75,10 +75,11 @@ export function schemaCode(schema: Schema, refs: Set<string>): string {
   return schema.description ? `${code}.describe(${quote(schema.description)})` : code;
 }
 
-export function imports(refs: Set<string>, prefix: string): string {
+export function imports(refs: Set<string>, prefix: string, code: string): string {
+  const helpers = ["exactlyOne", "hasUniqueItems", "isTimestamp", "isUri"].filter(name => code.includes(name));
   return [
     'import { z } from "zod";',
-    `import { exactlyOne, hasUniqueItems, isTimestamp, isUri } from "${prefix}../schema-helpers";`,
+    ...(helpers.length ? [`import { ${helpers.join(", ")} } from "../../schema-helpers";`] : []),
     ...[...refs].sort().map((name) => `import { ${name}Schema } from "${prefix}${kebab(name)}";`),
   ].join("\n");
 }

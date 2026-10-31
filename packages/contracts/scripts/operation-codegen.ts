@@ -1,23 +1,22 @@
 import { imports, kebab, pascal, schemaCode, type Schema } from "./schema-codegen";
+import type { ApiDefinition } from "./definition-types";
 
-type Document = Record<string, any>;
 const strict = (properties: Record<string, Schema>, required: string[]): Schema =>
   ({ type: "object", properties, required, additionalProperties: false });
 
-export function operationFiles(api: Document): Map<string, string> {
+export function operationFiles(api: ApiDefinition): Map<string, string> {
   const files = new Map<string, string>();
   const ids: string[] = [];
-  for (const [path, methods] of Object.entries(api.paths as Document)) {
-    for (const [method, op] of Object.entries(methods as Document)) {
-      if (!(op as Document).operationId) continue;
-      const operation = op as Document;
-      const id = operation.operationId as string;
+  for (const [path, methods] of Object.entries(api.paths)) {
+    for (const [method, operation] of Object.entries(methods)) {
+      const id = operation.operationId;
+      if (!id) continue;
       if (ids.includes(id)) throw new Error(`Duplicate operationId ${id}`);
       ids.push(id);
       const groups = { path: {} as Record<string, Schema>, query: {} as Record<string, Schema>, headers: {} as Record<string, Schema> };
       const required = { path: [] as string[], query: [] as string[], headers: [] as string[] };
       for (const param of operation.parameters ?? []) {
-        const p = param.$ref ? api.components.parameters[param.$ref.split("/").at(-1)] : param;
+        const p = param.$ref ? api.components.parameters[param.$ref.split("/").at(-1)!]! : param;
         const group = p.in === "header" ? "headers" : p.in as "path" | "query";
         if (!(group in groups)) throw new Error("Unknown parameter location");
         groups[group][p.name] = p.schema;
@@ -43,10 +42,10 @@ export function operationFiles(api: Document): Map<string, string> {
       let kind = "empty";
       let responseType = "undefined";
       const mediaTypes = new Set<string>();
-      for (const [status, response] of Object.entries(operation.responses as Document)) {
+      for (const [status, response] of Object.entries(operation.responses)) {
         if (!status.startsWith("2")) continue;
         statuses.push(Number(status));
-        const responseContent = (response as Document).content ?? {};
+        const responseContent = response.content ?? {};
         Object.keys(responseContent).forEach((t) => mediaTypes.add(t));
         if (responseContent["application/json"]) {
           kind = "json";
@@ -59,7 +58,7 @@ export function operationFiles(api: Document): Map<string, string> {
           kind = "binary"; responseType = "Uint8Array";
         }
       }
-      const text = `${imports(refs, "../schemas/")}\n\n` +
+      const text = `${imports(refs, "../schemas/", input + outputs.join(" "))}\n\n` +
         `export const ${id} = {\n  id: ${JSON.stringify(id)}, method: ${JSON.stringify(method.toUpperCase())},\n` +
         `  path: ${JSON.stringify(path)}, roles: ${JSON.stringify(operation["x-roles"])},\n` +
         `  requiresRevision: ${!!operation["x-requires-operational-revision"]}, idempotent: ${!!operation["x-idempotent-command"]},\n` +
