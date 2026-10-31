@@ -10,8 +10,10 @@ export function appendEvents(store: Store, snapshot: Snapshot, inputs: EventInpu
       session_id: snapshot.meta.session_id, generation: snapshot.meta.generation, revision: snapshot.meta.revision, sim_minute: snapshot.meta.sim_minute,
       type: input.type, actor, resource_ids: input.resource_ids ?? [], reason_code: input.reason_code ?? null,
       replacement_session_id: input.replacement_session_id ?? null, created_at: new Date(now).toISOString() });
-    const roles = input.type === "image_review_changed" ? ["dispatcher"] : input.audience ?? ["dispatcher"];
-    store.storage.sql.exec("INSERT INTO events(sequence,value,audience) VALUES(?,?,?)", event.event_sequence, JSON.stringify(event), JSON.stringify({ roles, participants: input.participantIds ?? [] }));
+    const audience: Audience = input.type === "image_review_changed"
+      ? { roles: ["dispatcher"], participants: [] }
+      : { roles: input.audience ?? ["dispatcher"], participants: input.participantIds ?? [] };
+    store.storage.sql.exec("INSERT INTO events(sequence,value,audience) VALUES(?,?,?)", event.event_sequence, JSON.stringify(event), JSON.stringify(audience));
   }
   const floor = Math.max(0, snapshot.meta.event_sequence - 10000);
   store.storage.sql.exec("DELETE FROM events WHERE sequence<=?", floor);
@@ -22,10 +24,12 @@ export function eventPage(store: Store, snapshot: Snapshot, participant: StoredP
   if (!Number.isSafeInteger(after) || after < 0 || after > snapshot.meta.event_sequence || !Number.isInteger(limit) || limit < 1 || limit > 500) fail(422, "INVALID_SCHEMA");
   if (after < (store.get<number>("runtime", "event_floor") ?? 0)) fail(410, "EVENT_CURSOR_EXPIRED", snapshot);
   const rows = store.storage.sql.exec<{ sequence: number; value: string; audience: string }>("SELECT sequence,value,audience FROM events WHERE sequence>? ORDER BY sequence LIMIT ?", after, limit).toArray();
-  const events = rows.filter(row => {
+  const events = rows.map(row => ({ row, event: parseSchema("Event", JSON.parse(row.value)) })).filter(({ row, event }) => {
+    // Event-type privacy takes precedence over both legacy and caller-supplied audiences.
+    if (event.type === "image_review_changed") return participant.participant.role === "dispatcher";
     const a = JSON.parse(row.audience) as Audience;
     return a.roles.includes(participant.participant.role) || a.participants.includes(participant.participant.participant_id);
-  }).map(row => JSON.parse(row.value) as Event);
+  }).map(({ event }) => event);
   const next = rows.at(-1)?.sequence ?? after;
   return { events, next_sequence: next, has_more: next < snapshot.meta.event_sequence };
 }

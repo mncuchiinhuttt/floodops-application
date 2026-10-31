@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { parseSchema, type Role } from "@floodops/contracts";
 import { createApp, invoke, jsonBody, runtimeCall, send } from "../src/app";
 import { createSessionObject } from "../src/session-runtime";
 import { fail, errorReply } from "../src/shared/platform-error";
@@ -16,6 +17,17 @@ export const registry: RuntimeRegistry = {
     "invalid-event": { permission: "simulation:advance", operational: true, validate: x => x,
       reduce({ snapshot }) { return { values: { ...snapshot.values, counter: 999 }, data: null,
         events: [{ type: "state_changed" }, { type: "state_changed", resource_ids: ["invalid"] }] }; } },
+    "misdirected-image-event": { permission: "reports:review", operational: false,
+      validate(input) {
+        const value = input as { audience: Role[]; participant_ids: string[] };
+        if (!value || !Array.isArray(value.audience) || !Array.isArray(value.participant_ids) || Object.keys(value).some(k => !["audience", "participant_ids"].includes(k))) fail(422, "INVALID_SCHEMA");
+        value.audience.forEach(role => parseSchema("Role", role)); value.participant_ids.forEach(id => parseSchema("Id", id)); return value;
+      },
+      reduce(_context, input) {
+        const value = input as { audience: Role[]; participant_ids: string[] };
+        return { data: { emitted: true }, events: [{ type: "image_review_changed", resource_ids: ["report_report01", "imagejob_job0001"],
+          audience: value.audience, participantIds: value.participant_ids }] };
+      } },
     metadata: { permission: "reports:review", operational: false, validate: x => x,
       reduce() { return { data: { accepted: true }, events: [{ type: "proposal_changed" }] }; } },
     review: { permission: "reports:review", operational: true, validate: x => x,
