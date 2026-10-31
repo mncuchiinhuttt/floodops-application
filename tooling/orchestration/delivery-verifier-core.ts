@@ -12,13 +12,13 @@ interface Receipt {
 }
 interface Index { source_commit: string; artifacts: { path: string; sha256: string }[] }
 export interface DeliveryInput { receiptPath: string; launchSha: string; sourceSha: string; deliverySha: string }
-export const sha256 = (value: string) => new Bun.CryptoHasher("sha256").update(value).digest("hex");
+export const sha256 = (value: string | Uint8Array) => new Bun.CryptoHasher("sha256").update(value).digest("hex");
 
 function assertSha(sha: string): void {
   if (typeof sha !== "string" || !shaPattern.test(sha)) throw new Error("Expected exact SHA.");
 }
 
-export async function verifyDelivery(input: DeliveryInput, git: GitReader) {
+export async function verifyDelivery(input: DeliveryInput, git: GitReader, readBlobBytes?: (commit: string, path: string) => Promise<Uint8Array>) {
   const { receiptPath, launchSha, sourceSha, deliverySha } = input;
   assertRepoPath(receiptPath);
   for (const sha of [launchSha, sourceSha, deliverySha]) assertSha(sha);
@@ -61,7 +61,8 @@ export async function verifyDelivery(input: DeliveryInput, git: GitReader) {
     if (seen.has(artifact.path)) throw new Error("Duplicate indexed path.");
     seen.add(artifact.path);
     for (const commit of [index.source_commit, receipt.contract_ref.commit_sha, launchSha]) {
-      if (sha256(await blob(commit, artifact.path)) !== artifact.sha256) throw new Error(`Artifact drift: ${artifact.path}`);
+      const content = readBlobBytes ? await readBlobBytes(commit, artifact.path) : await blob(commit, artifact.path);
+      if (sha256(content) !== artifact.sha256) throw new Error(`Artifact drift: ${artifact.path}`);
     }
   }
   const delta = async (from: string, to: string) => changedPathsFromNameStatus(await git("diff", "--name-status", "-z", "--find-renames", from, to));

@@ -90,6 +90,5 @@
     "Executable synthetic functional dataset and pure simulator; real D04 provenance, licence, holdout and tolerance calibration unavailable. No K1/K2 efficacy/model/device/full app/security proof."
   ],
   "out_of_scope_changes": [],
-  "unrequested_remote_actions": false,
-  "integration_merge_sha": "2e7ec031de02298d2893b4b26273fb8dcb7c694c"
+  "unrequested_remote_actions": false
 }

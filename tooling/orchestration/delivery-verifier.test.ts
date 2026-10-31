@@ -24,6 +24,15 @@ describe("exact delivery protocol on isolated Git histories", () => {
     const [output, error, status] = await Promise.all([new Response(process.stdout).text(), new Response(process.stderr).text(), process.exited]);
     expect(error).toBe(""); expect(status).toBe(0); expect(JSON.parse(output).delivery_sha).toBe(input.deliverySha);
   });
+  test.each([false, true])("CLI hashes raw non-UTF8 artifact bytes and rejects one-byte drift=%s", async drift => {
+    const f = await fixture({ binary: true, artifactDrift: drift }); const input = await f.finish();
+    const cli = fileURLToPath(new URL("./verify-delivery.ts", import.meta.url));
+    const process = Bun.spawn([Bun.argv[0]!, cli, input.receiptPath, input.launchSha, input.sourceSha, input.deliverySha], { cwd: f.root, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
+    const [out, error, status] = await Promise.all([new Response(process.stdout).text(), new Response(process.stderr).text(), process.exited]);
+    expect(status).toBe(drift ? 1 : 0);
+    if (drift) expect(error).toContain("Artifact drift");
+    else expect(JSON.parse(out).delivery_sha).toBe(input.deliverySha);
+  });
   test("rejects role-owned source outside the partial work item", async () => {
     const f = await fixture({ partial: true });
     await expect(verifyDelivery(await f.finish([["packages/simulation/src/scenario.ts", "export const scenario = 1;\n"]]), f.git)).rejects.toThrow("Outside partial");

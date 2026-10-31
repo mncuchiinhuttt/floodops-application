@@ -35,6 +35,5 @@
     "Dispatcher-only event correction verified; separate HTTP security/CORS header regression blocks platform-ready until work item phase04v3"
   ],
   "out_of_scope_changes": [],
-  "unrequested_remote_actions": false,
-  "integration_merge_sha": "264b0fdaba27fdee65680fa3045fe9530e3698c2"
+  "unrequested_remote_actions": false
 }
