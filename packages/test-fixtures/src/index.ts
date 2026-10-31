@@ -3,3 +3,4 @@ export { functionalCatalog } from "./functional/scenario/catalog.ts";
 export { createTurnAwareFixture } from "./functional/graph/index.ts";
 export { functionalSources } from "./functional/scenario/source-fixtures.ts";
 export { createReportCases, syntheticReportAsset } from "./functional/scenario/report-fixtures.ts";
+export { createFunctionalScenarioV2 } from "./functional/scenario/functional-scenario-v2.ts";

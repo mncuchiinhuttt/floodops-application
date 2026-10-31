@@ -132,3 +132,11 @@ Calibrated loading rejects incomplete evidence; `assessCalibration` checks suppl
 and known simulated/assumed labels, not real-world source truth. No real K1/K2 efficacy or release
 claim follows from this delivery. Existing baseline Expo Zod3/deepmerge audit findings remain explicit
 QA/security/release blockers; manifests/lock/config were not changed by this worker.
+
+Canonical driver-report MVP fixture: opt in to `createFunctionalScenarioV2()` from
+`@floodops/test-fixtures` or `data/scenarios/functional-v2/manifest.json` (`scn_functional1`, version2).
+V1 stays immutable. V2 adds one simulated low driver source with explicit TTL3min/location10m
+parameters; graph/operations/physics/events/H are unchanged. Run
+`bun packages/simulation/test/scenario/driver-source-v2-smoke.ts` for the public report pipeline.
+Lead owns the version2 catalog/new-session HTTP cutover and must preserve the Sources feature's
+recovery-enabled SessionObject factory. No calibrated/backend/client/release gate is implied.
