@@ -46,7 +46,7 @@ async function run() {
   const reviewPath = { ...path(), report_id: submitted.body.data.report_id };
   const reviewInput = { path: reviewPath, headers: { "Idempotency-Key": key(), "If-Match": await cas() },
     body: { decision: "accept" as const, reason: "Synthetic manual workflow test; not model safety proof", mapped_segment_id: "seg_edge27",
-      vehicle_types: ["motorbike"], condition: "normal" as const } };
+      vehicle_types: ["motorbike" as const], condition: "normal" as const } };
   const reviewed = await owner.request("reviewReport", reviewInput), reviewResult = reviewed.body.data;
   check(reviewResult.report.status === "accepted" && reviewResult.report.observation_ids.length > 0, "Manual review did not commit real evidence");
   const firstAwards = await owner.request("listAwards", { path: path() });
