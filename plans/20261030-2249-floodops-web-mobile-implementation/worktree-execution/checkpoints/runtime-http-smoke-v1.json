@@ -1,0 +1,22 @@
+{
+  "candidate_sha": "c77d7296fd0b384b1e5f0c9df1bece6a1a8bf142",
+  "entrypoint_source_sha": "7d9c390e50e59463b66df40d3ec306e12b9f4ad5",
+  "launch_sources_domain_sha": "c77d7296fd0b384b1e5f0c9df1bece6a1a8bf142",
+  "launch_platform_correction_sha": "d14dc05ff0a944639b699eae5b1de4b42c690e67",
+  "command": "apps/api/node_modules/.bin/wrangler dev --config tooling/runtime/wrangler.jsonc --local --ip 127.0.0.1 --port 8760; local HTTP probe",
+  "environment": "Only local SQLite Durable Object/R2, synthetic test locator/sealing constants and authored synthetic functional scenario; no credential printed or remote resource accessed",
+  "checks": [
+    "GET canonical health200",
+    "POST real scenario session201; same-key replay201 and same session identity",
+    "GET actual durable identity200",
+    "Missing business projection503 CONFIG_INCOMPLETE, not fabricated snapshot success",
+    "POST actual two-object Reset201",
+    "Old session410; replacement credential identity200",
+    "Rejected Origin403"
+  ],
+  "known_failure": "Approved-Origin health response has nosniff=null and Access-Control-Allow-Origin=null. Reproduces the retained Bun/Workerd assertions; phase04v3 owner correction pending, platform-ready not issued.",
+  "cleanup": "Stopped only this Lead-owned Wrangler process after smoke; no other process killed, no scenario/user data deleted",
+  "source_launch_preflight": "371 indexed artifacts, including exact PNG bytes, match at source/index/launch; metadata-only BASE->L3 paths; gates contracts+qualified simulation pass; receipt JSON schemas pass; worktree05 created clean at exactL, no implementation writer launched by Lead",
+  "github": "Existing mncuchiinhuttt/floodops-application visibility freshly verified PRIVATE; integration remote equals c77d7296fd0b384b1e5f0c9df1bece6a1a8bf142 before this report-only checkpoint",
+  "remaining": "Parent can immediately launch first SourcesMedia pure-domain worker and resume existing SessionPlatform v3 in parallel. Full API/media receipt still waits actual platform-ready. No UI, real vision/device/D04/calibration, preview/production or security release acceptance claimed."
+}
