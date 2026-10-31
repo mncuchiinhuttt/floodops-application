@@ -18,6 +18,7 @@ export function ContributorWorkspace({ context, resource }: { context: AccessCon
           emptyLabel="Chưa có điểm được cấp." columns={[
             { key: "report", label: "Báo cáo", render: award => award.report_id },
             { key: "points", label: "Điểm Simulated", render: award => award.points },
+            { key: "policy", label: "Policy / Review", render: award => <>{award.reward_policy.policy_id} · {award.reward_policy.version}<p>{award.reward_policy.config_hash}</p><p>{award.review_result_id}</p></> },
             { key: "gap", label: "Gap đã lấp", render: award => award.filled_gap_ids.join(", ") },
           ]} />
       </Card></main>;

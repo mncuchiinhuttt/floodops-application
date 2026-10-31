@@ -1,3 +1,4 @@
+import { PlanningWorkspaceRoute } from "./planning-workspace-route";
 import { DispatcherMapRoute } from "./dispatcher-map-route";
 import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -22,12 +23,7 @@ export function ContributorRoute() {
   return <ContributorWorkspace context={context} resource={resourceOf(dashboard)} />;
 }
 export function DispatcherRoute() { return <DispatcherMapRoute />; }
-export function PlanListRoute() {
-  const runtime = useRuntime(); useRuntimeSnapshot(); const { session } = runtime.context().identity;
-  const query = useQuery(readOptions(runtime, "listPlans", "operations:read", "dispatcher", { path: { session_id: session.session_id } }));
-  return <main><h1>Kế hoạch server</h1><ResourceView resource={resourceOf(query)}>{data => <ul>{data.items.map(plan =>
-    <li key={plan.plan_id}><Link to={plan.plan_id}>{plan.plan_id}</Link> · {plan.status} · Projected</li>)}</ul>}</ResourceView></main>;
-}
+export function PlanListRoute() { return <PlanningWorkspaceRoute />; }
 export function ReportsListRoute() {
   const runtime = useRuntime(); useRuntimeSnapshot(); const { session } = runtime.context().identity;
   const query = useQuery(readOptions(runtime, "listReports", "reports:review", "dispatcher", { path: { session_id: session.session_id } }));

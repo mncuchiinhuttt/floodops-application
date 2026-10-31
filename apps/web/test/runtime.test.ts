@@ -6,7 +6,7 @@ import { SessionCommands } from "../src/features/session/runtime/commands";
 import { readOptions } from "../src/app/queries";
 import { followSession } from "../src/features/session/runtime/foreground";
 import type { Identity } from "@floodops/contracts";
-import { identity, now, session } from "../preview/fixtures";
+import { identity, now, session } from "./fixtures";
 const csrf = "c".repeat(32);
 const owner = (): Identity => ({ ...identity("dispatcher"), participant: { ...identity("dispatcher").participant, permissions: [...identity("dispatcher").participant.permissions, "session:read", "simulation:reset"] }, csrf_token: csrf });
 const meta = { request_id: "test-runtime", session_id: session.session_id, generation: 1, revision: 4, event_sequence: 8 };

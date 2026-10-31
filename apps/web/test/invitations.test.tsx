@@ -6,7 +6,7 @@ import { WebRuntime } from "../src/app/runtime";
 import { RuntimeProvider } from "../src/app/context";
 import { SessionCommands } from "../src/features/session/runtime/commands";
 import { Invitations } from "../src/features/session/runtime/invitations";
-import { identity, now, session } from "../preview/fixtures";
+import { identity, now, session } from "./fixtures";
 afterEach(cleanup);
 test("invitation adapter sends frozen role/binding; response code stays masked outside query cache", async () => {
   const current = identity("dispatcher"); current.participant.permissions.push("participants:invite"); current.csrf_token = "c".repeat(32);

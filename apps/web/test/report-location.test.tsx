@@ -2,7 +2,7 @@ import { afterEach, expect, test, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { SubmitReportInput } from "@floodops/contracts";
 import { ReportForm } from "../src/features/reports/report-form";
-import { identity, now, report } from "../preview/fixtures";
+import { identity, now, report } from "./fixtures";
 const context = (role: "contributor") => ({ identity: identity(role), online: true, now });
 afterEach(cleanup);
 test("report transmits explicit WGS84 coordinate with normalized media and requires paired coordinates", async () => {

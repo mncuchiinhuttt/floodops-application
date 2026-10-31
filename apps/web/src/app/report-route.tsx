@@ -17,6 +17,8 @@ export function ReviewRoute() {
 }
 function BoundReview({ report, refreshing }: { report: Report; refreshing: boolean }) {
   const runtime = useRuntime(), context = runtime.context(), { session, participant } = context.identity;
+  const [reviewed, setReviewed] = useState<{ report: Report; basedOn: Report } | null>(null);
+  const currentReport = reviewed?.basedOn === report ? reviewed.report : report;
   const inputContext = reportImageContext(report), prefix = ["session", session.session_id, session.generation, participant.participant_id];
   const config = useQuery({ ...readOptions(runtime, "getSessionConfiguration", "scenario:read", "dispatcher", { path: { session_id: session.session_id } }), enabled: !!report.fixture_photo_id });
   const fixture = config.data?.body.data.fixture_assets.find(asset => asset.fixture_photo_id === report.fixture_photo_id);
@@ -38,8 +40,8 @@ function BoundReview({ report, refreshing }: { report: Report; refreshing: boole
   }, [image.data, inputContext]);
   return <>{imageUrl?.input === inputContext && <img className="private-report-image" src={imageUrl.url} alt="Ảnh báo cáo private do server cấp" />}
     {image.isError && <Alert title="Ảnh chưa sẵn sàng">Không tải được ảnh chuẩn hóa; AI bị chặn cho tới khi xác minh lại.</Alert>}
-    <ReviewScreen context={context} session={session} report={report} imageReview={advice.isFetching ? { status: "loading" } : resourceOf(advice)} imageBinding={binding} normalizedImageReady={image.isSuccess && !image.isFetching} reviewBlockedReason={refreshing ? "Đang làm mới báo cáo. Xem lại trước khi quyết định." : undefined}
+    <ReviewScreen context={context} session={session} report={currentReport} imageReview={advice.isFetching ? { status: "loading" } : resourceOf(advice)} imageBinding={binding} normalizedImageReady={image.isSuccess && !image.isFetching} reviewBlockedReason={refreshing ? "Đang làm mới báo cáo. Xem lại trước khi quyết định." : undefined}
       onAiRequest={async () => { await runtime.reports.requestImageReview(report.report_id, createIdempotencyKey()).send(); await runtime.queries.invalidateQueries({ queryKey: prefix }); }}
-      onReview={async body => { await runtime.reports.review(report.report_id, body, createIdempotencyKey()).send(); await refreshAfterCommand(runtime); }} />
+      onReview={async body => { const response = await runtime.reports.review(report.report_id, body, createIdempotencyKey()).send(); setReviewed({ report: response.body.data.report, basedOn: report }); await refreshAfterCommand(runtime); }} />
   </>;
 }

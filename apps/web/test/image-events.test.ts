@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import type { Event } from "@floodops/contracts";
 import { ImageReviewRefresh, type ImageBinding } from "../src/features/reports/image-binding";
-import { imageBinding, imageReview, session } from "../preview/fixtures";
+import { imageBinding, imageReview, session } from "./fixtures";
 const event = (sequence: number): Event => ({ event_id: `event-${sequence}`, event_sequence: sequence, session_id: session.session_id, generation: session.generation,
   revision: session.revision, sim_minute: session.sim_minute, type: "image_review_changed", actor: "system", resource_ids: [imageBinding.reportId, imageBinding.jobId],
   reason_code: null, replacement_session_id: null, created_at: "2026-10-31T00:12:00Z" });
