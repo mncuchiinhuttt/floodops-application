@@ -69,7 +69,7 @@ test("offline report does not send and Reset cannot silently relink previous for
   rerender(<ReportForm kind="driver" context={{ ...ctx, identity: { ...ctx.identity, session: { ...session, generation: 2 } } }} onSubmit={submit} />);
   expect((screen.getByLabelText("Mô tả") as HTMLTextAreaElement).value).toBe("");
 });
-function reviewProps() { return { context: context("dispatcher"), session, report, imageReview: ready(imageReview), imageBinding,
+function reviewProps() { return { context: context("dispatcher"), session, report, imageReview: ready(imageReview), imageBinding, normalizedImageReady: true,
   onReview: vi.fn(async () => undefined), onAiRequest: vi.fn<() => Promise<void>>(async () => undefined) }; }
 test("AI pending/failure does not disable manual review or fabricate a score", async () => {
   const props = reviewProps();
@@ -152,4 +152,22 @@ test("media selection follows stable ID across reordering and rejects removed ph
   await waitFor(() => expect(submit).toHaveBeenCalledWith(expect.objectContaining({ fixture_photo_id: "photo_alpha001" })));
   rerender(<ReportForm {...props} mediaChoices={[second]} />);
   fireEvent.submit(screen.getByRole("form", { name: "Gửi báo cáo" })); expect(submit).toHaveBeenCalledTimes(1);
+});
+
+test("AI and Accept require pending normalized photo; Reject ignores invalid mapping", async () => {
+  const props = reviewProps(); const { rerender } = render(<ReviewScreen {...props} report={{ ...report, status: "needs_clarification" }} />);
+  expect((screen.getByRole("button", { name: "AI nhận xét" }) as HTMLButtonElement).disabled).toBe(true);
+  expect((screen.getByRole("button", { name: "Accept" }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.change(screen.getByLabelText("Đoạn đường xác nhận"), { target: { value: "invalid id!" } });
+  fireEvent.change(screen.getByLabelText("Lý do review"), { target: { value: "Unmapped evidence" } });
+  fireEvent.click(screen.getByRole("button", { name: "Reject" }));
+  await waitFor(() => expect(props.onReview).toHaveBeenCalledWith({ decision: "reject", reason: "Unmapped evidence", mapped_segment_id: null, vehicle_types: [], condition: null }));
+  rerender(<ReviewScreen {...props} normalizedImageReady={false} />);
+  expect((screen.getByRole("button", { name: "AI nhận xét" }) as HTMLButtonElement).disabled).toBe(true);
+});
+test("observable report changes hide advice immediately at unchanged input revision", () => {
+  const props = reviewProps(); const { rerender } = render(<ReviewScreen {...props} />);
+  expect(screen.getByText("Chất lượng ảnh: 75/100")).toBeDefined();
+  rerender(<ReviewScreen {...props} report={{ ...report, description: "Changed image context" }} />);
+  expect(screen.queryByText("Chất lượng ảnh: 75/100")).toBeNull();
 });

@@ -18,7 +18,7 @@ test("driver adapter requests only own endpoint and preserves authoritative resp
   const h = harness("driver"); const response = await h.reports.driverDashboard();
   expect(response.body.data).toEqual(driverDashboard);
   expect(h.fetch.mock.calls[0]?.[0]).toBe(`/api/v1/sessions/${session.session_id}/drivers/me`);
-  expect(() => h.reports.contributorDashboard()).toThrow(/Capability/);
+  await expect(h.reports.contributorDashboard()).rejects.toThrow(/Capability/);
   expect(h.fetch).toHaveBeenCalledTimes(1);
 });
 test("revision command captures CAS/key; 412 is not replayed and reports Needs replan", async () => {

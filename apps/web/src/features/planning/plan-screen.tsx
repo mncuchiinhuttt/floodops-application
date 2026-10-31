@@ -7,7 +7,7 @@ import { useCommand } from "../../shared/use-command";
 import { executionReason, PlanActions } from "./plan-actions";
 
 export interface PlanScreenProps {
-  context: AccessContext; resource: Resource<Plan>;
+  context: AccessContext; resource: Resource<Plan>; commandBlockedReason?: string;
   onDecision: (input: PlanDecisionInput) => Promise<unknown>;
   onDryRun: (input: CandidateInput) => Promise<unknown>;
   onExecute: (input: CandidateInput) => Promise<unknown>;
@@ -17,7 +17,7 @@ export function PlanScreen(props: PlanScreenProps) {
   if (denied) return <Denied reason={denied} />;
   return <ResourceView resource={props.resource}>{plan => <PlanDetail key={`${props.context.identity.participant.participant_id}:${plan.session_id}:${plan.generation}:${plan.plan_id}:${plan.input_revision}`} {...props} plan={plan} />}</ResourceView>;
 }
-function PlanDetail({ context, plan, onDecision, onExecute, onDryRun }: PlanScreenProps & { plan: Plan }) {
+function PlanDetail({ context, plan, onDecision, onExecute, onDryRun, commandBlockedReason }: PlanScreenProps & { plan: Plan }) {
   const [selected, setSelected] = useState<string[]>([]);
   const [groups, setGroups] = useState<string[]>([]);
   const [reason, setReason] = useState("");
@@ -26,7 +26,7 @@ function PlanDetail({ context, plan, onDecision, onExecute, onDryRun }: PlanScre
   const command = useCommand(`${session.session_id}:${session.generation}:${plan.plan_id}:${session.revision}`);
   if (plan.session_id !== session.session_id || plan.generation !== session.generation) return <Denied reason="Kế hoạch thuộc phiên khác. Cần ghép nối lại." />;
   const stale = plan.input_revision !== session.revision || plan.status === "needs_replan";
-  const staleReason = stale ? "Needs replan — kế hoạch cũ. Làm mới trước khi quyết định." : null;
+  const staleReason = commandBlockedReason ?? (stale ? "Needs replan — kế hoạch cũ. Làm mới trước khi quyết định." : null);
   const decisionReason = staleReason ?? accessReason(context, "planning:decide", "dispatcher", true) ??
     (!selected.length ? "Chọn hành động để quyết định." : !reason.trim() ? "Nhập lý do quyết định." : null);
   const approveReason = decisionReason ?? (plan.actions.some(action => selected.includes(action.action_id) &&

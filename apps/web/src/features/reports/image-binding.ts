@@ -1,6 +1,6 @@
-import { ImageReviewStateSchema, parseConsistentImageReviewAdvice, type Event, type ImageReviewState, type Meta } from "@floodops/contracts";
+import { ImageReviewStateSchema, parseConsistentImageReviewAdvice, type Event, type ImageReviewState, type Meta, type Report } from "@floodops/contracts";
 
-export interface ImageBinding { sessionId: string; generation: number; reportId: string; jobId: string; inputDigest: string; reportInputRevision: number }
+export interface ImageBinding { sessionId: string; generation: number; reportId: string; jobId: string; inputDigest: string; reportInputRevision: number; reportContext: string }
 export function imageStateMatches(state: ImageReviewState, binding: ImageBinding): boolean {
   const parsed = ImageReviewStateSchema.safeParse(state);
   if (!parsed.success) return false;
@@ -23,7 +23,7 @@ export class ImageReviewRefresh {
   reset(): void { this.ticket++; this.lastSequence = -1; }
   async onEvent(event: Event): Promise<boolean> {
     const binding = this.readBinding();
-    const key = binding ? `${binding.sessionId}:${binding.generation}:${binding.reportId}:${binding.jobId}:${binding.inputDigest}:${binding.reportInputRevision}` : "";
+    const key = binding ? `${binding.sessionId}:${binding.generation}:${binding.reportId}:${binding.jobId}:${binding.inputDigest}:${binding.reportInputRevision}:${binding.reportContext}` : "";
     if (key !== this.bindingKey) { this.reset(); this.bindingKey = key; }
     if (!binding || event.type !== "image_review_changed" || event.session_id !== binding.sessionId || event.generation !== binding.generation ||
       event.event_sequence <= this.lastSequence || !event.resource_ids.includes(binding.reportId)) return false;
@@ -32,9 +32,14 @@ export class ImageReviewRefresh {
     const response = await this.load(binding);
     const current = this.readBinding();
     if (ticket !== this.ticket || !current || current.sessionId !== binding.sessionId || current.generation !== binding.generation ||
-      current.reportId !== binding.reportId || current.jobId !== binding.jobId || current.inputDigest !== binding.inputDigest || current.reportInputRevision !== binding.reportInputRevision ||
+      current.reportId !== binding.reportId || current.jobId !== binding.jobId || current.inputDigest !== binding.inputDigest || current.reportInputRevision !== binding.reportInputRevision || current.reportContext !== binding.reportContext ||
       response.meta.session_id !== binding.sessionId || response.meta.generation !== binding.generation ||
       (response.meta.event_sequence ?? -1) < event.event_sequence || !imageStateMatches(response.data, current)) return false;
     this.update(response.data); return true;
   }
+}
+
+export function reportImageContext(report: Report): string {
+  return JSON.stringify([report.report_id, report.status, report.description, report.segment_id, report.coordinate, report.captured_at,
+    report.captured_sim_minute, [...report.vehicle_types].sort(), report.media_id, report.fixture_photo_id, report.input_mode, report.quick_condition]);
 }

@@ -1,3 +1,4 @@
+import { reportImageContext } from "../src/features/reports/image-binding";
 /** Synthetic fixture-only data. No connected backend, capability, model call or calibration evidence. */
 import { ContributorDashboardSchema, DriverDashboardSchema, IdentitySchema, ImageReviewStateSchema, ReportSchema, RouteSchema, SessionMetaSchema, type Role } from "@floodops/contracts";
 
@@ -24,7 +25,7 @@ export const driverDashboard = DriverDashboardSchema.parse({ driver_id: "driver_
     cumulative_defer_minute: 0, provenance_label: "simulated" }], route_ids: ["route_fixture001"], own_reports: [] });
 export const contributorDashboard = ContributorDashboardSchema.parse({ contributor_id: "contributor_entity001", session,
   own_reports: [{ ...report, status: "accepted" }], awards: [], points_total: 0, coverage: { covered_pairs: 0, relevant_pairs: 1, ratio: 0 } });
-export const imageBinding = { sessionId: session.session_id, generation: 1, reportId: report.report_id, jobId: "job_fixture001", inputDigest: "a".repeat(64), reportInputRevision: report.input_revision };
+export const imageBinding = { sessionId: session.session_id, generation: 1, reportId: report.report_id, jobId: "job_fixture001", inputDigest: "a".repeat(64), reportInputRevision: report.input_revision, reportContext: reportImageContext(report) };
 export const imageReview = ImageReviewStateSchema.parse({ report_id: report.report_id, job: { job_id: imageBinding.jobId, session_id: session.session_id, generation: 1,
   report_id: report.report_id, input_digest: imageBinding.inputDigest, model: "fixture-only-no-model-call", model_config_hash: "b".repeat(64), rubric_version: "image-quality-v1",
   status: "completed", result: { quality_ratings: { sharpness: 1, lighting: 2, scene_visibility: 1, detail: 2 }, visible_summary: "Synthetic fixture: mặt đường có nước.",

@@ -1,1 +1,1 @@
-{ "extends": "../tsconfig.json", "include": ["../src/**/*.ts", "../src/**/*.tsx", "../preview/**/*.ts", "./**/*.ts", "./**/*.tsx"], "compilerOptions": { "types": ["react", "react-dom", "vitest/globals"] } }
+{ "extends": "../tsconfig.json", "include": ["../src/**/*.ts", "../src/**/*.tsx", "../preview/**/*.ts", "./**/*.ts", "./**/*.tsx"], "compilerOptions": { "types": ["react", "react-dom", "vitest/globals", "vite/client"] } }
