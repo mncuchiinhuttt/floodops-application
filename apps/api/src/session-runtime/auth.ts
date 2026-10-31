@@ -1,5 +1,6 @@
 import type { Permission } from "@floodops/contracts";
 import { fail } from "../shared/platform-error";
+import { isWebOrigin } from "../shared/web-origin";
 import type { PlatformBindings, Proof, Snapshot, StoredParticipant } from "../shared/platform-types";
 import { Store } from "./store";
 export const IDLE_MS = 3_600_000;
@@ -7,8 +8,8 @@ export const MAX_AGE_MS = 86_400_000;
 export function credentialCheck(record: StoredParticipant, proof: Proof | undefined, env: PlatformBindings, mutating: boolean): void {
   if (!proof || record.digest !== proof.tokenDigest || record.revoked) fail(401, "UNAUTHENTICATED");
   if ((record.transport === "web") !== (proof.transport === "cookie")) fail(401, "UNAUTHENTICATED");
-  if (proof.origin !== null && proof.origin !== env.WEB_ORIGIN) fail(403, "FORBIDDEN");
-  if (mutating && proof.transport === "cookie" && (proof.origin !== env.WEB_ORIGIN || !proof.csrfDigest || proof.csrfDigest !== record.csrfDigest)) fail(403, "FORBIDDEN");
+  if (proof.origin !== null && !isWebOrigin(env.WEB_ORIGIN, proof.origin)) fail(403, "FORBIDDEN");
+  if (mutating && proof.transport === "cookie" && (!isWebOrigin(env.WEB_ORIGIN, proof.origin) || !proof.csrfDigest || proof.csrfDigest !== record.csrfDigest)) fail(403, "FORBIDDEN");
 }
 export function authenticate(store: Store, snapshot: Snapshot, proof: Proof | undefined, env: PlatformBindings, now: number,
   mutating: boolean, permission?: Permission, allowRevoked = false): StoredParticipant {

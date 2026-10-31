@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { parseSchema } from "@floodops/contracts";
 import { hash, hmac, stable, validateKey } from "../../shared/crypto";
 import { fail, PlatformError } from "../../shared/platform-error";
+import { isWebOrigin } from "../../shared/web-origin";
 import type { AppEnv, PlatformPorts } from "../../shared/platform-types";
 import { issueCredentials } from "../../session-runtime/credentials";
 import { MAX_AGE_MS } from "../../session-runtime/auth";
@@ -13,7 +14,7 @@ export function createCreationRouter(ports: PlatformPorts): Hono<AppEnv> {
     const requestKey = key(c); const scope = validateKey(c.req.header("X-Client-Request-Scope"));
     if (scope.length < 32) fail(422, "INVALID_SCHEMA");
     const origin = c.req.header("Origin");
-    if ((origin && origin !== c.env.WEB_ORIGIN) || (input.client_type === "web" && origin !== c.env.WEB_ORIGIN)) fail(403, "FORBIDDEN");
+    if ((origin && !isWebOrigin(c.env.WEB_ORIGIN, origin)) || (input.client_type === "web" && !isWebOrigin(c.env.WEB_ORIGIN, origin))) fail(403, "FORBIDDEN");
     const locator = await hmac(c.env.SESSION_LOCATOR_KEY, [c.env.APP_ENV, scope, requestKey]);
     const sessionId = `session_${locator}`;
     const address = ports.clientAddress?.(c.req.raw) ?? c.req.header("CF-Connecting-IP");

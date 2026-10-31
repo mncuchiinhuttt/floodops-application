@@ -1,6 +1,7 @@
 import { parseSchema } from "@floodops/contracts";
 import { hash, randomId, stable } from "../shared/crypto";
 import { fail, success } from "../shared/platform-error";
+import { isWebOrigin } from "../shared/web-origin";
 import type { Call, PlatformBindings, Proof, Reply, RuntimeRegistry, Snapshot, StoredParticipant } from "../shared/platform-types";
 import { authenticate, credentialCheck, MAX_AGE_MS, requireCas } from "./auth";
 import { created, issueCredentials } from "./credentials";
@@ -81,7 +82,7 @@ function recover(record: ResetRecord, proof: Proof | undefined, env: PlatformBin
   const actor = proof.tokenDigest === record.original.digest ? record.original : proof.tokenDigest === record.replacement.digest ? record.replacement : undefined;
   if (!actor) fail(401, "UNAUTHENTICATED");
   credentialCheck(actor, proof, env, false);
-  if (proof.transport === "cookie" && (proof.origin !== env.WEB_ORIGIN || !proof.csrfDigest ||
+  if (proof.transport === "cookie" && (!isWebOrigin(env.WEB_ORIGIN, proof.origin) || !proof.csrfDigest ||
     ![record.original.csrfDigest, record.replacement.csrfDigest].includes(proof.csrfDigest))) fail(403, "FORBIDDEN");
   if (record.digest !== digest) fail(409, "IDEMPOTENCY_KEY_REUSED");
 }

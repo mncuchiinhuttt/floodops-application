@@ -6,6 +6,7 @@ import type { AppContext, AppEnv, PlatformPorts } from "../shared/platform-types
 import { createSessionRouter } from "../features/session/router";
 import { failure, send } from "./http";
 import { logAppError } from "./error-log";
+import { isWebOrigin } from "../shared/web-origin";
 const API_CSP = "default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'";
 function handleAppError(c: AppContext, error: unknown): Promise<Response> {
   const normalized = normalizeError(error);
@@ -25,8 +26,8 @@ export function createApp(featureRouters: Hono<AppEnv>[], ports: PlatformPorts):
     c.header("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
     if (new URL(c.req.url).protocol === "https:") c.header("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     const origin = c.req.header("Origin");
-    if (origin && origin !== c.env.WEB_ORIGIN) fail(403, "FORBIDDEN");
-    if (origin === c.env.WEB_ORIGIN) {
+    if (origin && !isWebOrigin(c.env.WEB_ORIGIN, origin)) fail(403, "FORBIDDEN");
+    if (isWebOrigin(c.env.WEB_ORIGIN, origin)) {
       c.header("Access-Control-Allow-Origin", origin); c.header("Access-Control-Allow-Credentials", "true"); c.header("Vary", "Origin");
       c.header("Access-Control-Expose-Headers", "ETag, X-Request-ID, Retry-After");
     }

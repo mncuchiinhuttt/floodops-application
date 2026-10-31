@@ -2,6 +2,7 @@ import { DurableObject } from "cloudflare:workers";
 import { parseSchema } from "@floodops/contracts";
 import { hash, prepareProof, randomId, randomToken, seal, stable, validateKey } from "../shared/crypto";
 import { errorReply, fail } from "../shared/platform-error";
+import { isWebOrigin } from "../shared/web-origin";
 import type { BackgroundDriverKind, Call, PlatformBindings, Reply, RuntimeRegistry, Snapshot } from "../shared/platform-types";
 import { migrate } from "./schema";
 import { Store } from "./store";
@@ -73,7 +74,7 @@ export class SessionDO extends DurableObject<PlatformBindings> {
       }
       if (call.kind === "claim") {
         const input = parseSchema("ClaimInput", call.payload);
-        if (input.client_type === "web" && call.auth?.origin !== this.env.WEB_ORIGIN) fail(403, "FORBIDDEN");
+        if (input.client_type === "web" && !isWebOrigin(this.env.WEB_ORIGIN, call.auth?.origin)) fail(403, "FORBIDDEN");
         const tokenDigest = await hash(input.claim_token);
         const invite = this.store.get<StoredInvite>("invitations", tokenDigest);
         if (!invite) fail(401, "UNAUTHENTICATED");
