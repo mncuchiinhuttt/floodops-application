@@ -1,5 +1,5 @@
 import type { ExpoConfig } from "expo/config";
-import { normalizeDevelopmentLanOrigin } from "@floodops/api-client";
+import { normalizeDevelopmentLanOrigin } from "../../packages/api-client/src/http/development-lan-origin.ts";
 declare const process: { env: Record<string, string | undefined> };
 const apiBaseUrl = process.env.EXPO_PUBLIC_FLOODOPS_API_BASE_URL ?? "http://127.0.0.1:8790/api/v1";
 const developmentLanOrigin = process.env.EXPO_PUBLIC_FLOODOPS_DEV_LAN_ORIGIN;
