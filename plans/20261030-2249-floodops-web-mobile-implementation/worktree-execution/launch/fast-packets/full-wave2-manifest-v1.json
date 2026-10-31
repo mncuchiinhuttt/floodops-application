@@ -1,0 +1,40 @@
+{
+  "status": "ready-for-parent-fast-launch",
+  "base_sha": "f0c6dc019dc63df89eb8c479de2cd00310123f54",
+  "launch_sha": "supplied-out-of-band-as-containing-commit",
+  "requested_runtime": {
+    "model": "gpt-6.1-sol",
+    "thinking": "ultra",
+    "service_tier": "fast"
+  },
+  "actual_new_workers_started_by_lead": 0,
+  "workers": [
+    {
+      "role": "session-platform",
+      "work_item_id": "session-platform-phase-04-v1",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/04-session-platform",
+      "receipt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/session-platform/session-platform-phase-04-v1.json",
+      "prompt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/session-platform-phase-04-v1.md",
+      "resume_thread": null,
+      "previous_completed_report_sha": null
+    },
+    {
+      "role": "simulation-data",
+      "work_item_id": "simulation-data-phase-03-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+      "receipt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/simulation-data/simulation-data-phase-03-v2.json",
+      "prompt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/simulation-data-phase-03-v2.md",
+      "resume_thread": "01a19021-eb66-726b-9a3c-447d01c1c0d3",
+      "previous_completed_report_sha": "3646fa0ac1b837c30a1c3705a7ec9f1f70bfdefe"
+    },
+    {
+      "role": "design-system",
+      "work_item_id": "design-system-phase-02-v2",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/02-design-system",
+      "receipt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/design-system/design-system-phase-02-v2.json",
+      "prompt_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/design-system-phase-02-v2.md",
+      "resume_thread": "01a19021-913f-7625-ac6c-b88f205aa0f2",
+      "previous_completed_report_sha": "fd8b4434188b61beb2fa66f4d2676a3433ec3650"
+    }
+  ]
+}

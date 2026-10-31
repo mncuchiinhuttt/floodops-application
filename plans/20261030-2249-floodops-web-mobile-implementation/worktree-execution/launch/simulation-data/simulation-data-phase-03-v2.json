@@ -1,0 +1,40 @@
+{
+  "work_item_id": "simulation-data-phase-03-v2",
+  "role_id": "simulation-data",
+  "phase_ids": [
+    3
+  ],
+  "base_sha": "f0c6dc019dc63df89eb8c479de2cd00310123f54",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/contracts-ready-v1-index.json",
+    "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca",
+    "sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    }
+  ],
+  "expected_branch": "feat/floodops-simulation-data",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/03-simulation-data",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "toolchain-dependencies-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}
