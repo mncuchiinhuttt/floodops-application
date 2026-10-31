@@ -66,8 +66,12 @@ test("active closure still wins over shared scope metadata and contrary reports"
   expect(() => applyKnowledgeTransition(run, forged, { sourceSnapshot: run.sourceSnapshot, reasonId: "fake-open" })).toThrow("authoritative closure");
 });
 
-test("SourcesMedia legacy compatibility guard is retained pending fresh consumer adoption", () => {
+test("SourcesMedia reconciles per-vehicle evidence after scoped producer adoption", () => {
   const manifest = scopedManifest(vehicles, ["motorbike"]);
-  expect(() => reconcileEvidence(manifest.initialKnowledge, evidenceContext(manifest, 0))).toThrow("SOURCE_SCOPE_INCOMPATIBLE");
+  // Producer adoption removed the legacy global-conflict guard; conflicts stay vehicle-scoped.
+  const result = reconcileEvidence(manifest.initialKnowledge, evidenceContext(manifest, 0));
+  expect(result.knowledge.find(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type === "motorbike")?.state).toBe("unresolved_conflict");
+  expect(result.knowledge.filter(pair => pair.segment_id === "seg_edge27" && pair.vehicle_type !== "motorbike").every(pair => pair.state === "known")).toBe(true);
+  expect(result.observations.find(item => item.observation_id === sharedId)?.has_conflict).toBe(true);
   expect(contradictory(manifest).observation_id).toBe(contraryId);
 });
