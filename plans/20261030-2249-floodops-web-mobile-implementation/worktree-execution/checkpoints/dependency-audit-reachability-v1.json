@@ -1,0 +1,55 @@
+{
+  "checked_code_sha": "c17ef2531904f2d94b39e074677cdd212db7d0cc",
+  "checked_at_utc": "2026-10-31T04:28:11.659Z",
+  "lock_sha256": "8fd61bf2172c41a859459209f9e2b1ae3d5221d5100d4248688d915d8d50fc8d",
+  "scan_skill": "SecureCoder extension sidecar/environment absent; skill explicitly skipped. npm metadata, locked dependency paths and real bun audit --json used instead.",
+  "audit_command": "bun audit --json",
+  "audit_exit_code": 1,
+  "release_clearance": false,
+  "manifest_or_lock_change_this_review": false,
+  "findings": [
+    {
+      "advisory": "GHSA-mrhx-c7xc-m3w5",
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "severity": "high",
+      "package": "zod",
+      "affected_locked_version": "3.25.76",
+      "affected_range": "<4.6.6",
+      "patched_version": "4.6.6",
+      "locked_origin": [
+        "@floodops/mobile -> expo58.0.21 -> @expo/cli58.1.17 -> zod3.25.76",
+        "@floodops/ui-native dev -> expo58.0.21 -> same CLI"
+      ],
+      "compatible_fix": "No patched v3 observed: npm zod@3 latest3.25.76; current Expo CLI58.1.17 requires ^3.25.76. No forced v3->v4 override or fork applied.",
+      "application_versions": "@floodops/contracts -> zod4.6.7; Workers Vitest plugin -> zod4.6.6; these locked versions are outside the advisory range.",
+      "mitigation": "Do not expose Expo CLI/dev tools to untrusted projects/configs or network clients. Use only reviewed bounded synthetic workspace config; no secret-bearing untrusted PR builds. Backend request-size/collection limits must remain in SessionPlatform/source handlers and application validation stays on patched v4.",
+      "qualification": "Origin paths are dependency evidence, not proof of exploitability or runtime bundle absence. Inspect built web/native/Worker dependency graphs at QA; official Expo presence alone does not waive a high advisory.",
+      "release_blocker": true
+    },
+    {
+      "advisory": "GHSA-gcqx-w48m-w2h4",
+      "url": "https://github.com/advisories/GHSA-gcqx-w48m-w2h4",
+      "severity": "low",
+      "package": "deepmerge",
+      "affected_locked_version": "4.3.1",
+      "affected_range": ">=4.2.0 <=4.3.1",
+      "patched_version": null,
+      "locked_origin": [
+        "Expo -> @expo/metro-config/@expo/config -> deepmerge4.3.1",
+        "ui-native dev Jest -> jest-config -> deepmerge4.3.1"
+      ],
+      "compatible_fix": "Upstream advisory patched versions=None; npm latest4.3.1. No compatible released patch found; no package-cache edit/fork/major substitution applied.",
+      "mitigation": "Treat project/Jest/Expo configuration as trusted reviewed code. Do not merge attacker-controlled media/report/model objects into toolchain config; no untrusted config/plugins or credential-bearing untrusted CI. Application handlers must continue strict own-property/schema handling.",
+      "qualification": "Not a global Object.prototype pollution proof or runtime-unreachability claim; advisory concerns returned-object prototype poisoning. Future bundles/runtime paths require verification.",
+      "release_blocker": true
+    }
+  ],
+  "resolved_prior_finding": {
+    "advisory": "GHSA-3g3m-2fjr-6pw4",
+    "package": "glob",
+    "scoped_override": "glob@>=9 <14.0.2 -> 14.0.3",
+    "legacy_version_retained": "7.2.3",
+    "current_audit_contains_glob": false
+  },
+  "next_action": "Keep implementation proceeding within existing grants; recheck upstream availability before QA/release and validate any compatible fix on exact candidate. No release waiver or audit ignore added."
+}

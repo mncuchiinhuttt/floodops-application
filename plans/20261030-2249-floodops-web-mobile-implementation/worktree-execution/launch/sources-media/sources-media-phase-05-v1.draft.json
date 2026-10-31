@@ -1,0 +1,61 @@
+{
+  "kind": "launch-preparation-only",
+  "status": "draft-not-authorized",
+  "role_id": "sources-media",
+  "proposed_work_item_id": "sources-media-phase-05-v1",
+  "expected_branch": "feat/floodops-sources-media",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/05-sources-media",
+  "role_prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/05-sources-media.md",
+  "assigned_loopback_port": 8785,
+  "base_sha": null,
+  "launch_sha": null,
+  "contract_ref": null,
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "published_commit": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca",
+      "status": "passed"
+    },
+    {
+      "gate_id": "simulation-ready",
+      "published_commit": null,
+      "status": "await-actual-integrated-delivery"
+    },
+    {
+      "gate_id": "platform-ready",
+      "published_commit": null,
+      "status": "await-actual-integrated-delivery"
+    }
+  ],
+  "activation": "Do not validate/use this draft as a LaunchReceipt or start a writer. Lead must review exact producer C/R, merge/recheck, publish actual gates and a combined frozen index of C1+simulation/platform public ports, then issue a separate authorized receipt/metadata-only launch. Parent launches fast worker after exact SHA handoff.",
+  "dependency_plan": {
+    "already_pinned": [
+      "hono4.13.14",
+      "@floodops/contracts workspace",
+      "Workers types5.20261031.1",
+      "Wrangler4.156.0",
+      "Vitest4.1.12 + @cloudflare/vitest-plugin1.4.11"
+    ],
+    "conditional_lead_requests": [
+      "API workspace @floodops/domain and @floodops/simulation links only after producer public exports exist and consumer needs are exact",
+      "API dev @floodops/test-fixtures link after frozen functional catalog is published",
+      "Domain sources/knowledge/reporting public export subpaths only after owner definitions/entrypoints are reviewed",
+      "Central REPORT_MEDIA, SCENARIO_ASSETS, IMAGES/local test bindings and types; no production IDs/keys/resources created"
+    ],
+    "new_third_party_packages_requested_now": [],
+    "not_assumed": [
+      "No sharp/native binary/image decoder assumed available in Workers",
+      "Images transformation/metadata strip entitlement and actual allowed decoder/output behavior unverified",
+      "No external provider/model package or API call needed for normalized-image/digest/readiness port"
+    ]
+  },
+  "public_interfaces_to_freeze": {
+    "simulation": null,
+    "platform": null,
+    "normalized_image_port_required": "Server-authorized pending report, verified normalized derivative/internal bounded handle, server-derived digest, readiness and duplicate status only; no public/raw URL, vision call, review/reward authority."
+  },
+  "images_prerequisite": "Implement explicit unavailable/error path if transform not available; never serve raw fallback or count a mock as real decode/EXIF stripping. Actual provider/binding proof requires permitted environment/account evidence; continue independent deterministic source/knowledge/report logic.",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "remaining_grants": "No account/resource/key creation, paid model/Images/provider calls, device build, preview deployment or production action granted by this draft."
+}
