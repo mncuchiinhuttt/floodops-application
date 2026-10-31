@@ -2,5 +2,14 @@
   "name": "@floodops/design-tokens",
   "private": true,
   "version": "0.0.0",
-  "type": "module"
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/tokens.css"
+  },
+  "scripts": {
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
+    "generate": "bun scripts/generate.ts",
+    "test": "bun test test"
+  }
 }

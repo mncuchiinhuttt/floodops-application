@@ -2,5 +2,14 @@
   "name": "@floodops/test-fixtures",
   "private": true,
   "version": "0.0.0",
-  "type": "module"
+  "type": "module",
+  "exports": {
+    "./functional/graph": "./src/functional/graph/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@floodops/contracts": "workspace:*"
+  }
 }

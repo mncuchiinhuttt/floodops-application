@@ -5,11 +5,18 @@
   "type": "module",
   "scripts": {
     "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
-    "dev": "wrangler dev --config wrangler.api-local.jsonc --local --ip 127.0.0.1 --port 8760"
+    "dev": "wrangler dev --config wrangler.api-local.jsonc --local --ip 127.0.0.1 --port 8760",
+    "test:runtime": "vitest run"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "5.20261031.1",
-    "wrangler": "4.156.0"
+    "wrangler": "4.156.0",
+    "vitest": "4.1.12",
+    "@cloudflare/vitest-plugin": "1.4.11"
+  },
+  "dependencies": {
+    "hono": "4.13.14",
+    "@floodops/contracts": "workspace:*"
   }
 }
 

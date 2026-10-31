@@ -2,5 +2,17 @@
   "name": "@floodops/simulation",
   "private": true,
   "version": "0.0.0",
-  "type": "module"
+  "type": "module",
+  "exports": {
+    "./graph": "./src/graph/index.ts",
+    "./clock": "./src/clock/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
+    "test": "bun test test",
+    "smoke": "bun test/graph/foundation-smoke.ts"
+  },
+  "dependencies": {
+    "@floodops/contracts": "workspace:*"
+  }
 }

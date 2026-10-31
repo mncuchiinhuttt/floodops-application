@@ -2,5 +2,34 @@
   "name": "@floodops/icons",
   "private": true,
   "version": "0.0.0",
-  "type": "module"
+  "type": "module",
+  "exports": {
+    "./web": "./src/web/index.ts",
+    "./native": "./src/native/index.tsx",
+    "./assets/*": "./src/assets/*"
+  },
+  "peerDependencies": {
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-svg": "15.16.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "react": "19.3.0",
+    "@types/react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-svg": "15.16.0"
+  },
+  "scripts": {
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
+    "generate": "bun scripts/generate.ts",
+    "test": "bun test test"
+  }
 }
