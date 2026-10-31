@@ -33,7 +33,7 @@ function FixturePreview() {
     {scene === "plan" && <PlanScreen context={context} resource={{ status: "ready", data: plan }} onDecision={body => record(body.decision)} onDryRun={() => record("dryRun")} onExecute={() => record("execute")} />}
     {scene === "review" && <><fieldset><legend>Trạng thái AI fixture</legend>{["none", "running", "failed", "completed"].map(value =>
       <label key={value}><input name="ai-state" type="radio" checked={aiState === value} onChange={() => setAiState(value)} />{value}</label>)}</fieldset>
-      <ReviewScreen context={context} session={session} report={report} imageReview={{ status: "ready", data: shownImageReview }} imageBinding={imageBinding}
+      <ReviewScreen context={context} session={session} report={report} imageReview={{ status: "ready", data: shownImageReview }} imageBinding={imageBinding} normalizedImageReady
         onReview={body => record(`review ${body.decision}`)} onAiRequest={() => record("image review request")} /></>}
     <footer role="status">{message}</footer>
   </div>;

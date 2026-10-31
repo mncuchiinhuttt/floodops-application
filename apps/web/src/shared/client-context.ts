@@ -4,7 +4,7 @@ import { accessReason, sameVersion, type AccessContext } from "./access";
 
 export interface ClientContext extends AccessContext { scope: RequestScope }
 export class FeatureAccessError extends Error {}
-export function createBoundClient(client: ApiClient, readContext: () => ClientContext) {
+export function createBoundClient(client: ApiClient, readContext: () => ClientContext, onAuthorityFailure?: (context: ClientContext) => void) {
   function snapshot(permission: Permission, role: Role, command: boolean) {
     const context = readContext();
     const reason = accessReason(context, permission, role, command);
@@ -14,10 +14,14 @@ export function createBoundClient(client: ApiClient, readContext: () => ClientCo
     return { ...context, identity: IdentitySchema.parse(context.identity) };
   }
   return {
-    read<I extends OperationId>(id: I, permission: Permission, role: Role, input: OperationInputs[I]) {
+    async read<I extends OperationId>(id: I, permission: Permission, role: Role, input: OperationInputs[I], signal?: AbortSignal) {
       const context = snapshot(permission, role, false);
       if (!operations[id].roles.some(value => value === role)) throw new FeatureAccessError("Operation không thuộc role này.");
-      return client.request(id, input, { scope: context.scope });
+      try { return await client.request(id, input, { scope: context.scope, signal }); }
+      catch (error) {
+        if (error instanceof ApiError && [401, 403, 410].includes(error.status)) onAuthorityFailure?.(context);
+        throw error;
+      }
     },
     prepare<I extends OperationId>(id: I, permission: Permission, role: Role,
       input: (context: ClientContext) => OperationInputs[I]) {
@@ -35,7 +39,9 @@ export function createBoundClient(client: ApiClient, readContext: () => ClientCo
           throw new FeatureAccessError("Lệnh cũ. Làm mới và xem lại trước khi gửi.");
         try { return await request.send({ scope: captured.scope }); }
         catch (error) {
-          if (error instanceof ApiError && [401, 403, 410, 412].includes(error.status)) invalidated = true;
+          if (error instanceof ApiError && [401, 403, 410, 412].includes(error.status)) {
+            invalidated = true; if (error.status !== 412) onAuthorityFailure?.(captured);
+          }
           throw error;
         }
       } };

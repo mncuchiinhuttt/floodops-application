@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "@floodops/design-tokens/styles.css";
+@import "@floodops/ui-web/styles.css";
+body { margin: 0; background: #f5f7f5; color: #173438; font-family: system-ui, sans-serif; }
+#root { max-width: 88rem; padding: clamp(.75rem, 3vw, 2.5rem); margin-inline: auto; overflow-wrap: anywhere; }
+h1 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 750; line-height: 1.2; margin-block: 1rem; }
+h3 { font-size: 1.15rem; font-weight: 700; margin-block: .75rem; }
+p { margin-block: .65rem; }
+a { color: #12655c; text-decoration: underline; text-underline-offset: .2em; }
+.app-header { padding: 1rem; border: 1px solid #9ebbb1; margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; }
+.app-header nav, .feature-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+.join-grid, main { display: grid; gap: 1rem; min-width: 0; }
+main > *, form, section { min-width: 0; }
+.join-grid { max-width: 60rem; margin-inline: auto; }
+.simulation-banner { padding: .75rem; border-inline-start: 4px solid #206e68; background: #e9f4f0; }
+.stream-status { padding: .75rem 0; font-size: .875rem; }
+fieldset { min-inline-size: 0; margin-block: 1rem; padding: 1rem; border: 1px solid #aabfba; }
+fieldset > label { display: block; }
+input[type=checkbox], input[type=radio] { width: 1.25rem; height: 1.25rem; margin: .75rem; vertical-align: middle; }
+article { border-bottom: 1px solid #aabfba; padding-block: 1rem; }
+.private-report-image { max-width: 100%; max-height: 32rem; object-fit: contain; }

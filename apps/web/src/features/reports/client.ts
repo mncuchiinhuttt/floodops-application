@@ -4,11 +4,11 @@ import { FeatureAccessError, type BoundClient } from "../../shared/client-contex
 export function createReportClient(client: BoundClient) {
   return {
     driverDashboard: () => client.read("getOwnDriverDashboard", "driver:self:read", "driver", { path: { session_id: client.sessionId() } }),
-    driverRoutes: async () => {
-      const dashboard = await client.read("getOwnDriverDashboard", "driver:self:read", "driver", { path: { session_id: client.sessionId() } });
+    driverRoutes: async (signal?: AbortSignal) => {
+      const dashboard = await client.read("getOwnDriverDashboard", "driver:self:read", "driver", { path: { session_id: client.sessionId() } }, signal);
       const routes = await Promise.all(dashboard.body.data.route_ids.map(routeId => client.read("getRoute", "driver:self:read", "driver", {
         path: { session_id: dashboard.body.data.session.session_id, route_id: routeId },
-      })));
+      }, signal)));
       for (const route of routes) if (route.body.data.driver_id !== dashboard.body.data.driver_id ||
         route.body.meta.generation !== dashboard.body.meta.generation || route.body.meta.revision !== dashboard.body.meta.revision)
         throw new FeatureAccessError("Tuyến không còn khớp dashboard. Làm mới trước khi xem.");

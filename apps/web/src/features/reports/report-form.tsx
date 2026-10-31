@@ -13,7 +13,7 @@ export interface ReportFormProps {
 }
 export function ReportForm(props: ReportFormProps) {
   const { session, participant } = props.context.identity;
-  return <ReportFormDetail key={`${session.session_id}:${session.generation}:${participant.participant_id}:${props.kind}`} {...props} />;
+  return <ReportFormDetail key={`${session.session_id}:${session.generation}:${participant.participant_id}:${participant.bound_entity_id}:${props.kind}`} {...props} />;
 }
 function ReportFormDetail({ kind, context, mediaChoices = [], onSubmit }: ReportFormProps) {
   const prefix = useId();
