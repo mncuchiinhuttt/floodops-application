@@ -68,7 +68,7 @@ it("resets into a fresh real seed with generation fencing, never fabricated feat
   const owner = await create();
   const resetResponse = await path("/sessions/" + owner.id + "/resets", { method: "POST", headers: { ...auth(owner.token), "Content-Type": "application/json", "Idempotency-Key": key(), "If-Match": formatEtag(owner.data.session) }, body: JSON.stringify({ client_type: "native", confirm: true }) });
   expect(resetResponse.status).toBe(201);
-  const replaced = (await resetResponse.json()).data.replacement;
+  const replaced = parseSchema("ResetResultResponse", await resetResponse.json()).data!.replacement;
   expect(replaced.session.generation).toBe(1);
   expect(replaced.session.revision).toBe(0);
   expect((await path("/sessions/" + owner.id, { headers: auth(owner.token) })).status).toBe(410);
@@ -76,7 +76,7 @@ it("resets into a fresh real seed with generation fencing, never fabricated feat
   expect((await path("/sessions/" + replaced.session.session_id + "/identity", { headers })).status).toBe(200);
   const snapshot = await path("/sessions/" + replaced.session.session_id + "/snapshot", { headers });
   expect(snapshot.status).toBe(503);
-  expect((await snapshot.json()).error.code).toBe("CONFIG_INCOMPLETE");
+  expect(parseSchema("ErrorResponse", await snapshot.json()).error!.code).toBe("CONFIG_INCOMPLETE");
 });
 it("rejects unknown bundle/version and tampered checkpoint fingerprints", async () => {
   await expect(loadSessionScenario("scn_missing1", "1")).rejects.toMatchObject({ code: "NOT_FOUND" });
