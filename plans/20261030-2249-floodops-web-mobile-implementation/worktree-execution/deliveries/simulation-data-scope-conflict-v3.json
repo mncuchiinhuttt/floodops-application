@@ -1,0 +1,34 @@
+{
+  "work_item_id": "simulation-data-scope-conflict-v3",
+  "role_id": "simulation-data",
+  "base_sha": "3cebe9e8d8b4fd4fd11cd319b1549952c119caa5",
+  "observed_launch_sha": "123c68b053dab6b4deaa86a7e280c8ed1ebce43a",
+  "delivery_sha": "d4f37e40eb7cc1c8d2df3492e278c02a43b9cf6f",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "710364ea3b11b6491d60ca256ff3c9c41719c6663ce6e3280bb811e401d9d21b",
+  "source_sha": "07088f2ef5c3a4c140cca5606c6ad9a4e7a2aee8",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "packages/simulation/README.md",
+    "packages/simulation/src/scenario/validate-knowledge.ts",
+    "packages/simulation/test/movement/scoped-conflict-pipeline.test.ts",
+    "packages/simulation/test/scenario/scoped-conflict-smoke.ts",
+    "packages/simulation/test/scenario/scoped-conflict.test.ts",
+    "packages/simulation/test/scenario/scoped-evidence-context.ts",
+    "plans/reports/worktree-simulation-data-simulation-data-scope-conflict-v3.md"
+  ],
+  "checks": [
+    {
+      "command": "Exact delivery verifier/ownership/signatures, integrated focused tests/types/lint; see checkpoint for precise results",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/checkpoints/backend-client-runtime-v1.json"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [],
+  "integration_requests": [],
+  "blocked_prerequisites": [],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

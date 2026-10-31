@@ -1,0 +1,52 @@
+{
+  "work_item_id": "web-console-runtime-continuation-v2",
+  "role_id": "web-console",
+  "phase_ids": [
+    9
+  ],
+  "base_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/backend-client-runtime-v1-index.json",
+    "commit_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe",
+    "sha256": "bda263b1d21bfa26994d857da94f97b8974a3cfee08059e805e889f765202527"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "simulation-ready",
+      "commit_sha": "30e058252d4176c76a8b17b40e25786f34b50b4c"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    },
+    {
+      "gate_id": "platform-ready",
+      "commit_sha": "3cebe9e8d8b4fd4fd11cd319b1549952c119caa5"
+    },
+    {
+      "gate_id": "ui-libraries-ready",
+      "commit_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe"
+    }
+  ],
+  "expected_branch": "feat/floodops-web-console",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/09-web-console",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "backend-repairs-client-runtime-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}

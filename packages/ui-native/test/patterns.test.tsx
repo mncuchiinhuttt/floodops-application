@@ -30,9 +30,9 @@ function TabExample() {
 }
 test("native tabs expose selected state and switch content on explicit press", async () => {
   await render(<TabExample />);
-  expect(screen.getByRole("tab", { name: "First" })).toHaveAccessibilityState({ selected: true });
+  expect(screen.getByRole("tab", { name: "First" })).toBeSelected();
   await fireEvent.press(screen.getByRole("tab", { name: "Second" }));
-  expect(screen.getByRole("tab", { name: "Second" })).toHaveAccessibilityState({ selected: true });
+  expect(screen.getByRole("tab", { name: "Second" })).toBeSelected();
   expect(screen.queryByText("First panel")).toBeNull();
   expect(screen.getByText("Second panel")).toBeOnTheScreen();
 });

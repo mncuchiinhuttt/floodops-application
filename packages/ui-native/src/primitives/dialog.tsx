@@ -6,12 +6,13 @@ import { Button } from "./button";
 export type DialogProps = {
   open: boolean; title: string; description?: string; children: ReactNode; onClose: () => void;
   returnFocusRef?: RefObject<ComponentRef<typeof View> | null>;
+  initialFocusRef?: RefObject<ComponentRef<typeof View> | null>; dismissRef?: RefObject<ComponentRef<typeof View> | null>; dismissLabel?: string; dismissDisabledReason?: string;
 };
 function focus(target: ComponentRef<typeof Text> | ComponentRef<typeof View> | null) {
   const handle = target ? findNodeHandle(target) : null;
   if (typeof handle === "number") AccessibilityInfo.setAccessibilityFocus(handle);
 }
-export function Dialog({ open, title, description, children, onClose, returnFocusRef, sheet = false }: DialogProps & { sheet?: boolean }) {
+export function Dialog({ open, title, description, children, onClose, returnFocusRef, initialFocusRef, dismissRef, dismissLabel = "Close", dismissDisabledReason, sheet = false }: DialogProps & { sheet?: boolean }) {
   const heading = useRef<ComponentRef<typeof Text>>(null);
   const previous = useRef(open);
   useEffect(() => {
@@ -19,13 +20,13 @@ export function Dialog({ open, title, description, children, onClose, returnFocu
     previous.current = open;
   }, [open, returnFocusRef]);
   if (!title.trim()) throw new Error("Dialogs require a visible title.");
-  return <Modal visible={open} transparent animationType="none" onRequestClose={onClose} onShow={() => focus(heading.current)}>
+  return <Modal visible={open} transparent animationType="none" onRequestClose={() => { if (!dismissDisabledReason) onClose(); }} onShow={() => focus(initialFocusRef?.current ?? heading.current)}>
     <View style={[styles.overlay, sheet && styles.sheetOverlay]}>
       <View style={StyleSheet.absoluteFill} pointerEvents="none"><View style={styles.scrim} /></View>
       <View style={[styles.panel, sheet && styles.sheet]} accessibilityViewIsModal>
         <Text ref={heading} accessibilityRole="header" style={styles.title}>{title}</Text>
         {description && <Text style={styles.text}>{description}</Text>}
-        <ScrollView keyboardShouldPersistTaps="handled" style={{ flexShrink: 1 }}>{children}</ScrollView><Button label="Close" variant="secondary" onPress={onClose} />
+        <ScrollView keyboardShouldPersistTaps="handled" style={{ flexShrink: 1 }}>{children}</ScrollView><Button {...(dismissDisabledReason ? { disabled: true as const, disabledReason: dismissDisabledReason } : { disabled: false as const })} ref={dismissRef} label={dismissLabel} variant="secondary" onPress={onClose} />
       </View>
     </View>
   </Modal>;
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   overlay: { flex: 1, justifyContent: "center", padding: t.space[4] },
   sheetOverlay: { justifyContent: "flex-end" },
   scrim: { flex: 1, backgroundColor: t.semantic.surface.inverse, opacity: 0.5 },
-  panel: { backgroundColor: t.semantic.surface.raised, padding: t.space[4], gap: t.space[3], borderRadius: t.radius.lg, maxHeight: "90%" },
+  panel: { backgroundColor: t.semantic.surface.raised, padding: t.space[4], gap: t.space[3], borderRadius: t.radius.lg, maxHeight: "90%", elevation: t.elevation.panel.native, shadowColor: t.elevation.panel.color, shadowOpacity: t.elevation.panel.opacity, shadowRadius: t.elevation.panel.blur, shadowOffset: { width: t.elevation.panel["offset-x"], height: t.elevation.panel["offset-y"] } },
   sheet: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 },
   title: { color: t.semantic.text.primary, fontSize: t.type.size.title, fontWeight: "700" },
   text: { color: t.semantic.text.secondary, fontSize: t.type.size.body }

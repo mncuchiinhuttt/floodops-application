@@ -23,4 +23,15 @@ describe("workspace import boundaries", () => {
     const rules = await rulesFor('import "@floodops/contracts";', "apps/mobile/src/features/reports/index.ts");
     expect(rules).toEqual([]);
   });
+
+  test("lints owned coverage source tests instead of treating them as generated output", async () => {
+    const rules = await rulesFor("export const value: any = 1;", "apps/api/test/coverage/probe.test.ts");
+    expect(rules).toContain("@typescript-eslint/no-explicit-any");
+  });
+
+  test("continues ignoring generated root/app/package coverage outputs", async () => {
+    for (const path of ["coverage/report.ts", "apps/api/coverage/report.ts", "packages/domain/coverage/report.ts"]) {
+      expect(await eslint.isPathIgnored(path)).toBe(true);
+    }
+  });
 });

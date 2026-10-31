@@ -18,6 +18,7 @@ export function Button({ label, variant = "primary", pending = false, pendingLab
   const color = inactive ? tokens.semantic.action.disabled.fg : variant === "secondary"
     ? tokens.semantic.action.secondary.fg : tokens.semantic.action.primary.fg;
   if (!label.trim()) throw new Error("Button requires a text label.");
+  if (disabled && !disabledReason?.trim()) throw new Error("Disabled controls require a visible disabled reason.");
   if (pending && !pendingLabel.trim()) throw new Error("Pending buttons require a visible status label.");
   return <View style={styles.group}>
     <Pressable {...props} disabled={inactive} accessibilityRole="button" accessibilityLabel={pending ? pendingLabel : label}

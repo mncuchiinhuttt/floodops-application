@@ -1,0 +1,106 @@
+{
+  "amendment_id": "backend-repairs-client-runtime-v1",
+  "status": "authorized",
+  "authority": "User/parent authorized full backend completion then real frontend E2E with independent useful concurrency. Lead assigns bounded corrections/runtime work without declaring missing predecessor gates passed.",
+  "source_commit": "91158e2dd79ebcdd8761d884784553afd4fc46c4",
+  "work_items": [
+    {
+      "role_id": "session-platform",
+      "work_item_id": "session-platform-reset-stream-v4",
+      "include_prefixes": [
+        "apps/api/src/features/session/",
+        "apps/api/src/session-runtime/",
+        "apps/api/src/app/",
+        "apps/api/src/shared/",
+        "apps/api/test/replay/",
+        "apps/api/test/reset/",
+        "apps/api/test/capabilities/"
+      ],
+      "include_files": [],
+      "scope": "Narrow actual open-SSE to Reset regression and minimal platform correction only. QA found a possible ordering defect, NOT yet a proved runtime failure: readCall authenticates before eventPage, authenticate rejects meta.status=reset, and stream closes on any non200. Open an authorized real Workerd stream, successfully Reset, then actually read until closure; require the old subscriber to receive canonical session_reset/replacement_session_id without token/cookie leakage. Exercise dispatcher/driver/contributor projection, revoke/expiry/unauthorized paths and cursor reconnect/body-loss recovery. If it fails, fix only a bounded terminal-event access path for the already registered stream with still-valid credential, never generally authorize reads from reset sessions or leak replacement participant IDs. Keep all86 existing tests, header/cookie/CORS/privacy regressions. If it passes, deliver the actual regression and do not invent a fix. Do not edit business features, Lead composition/config or APIs."
+    },
+    {
+      "role_id": "planner-safety",
+      "work_item_id": "planner-safety-domain-correction-v2",
+      "include_prefixes": [
+        "packages/domain/src/planning/",
+        "apps/api/test/planning/",
+        "apps/api/test/policy/"
+      ],
+      "include_files": [],
+      "scope": "Fix two source-reviewed pure-policy defects, test-first: road-policy.createPlanningPolicy currently ignores context.branch, so a FloodOps proposal approval/action map can authorize static/reroute branches; evaluate-candidate passes the new candidate policy into both projectCurrent(before) and projectCandidate(after), so approving a new proposal changes the hypothetical current route and can corrupt POL05. Separate committed/current authority from proposed action authority and isolate branch semantics using actual public simulator policies. Repro approved unknown bike edge for static branch must not inherit proposal approval; approving a proposal must not change before projection; candidate still evaluates eligible selected dependency closure and hard/expired/conflict guards. Do not invent wire fields or restore old current metrics with a constant. Central ./planning export and simulation workspace dependency now supplied, run STANDARD domain tsc plus scoped checks. Pure correction only; full durable Commander/Execute runtime still awaits actual Sources-ready continuation. Do not modify simulator, fixtures, schemas or Lead composition."
+    },
+    {
+      "role_id": "review-rewards",
+      "work_item_id": "review-rewards-domain-correction-v2",
+      "include_prefixes": [
+        "packages/domain/src/rewards/",
+        "apps/api/test/coverage/",
+        "apps/api/test/gaps/",
+        "apps/api/test/rewards/",
+        "apps/api/test/review/"
+      ],
+      "include_files": [],
+      "scope": "Correct useful coverage for a shared multi-vehicle observation: global observation.has_conflict can be true for bike-only contradiction while the current car SegmentKnowledge remains consistently known. coverage.ts currently globally vetoes it; use scope/epoch/time/current accepted facts consistently with corrected simulator and normalized knowledge, while real matching contrary evidence/closure/unresolved state remains fail-closed. Add actual cross-vehicle consumer regression, expiry, resolution, order independence and no point or gap fill on unresolved scope. A distinct reviewer concern is historical open gaps from prior epochs: retain audit ledger/history (GapSchema only open/filled), do NOT fabricate filled or add wire statuses. Supply/test a current-scope/epoch active-gap projection helper if needed, so superseded historical rows are not displayed/rewarded as current. Preserve report-wide reward conflict eligibility, one award/report, configured server values and243 strict AI-rubric cases. Central ./rewards export and fixture dependency/coverage lint exception now fixed. No durable review/AI service/provider/router until fresh full-source continuation."
+    },
+    {
+      "role_id": "results-evaluation",
+      "work_item_id": "results-evaluation-runtime-foundations-v2",
+      "include_prefixes": [
+        "apps/api/src/features/simulation/",
+        "apps/api/src/features/results/",
+        "apps/api/src/features/evaluations/",
+        "apps/api/test/simulation/",
+        "apps/api/test/metrics/",
+        "apps/api/test/evaluations/"
+      ],
+      "include_files": [],
+      "scope": "Implement the independent real clock/results runtime slice now, not another planning report. Start by testing/rejecting contradictory aggregation trial failed=false with nonnull MODEL_TIMEOUT/refusal/etc error; preserve legitimate invalid first proposals without execution error, and keep all measured failures in10 sample denominator/p95 (finite timeout p95 is NOT itself a bug). Implement actual feature factory/router/reducers/views for explicit advance target, bounded deterministic work/checkpoint/fenced lease/watchdog/explicit continue and comparable results, using public SimulationPersistence and generic platform command/view/lease ports. Persist authority before async work; no await network in transactionSync; old lease/Reset/generation/current-pointer denied, resume same target/final event log. Runtime policy can be an explicit injected committed-policy port, not private/deep-import of unfinished Planner code; missing policy must fail CONFIG_INCOMPLETE rather than permissive default or fake job completion. Do all reachable actual Workerd tests with an explicit deterministic public simulator policy and actual DO, distinguish these from full business integration. Supply composable public entrypoints and exact Lead registry/router requests immediately. Full planner/review integrated runtime/model evaluation endpoints and final results/backend-ready wait those predecessor receipts. No external calls or fabricated real-model/calibration evidence. You may implement local provider-port orchestration with test adapters but never silently use a stub as production success."
+    },
+    {
+      "role_id": "web-console",
+      "work_item_id": "web-console-runtime-continuation-v2",
+      "include_prefixes": [
+        "apps/web/"
+      ],
+      "include_files": [],
+      "scope": "Implement actual React Router Data Mode SPA bootstrap/index.html/Vite React and Tailwind integration, server-authorized session create/claim/identity/invitations/session lifecycle and capability workspaces, shared typed client and TanStack read-only cache/invalidation/foreground SSE. Your partial22tests/types/build:partial pass; the newly added REAL build currently FAILS Cannot resolve entry module index.html because entrypoint is not implemented yet: finish it. Runtime pins and complete shared UI are now frozen. Fix AI button allowing needs_clarification: AI precondition is citizen normalized photo + pending_review; keep human manual review decisions independent of AI pending/error, apply correct server acceptance vs rejection rules rather than mirroring unsafe client status shortcuts. Source-reviewed claim that Route.status=candidate means unexecuted is REJECTED: canonical status only candidate/no_route; driver exposure is authorized by own dashboard committed route_ids/version, do not invent executed status. Implement real session flow against isolated local API config, no fixture fallback.13 session operations work;4views explicitly503 and49unmounted: show actual errors, do not call complete or backend-ready. Full live business workflows await backend completion/fresh continuation. No command offline outbox: explicit online guard, abort on generation/identity changes, no auto retry/resumePausedMutations. Router/Query library behavior probe passed, not app E2E. Credentials only cookie/CSRF/Origin; no localStorage or query tokens. Web5174/API8789 loopback only, config tooling/runtime/wrangler.client-demo.jsonc with public synthetic test keys only. Do not weaken Secure cookie to satisfy HTTP loopback; report/verify local HTTPS if needed."
+    },
+    {
+      "role_id": "expo-mobile",
+      "work_item_id": "expo-mobile-runtime-continuation-v2",
+      "include_prefixes": [
+        "apps/mobile/"
+      ],
+      "include_files": [],
+      "scope": "Implement actual Expo Router one-app bootstrap/app routes/app.config/Metro and native SecureStore credential adapter, image-picker normalized upload pipeline adapter, FileSystem principal-scoped offline report drafts and foreground refresh/stream. Expo58/RN0.88 compatible Router/SecureStore/image-picker/FileSystem/crypto/network/gesture/reanimated/worklets peers supplied and modulePaths/watchman Jest issue fixed. Do not import DOM or @react-navigation (Expo58 Router API only); no credentials public env/URL/localStorage. Require SecureStore fail-closed behavior, namespace drafts/media by session/generation/principal and do not transfer A drafts to B just because same role. Test mounted participant change hides foreign draft fields immediately; explicit same-owner stale/Reset review-relink flow retains data without automatic deletion. Fix PlanScreen all-groups-ready/all-groups Execute: allow user-selected independently eligible closure, keep server latest plan/job/revision and hard guard, no auto Execute. Advice input fence: canonical ImageReviewJob has NO input_revision field. Capture observable report photo/input context and hide stale advice immediately when description/segment/capture/vehicle/media/status changes before async refetch. Do NOT compare unrelated global session revision or add a schema field: valid equal-revision job progress/unrelated mutation must remain current. Test manual decisions independent of AI failure and proper status rules. Run native render tests + offline local iOS/Android JS exports/Metro as reachable; these are NOT device/build/VoiceOver proof. app main expo-router/entry already set centrally. No prebuild/EAS/signing/device/account/resource/notification/GPS/paid actions. Real backend session adapter reachable, full backend business integration gated. Metro8082/API8790 loopback only; no LAN/tunnel."
+    },
+    {
+      "role_id": "sources-media",
+      "work_item_id": "sources-media-phase-05-v2",
+      "include_prefixes": [
+        "packages/domain/src/sources/",
+        "packages/domain/src/knowledge/",
+        "packages/domain/src/reporting/",
+        "apps/api/src/features/scenario/",
+        "apps/api/src/features/scenario-assets/",
+        "apps/api/src/features/sources/",
+        "apps/api/src/features/knowledge/",
+        "apps/api/src/features/reports/",
+        "apps/api/src/features/media/",
+        "apps/api/test/sources/",
+        "apps/api/test/observations/",
+        "apps/api/test/media/"
+      ],
+      "include_files": [],
+      "scope": "SAFE CHECKPOINT UPDATE, NOT A SECOND WRITER. Continue full authorized phase05 with the integrated producer correction C07088f2/Rd4f37e4/mergee474230. Parent first quiesces your active v1 turn; preserve/commit only owned WIP and merge exact new launch preserving history, no reset/stash/rebase or movingHEAD. Do not abandon current implementation. Remove SOURCE_SCOPE_INCOMPATIBLE only now with mixed-vehicle regression proving per-scope knowledge, conflict/closure/expiry safety and no automatic route/assignment/points. Producer actual121tests5570assertions, scoped-conflict CLI and standard types/lint passed on Lead. Finish all scenario/assets/source/knowledge/report/media operations/ports/tests within phase05, including normalized derivative/digest contract for ReviewRewards, not reports/review or knowledge/conflict-review subtrees. Supply actual feature routers/reducers/projections and public index exports for Lead immediately when ready. Live image decode/strip proof not inferred from local binding config. Deliver completed full-source C/R promptly to open full Planner+Review in parallel; do not delay for frontend or real external provider/device gates."
+    }
+  ],
+  "rules": [
+    "All existing global role exclusions and central protected files still apply.13 roles/9 waves unchanged; partial runtime is not full phase acceptance.",
+    "Only parent resumes existing workers, no duplicate source writers. Active Sources gets safe-checkpoint amendment, not forced sync.",
+    "User/API66 semantics unchanged; no receipts from old hashes for this amended work. Source ownership remains per role.",
+    "Full Planner/Review require actual sources-ready; full Results/backend need integrated predecessor business ports. Explicit injected ports/fail-closed unavailable may support independent development, never fake production completion.",
+    "No remote grant, production/main/EAS/account/key/resource/paid/model/device/network expansion."
+  ]
+}

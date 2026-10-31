@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "@floodops/design-tokens/styles.css";
+@import "../src/styles.css";
+body { margin: 0; font: var(--fo-type-size-body)/var(--fo-type-line-height-body) system-ui; color: var(--fo-semantic-text-primary); background: var(--fo-semantic-surface-canvas); }
+.fo-story { padding: var(--fo-space-4); }
+.fo-story > * { max-width: 72rem; margin-inline: auto; }
