@@ -1,9 +1,15 @@
+import type { VehicleType } from "@floodops/contracts";
 /** Internal algorithm types; these are not API DTOs. Coordinates are WGS84 lon/lat. */
 export type Coordinate = readonly [longitude: number, latitude: number];
-export type Vehicle = "motorbike" | "car";
+export type Vehicle = VehicleType;
 export interface GraphNode { readonly id: string; readonly coordinate: Coordinate }
 export interface TravelPoint { readonly departureMs: number; readonly durationMs: number }
-export type TravelProfile = readonly TravelPoint[];
+export interface TravelWindow {
+  readonly validFromMs: number;
+  readonly validUntilMs: number | null;
+  readonly durationMs: number;
+}
+export type TravelProfile = readonly TravelPoint[] | readonly TravelWindow[];
 export interface GraphEdge {
   readonly id: string;
   readonly from: string;

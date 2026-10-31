@@ -1,11 +1,20 @@
-import type { TravelProfile } from "./graph-types.ts";
+import type { TravelProfile, TravelPoint, TravelWindow } from "./graph-types.ts";
 
 export function assertMilliseconds(value: number): void {
   if (!Number.isSafeInteger(value) || value < 0) throw new Error("Expected nonnegative safe integer milliseconds.");
 }
 
 /** Continuous piecewise-linear duration, constant outside endpoint knots. */
+export function isWindowProfile(profile: TravelProfile): profile is readonly TravelWindow[] {
+  return Boolean(profile.length && "validFromMs" in profile[0]!);
+}
+export function isTravelTimeAvailable(profile: TravelProfile, departureMs: number): boolean {
+  assertMilliseconds(departureMs);
+  return !isWindowProfile(profile) || profile.some(window => departureMs >= window.validFromMs
+    && (window.validUntilMs === null || departureMs < window.validUntilMs));
+}
 export function validateTravelProfile(profile: TravelProfile): void {
+  if (isWindowProfile(profile)) { validateWindows(profile); return; }
   if (!profile.length) throw new Error("A travel profile must not be empty.");
   for (let i = 0; i < profile.length; i++) {
     const point = profile[i]!;
@@ -29,13 +38,20 @@ function checkedDuration(departureMs: number, durationMs: number): number {
 export function travelDurationMs(profile: TravelProfile, departureMs: number): number {
   validateTravelProfile(profile);
   assertMilliseconds(departureMs);
-  const first = profile[0]!;
-  const last = profile[profile.length - 1]!;
+  if (isWindowProfile(profile)) {
+    const window = profile.find(item => departureMs >= item.validFromMs
+      && (item.validUntilMs === null || departureMs < item.validUntilMs));
+    if (!window) throw new Error("Travel profile unavailable at entry time.");
+    return checkedDuration(departureMs, window.durationMs);
+  }
+  const points = profile as readonly TravelPoint[];
+  const first = points[0]!;
+  const last = points[points.length - 1]!;
   if (departureMs <= first.departureMs) return checkedDuration(departureMs, first.durationMs);
   for (let i = 1; i < profile.length; i++) {
-    const right = profile[i]!;
+    const right = points[i]!;
     if (departureMs <= right.departureMs) {
-      const left = profile[i - 1]!;
+      const left = points[i - 1]!;
       // Exact rational ceiling of arrival avoids floating-point non-FIFO plateaus.
       const span = BigInt(right.departureMs) - BigInt(left.departureMs);
       const offset = BigInt(departureMs) - BigInt(left.departureMs);
@@ -46,4 +62,21 @@ export function travelDurationMs(profile: TravelProfile, departureMs: number): n
     }
   }
   return checkedDuration(departureMs, last.durationMs);
+}
+
+function validateWindows(profile: readonly TravelWindow[]): void {
+  for (let i = 0; i < profile.length; i++) {
+    const window = profile[i]!;
+    assertMilliseconds(window.validFromMs); assertMilliseconds(window.durationMs);
+    if (!window.durationMs || (i === 0 && window.validFromMs !== 0)) throw new Error("Window profiles must start at0 with positive duration.");
+    if (window.validUntilMs !== null) {
+      assertMilliseconds(window.validUntilMs);
+      if (window.validUntilMs <= window.validFromMs) throw new Error("Empty/reversed travel window.");
+      assertMilliseconds(window.validUntilMs + window.durationMs);
+    }
+    const previous = profile[i - 1];
+    if (previous && (previous.validUntilMs !== window.validFromMs || window.durationMs < previous.durationMs)) {
+      throw new Error("Window profiles need contiguous coverage and FIFO transitions.");
+    }
+  }
 }

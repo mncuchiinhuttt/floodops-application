@@ -8,7 +8,7 @@ function assertId(id: string, seen: Set<string>): void {
 }
 function vehiclesValid(vehicles: readonly Vehicle[]): void {
   if (!vehicles.length || new Set(vehicles).size !== vehicles.length
-    || vehicles.some(vehicle => vehicle !== "motorbike" && vehicle !== "car")) {
+    || vehicles.some(vehicle => vehicle !== "motorbike" && vehicle !== "car" && vehicle !== "truck")) {
     throw new Error("Explicit unique supported vehicles required.");
   }
 }

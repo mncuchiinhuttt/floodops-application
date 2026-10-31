@@ -1,5 +1,5 @@
 import type { Route, RouteLeg, RouteQuery, RoutingGraph } from "./graph-types.ts";
-import { assertMilliseconds, travelDurationMs } from "./travel-profile.ts";
+import { assertMilliseconds, travelDurationMs, isTravelTimeAvailable } from "./travel-profile.ts";
 
 interface Label {
   node: string;
@@ -12,9 +12,10 @@ const stateKey = (node: string, incoming: string | null) => JSON.stringify([node
 const compareText = (a: string, b: string) => a < b ? -1 : a > b ? 1 : 0;
 
 /** Earliest arrival on a validated FIFO graph; no evidence/Execute authorization implied. */
-export function findRoute(graph: RoutingGraph, query: RouteQuery): Route | null {
+export function findRoute(graph: RoutingGraph, query: RouteQuery,
+  canEnter: (edgeId: string, atMs: number) => boolean = () => true): Route | null {
   assertMilliseconds(query.departureMs);
-  if (query.vehicle !== "motorbike" && query.vehicle !== "car") throw new Error("Unknown vehicle.");
+  if (query.vehicle !== "motorbike" && query.vehicle !== "car" && query.vehicle !== "truck") throw new Error("Unknown vehicle.");
   if (![query.from, query.to].every(id => graph.nodes.some(node => node.id === id))) {
     throw new Error("Unknown route endpoint.");
   }
@@ -41,6 +42,7 @@ export function findRoute(graph: RoutingGraph, query: RouteQuery): Route | null 
       if (!edge.vehicles.includes(query.vehicle) || graph.turnBans.some(ban =>
         ban.incoming === current.incoming && ban.outgoing === edge.id && ban.vehicles.includes(query.vehicle))) continue;
       const profile = edge.travel[query.vehicle]!;
+      if (!isTravelTimeAvailable(profile, current.atMs) || !canEnter(edge.id, current.atMs)) continue;
       const atMs = current.atMs + travelDurationMs(profile, current.atMs);
       assertMilliseconds(atMs);
       const key = stateKey(edge.to, edge.id);
