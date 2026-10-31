@@ -29,6 +29,7 @@ export function aggregateEvaluation(input: EvaluationAggregationInput): Evaluati
   if (new Set(trials.map(trial => trial.trial)).size !== 10) throw new Error("Duplicate or missing evaluation trial.");
   for (const trial of trials) {
     if (trial.model_config_hash !== input.modelConfigHash) throw new Error("Evaluation model configuration changed.");
+    if (!trial.failed && trial.error_code !== null) throw new Error("An execution error requires a failed trial.");
     if (trial.first_proposal_valid && (trial.failed || trial.error_code !== null || trial.plan_id === null)) {
       throw new Error("A valid first proposal requires a successful plan without an error.");
     }
