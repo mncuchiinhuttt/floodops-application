@@ -1,0 +1,38 @@
+{
+  "status": "ready-for-parent-fast-launch",
+  "source_code_sha": "fdb1104cdc7e02aa1da284f405eed56bb010447a",
+  "worker_launches": [
+    {
+      "role": "session-platform",
+      "action": "resume existing01a19032-cee6-734a-a967-a1f593f4b0ef",
+      "launch_sha": "d14dc05ff0a944639b699eae5b1de4b42c690e67",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/session-platform/session-platform-phase-04-v3.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/session-platform-phase-04-v3.md",
+      "scope": "HTTP security/CORS headers and explicit node test types; real red integration assertion retained"
+    },
+    {
+      "role": "sources-media",
+      "action": "create first writer, actual sol/ultra/fast via parent",
+      "launch_sha": "containing metadata commit, supplied out-of-band",
+      "superseded_unlaunched_metadata_sha": "f4f4895144c34f24653c3e09d09ab4b1194e614f",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/sources-media/sources-media-domain-foundations-v1.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/sources-media-domain-foundations-v1.md",
+      "scope": "ONLY pure domain sources/knowledge/reporting plus own source/observation tests; no API/media; full phase05 remains gated"
+    }
+  ],
+  "checks": {
+    "raw_index_artifacts": 371,
+    "hash": "69cb1d52e620d0bad6e4732c7d73f5e72b58281bf443265cd6fa79cc1e7aa40e",
+    "orchestration": "29 tests59 assertions pass including raw binary acceptance and one-byte nonUTF8 drift rejection",
+    "strict": "Lead tooling including runtime, API strict types and scoped lint pass; owner capability test types need node per v3 receipt",
+    "receipt_schemas": "Both new launch receipts and corrected SimulationData/SessionPlatform v2 DeliveryReceipts validate against existing schema"
+  },
+  "gates": {
+    "contracts": "passed1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca",
+    "simulation": "qualified passed30e058252d4176c76a8b17b40e25786f34b50b4c; functional_fixture, Calibration incomplete",
+    "platform": "BLOCKED existing HTTP header bug; full Sources API/media cannot launch",
+    "ui": "owner v3 in flight, not required for Sources domain"
+  },
+  "remote": "Private integration push authorized; no main promotion/deploy/provider/device/account/resource/key/new paid actions; parent owns launches/messages, no duplicate worker",
+  "next": "On platform v3 delivery independently verify/merge/red-test rerun; freeze exact combined platform+simulation public ports and issue full phase05 continuation after preserving foundations WIP/delivery. Never use old receipts or mark full sources-ready from partial work."
+}

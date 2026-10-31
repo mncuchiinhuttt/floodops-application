@@ -1,6 +1,6 @@
 You are the sole SourcesMedia writer for the explicitly independent pure-domain foundations slice. Parent launches actual gpt-6.1-sol/ultra/fast; do not fake model/tier metadata or spawn another role. This is real code and real tests, not a planning-only task.
 
-ROLE_ID=sources-media; WORK_ITEM=sources-media-domain-foundations-v1; LAUNCH_RECEIPT=plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/sources-media/sources-media-domain-foundations-v1.json; BASE_SHA=3ec303eae32f899edef0909527ca72195fdbff9f; parent supplies exact containing LAUNCH_SHA. CWD /Users/vominhlong/seahackathon-worktrees/05-sources-media; branch feat/floodops-sources-media; loopback8785 if diagnostics ever needed.
+ROLE_ID=sources-media; WORK_ITEM=sources-media-domain-foundations-v1; LAUNCH_RECEIPT=plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/sources-media/sources-media-domain-foundations-v1.json; BASE_SHA=fdb1104cdc7e02aa1da284f405eed56bb010447a; parent supplies exact containing LAUNCH_SHA. CWD /Users/vominhlong/seahackathon-worktrees/05-sources-media; branch feat/floodops-sources-media; loopback8785 if diagnostics ever needed.
 
 Before edits read AGENTS.md, role05, phase05, relevant PRD/specs and this receipt/amendment. Verify branch/CWD/clean launch/base/gates/pinned policy and ALL artifacts at indexed source, declared index commit and launch. No moving HEAD/untracked producer input; frozen Bun1.4.0 install --ignore-scripts only in this worktree. Do not copy env/node_modules/state. Record startup acknowledgement, grants and actual model metadata if exposed; otherwise unverified.
 
@@ -67,3 +67,5 @@ khai; chưa có bằng chứng vision model/device đã chạy.
 User: "với coi bắt đầu triển khai lẹ đi ní, sao lâu vậy, coi triển khai trước những phần nào có thể làm rồi đi, bật 6.1 sol ultra thêm fast nữa đi"
 User: "cứ làm tiếp đi nhé xong rồi cứ tiếp tục task mới nhé, chạy nhiều task song song nếu được nhé"
 </transcript_evidence>
+
+Cutover: the unlaunched draft containing commit f4f4895144c34f24653c3e09d09ab4b1194e614f is superseded for startup. Use the exact new containing launch commit supplied by parent, which includes the raw-byte artifact verifier correction. All371 frozen artifacts, including actual PNG bytes, were verified at source/index/old metadata and are unchanged. Do not start from f4f4895 or bypass index checks.
