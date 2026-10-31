@@ -1,4 +1,5 @@
 import { parseSchema } from "@floodops/contracts";
+import { driveEvaluation } from "./drive-evaluation";
 import { aggregateEvaluation } from "./pure/index";
 import { fail } from "../../shared/index";
 import type { ReducerDefinition, RuntimeRegistry } from "../../shared/index";
@@ -58,5 +59,6 @@ export function evaluationRegistry<State>(options: EvaluationOptions<State>): Ru
     } };
   return { commands: { [EVAL_START]: start, [EVAL_BEGIN]: begin, [EVAL_COMPLETE]: complete },
     views: { [EVAL_VIEW]: { permission: "evaluation:run", roles: ["dispatcher"],
-      project: context => Object.values(readEvaluationState(context.snapshot, context.now).runs).map(record => record.run) } } };
+      project: context => Object.values(readEvaluationState(context.snapshot, context.now).runs).map(record => record.run) } },
+    drivers: { evaluation: (dispatch, call, reply) => driveEvaluation(dispatch, call, reply, options) } };
 }

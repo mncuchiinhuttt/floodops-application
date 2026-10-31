@@ -55,4 +55,19 @@ node apps/api/node_modules/wrangler/bin/wrangler.js deploy --config apps/api/wra
 FLOODOPS_API_URL=https://floodops-api.vominhlongbentre.workers.dev/api/v1 bun tooling/runtime/m1-local-smoke.ts
 ```
 
-Known limit: the account is on the Workers Free plan (10 ms CPU per request). Planning and evaluation run the deterministic planner in the Worker (`waitUntil`), so on Free they fail with "Worker exceeded CPU time limit"; catalog, session, upload, report, review and knowledge work. Workers Paid (30 s CPU) or running the planner driver inside the Durable Object is required for planning on production. Responses carry `Cache-Control: no-store, no-transform` because the edge otherwise weakens the strong ETag used by `If-Match`.
+Planning and evaluation still reserve work on the Worker, but now schedule their deterministic drivers inside the owning Session Durable Object with its own `waitUntil`; planner search no longer runs in the Worker request path.
+The driver uses the DO's own dispatch for authenticated begin/view/complete calls, and `PLAN_BEGIN`/`EVAL_BEGIN` continue fencing duplicate idempotent starts.
+Evaluation retains the 50 ms yield on the DO before trials begin so the API can return `202`.
+This removes planner CPU from the Free plan's 10 ms Worker request budget, but Wrangler dev does not enforce deployed Worker or DO CPU limits.
+After redeploy, verify on Free with `FLOODOPS_API_URL=https://floodops-api.vominhlongbentre.workers.dev/api/v1 bun tooling/runtime/m1-local-smoke.ts`.
+Responses carry `Cache-Control: no-store, no-transform` because the edge otherwise weakens the strong ETag used by `If-Match`.
+
+## Security headers and environments
+
+- API JSON responses use `default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none'; form-action 'self'`.
+- The SPA adds `font-src 'self'` and only `style-src-attr 'unsafe-inline'` for the built SVG map's React inline style; scripts remain self-hosted.
+- API and SPA also send `nosniff`, `no-referrer`, `X-Frame-Options: DENY`, COOP `same-origin`, and camera/microphone/geolocation restrictions.
+- HSTS is `max-age=31536000; includeSubDomains` on HTTPS API responses and public Workers hosts; local `127.0.0.1` is excluded.
+- Wrangler observability is enabled with query strings redacted; error logs contain only request ID, operation template, status, and error code.
+- `env.preview` uses `floodops-api-preview`, its own SessionDO namespace and preview-only R2 buckets; its `WEB_ORIGIN` is a placeholder until first deploy.
+- Production remains `floodops-api` with its existing origin and production buckets; dry-runs validate both configurations without creating resources.

@@ -38,7 +38,7 @@ export function reconcileLeases(store: Store, registry: RuntimeRegistry, now: nu
       (lease.bind_revision && lease.revision !== snapshot.meta.revision) || (lease.kind === "planning" && snapshot.pointers.latest_requested_job_id !== lease.job_id) || (lease.kind === "advance" && snapshot.pointers.active_advance_job_id !== lease.job_id);
     if (!stale && now < lease.expires_at) continue;
     lease.status = stale ? "superseded" : "failed";
-    lease.error_code = stale ? null : lease.kind === "planning" ? "MODEL_TIMEOUT" : "STORAGE_UNAVAILABLE";
+    lease.error_code = stale ? null : lease.kind === "planning" ? "PLANNER_TIMEOUT" : "STORAGE_UNAVAILABLE";
     if (registry.onLeaseExpired) snapshot.values = registry.onLeaseExpired(structuredClone(snapshot), structuredClone(lease), now);
     if (lease.kind === "advance" && snapshot.meta.status === "advancing" && snapshot.pointers.active_advance_job_id === lease.job_id) { snapshot.meta.status = "active"; snapshot.pointers.active_advance_job_id = null; }
     appendEvents(store, snapshot, [{ type: lease.kind === "advance" ? "advance_changed" : "planning_job_changed", resource_ids: [lease.job_id], reason_code: lease.error_code }], now);

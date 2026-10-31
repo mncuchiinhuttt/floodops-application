@@ -3,10 +3,8 @@ import { parseOperationInput, parseSchema } from "@floodops/contracts";
 import type { Execution, Incident, Notification, Plan, PlanningJob, Route } from "@floodops/contracts";
 import { createSessionRuntimeClient, fail, invoke, jsonBody, runtimeCall, send } from "../../shared/index";
 import type { AppContext, AppEnv, Reply } from "../../shared/index";
-import { drivePlanning } from "./drive-planning";
 import type { PlanningReservation } from "./drive-planning";
 import { PLAN_START, PLAN_CANCEL, PLAN_DECIDE, PLAN_DRY_RUN, PLAN_EXECUTE, PLANNING_VIEW, OPERATIONS_VIEW, INCIDENT_VIEW, IMPACT_VIEW } from "./runtime-types";
-import type { ResolvedPlanningOptions } from "./runtime-types";
 import { ROUTES_VIEW } from "./views";
 import { INCIDENT_TRIGGER } from "../incidents/runtime";
 async function view(c: AppContext, name = PLANNING_VIEW): Promise<Reply> { return invoke(c, runtimeCall(c, "view", { name })); }
@@ -29,7 +27,7 @@ function page<T>(c: AppContext, reply: Reply, items: T[], resource: "plans" | "i
   return dataReply(reply, { items: selected, page: { has_more: more, next_cursor: more
     ? btoa(JSON.stringify([m.session_id, String(m.generation), resource, id(selected.at(-1)!)])) : null } });
 }
-export function createPlanningRouter<State>(options: ResolvedPlanningOptions<State>): Hono<AppEnv> {
+export function createPlanningRouter(): Hono<AppEnv> {
   const router = new Hono<AppEnv>();
   router.get("/sessions/:session_id/operations", async c => send(c, await view(c, OPERATIONS_VIEW), "getOperations"));
   router.get("/sessions/:session_id/impact", async c => send(c, await view(c, IMPACT_VIEW), "getImpact"));
@@ -44,7 +42,7 @@ export function createPlanningRouter<State>(options: ResolvedPlanningOptions<Sta
     const call = runtimeCall(c, "command", { name: PLAN_START, payload: { input: parseSchema("PlanningJobInput", await jsonBody(c.req.raw)), etag: c.req.header("If-Match") ?? null } });
     const r = await invoke(c, call);
     if (r.status !== 200) return send(c, r);
-    c.executionCtx.waitUntil(drivePlanning(createSessionRuntimeClient(c.env).dispatch, call, r, options));
+    await createSessionRuntimeClient(c.env).startDriver("planning", call, r);
     return send(c, dataReply(r, (r.body.data as PlanningReservation).job, 202), "createPlanningJob");
   });
   router.get("/sessions/:session_id/planning-jobs/:job_id", async c => {

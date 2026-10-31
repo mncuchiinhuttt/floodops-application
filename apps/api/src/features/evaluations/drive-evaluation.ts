@@ -18,7 +18,7 @@ function claimedContext(data: unknown): TransitionContext | null {
   return context && typeof context === "object" && "snapshot" in context && "actor" in context ? context as TransitionContext : null;
 }
 /**
- * Worker-side runner, mirroring planning's drive: claim once, replay the committed deterministic planner against
+ * Session Durable Object runner, mirroring planning's drive: claim once, replay the committed deterministic planner against
  * the captured snapshot ten times, then persist the aggregate. Nothing here mutates the interactive session
  * and no provider/model is called, so a result is never a real-model claim.
  */

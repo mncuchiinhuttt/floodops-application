@@ -29,6 +29,10 @@ export interface Reply {
   status: number; body: Envelope; credential?: { box: string; aad: string; type: "web" | "native" | "invite" };
   clearCookie?: boolean; effect?: { job_id: string; lease: string }; retryAfter?: number;
 }
+export type BackgroundDriverKind = "planning" | "evaluation";
+export type BackgroundDriver = (dispatch: (call: Call) => Promise<Reply>, call: Call, reply: Reply) => Promise<void>;
+export type BackgroundDrivers = Partial<Record<BackgroundDriverKind, BackgroundDriver>>;
+
 export interface StoredParticipant { participant: Participant; digest: string; csrfDigest: string | null; transport: "web" | "native"; revoked: boolean }
 export interface SessionSeed {
   scenario_id: string; scenario_version: string; horizon_minute: number;
@@ -50,6 +54,7 @@ export interface ImageBinding { report_id: string; input_digest: string; model: 
 export interface RuntimeRegistry {
   serialization?: string; seedForReset?: (previous: SessionSeed) => SessionSeed;
   commands?: Record<string, ReducerDefinition>; views?: Record<string, ViewDefinition>;
+  drivers?: BackgroundDrivers;
   onLeaseExpired?: (snapshot: Snapshot, lease: DurableLease, now: number) => Record<string, unknown>;
   imageBinding?: (snapshot: Snapshot, reportId: string) => ImageBinding | null;
 }

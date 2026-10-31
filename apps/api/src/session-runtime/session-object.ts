@@ -2,7 +2,7 @@ import { DurableObject } from "cloudflare:workers";
 import { parseSchema } from "@floodops/contracts";
 import { hash, prepareProof, randomId, randomToken, seal, stable, validateKey } from "../shared/crypto";
 import { errorReply, fail } from "../shared/platform-error";
-import type { Call, PlatformBindings, Reply, RuntimeRegistry, Snapshot } from "../shared/platform-types";
+import type { BackgroundDriverKind, Call, PlatformBindings, Reply, RuntimeRegistry, Snapshot } from "../shared/platform-types";
 import { migrate } from "./schema";
 import { Store } from "./store";
 import { matchesSerialization } from "./serialization";
@@ -41,6 +41,15 @@ export class SessionDO extends DurableObject<PlatformBindings> {
   async dispatch(serialized: string): Promise<string> {
     const call = JSON.parse(serialized) as Call;
     return JSON.stringify(await this.invokeCall(call));
+  }
+  async startDriver(kind: BackgroundDriverKind, callJson: string, replyJson: string): Promise<void> {
+    if (kind !== "planning" && kind !== "evaluation") fail(422, "INVALID_SCHEMA");
+    const driver = this.registry.drivers?.[kind];
+    if (!driver) fail(503, "CONFIG_INCOMPLETE");
+    const call = JSON.parse(callJson) as Call, reply = JSON.parse(replyJson) as Reply;
+    const dispatch = async (next: Call): Promise<Reply> => JSON.parse(await this.dispatch(JSON.stringify(next))) as Reply;
+    this.ctx.waitUntil(kind === "evaluation" ? scheduler.wait(50).then(() => driver(dispatch, call, reply))
+      : Promise.resolve().then(() => driver(dispatch, call, reply)));
   }
   protected async invokeCall(call: Call): Promise<Reply> {
     try {

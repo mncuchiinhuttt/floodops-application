@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { PLANNER_VERSION, searchLimits } from "./deterministic-types";
 import { CONTRACT_VERSION, parseSchema } from "@floodops/contracts";
 import type { RuntimeRegistry } from "../../shared/index";
+import { drivePlanning } from "./drive-planning";
 import { createPlanningRouter } from "./router";
 import { planningViews } from "./views";
 import { startPlanning } from "./start-job";
@@ -31,8 +32,9 @@ export function createPlanningRuntime<State>(options: PlanningRuntimeOptions<Sta
     [PLAN_START]: startPlanning(resolved), [PLAN_BEGIN]: beginPlanning(), [PLAN_COMPLETE]: completePlanning(resolved),
     [PLAN_CANCEL]: cancelPlanning(), [PLAN_DECIDE]: decideActions(resolved), [PLAN_DRY_RUN]: dryRunCommand(resolved),
     [PLAN_EXECUTE]: executePlan(resolved), [INCIDENT_TRIGGER]: triggerIncident(resolved) },
-    views: planningViews(resolved), onLeaseExpired: expirePlanning };
-  return { registry, planner, router: createPlanningRouter(resolved), committedPolicy: createCommittedMovementPolicy };
+    views: planningViews(resolved), drivers: { planning: (dispatch, call, reply) => drivePlanning(dispatch, call, reply, resolved) },
+    onLeaseExpired: expirePlanning };
+  return { registry, planner, router: createPlanningRouter(), committedPolicy: createCommittedMovementPolicy };
 }
 export { createCommittedMovementPolicy } from "./committed-policy";
 export type { CommittedMovementGrant, PlanningRuntimeOptions } from "./runtime-types";

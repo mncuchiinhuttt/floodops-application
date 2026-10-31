@@ -10,6 +10,7 @@ const simulation = createSimulationRuntime({ persistence: simulationPersistence,
 function registry(feature: typeof planning): RuntimeRegistry {
   return { commands: { ...simulation.registry.commands, ...feature.registry.commands },
     views: { ...simulation.registry.views, ...feature.registry.views },
+    drivers: feature.registry.drivers,
     onLeaseExpired: (snapshot, lease, now) => feature.registry.onLeaseExpired!(
       { ...snapshot, values: simulation.registry.onLeaseExpired!(snapshot, lease, now) }, lease, now) };
 }

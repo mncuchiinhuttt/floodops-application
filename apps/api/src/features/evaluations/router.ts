@@ -2,18 +2,16 @@ import { Hono } from "hono";
 import { parseSchema } from "@floodops/contracts";
 import { createSessionRuntimeClient, fail, invoke, jsonBody, runtimeCall, send } from "../../shared/index";
 import type { AppEnv } from "../../shared/index";
-import { driveEvaluation } from "./drive-evaluation";
 import { EVAL_START, EVAL_VIEW } from "./runtime-types";
-import type { EvaluationOptions } from "./runtime-types";
 
-export function createEvaluationRouter<State>(options: EvaluationOptions<State>): Hono<AppEnv> {
+export function createEvaluationRouter(): Hono<AppEnv> {
   const router = new Hono<AppEnv>();
   router.post("/sessions/:session_id/evaluation-runs", async c => {
     const call = runtimeCall(c, "command", { name: EVAL_START, payload: parseSchema("EvaluationInput", await jsonBody(c.req.raw)) });
     const reply = await invoke(c, call);
     if (reply.status !== 200) return send(c, reply);
-    // Yield once so the 202 flushes before the CPU-bound trials start; duplicates (idempotent replay) are fenced by EVAL_BEGIN.
-    c.executionCtx.waitUntil(scheduler.wait(50).then(() => driveEvaluation(createSessionRuntimeClient(c.env).dispatch, call, reply, options)));
+    // Duplicate start replays are fenced by EVAL_BEGIN; the DO delays its own driver for the 202 response.
+    await createSessionRuntimeClient(c.env).startDriver("evaluation", call, reply);
     return send(c, { ...reply, status: 202 }, "createEvaluationRun");
   });
   router.get("/sessions/:session_id/evaluation-runs/:evaluation_id", async c => {
