@@ -1,0 +1,38 @@
+{
+  "work_item_id": "session-platform-phase-04-v3",
+  "role_id": "session-platform",
+  "base_sha": "30e058252d4176c76a8b17b40e25786f34b50b4c",
+  "observed_launch_sha": "d14dc05ff0a944639b699eae5b1de4b42c690e67",
+  "delivery_sha": "9169bd13c1e2da45010b1daa255d36f36b575092",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e",
+  "source_sha": "220d41c685dae65da079161230109acebfdfa2ac",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/src/app/http.ts",
+    "apps/api/src/features/session/stream.ts",
+    "apps/api/src/session-runtime/README.md",
+    "apps/api/test/capabilities/composed-http-fixtures.ts",
+    "apps/api/test/capabilities/response-headers.test.ts",
+    "apps/api/test/capabilities/tsconfig.json",
+    "plans/reports/worktree-session-platform-session-platform-phase-04-v3.md"
+  ],
+  "checks": [
+    {
+      "command": "Lead exact verifier/signatures/review;86 Workerd+5 composition+35 tooling; API/test/tooling types and lint",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-session-platform-session-platform-phase-04-v3.md"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [
+    "apps/api/src/app/index.ts",
+    "apps/api/src/session-runtime/index.ts",
+    "apps/api/src/shared/index.ts"
+  ],
+  "integration_requests": [],
+  "blocked_prerequisites": [],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

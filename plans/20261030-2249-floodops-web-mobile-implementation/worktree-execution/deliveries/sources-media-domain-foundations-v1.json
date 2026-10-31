@@ -1,0 +1,61 @@
+{
+  "work_item_id": "sources-media-domain-foundations-v1",
+  "role_id": "sources-media",
+  "base_sha": "fdb1104cdc7e02aa1da284f405eed56bb010447a",
+  "observed_launch_sha": "c77d7296fd0b384b1e5f0c9df1bece6a1a8bf142",
+  "delivery_sha": "2700cdd7f482ac3fb2d4e9c4c581f34b1ca853c8",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "69cb1d52e620d0bad6e4732c7d73f5e72b58281bf443265cd6fa79cc1e7aa40e",
+  "source_sha": "f4806fcec4810fc32c096721a4c59ae5ed58064e",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/test/observations/current-knowledge.test.ts",
+    "apps/api/test/observations/pipeline.test.ts",
+    "apps/api/test/observations/report-proposals.test.ts",
+    "apps/api/test/sources/normalization.test.ts",
+    "apps/api/test/sources/source-pipeline-smoke.ts",
+    "apps/api/test/sources/test-context.ts",
+    "apps/api/test/sources/test-tsconfig.json",
+    "packages/domain/src/knowledge/current-evidence.ts",
+    "packages/domain/src/knowledge/derive-current-knowledge.ts",
+    "packages/domain/src/knowledge/index.ts",
+    "packages/domain/src/knowledge/propose-conflict-resolution.ts",
+    "packages/domain/src/knowledge/propose-observation-acceptance.ts",
+    "packages/domain/src/knowledge/reconcile-evidence.ts",
+    "packages/domain/src/reporting/index.ts",
+    "packages/domain/src/reporting/report-identity.ts",
+    "packages/domain/src/reporting/report-types.ts",
+    "packages/domain/src/reporting/report-validation.ts",
+    "packages/domain/src/reporting/submit-report.ts",
+    "packages/domain/src/sources/README.md",
+    "packages/domain/src/sources/index.ts",
+    "packages/domain/src/sources/location.ts",
+    "packages/domain/src/sources/normalize-input.ts",
+    "packages/domain/src/sources/source-policy.ts",
+    "packages/domain/src/sources/source-time.ts",
+    "packages/domain/src/sources/source-types.ts",
+    "plans/reports/worktree-sources-media-sources-media-domain-foundations-v1.md"
+  ],
+  "checks": [
+    {
+      "command": "Lead exact verifier/signatures/review;51 tests175 assertions; standard and scoped types/lint; actual public source pipeline smoke",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-sources-media-sources-media-domain-foundations-v1.md"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [
+    "@floodops/domain/sources",
+    "@floodops/domain/knowledge",
+    "@floodops/domain/reporting"
+  ],
+  "integration_requests": [],
+  "blocked_prerequisites": [
+    "Generic platform is now verified; full backend/source media/model/device/calibration/security release gates are NOT passed.",
+    "Legacy shared multi-vehicle observation with conflict in one vehicle is explicitly SOURCE_SCOPE_INCOMPATIBLE. Existing Sources guard stays fail-closed; new report observations split per vehicle. SimulationData correction and fresh consumer continuation required before removing that guard or full Sources acceptance.",
+    "Images local binding configured, but decode/EXIF pipeline and production account entitlement not exercised here; local/offline tests permitted, remote/paid Images/model calls not granted."
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false
+}

@@ -1,0 +1,8 @@
+{
+  "code_sha": "0a309726cfc22fe068312db0fdd0cc2bfeed2a66",
+  "platform_merge_sha": "db322c701ddff357b2479587bd466dab271e02e0",
+  "source_partial_merge_sha": "e99f9a2629b7ce059396e5c7c9e8b36715e0512f",
+  "passed": "86 Workerd/5 composition/35 tooling; Source51tests175assertions, strict types/lint/real source pipeline; requested3exports/APIfixture dependency/local bindings supplied",
+  "next": "Parent resume same Source thread01a19063-dc77-760e-9f33-7534e3b6c0e3 for full phase05 and same SimulationData thread01a19021-eb66-726b-9a3c-447d01c1c0d3 for narrow producer correction, separate exact receipts upcoming. No duplicate writer. ReviewRewards and PlannerSafety new deliveries queued, not claimed integrated/gates.",
+  "client_batch": "Registry metadata review ready: react-router8.5.1,react-query5.105.0,Expo58-recommended packages; no manifest changes or package hooks for that new batch yet. Active client receipts untouched; resume preparation after this fullSources unblock."
+}

@@ -1,0 +1,52 @@
+{
+  "amendment_id": "full-source-platform-continuation-v1",
+  "status": "authorized",
+  "authority": "Parent/user authorized continuing full SourcesMedia after actual platform-ready. This freezes integrated corrected platform+simulation+source foundations and requested central exports/fixture/local bindings. No API or safety semantics changed, no production/paid grant.",
+  "work_items": [
+    {
+      "role_id": "sources-media",
+      "work_item_id": "sources-media-phase-05-v1",
+      "include_prefixes": [
+        "packages/domain/src/sources/",
+        "packages/domain/src/knowledge/",
+        "packages/domain/src/reporting/",
+        "apps/api/src/features/scenario/",
+        "apps/api/src/features/scenario-assets/",
+        "apps/api/src/features/sources/",
+        "apps/api/src/features/knowledge/",
+        "apps/api/src/features/reports/",
+        "apps/api/src/features/media/",
+        "apps/api/test/sources/",
+        "apps/api/test/observations/",
+        "apps/api/test/media/"
+      ],
+      "include_files": [],
+      "scope": "Full reachable phase05 code/routes/media/normalized-image port, minus global role exclusions reports/review and knowledge/conflict-review. Preserve legacy mixed-vehicle guard until corrected producer is integrated and fresh receipt authorized. No full sources-ready until all acceptance prerequisites/tests including that correction are proven."
+    },
+    {
+      "role_id": "simulation-data",
+      "work_item_id": "simulation-data-scope-conflict-v3",
+      "include_prefixes": [
+        "packages/simulation/test/scenario/",
+        "packages/simulation/test/movement/"
+      ],
+      "include_files": [
+        "packages/simulation/src/scenario/validate-knowledge.ts",
+        "packages/simulation/README.md"
+      ],
+      "scope": "Narrow producer correction: derive consistency/conflict per segment/vehicle/current epoch/expiry rather than treating global Observation.has_conflict as per-scope veto. Actual contrary matching conditions stay hard conflict; no wire/schema/dataset or SourcesMedia source changes."
+    }
+  ],
+  "known_defect": {
+    "location": "packages/simulation/src/scenario/validate-knowledge.ts known-state check uses observations.some(item=>item.has_conflict||item.condition!==knowledge.condition)",
+    "repro": "Shared accepted normal observation spans bike+car; contradictory fresh bike-only observation sets shared global has_conflict=true. Bike correctly unresolved, car only normal should remain known, but Sim global flag rejects known car. Source report-proposals regression currently fails closed SOURCE_SCOPE_INCOMPATIBLE. New split-per-vehicle reports pipeline3 tests pass.",
+    "source_consumer_guard": "packages/domain/src/knowledge/reconcile-evidence.ts lines11-13. Simulation owner must NOT edit/remove it; Source owner only removes after new producer receipt and matching cross-scope regressions.",
+    "gate_qualification": "Existing functional simulation readiness remains qualified, no claim legacy case passed. FullSource independent API/media may implement now; affected legacy acceptance and final Sources gate wait fix."
+  },
+  "rules": [
+    "Existing thirteen roles/nine waves/full gate DAG retained; no worker self-publishing gate or grant.",
+    "C1 stays66API194schemas8tools, policy hash unchanged. Only Lead central configs/manifests/index/routers composition; no force sync/reset/rebase/stash.",
+    "Local IMAGES remote:false/offline and private R2 tests allowed; no account/key/resource/paid remote Images/provider/model/EAS/device/store actions.",
+    "After producer fix, preserve Source WIP at safe checkpoint and issue fresh baseline before changed producer artifact adoption; do not follow moving integration."
+  ]
+}

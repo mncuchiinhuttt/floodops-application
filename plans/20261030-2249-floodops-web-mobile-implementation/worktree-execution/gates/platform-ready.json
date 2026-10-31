@@ -1,0 +1,20 @@
+{
+  "gate_id": "platform-ready",
+  "status": "passed",
+  "writer": "integration-lead",
+  "commit_sha": "0a309726cfc22fe068312db0fdd0cc2bfeed2a66",
+  "producer_source_sha": "220d41c685dae65da079161230109acebfdfa2ac",
+  "producer_delivery_sha": "9169bd13c1e2da45010b1daa255d36f36b575092",
+  "producer_merge_sha": "db322c701ddff357b2479587bd466dab271e02e0",
+  "contract_index": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/source-platform-ready-v1-index.json",
+    "sha256": "710364ea3b11b6491d60ca256ff3c9c41719c6663ce6e3280bb811e401d9d21b"
+  },
+  "checks": [
+    "Exact7-path C/R delivery verifier and both existing signed identities pass; reviewed minimal c.newResponse fix and node test types",
+    "Lead actual integrated Workerd86 tests pass; composition5 tests pass including prior header regression; root tooling35 tests70 assertions pass",
+    "API/capability/Lead-runtime strict types and scoped lint pass",
+    "After Source export/catalog/local bindings update, frozen install and composition5/typechecks/lint reran pass; no production test seed or fake feature projection"
+  ],
+  "qualification": "Generic platform/auth/CAS/idempotency/Reset/expiry/event/image metadata/lease readiness only; missing business projections remain CONFIG_INCOMPLETE. No full backend/source/media/provider/device/D04/security/release claim or remote grant."
+}
