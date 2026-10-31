@@ -4,7 +4,12 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "preview/**/*.ts",
-    "preview/**/*.tsx"
+    "preview/**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "app.config.ts",
+    "expo-env.d.ts",
+    ".expo/types/**/*.ts"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",

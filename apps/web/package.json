@@ -10,7 +10,9 @@
     "@floodops/api-client": "workspace:*",
     "@floodops/design-tokens": "workspace:*",
     "@floodops/icons": "workspace:*",
-    "@floodops/ui-web": "workspace:*"
+    "@floodops/ui-web": "workspace:*",
+    "react-router": "8.5.1",
+    "@tanstack/react-query": "5.105.0"
   },
   "devDependencies": {
     "@types/react": "19.3.0",
@@ -21,12 +23,16 @@
     "@testing-library/dom": "10.4.2",
     "vite": "8.3.5",
     "tailwindcss": "4.3.3",
-    "@tailwindcss/vite": "4.3.3"
+    "@tailwindcss/vite": "4.3.3",
+    "@vitejs/plugin-react": "6.1.2"
   },
   "scripts": {
     "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
     "test": "vitest run --environment jsdom",
     "dev:partial": "vite --config vite.partial.config.ts --host 127.0.0.1 --port 5174",
-    "build:partial": "vite build --config vite.partial.config.ts"
+    "build:partial": "vite build --config vite.partial.config.ts",
+    "dev": "vite --host 127.0.0.1 --port 5174",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5174"
   }
 }
