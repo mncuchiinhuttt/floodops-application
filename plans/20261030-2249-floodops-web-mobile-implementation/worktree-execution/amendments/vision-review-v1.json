@@ -1,0 +1,34 @@
+{
+  "amendment_id": "vision-review-v1",
+  "status": "authorized",
+  "source_document_repository_commit": "2138ab6a1e405e78d769c7fece6c267d50802e7f",
+  "published_source_commit": "dee4dfb00af173eb3cccc2a0df75e67fa1577734",
+  "superseded_work_items": [
+    "contracts-client-phase-01-v1",
+    "contracts-client-phase-01-v2"
+  ],
+  "new_work_item": "contracts-client-phase-01-v3",
+  "changed_operations": 66,
+  "paths": 61,
+  "schemas": 194,
+  "commander_tools": 8,
+  "acceptance_delta": "IR-01..IR-12; advisory-only server-derived score/recommendation; manual decisions stay independent.",
+  "worker_state": {
+    "thread_id": "01a19003-3235-7780-bc5f-a0e0f3e95023",
+    "observed_app_status": "idle",
+    "last_turn_status": "interrupted",
+    "current_checkpoint_head": "22d7703d52befbb4118622e46685b30d76f0f61e",
+    "wip_preserved": true,
+    "update_acknowledgement": false,
+    "interrupt_result": "Native send_input and app send_message both returned agent/thread not found; no stop acknowledgement claimed."
+  },
+  "static_validation": {
+    "operations": 66,
+    "paths": 61,
+    "schemas": 194,
+    "refs": 1576,
+    "examples": 46,
+    "old_operations_unchanged": true
+  },
+  "runtime_evidence": "No vision model/provider/device tests or image-review application implementation claimed. No affected owner may resume using the old hash."
+}

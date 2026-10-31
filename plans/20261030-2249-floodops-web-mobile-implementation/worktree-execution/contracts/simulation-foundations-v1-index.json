@@ -1,0 +1,27 @@
+{
+  "mode": "approved-amendment",
+  "source_commit": "dee4dfb00af173eb3cccc2a0df75e67fa1577734",
+  "contracts_ready": false,
+  "artifacts": [
+    {
+      "path": "docs/architecture/bun-toolchain.md",
+      "sha256": "2d01c82c1ab1bf3c51830bf014632d2449d9bdebf4fd007557b3cb203f065cce"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-03-scenario-graph-simulator.md",
+      "sha256": "c35285e9fe225dc916899015b82ee5ffd51c35e53562a23bc3d7851224a3b5f6"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/architecture.md",
+      "sha256": "352aaf2265e9231efaeeae78023951d9eb6d6b64acbf9734c0cd5fcb33fd05f0"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/policy-rules.md",
+      "sha256": "8a62b39f0f4d83e91ea9ed5194970262eb5e92a6c5245e558ba9d04967b4f284"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/simulation-calibration.md",
+      "sha256": "2562686682dd775fd61b64dc03de8b0bcd086228e6cd993e5276065af85df0e8"
+    }
+  ]
+}

@@ -2,18 +2,18 @@
   "gate_id": "plan-published",
   "status": "passed",
   "writer": "integration-lead",
-  "commit_sha": "097daad8d137b9e3fcec40a0033c6e89131701eb",
+  "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734",
   "policy_ref": {
     "path": "AGENTS.md",
     "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
     "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
   },
-  "reason": "Final user PRD/plan clarification reviewed and published separately from tooling. 34 US rows and 64 API operations preserved; bootstrap gate is not application acceptance.",
+  "reason": "US-30 image-review document amendment reviewed/published; 66 operations/61 paths/194 schemas, 46 static schema examples passed. No contracts-ready or app/model/device claim.",
   "evidence_path": "docs/decisions/document-baseline.json",
   "implementation_agents_started": false,
-  "launch_receipts_issued": false,
+  "launch_receipts_issued": true,
   "bootstrap_design_contract_index": {
-    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/bootstrap-contract-index.json",
-    "sha256": "7cf65e1c4775ab8d790247ff4b6356eeac6dd785a2c8bd6c425ba2c9462b910f"
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/vision-review-v1-index.json",
+    "sha256": "974903fd7c63ff8bff2a19a8761cdcb9b48557700889e06c6cf4a4eb8ce248d7"
   }
 }
