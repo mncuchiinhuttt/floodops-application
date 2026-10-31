@@ -3,8 +3,9 @@ import { formatEtag, parseSchema } from "@floodops/contracts";
 import type { Condition, SessionCreated } from "@floodops/contracts";
 import type { Call, PlatformBindings, Reply, Snapshot } from "../../../src/shared/index";
 import type { ReviewStore } from "../../../src/features/reports/review/index";
-import type { SourceFixture } from "./source-fixture";
-import { contributorA, contributorB, reportA } from "./source-fixture";
+import { prepareSourceReviewImage } from "../../../src/features/reports/index";
+import { imageContextKey, prepareImageReviewBinding } from "../../../src/features/reports/review/index";
+import { contributorA, contributorB, fixtureSource, imageConfig, reportA, reportB } from "./source-fixture";
 
 export const bindings = env as unknown as PlatformBindings;
 export const key = () => crypto.randomUUID();
@@ -17,9 +18,13 @@ export function fixture(created: SessionCreated): Fixture {
 export async function create(): Promise<Fixture> {
   const response = await request("/sessions", { method: "POST", headers: { "Content-Type": "application/json",
     "Idempotency-Key": key(), "X-Client-Request-Scope": key() },
-    body: JSON.stringify({ scenario_id: "scn_functional1", scenario_version: "1", client_type: "native" }) });
+    body: JSON.stringify({ scenario_id: "scn_functional1", scenario_version: "2", client_type: "native" }) });
   if (response.status !== 201) throw new Error(`Create failed: ${response.status} ${await response.text()}`);
-  return fixture(parseSchema("SessionCreatedResponse", await response.json()).data!);
+  const owner = fixture(parseSchema("SessionCreatedResponse", await response.json()).data!);
+  for (const reportId of [reportA, reportB]) await prepareSourceReviewImage(bindings,
+    { config: imageConfig, prepare: prepareImageReviewBinding, contextKey: imageContextKey },
+    { sessionId: owner.id, requestId: key(), auth: { token: owner.token, transport: "bearer", origin: null, csrf: null } }, reportId);
+  return owner;
 }
 export const stub = (f: Fixture) => bindings.SESSIONS.get(bindings.SESSIONS.idFromName(f.id));
 export async function rpc(f: Fixture, fields: Partial<Call> = {}): Promise<Reply> {
@@ -31,7 +36,7 @@ export async function snapshot(f: Fixture): Promise<Snapshot> {
     "SELECT value FROM documents WHERE collection='runtime' AND id='snapshot'").one().value) as Snapshot);
 }
 export function domain(snapshot: Snapshot) {
-  const source = snapshot.values.reviewTestSource as SourceFixture;
+  const source = fixtureSource(snapshot);
   return { source, rewards: snapshot.values.reviewRewards as ReviewStore | undefined };
 }
 export async function review(f: Fixture, reportId = reportA, options: { key?: string; etag?: string; decision?: "accept" | "reject"; condition?: Condition | null } = {}) {
@@ -57,6 +62,11 @@ export async function clock(f: Fixture, minute: number, etag = f.etag) {
 export const etagOf = (reply: Reply) => formatEtag(reply.body.meta as { session_id: string; generation: number; revision: number });
 export const responseEtag = (value: { body: unknown }) => formatEtag((value.body as Reply["body"]).meta as { session_id: string; generation: number; revision: number });
 export async function reserve(f: Fixture, id = reportA, requestKey = key()) {
+  const current = domain(await snapshot(f)).source.reports.find(item => item.report_id === id);
+  if (current?.status === "pending_review" && !domain(await snapshot(f)).source.images[id]?.prepared && f.created.participant.role === "dispatcher") {
+    await prepareSourceReviewImage(bindings, { config: imageConfig, prepare: prepareImageReviewBinding, contextKey: imageContextKey },
+      { sessionId: f.id, requestId: key(), auth: { token: f.token, transport: "bearer", origin: null, csrf: null } }, id);
+  }
   return rpc(f, { kind: "image-reserve", name: id, key: requestKey,
     path: `/api/v1/sessions/${f.id}/reports/${id}/image-review-jobs`, payload: {} });
 }

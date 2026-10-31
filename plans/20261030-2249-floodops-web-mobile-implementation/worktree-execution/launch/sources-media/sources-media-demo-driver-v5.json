@@ -1,0 +1,52 @@
+{
+  "work_item_id": "sources-media-demo-driver-v5",
+  "role_id": "sources-media",
+  "phase_ids": [
+    5
+  ],
+  "base_sha": "cf2acdd2f845ea14641544424981760248b4d960",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/rapid-runnable-demo-v1-index.json",
+    "commit_sha": "cf2acdd2f845ea14641544424981760248b4d960",
+    "sha256": "4c0567b8dbb3b5b9fce91bfcf3b1abc82db0dafe20619b4d152b03d0232ca335"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "simulation-ready",
+      "commit_sha": "30e058252d4176c76a8b17b40e25786f34b50b4c"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    },
+    {
+      "gate_id": "platform-ready",
+      "commit_sha": "3cebe9e8d8b4fd4fd11cd319b1549952c119caa5"
+    },
+    {
+      "gate_id": "ui-libraries-ready",
+      "commit_sha": "223a58654210e934dfb1eda1092be33a7fdc30fe"
+    }
+  ],
+  "expected_branch": "feat/floodops-sources-media",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/05-sources-media",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "rapid-runnable-demo-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}

@@ -1,4 +1,4 @@
-import type { Approval, Execution, Incident, Notification, Plan, PlanningJob, PlanningJobInput, Route, SessionMeta, ToolInput, Observation, VehicleType } from "@floodops/contracts";
+import type { DeterministicPlannerMetadata, Approval, Execution, Incident, Notification, Plan, PlanningJob, PlanningJobInput, Route, SessionMeta, InternalServiceInput, Observation, VehicleType } from "@floodops/contracts";
 import type { SearchLimits, SearchEvidence } from "./deterministic-types";
 import type { BranchId, SimulationRun } from "@floodops/simulation";
 import type { SimulationPersistence } from "@floodops/domain/public-ports";
@@ -26,13 +26,13 @@ export interface PlanningRuntimeOptions<State> {
   search?: Partial<SearchLimits>;
   material?: () => PlanningMaterial;
   deadlineMs?: number; maxTurns?: number; maxToolCalls?: number;
-  observationProposal?: (context: TransitionContext, run: SimulationRun, input: ToolInput<"record_road_observation">) => Observation;
+  observationProposal?: (context: TransitionContext, run: SimulationRun, input: InternalServiceInput<"record_road_observation">) => Observation;
   validateCause?: (context: TransitionContext, run: SimulationRun, input: PlanningJobInput) => boolean;
 }
 export interface CommanderRequest { model: string; instructions: string; input: unknown[]; tools: unknown[]; signal: AbortSignal }
 export interface CommanderProvider { respond(request: CommanderRequest): Promise<unknown> }
 export interface ResolvedPlanningOptions<State> extends PlanningRuntimeOptions<State> {
-  limits: SearchLimits; model: string; modelConfigHash: string; material: () => PlanningMaterial;
+  planner: DeterministicPlannerMetadata; limits: SearchLimits; model: string; modelConfigHash: string; material: () => PlanningMaterial;
   deadlineMs: number; maxTurns: number; maxToolCalls: number;
 }
 export const PLANNING_KEY = "planning_runtime";

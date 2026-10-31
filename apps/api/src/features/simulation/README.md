@@ -41,3 +41,10 @@ Default budgets:64 boundaries/chunk,32 chunks/driver turn,15 second lease. Confi
 Generic platform authentication still permits some other owners' operational commands while advancing. Those owners must reject incompatible mutations using the active advance lock; an unrelated revision supersedes this bound lease. Lead must compose all owner hooks/commands, rather than claim full business readiness from this contribution.
 
 Local actual Workerd coverage uses an owned SQLite DO worker/config and explicit public-simulator policy: reservations, bounded checkpoints, eviction, idempotency, bad nonce/missing generic fence, revision/current-pointer fencing, watchdog/access/alarm, explicit resume, Reset, canonical HTTP202/background progression, privacy and role/H guards. It is not full Planner/Review integration, model/K4/D04, UI/device or production evidence. Evaluation runtime/provider endpoints remain gated on their authorized prerequisites.
+
+
+## Atomic post-advance reconciliation
+
+Optional `afterAdvance({context,run,values})` is a synchronous values-to-values port, called after bounded simulator work and proposed persistence/job/lease construction but before platform commit. Context already has proposed time, post-command revision, status, pointer and lease, with the same proposed values/run. Deeply frozen inputs prevent mutation. Root can inject real Source/Review expiry-gap reconciliation; this module copies none of those business rules.
+
+Return all existing namespaces. Undefined values, namespace removal/nulling, Promise results or changes to simulation checkpoint, advance job state or runtime_contract are rejected. Hook cannot return revisions, pointers or leases. A thrown/invalid/async hook aborts the entire transaction; successful reconciliation shares exactly one revision increment. Retry remains idempotent. No reconciliation is performed on failed/expired old continuations or Reset replacements.

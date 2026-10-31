@@ -11,6 +11,7 @@ export function createRewardViews(options: ReviewOptions): Record<string, ViewDe
       return options.source.read(context).reports.map(report => {
         const image = options.source.image(context.snapshot, report);
         return { report_id: report.report_id, description: report.description, normalized_hash: image?.normalized_hash ?? null,
+          pending: report.status === "pending_review" && report.kind === "citizen",
           ready: !!image?.ready && !!image.prepared, duplicate: image?.duplicate ?? false };
       });
     } },

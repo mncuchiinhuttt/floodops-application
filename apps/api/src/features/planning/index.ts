@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { PLANNER_VERSION, searchLimits } from "./deterministic-types";
-import { CONTRACT_VERSION } from "@floodops/contracts";
+import { CONTRACT_VERSION, parseSchema } from "@floodops/contracts";
 import type { RuntimeRegistry } from "../../shared/index";
 import { createPlanningRouter } from "./router";
 import { planningViews } from "./views";
@@ -18,7 +18,11 @@ export function createPlanningRuntime<State>(options: PlanningRuntimeOptions<Sta
   if (!Number.isSafeInteger(deadlineMs) || deadlineMs < 1 || deadlineMs > 60000 || !Number.isSafeInteger(maxTurns)
     || maxTurns < 1 || maxTurns > 12 || !Number.isSafeInteger(maxToolCalls) || maxToolCalls < 1 || maxToolCalls > 64) throw new Error("Invalid planning resource budget.");
   const limits = searchLimits(options.search);
-  const resolved: ResolvedPlanningOptions<State> = { ...options, limits, model: PLANNER_VERSION, deadlineMs, maxTurns, maxToolCalls,
+  const planner = Object.freeze(parseSchema("DeterministicPlannerMetadata", { kind: "deterministic",
+    algorithm_version: PLANNER_VERSION, search_limit: limits.maxCandidates,
+    config_hash: createHash("sha256").update(JSON.stringify({
+      algorithm: PLANNER_VERSION, limits, deadlineMs, contract: CONTRACT_VERSION })).digest("hex") }));
+  const resolved: ResolvedPlanningOptions<State> = { ...options, planner, limits, model: PLANNER_VERSION, deadlineMs, maxTurns, maxToolCalls,
     modelConfigHash: createHash("sha256").update(JSON.stringify({
       algorithm: PLANNER_VERSION, limits, deadlineMs, contract: CONTRACT_VERSION })).digest("hex"),
     material: options.material ?? (() => ({ jobId: "job_" + crypto.randomUUID(), leaseId: "lease_" + crypto.randomUUID(),
@@ -28,7 +32,7 @@ export function createPlanningRuntime<State>(options: PlanningRuntimeOptions<Sta
     [PLAN_CANCEL]: cancelPlanning(), [PLAN_DECIDE]: decideActions(resolved), [PLAN_DRY_RUN]: dryRunCommand(resolved),
     [PLAN_EXECUTE]: executePlan(resolved), [INCIDENT_TRIGGER]: triggerIncident(resolved) },
     views: planningViews(resolved), onLeaseExpired: expirePlanning };
-  return { registry, router: createPlanningRouter(resolved), committedPolicy: createCommittedMovementPolicy };
+  return { registry, planner, router: createPlanningRouter(resolved), committedPolicy: createCommittedMovementPolicy };
 }
 export { createCommittedMovementPolicy } from "./committed-policy";
 export type { CommittedMovementGrant, PlanningRuntimeOptions } from "./runtime-types";

@@ -66,7 +66,7 @@ test("new multi-vehicle report splits evidence so bike conflict cannot poison ca
   expect(next.knowledge.find(item => item.segment_id === "seg_edge27" && item.vehicle_type === "car")).toMatchObject({ state: "known", condition: "impassable" });
   expect(proposal.observations.find(item => item.observation_id === "obs_splitauto1")?.has_conflict).toBe(false);
   expect(proposal.report.observation_ids).toHaveLength(2);
-  expect(proposeObservationAcceptance(proposal.report, "impassable", run.knowledge, { ...context, observations: proposal.observations }).kind).toBe("redelivery");
+  expect(proposeObservationAcceptance({ ...proposal.report, review_result_id: "review_pipelinefixture01", reviewed_at: context.receivedAt }, "impassable", run.knowledge, { ...context, observations: proposal.observations }).kind).toBe("redelivery");
 });
 
 test("integrated producer preserves per-vehicle conflict/closure/expiry without route or award effects", () => {

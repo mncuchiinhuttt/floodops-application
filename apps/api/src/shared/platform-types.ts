@@ -44,6 +44,7 @@ export interface ReducerDefinition {
 export interface ViewDefinition { permission: Permission; roles: Role[]; project: (context: TransitionContext) => unknown }
 export interface ImageBinding { report_id: string; input_digest: string; model: string; model_config_hash: string; rubric_version: "image-quality-v1"; pending: boolean }
 export interface RuntimeRegistry {
+  serialization?: string; seedForReset?: (previous: SessionSeed) => SessionSeed;
   commands?: Record<string, ReducerDefinition>; views?: Record<string, ViewDefinition>;
   onLeaseExpired?: (snapshot: Snapshot, lease: DurableLease, now: number) => Record<string, unknown>;
   imageBinding?: (snapshot: Snapshot, reportId: string) => ImageBinding | null;

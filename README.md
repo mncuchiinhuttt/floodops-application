@@ -30,3 +30,15 @@ Mỗi role có một worktree và receipt được Lead commit trước launch. 
 
 Remote GitHub phải PRIVATE. Production, store submission và promotion sau implementation cần authorization riêng.
 
+## Local OpenAI configuration
+
+User fills `/Users/vominhlong/seahackathon/floodops-application/.env` locally; it is ignored and not copied into worktrees. `.env.example` contains no secret. Provider is the backend-only OpenAI Responses photo adapter; planner stays deterministic. Set key/model there, keep `OPENAI_IMAGE_REVIEW_ENABLED=false` until the separate live-test budget/data approval. `MAX_OUTPUT_TOKENS` is an output limit, not a USD cap. The current M1 serializer/provider composition rollout must finish before claiming photo AI runs; no real vision test is implied by this template.
+
+From the implementation integration root, the installed Wrangler supports loading that exact user-owned file without copying or shell-sourcing it:
+
+```sh
+node apps/api/node_modules/wrangler/bin/wrangler.js dev --config tooling/runtime/wrangler.client-demo.jsonc --env-file /Users/vominhlong/seahackathon/floodops-application/.env --local --ip 127.0.0.1 --port 8760 --persist-to .wrangler/state/user-local
+```
+
+This is explicitly local synthetic test configuration, not deployment: isolated SQLite/private R2/Images, public synthetic local signing values, web origin127.0.0.1:5174. For ordinary non-synthetic dev, use the API-local config with operator-supplied session secrets. Running Bun does not automatically expose its `.env` to Workerd; `--env-file` passes it into the Worker binding environment. The installed Wrangler4.156.0 CLI was checked for this option. Automatic `.env` search otherwise uses the Wrangler config directory, and `.dev.vars` takes precedence; do not duplicate real keys across files. See [Cloudflare local environment docs](https://developers.cloudflare.com/workers/local-development/environment-variables/). Never print bindings/process.env or prefix this secret with VITE_/EXPO_PUBLIC_.
+

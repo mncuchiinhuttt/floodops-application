@@ -4,11 +4,11 @@
   "phase_ids": [
     10
   ],
-  "base_sha": "2a440311b4a8a78f1dc3303e7aa9c8c35d097f40",
+  "base_sha": "cf2acdd2f845ea14641544424981760248b4d960",
   "contract_ref": {
-    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/m1-wire-rollout-v3-index.json",
-    "commit_sha": "2a440311b4a8a78f1dc3303e7aa9c8c35d097f40",
-    "sha256": "90e923e9a92af548aefa38975eb3d177805521862ff68b7b16a423903eff82cd"
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/rapid-runnable-demo-v1-index.json",
+    "commit_sha": "cf2acdd2f845ea14641544424981760248b4d960",
+    "sha256": "4c0567b8dbb3b5b9fce91bfcf3b1abc82db0dafe20619b4d152b03d0232ca335"
   },
   "required_gates": [
     {
@@ -42,7 +42,7 @@
   "allowed_deployment": false,
   "status": "authorized",
   "contract_mode": "approved-amendment",
-  "amendment_id": "m1-wire-rollout-v3",
+  "amendment_id": "rapid-runnable-demo-v1",
   "remote_authorizations": [],
   "policy_ref": {
     "path": "AGENTS.md",

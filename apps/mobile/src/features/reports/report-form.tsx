@@ -1,13 +1,13 @@
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { Alert, Button, Form, TextArea, TextField } from "@floodops/ui-native";
-import type { CitizenReportInput, DriverReportInput, VehicleType } from "@floodops/contracts";
+import type { CitizenReportInput, DriverReportInput, Report, VehicleType } from "@floodops/contracts";
 import { commandReason, sameSession, type MobileContext } from "../../shared/session-context";
 import { CommandButton, ScreenFrame, screenStyles } from "../../shared/screen-frame";
 import { buildReportInput, draftNeedsRelink, relinkDraft, type DraftPort, type PhotoPort, type ReportDraft } from "./report-draft";
 export interface ReportFormProps {
-  context: MobileContext; initialDraft: ReportDraft; photoPort?: PhotoPort; draftPort?: DraftPort;
-  onSubmit?: (input: CitizenReportInput | DriverReportInput) => Promise<void>;
+  context: MobileContext; initialDraft: ReportDraft; createNewDraft?: () => ReportDraft; photoPort?: PhotoPort; draftPort?: DraftPort;
+  onSubmit?: (input: CitizenReportInput | DriverReportInput) => Promise<Report | void>;
 }
 export function ReportForm(props: ReportFormProps) {
   if (props.initialDraft.participantId !== props.context.participant.participant_id) return <ScreenFrame title="Report draft unavailable" context={props.context}>
@@ -15,15 +15,16 @@ export function ReportForm(props: ReportFormProps) {
   </ScreenFrame>;
   return <OwnedReportForm key={props.context.participant.participant_id} {...props} />;
 }
-function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit }: ReportFormProps) {
+function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit, createNewDraft }: ReportFormProps) {
   const [draft, setDraft] = useState(initialDraft);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const lock = useRef(false);
   const current = useRef(context); current.current = context;
   const stale = draftNeedsRelink(draft, context);
   const baseReason = commandReason(context, "reports:submit", ["driver", "contributor"]);
-  const reason = baseReason ?? (stale ? "Stale session—review before re-link." : !onSubmit ? "Report submission adapter unavailable." : null);
+  const reason = baseReason ?? (submitted ? "This report was sent. Start a new report explicitly." : stale ? "Stale session—review before re-link." : !onSubmit ? "Report submission adapter unavailable." : null);
   function field(key: "segment" | "longitude" | "latitude" | "capturedAt" | "simMinute" | "description", value: string) {
     setDraft(valueDraft => ({ ...valueDraft, [key]: value })); setMessage(null);
   }
@@ -34,8 +35,7 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
     finally { lock.current = false; setBusy(false); }
   }
   function stillCurrent(start: MobileContext) {
-    return sameSession(start.session, current.current.session) && start.participant.participant_id === current.current.participant.participant_id &&
-      start.session.revision === current.current.session.revision;
+    return sameSession(start.session, current.current.session) && start.participant.participant_id === current.current.participant.participant_id;
   }
   async function pickPhoto() {
     const start = context;
@@ -60,11 +60,13 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
       }
       input = buildReportInput(draft, current.current, mediaId);
     } catch (error) { setMessage(error instanceof Error && error.name !== "ZodError" ? error.message : "Check location, capture time, vehicle and report fields."); return; }
-    await onSubmit(input);
+    const result = await onSubmit(input);
     if (!stillCurrent(start) || commandReason(current.current, "reports:submit", ["driver", "contributor"])) {
       setMessage("Session changed during submission. Inspect the original server report; this draft requires review before reuse."); return;
     }
-    setMessage("Report submitted to the server. Review status and any award come from a refreshed authorized view.");
+    setSubmitted(true);
+    setMessage(result ? `Report ${result.report_id}: ${result.status}. Reasons: ${result.reason_codes.join(", ") || "None"}. Review and simulated awards remain separate server outcomes.`
+      : "Report submitted to the server. Review status and any award come from a refreshed authorized view.");
   }
   function vehicle(type: VehicleType) {
     if (lock.current) return;
@@ -97,6 +99,9 @@ function OwnedReportForm({ context, initialDraft, photoPort, draftPort, onSubmit
       <CommandButton label="Save draft" reason={!draftPort ? "App-private draft storage adapter unavailable." : busy ? "Wait for the current action." : null}
         onPress={() => void run(async () => { if (draftPort) { const start = context; await draftPort.save(draft); if (stillCurrent(start)) setMessage("Draft saved privately. It will never send automatically."); } })} />
       <CommandButton label="Send report" reason={reason} pending={busy} onPress={() => void run(submit)} />
+      {submitted && <CommandButton label="Start new report" reason={baseReason ?? (!createNewDraft ? "Refresh scenario capture configuration before starting a new report." : null)} onPress={() => {
+        if (createNewDraft) { setDraft(createNewDraft()); setSubmitted(false); setMessage(null); }
+      }} />}
       {message && <Alert title="Report status">{message}</Alert>}
     </Form>
   </ScreenFrame>;

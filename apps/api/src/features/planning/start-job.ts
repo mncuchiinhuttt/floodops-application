@@ -29,7 +29,7 @@ export function startPlanning<State>(options: ResolvedPlanningOptions<State>): R
     if (!/^[A-Za-z0-9_-]{32,512}$/.test(material.nonce) || state.jobs[material.jobId] || snapshot.leases[material.leaseId]) fail(503, "CONFIG_INCOMPLETE");
     const job = parseSchema("PlanningJob", { job_id: material.jobId, session_id: snapshot.meta.session_id,
       generation: snapshot.meta.generation, input_revision: snapshot.meta.revision, status: "queued", plan_id: null,
-      error_code: null, model: options.model, model_config_hash: options.modelConfigHash,
+      error_code: null, planner: options.planner,
       created_at: new Date(now).toISOString(), completed_at: null });
     // Remove old captures from this immutable input; keep actual committed facts/grants and other owners' state.
     const capturedValues = planningValues(snapshot, { ...state, jobs: {} });

@@ -1,7 +1,8 @@
 import { afterEach, expect, it } from "vitest";
 import { reset, SELF } from "cloudflare:test";
 import { formatEtag, parseSchema } from "@floodops/contracts";
-import { scenarioReference } from "../../apps/api/src/index";
+import { scenarioReference, simulationPersistence, loadSessionScenario } from "../../apps/api/src/index";
+import { createSimulationRuntime, ADVANCE_START } from "../../apps/api/src/features/simulation/index";
 afterEach(reset);
 const key = () => crypto.randomUUID();
 const request = (path: string, init?: RequestInit) => SELF.fetch("https://floodops.test/api/v1" + path, init);
@@ -31,11 +32,32 @@ it("serves canonical clock and real observed branch results from the persisted p
   expect((await request(path + "/results")).status).toBe(401);
   expect((await request(path + "/simulation/advances/advance_absent1", { headers: auth })).status).toBe(404);
 });
-it("does not start or silently authorize movement when the genuine committed-policy port is absent", async () => {
+it("real production composition advances using the genuine committed policy without any model provider", async () => {
   const { owner, path, auth } = await create();
   const response = await request(path + "/simulation/advances", { method: "POST", headers: { ...auth, "Content-Type": "application/json", "Idempotency-Key": key(), "If-Match": formatEtag(owner.session) }, body: JSON.stringify({ target_sim_minute: 1 }) });
-  expect(response.status).toBe(503);
-  expect(parseSchema("ErrorResponse", await response.json()).error.code).toBe("CONFIG_INCOMPLETE");
+  expect(response.status).toBe(202);
+  const started = parseSchema("AdvanceJobResponse", await response.json()).data;
+  let current = started;
+  for (let i = 0; i < 100 && ["queued", "running"].includes(current.status); i++) {
+    await new Promise(resolve => setTimeout(resolve, 5));
+    current = parseSchema("AdvanceJobResponse", await (await request(path + "/simulation/advances/" + started.advance_job_id, { headers: auth })).json()).data;
+  }
+  expect(current.status).toBe("completed");
+  expect(current.reached_sim_minute).toBe(1);
+  const result = parseSchema("ResultsResponse", await (await request(path + "/results", { headers: auth })).json()).data;
+  expect(result.observed_until_minute).toBe(1);
+  expect(result.calibration_status).toBe("incomplete");
+});
+it("the public reducer still fails closed without a genuine policy and leaves its real seed unchanged", async () => {
+  const { owner, path, auth } = await create();
+  const seed = await loadSessionScenario(scenarioReference.scenario_id, scenarioReference.scenario_version);
+  const valuesBefore = structuredClone(seed.values);
+  const unconfigured = createSimulationRuntime({ persistence: simulationPersistence });
+  const command = unconfigured.registry.commands![ADVANCE_START]!;
+  expect(() => command.reduce({ snapshot: { meta: owner.session, values: seed.values, seed,
+    absoluteExpiry: Date.now() + 60000, pointers: {}, leases: {} }, actor: { participant: owner.participant }, now: Date.now() },
+  command.validate({ target_sim_minute: 1 }))).toThrow("CONFIG_INCOMPLETE");
+  expect(seed.values).toEqual(valuesBefore);
   const clock = parseSchema("SimulationClockResponse", await (await request(path + "/simulation", { headers: auth })).json()).data;
   expect(clock.now_minute).toBe(0);
   expect(clock.advance_job).toBeNull();

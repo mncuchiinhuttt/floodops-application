@@ -8,11 +8,13 @@ import { rateLimit } from "./quotas";
 import { reconcileImages } from "./image-jobs";
 import { assertFence, updateLeases, reconcileLeases } from "./leases";
 import { Store } from "./store";
+import { requireSerialization } from "./serialization";
 export function command(store: Store, registry: RuntimeRegistry, env: PlatformBindings, call: Call, proof: Proof | undefined, digest: string, now: number, nonceDigest?: string): Reply {
   const snapshot = store.snapshot();
   const definition = registry.commands?.[call.name ?? ""];
   if (!definition) fail(404, "NOT_FOUND");
   const actor = authenticate(store, snapshot, proof, env, now, true, definition.permission);
+  requireSerialization(snapshot, registry);
   const input = definition.validate(call.payload);
   const replay = store.replay(actor.participant.participant_id, call.key!, digest);
   if (replay) return replay;
@@ -50,5 +52,6 @@ export function getView(store: Store, registry: RuntimeRegistry, snapshot: Snaps
   const view = registry.views?.[name];
   if (!view) fail(503, "CONFIG_INCOMPLETE");
   if (!view.roles.includes(participant.participant.role) || !participant.participant.permissions.includes(view.permission)) fail(403, "FORBIDDEN");
+  requireSerialization(snapshot, registry);
   return view.project({ snapshot: structuredClone(snapshot), actor: { participant: participant.participant }, now });
 }

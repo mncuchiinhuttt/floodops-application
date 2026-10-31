@@ -1,7 +1,15 @@
+import type { RewardPolicyRef } from "@floodops/contracts";
 import type { LoadedScenario, SimulationRun } from "@floodops/simulation";
 import type { SimulationPersistence } from "@floodops/domain/public-ports";
 import type { AppContext, Snapshot } from "../../shared/index";
+export interface ReceiptPolicyContext {
+  readonly sessionId: string; readonly generation: number; readonly scenarioId: string; readonly scenarioVersion: string;
+  readonly receivedAt: string; readonly kind: "driver" | "citizen";
+}
+/** Server-only immutable reference; numeric policy evaluation belongs to Review. */
+export type ReceiptRewardPolicyProvider = (context: ReceiptPolicyContext) => Readonly<RewardPolicyRef> | null;
 export interface SourcesPorts {
+  receiptRewardPolicy?: ReceiptRewardPolicyProvider;
   scenarioCatalog: { list(): readonly LoadedScenario[]; get(id: string, version: string): LoadedScenario };
   simulationPersistence: SimulationPersistence<SimulationRun, Omit<SimulationRun, "scenario">>;
 }

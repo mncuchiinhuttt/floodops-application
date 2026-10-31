@@ -70,7 +70,7 @@ describe("actor-bound reporting and pure acceptance", () => {
     expect(context).toEqual(before);
     const after = { ...context, observations: output.observations };
     expect(proposeObservationAcceptance(report, "normal", context.epochs, after).kind).toBe("redelivery");
-    expect(proposeObservationAcceptance(output.report, "normal", context.epochs, after).kind).toBe("redelivery");
+    expect(proposeObservationAcceptance({ ...output.report, review_result_id: "review_manualfixture01", reviewed_at: context.receivedAt }, "normal", context.epochs, after).kind).toBe("redelivery");
     expect(() => proposeObservationAcceptance(report, "normal", context.epochs, { ...after, observationId: "obs_duplicate1" })).toThrow("INVALID_TRANSITION");
     expect(() => proposeObservationAcceptance(report, "normal", context.epochs, { ...context, nowSimMinute: 6 })).toThrow("INVALID_TRANSITION");
     expect(proposeObservationAcceptance(report, "normal", context.epochs, { ...context, inputRevision: 2 }).kind).toBe("proposed");
@@ -81,7 +81,7 @@ describe("actor-bound reporting and pure acceptance", () => {
     const context = acceptanceContext(), report = submitReport(reports().fresh, context);
     const first = proposeObservationAcceptance(report, "impassable", context.epochs, context);
     expect(first.observations.find(item => item.observation_id === context.observationId)?.has_conflict).toBe(true);
-    const retry = proposeObservationAcceptance(first.report, "impassable", context.epochs, { ...context, observations: first.observations });
+    const retry = proposeObservationAcceptance({ ...first.report, review_result_id: "review_manualfixture01", reviewed_at: context.receivedAt }, "impassable", context.epochs, { ...context, observations: first.observations });
     expect(retry.kind).toBe("redelivery");
     expect(retry.observations).toHaveLength(first.observations.length);
     expect(retry.report.award_id).toBeNull();

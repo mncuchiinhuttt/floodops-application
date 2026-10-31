@@ -1,4 +1,4 @@
-import { parseSchema } from "@floodops/contracts";
+import { parseSchema, ReportSchema } from "@floodops/contracts";
 import { proposeReportSubmission, sourceState } from "@floodops/domain/reporting";
 import { proposeObservationAcceptance } from "@floodops/domain/knowledge";
 import { applyKnowledgeTransition } from "@floodops/simulation";
@@ -36,6 +36,10 @@ function submit(ports: SourcesPorts, context: TransitionContext, raw: unknown) {
   }
   if (normalizedDigest && Object.values(state.reports).some(item => item.normalizedDigest === normalizedDigest))
     report = { ...report, status: "needs_clarification", reason_codes: [...new Set([...report.reason_codes, "DUPLICATE_IMAGE" as const])] };
+  // Never persist an intermediate acceptance as a complete M1 DTO. A genuine terminal review identity is required.
+  const serialized = ReportSchema.safeParse(report);
+  if (!serialized.success) fail(503, "CONFIG_INCOMPLETE");
+  report = serialized.data;
   state.reports[reportId] = { report, originalSubmitter: environment.participant, boundVehicleTypes: [...environment.boundVehicleTypes],
     capturedEpochs: submission.capturedEpochs, sourceId: environment.sourceId, generation: context.snapshot.meta.generation, normalizedDigest };
   return { data: report, values: { ...values, sourcesMedia: state }, events: [{ type: "report_changed" as const, resource_ids: [reportId],

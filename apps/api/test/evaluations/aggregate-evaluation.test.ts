@@ -6,12 +6,12 @@ import { aggregateEvaluation, nearestRankP95 } from "../../src/features/evaluati
 function trials(): EvaluationTrial[] {
   return Array.from({ length: 10 }, (_, index) => ({
     trial: index + 1, first_proposal_valid: true, latency_ms: (10 - index) * 100,
-    failed: false, error_code: null, plan_id: `pln_example${index}`, model_config_hash: "frozen-config-v1"
+    failed: false, error_code: null, plan_id: `pln_example${index}`, planner_config_hash: "frozen-config-v1"
   }));
 }
 function aggregate(samples = trials()) {
-  return aggregateEvaluation({ evaluationId: "evl_evaluation1", kind: "model_quality",
-    isRealModel: false, modelConfigHash: "frozen-config-v1", trials: samples });
+  return aggregateEvaluation({ evaluationId: "evl_evaluation1", kind: "deterministic_replay",
+    isRealModel: false, plannerConfigHash: "frozen-config-v1", trials: samples });
 }
 
 test("all ten first responses are retained, sorted and validated without mutating input", () => {
@@ -26,7 +26,7 @@ test("all ten first responses are retained, sorted and validated without mutatin
 
 test("timeout, refusal, invalid output and incomplete first proposals stay in denominator", () => {
   const samples = trials();
-  for (const [index, error] of (["MODEL_TIMEOUT", "MODEL_REFUSED", "MODEL_INVALID_OUTPUT", "MODEL_UNAVAILABLE"] as const).entries()) {
+  for (const [index, error] of (["PLANNER_TIMEOUT", "NO_FEASIBLE_PLAN", "INVALID_SCHEMA", "CONFIG_INCOMPLETE"] as const).entries()) {
     samples[index] = { ...samples[index]!, first_proposal_valid: false, failed: true,
       plan_id: null, error_code: error, latency_ms: 9000 + index };
   }
@@ -40,7 +40,7 @@ test("timeout, refusal, invalid output and incomplete first proposals stay in de
 test("a missing latency makes p95 unavailable even with nine fast successes", () => {
   const samples = trials();
   samples[9] = { ...samples[9]!, first_proposal_valid: false, failed: true,
-    plan_id: null, error_code: "MODEL_TIMEOUT", latency_ms: null };
+    plan_id: null, error_code: "PLANNER_TIMEOUT", latency_ms: null };
   expect(aggregate(samples)).toMatchObject({ valid_first_proposals: 9, p95_ms: null });
   expect(aggregate(samples).trials[9]!.latency_ms).toBeNull();
 });
@@ -50,7 +50,7 @@ test("invalid first response cannot disappear when aggregation has no execution 
   expect(aggregate(samples).valid_first_proposals).toBe(9);
 });
 
-test("exactly ten unique bounded IDs and one frozen model config are mandatory", () => {
+test("exactly ten unique bounded IDs and one frozen planner config are mandatory", () => {
   expect(() => aggregate(trials().slice(1))).toThrow("Exactly ten");
   expect(() => aggregate([...trials(), trials()[0]!])).toThrow("Exactly ten");
   const duplicate = trials(); duplicate[9]!.trial = 1;
@@ -59,16 +59,16 @@ test("exactly ten unique bounded IDs and one frozen model config are mandatory",
     const samples = trials(); samples[9]!.trial = id;
     expect(() => aggregate(samples)).toThrow();
   }
-  const changed = trials(); changed[9]!.model_config_hash = "another-config";
+  const changed = trials(); changed[9]!.planner_config_hash = "another-config";
   expect(() => aggregate(changed)).toThrow("configuration changed");
-  expect(() => aggregateEvaluation({ evaluationId: "evl_evaluation1", kind: "model_quality",
-    isRealModel: false, modelConfigHash: "", trials: trials() })).toThrow("frozen model");
+  expect(() => aggregateEvaluation({ evaluationId: "evl_evaluation1", kind: "deterministic_replay",
+    isRealModel: false, plannerConfigHash: "", trials: trials() })).toThrow("frozen planner");
 });
 
 test("rejects contradictory success/failure/plan/error records", () => {
   for (const change of [
-    { failed: true, error_code: "MODEL_TIMEOUT" as const, plan_id: null },
-    { error_code: "MODEL_INVALID_OUTPUT" as const }, { plan_id: null }
+    { failed: true, error_code: "PLANNER_TIMEOUT" as const, plan_id: null },
+    { error_code: "INVALID_SCHEMA" as const }, { plan_id: null }
   ]) {
     const samples = trials(); Object.assign(samples[0]!, change);
     expect(() => aggregate(samples)).toThrow();
@@ -106,9 +106,19 @@ test("sparse measurements and sample arrays are rejected instead of invented", (
 
 
 test("execution errors cannot masquerade as nonfailed trials, even when first proposal was invalid", () => {
-  for (const error_code of ["MODEL_TIMEOUT", "MODEL_REFUSED", "MODEL_INVALID_OUTPUT", "MODEL_UNAVAILABLE", "POLICY_BLOCKED"] as const) {
+  for (const error_code of ["PLANNER_TIMEOUT", "NO_FEASIBLE_PLAN", "INVALID_SCHEMA", "CONFIG_INCOMPLETE", "POLICY_BLOCKED"] as const) {
     const samples = trials();
     samples[0] = { ...samples[0]!, first_proposal_valid: false, failed: false, error_code };
     expect(() => aggregate(samples)).toThrow("execution error");
   }
+});
+
+
+test("M1 rejects legacy model configuration fields, old evaluation kind and real-model claims", () => {
+  const input = { evaluationId: "evl_evaluation1", kind: "deterministic_replay" as const, isRealModel: false as const,
+    plannerConfigHash: "frozen-config-v1", trials: trials() };
+  expect(() => aggregateEvaluation({ ...input, kind: "model_quality" } as unknown as Parameters<typeof aggregateEvaluation>[0])).toThrow();
+  expect(() => aggregateEvaluation({ ...input, isRealModel: true } as unknown as Parameters<typeof aggregateEvaluation>[0])).toThrow();
+  const old = trials().map(({ planner_config_hash, ...trial }) => ({ ...trial, model_config_hash: planner_config_hash }));
+  expect(() => aggregateEvaluation({ ...input, trials: old } as unknown as Parameters<typeof aggregateEvaluation>[0])).toThrow();
 });

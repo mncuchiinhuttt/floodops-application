@@ -106,7 +106,7 @@ describe("canonical Sources review persistence guards", () => {
     const before = structuredClone(context.snapshot), state = sourceState(before.values), run = simulationPersistence.read(before.values);
     expect(state.uploads.upload_guard001?.activeWriter?.id).toBe("writer_guard001");
     const change = changeOf(context);
-    change.reports = change.reports.map(report => ({ ...report, status: "rejected" as const }));
+    change.reports = change.reports.map(report => ({ ...report, status: "rejected" as const, review_result_id: "review_guardhuman001", reviewed_at: new Date(context.now).toISOString() }));
     const values = source.apply(context, change), after = sourceState(values);
     expect(values.otherFeature).toEqual(before.values.otherFeature);
     expect(after.uploads).toEqual(state.uploads);
@@ -122,7 +122,7 @@ describe("canonical Sources review persistence guards", () => {
   });
   test("report-only change adds no Simulation input log, sequence, or physical state", async () => {
     const context = await submitted(), before = simulationPersistence.read(context.snapshot.values), change = changeOf(context);
-    change.reports = change.reports.map(report => ({ ...report, status: "rejected" as const }));
+    change.reports = change.reports.map(report => ({ ...report, status: "rejected" as const, review_result_id: "review_guardhuman001", reviewed_at: new Date(context.now).toISOString() }));
     const values = source.apply(context, change), after = simulationPersistence.read(values);
     expect(source.report({ ...context.snapshot, values }, "report_guard001")?.status).toBe("rejected");
     expect(after.log).toEqual(before.log);

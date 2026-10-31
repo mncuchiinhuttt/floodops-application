@@ -23,8 +23,12 @@ export function createReviewRuntime(options: ReviewOptions) {
         if (review.decision !== "accept") fail(422, "INVALID_SCHEMA");
         return reviewReportTransition(options, context, input.id, review);
       } },
-    [REVIEW_REJECT]: { permission: "reports:review", operational: true, validate: value => payload(value, "report_id", "ReviewInput"),
-      reduce() { fail(503, "CONFIG_INCOMPLETE"); } }, // Await independently enforced metadata CAS; never omit atomic If-Match.
+    [REVIEW_REJECT]: { permission: "reports:review", operational: false, requireCas: true, validate: value => payload(value, "report_id", "ReviewInput"),
+      reduce(context, value) {
+        const input = value as ReturnType<typeof payload>, review = parseSchema("ReviewInput", input.input);
+        if (review.decision !== "reject") fail(422, "INVALID_SCHEMA");
+        return reviewReportTransition(options, context, input.id, review);
+      } },
     [REVIEW_RESOLVE]: { permission: "knowledge:resolve", operational: true,
       validate: value => payload(value, "conflict_id", "ConflictResolutionInput"), reduce(context, value) {
         const input = value as ReturnType<typeof payload>;
@@ -45,3 +49,9 @@ export { runImageReview } from "./image/service";
 export type { ImageReviewServiceOptions, QueuedImageFailurePort } from "./image/service";
 export { createResponsesImageReviewPort, IMAGE_REVIEW_PROMPT_VERSION } from "./image/responses-image-review";
 export type { ImageReviewPort, ImageReviewMediaPort, ImageReviewFailure, ResponsesImageReviewConfig } from "./image/image-review-port";
+
+export { prepareRewardPolicy } from "../../rewards/reward-policy";
+export type { RewardPolicyPayload } from "../../rewards/reward-policy";
+
+export { createSourceBackedReviewRuntime } from "./source-runtime";
+export type { SourceBackedReviewOptions } from "./source-runtime";
