@@ -25,3 +25,12 @@ export const Empty: Story = { render: () => <PresentationExample empty /> };
 export const Narrow: Story = { render: () => <div style={{ width: 320, maxWidth: "100%" }}><PresentationExample /></div> };
 export const StaleOffline: Story = { render: () => <><SourceCard source={{ ...source, observedLabel: null, expiresLabel: null, freshness: { label: "Offline · cached stale data", tone: "unknown" } }} /><Toast message="Offline: refresh requires a connection." urgent /></> };
 export const MapStates: Story = { render: () => <MapCanvas scene={scene} /> };
+
+function SessionChangedReset() {
+  const [disabledReason, setDisabledReason] = useState<string>();
+  return <ResetControl disabledReason={disabledReason} onConfirm={() => {
+    setDisabledReason("Session changed");
+    throw new Error("Local component example failure");
+  }} />;
+}
+export const CapabilityChange: Story = { render: () => <SessionChangedReset /> };

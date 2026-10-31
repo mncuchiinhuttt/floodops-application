@@ -94,3 +94,4 @@ textarea.fo-input { min-height: calc(var(--fo-target-web) * 2); resize: vertical
 .fo-card { display: grid; gap: var(--fo-space-3); }
 .fo-card > * { min-width: 0; }
 .fo-card > h2, .fo-card > p { margin: 0; }
+.fo-confirmation:focus { outline: var(--fo-stroke-focus) solid var(--fo-semantic-focus-ring); outline-offset: var(--fo-stroke-focus-offset); }

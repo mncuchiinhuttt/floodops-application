@@ -109,3 +109,14 @@ test("native confirmation follows current pending and capability props while ope
   await fireEvent.press(confirm);
   expect(reset).not.toHaveBeenCalled();
 });
+
+test("native capability loss retains a readable focus-return target after cancellation", async () => {
+  const reset = jest.fn();
+  const view = await render(<ResetControl onConfirm={reset} />);
+  await fireEvent.press(screen.getByRole("button", { name: "Reset", exact: true }));
+  await view.rerender(<ResetControl onConfirm={reset} disabledReason="Session changed" />);
+  await fireEvent.press(screen.getByRole("button", { name: "Cancel", exact: true }));
+  expect(screen.queryByRole("button", { name: "Confirm Reset", exact: true })).toBeNull();
+  expect(screen.getByText("Reset: Session changed")).toBeOnTheScreen();
+  expect(reset).not.toHaveBeenCalled();
+});

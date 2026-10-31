@@ -115,3 +115,15 @@ test("open confirmation responds to new disabled state and cannot dismiss a runn
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("button", { name: "Reset", exact: true })));
 });
+
+test("capability loss restores focus to the named control group instead of a disabled trigger", async () => {
+  const reset = vi.fn();
+  const { rerender } = render(<ResetControl onConfirm={reset} />);
+  fireEvent.click(screen.getByRole("button", { name: "Reset", exact: true }));
+  rerender(<ResetControl onConfirm={reset} disabledReason="Session changed" />);
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("button", { name: "Cancel", exact: true })));
+  fireEvent.click(screen.getByRole("button", { name: "Cancel", exact: true }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("group", { name: "Reset control" })));
+  expect(reset).not.toHaveBeenCalled();
+});
