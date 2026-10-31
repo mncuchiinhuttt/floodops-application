@@ -1,0 +1,48 @@
+{
+  "work_item_id": "planner-safety-runtime-foundations-v3",
+  "role_id": "planner-safety",
+  "phase_ids": [
+    6
+  ],
+  "base_sha": "c335056c7aec373ef5ebec2d66bd46ce820746a3",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/independent-business-runtime-v1-index.json",
+    "commit_sha": "c335056c7aec373ef5ebec2d66bd46ce820746a3",
+    "sha256": "b333867a263b3627da685a21f0e35da9b1baadfdafc0cc6f9d45d745d37d28fa"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "simulation-ready",
+      "commit_sha": "30e058252d4176c76a8b17b40e25786f34b50b4c"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    },
+    {
+      "gate_id": "platform-ready",
+      "commit_sha": "3cebe9e8d8b4fd4fd11cd319b1549952c119caa5"
+    }
+  ],
+  "expected_branch": "feat/floodops-planner-safety",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/06-planner-safety",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "independent-business-runtime-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}
