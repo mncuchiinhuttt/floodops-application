@@ -1,0 +1,51 @@
+{
+  "mode": "bootstrap-authoring",
+  "source_commit": "097daad8d137b9e3fcec40a0033c6e89131701eb",
+  "contracts_ready": false,
+  "artifacts": [
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/api-index.md",
+      "sha256": "5ddef7cd887ec5116aa40218ff331fe4707d1a5cfb572ef79eae682a62c51d4f"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/contract-examples.json",
+      "sha256": "b399258dbfabeb85b50f073e6d34e5597e0ee3a03c67688799e7a533e5728bf1"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/openapi.json",
+      "sha256": "3fc2ec8d25dd68bcc5d6e9645ea2038c17222b7cefa443d200f1c42766a31e5a"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-contracts.json",
+      "sha256": "37337eccd24af36de29fd15fd336435d51c1dcb987b0f349f75b7b4f150a60b9"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-examples.json",
+      "sha256": "9c04d6c5cf25611a54a960e867e8d5f8f36fc2e895d7e129aa9a8bc3906a809e"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/api-conventions-security.md",
+      "sha256": "1dbdc035899f8c9d51e6ce55e7add5da177f37b8305c8e9244c07d7eb979a5e3"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/concurrency-realtime.md",
+      "sha256": "fdf7ce1c959bb353a78f38c06bbbe6fd40e2efd9c00e1ea6913b3b7a13c77756"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/domain-model.md",
+      "sha256": "51ba751f5b1e7963ec4ae01d6ccb6754682e9e5a8cdc32547620b1c8782fb1dc"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/policy-rules.md",
+      "sha256": "8a62b39f0f4d83e91ea9ed5194970262eb5e92a6c5245e558ba9d04967b4f284"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/requirements-coverage.md",
+      "sha256": "53f117d426f1537fdb23c469e02593964f7d117588394ea12e5b0d02620f20a9"
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/producer-interfaces.md",
+      "sha256": "2969cc9bfde9b25d22b72e14ca72e2bb83b90e78046ba301615ef61258f30c0f"
+    }
+  ]
+}

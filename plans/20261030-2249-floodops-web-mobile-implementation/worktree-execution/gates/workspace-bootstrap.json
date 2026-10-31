@@ -1,0 +1,62 @@
+{
+  "gate_id": "workspace-bootstrap",
+  "status": "passed",
+  "writer": "integration-lead",
+  "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+  "integration_branch": "integration/floodops-application",
+  "integration_worktree": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+  "toolchain": {
+    "bun": "1.4.0",
+    "typescript": "6.0.3",
+    "wrangler": "4.156.0",
+    "lockfile": "bun.lock"
+  },
+  "lock_sha256": "836096d7ca04606f6370dbd582869549de1b3ab17b42e384490146bbd36eed98",
+  "checks": [
+    {
+      "command": "bun install --frozen-lockfile --ignore-scripts",
+      "cwd": "/Users/vominhlong/seahackathon/floodops-application",
+      "result": "pass"
+    },
+    {
+      "command": "bun run check",
+      "cwd": "/Users/vominhlong/seahackathon/floodops-application",
+      "result": "pass",
+      "details": "Typecheck, ESLint, 5 tests / 0 failures."
+    },
+    {
+      "command": "bun install --frozen-lockfile --ignore-scripts",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass"
+    },
+    {
+      "command": "bun run check",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "details": "Typecheck, ESLint, 5 tests / 0 failures."
+    },
+    {
+      "command": "bun audit",
+      "cwd": "/Users/vominhlong/seahackathon/floodops-application",
+      "result": "pass",
+      "details": "No vulnerabilities found; checked 189 packages after minimatch 11.0.1 override."
+    },
+    {
+      "command": "Local Wrangler/workerd HTTP smoke",
+      "cwd": "/Users/vominhlong/seahackathon/floodops-application",
+      "result": "pass",
+      "details": "127.0.0.1:8760 health 200, unimplemented sessions 404; listener loopback; server stopped."
+    },
+    {
+      "command": "Secret-shaped-value scan before signed source commit",
+      "cwd": "/Users/vominhlong/seahackathon/floodops-application",
+      "result": "pass"
+    }
+  ],
+  "qualifications": [
+    "Workspace tooling readiness only; no implementation launch is part of this init. Parent must issue new launch receipts from the published baseline.",
+    "First local smoke found compatibility date 2026-10-31 unsupported by installed workerd; configs corrected to supported 2026-10-30 and smoke passed.",
+    "Port 8770 belongs to macOS sharingd; IntegrationLead API port reassigned to unused 8760 without changing that process.",
+    "Expo/native, D04, model, Cloudflare account, EAS/signing and release evidence remain future phase gates."
+  ]
+}

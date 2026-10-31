@@ -1,0 +1,19 @@
+{
+  "gate_id": "plan-published",
+  "status": "passed",
+  "writer": "integration-lead",
+  "commit_sha": "097daad8d137b9e3fcec40a0033c6e89131701eb",
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  },
+  "reason": "Final user PRD/plan clarification reviewed and published separately from tooling. 34 US rows and 64 API operations preserved; bootstrap gate is not application acceptance.",
+  "evidence_path": "docs/decisions/document-baseline.json",
+  "implementation_agents_started": false,
+  "launch_receipts_issued": false,
+  "bootstrap_design_contract_index": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/bootstrap-contract-index.json",
+    "sha256": "7cf65e1c4775ab8d790247ff4b6356eeac6dd785a2c8bd6c425ba2c9462b910f"
+  }
+}

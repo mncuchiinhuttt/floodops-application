@@ -1,0 +1,880 @@
+{
+  "observed_at_utc": "2026-10-31T03:22:50.377Z",
+  "host": "mncuchiis-Macbook-Pro.local",
+  "state": "user-update-reviewed-and-published",
+  "bootstrap_code_commit": "aea042b5fdb5100e826672111f326d3a03847ee7",
+  "published_document_commit": "097daad8d137b9e3fcec40a0033c6e89131701eb",
+  "initial_snapshot_commit": "ed0af9f697367e59614e1c87583699c98c410160",
+  "original_repository": "/Users/vominhlong/seahackathon",
+  "original_repository_head": "3909094f742fb4348c917c42272699c379cd2afc",
+  "original_scoped_git_status": [
+    ""
+  ],
+  "note": "User confirmed document editing complete. All original document hashes were rechecked against the reviewed snapshot before publication. Expected differences retain Bun/toolchain and nested-path amendments; the original document repository was not changed by this init. Parent reviews this handoff and issues worker receipts before implementation.",
+  "source_checks": {
+    "user_stories": 34,
+    "us_rows_unchanged": true,
+    "api_operations": 64,
+    "openapi_unchanged": true
+  },
+  "user_changed_documents": [
+    "FloodOps/prd.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/phase-09-react-web-console.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/phase-10-expo-mobile-application.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/phase-11-verification-acceptance.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/plan.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/reports/plan-validation.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-scope.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/specs/architecture.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/specs/web-mobile-feature-surfaces.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/09-web-console.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/10-expo-mobile.md"
+  ],
+  "manually_reconciled_documents": [
+    "plans/20261030-2249-floodops-web-mobile-implementation/plan.md",
+    "plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md"
+  ],
+  "documents": [
+    {
+      "path": "AGENTS.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/AGENTS.md",
+      "published_committed_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+      "original_observed_sha256": "d6da97ef550ee0ae72b8fe2eacd5af1d3b783d024e547a3fff5ac67bf05fce83",
+      "original_mtime_utc": "2026-10-31T02:39:59.133Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+      "matches_published_commit": false
+    },
+    {
+      "path": "FloodOps/prd.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/FloodOps/prd.md",
+      "published_committed_sha256": "71e9ba91ae6e21c66d13d69aecb42cb5afd5787b686383c6ee017f71b1ac5ff2",
+      "original_observed_sha256": "71e9ba91ae6e21c66d13d69aecb42cb5afd5787b686383c6ee017f71b1ac5ff2",
+      "original_mtime_utc": "2026-10-31T03:10:11.909Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "71e9ba91ae6e21c66d13d69aecb42cb5afd5787b686383c6ee017f71b1ac5ff2",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/api-index.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/api-index.md",
+      "published_committed_sha256": "5ddef7cd887ec5116aa40218ff331fe4707d1a5cfb572ef79eae682a62c51d4f",
+      "original_observed_sha256": "5ddef7cd887ec5116aa40218ff331fe4707d1a5cfb572ef79eae682a62c51d4f",
+      "original_mtime_utc": "2026-10-30T16:42:44.017Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "5ddef7cd887ec5116aa40218ff331fe4707d1a5cfb572ef79eae682a62c51d4f",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/contract-examples.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/contract-examples.json",
+      "published_committed_sha256": "b399258dbfabeb85b50f073e6d34e5597e0ee3a03c67688799e7a533e5728bf1",
+      "original_observed_sha256": "b399258dbfabeb85b50f073e6d34e5597e0ee3a03c67688799e7a533e5728bf1",
+      "original_mtime_utc": "2026-10-30T16:30:49.359Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "b399258dbfabeb85b50f073e6d34e5597e0ee3a03c67688799e7a533e5728bf1",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/openapi.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/openapi.json",
+      "published_committed_sha256": "3fc2ec8d25dd68bcc5d6e9645ea2038c17222b7cefa443d200f1c42766a31e5a",
+      "original_observed_sha256": "3fc2ec8d25dd68bcc5d6e9645ea2038c17222b7cefa443d200f1c42766a31e5a",
+      "original_mtime_utc": "2026-10-30T16:42:43.987Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "3fc2ec8d25dd68bcc5d6e9645ea2038c17222b7cefa443d200f1c42766a31e5a",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-contracts.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-contracts.json",
+      "published_committed_sha256": "37337eccd24af36de29fd15fd336435d51c1dcb987b0f349f75b7b4f150a60b9",
+      "original_observed_sha256": "37337eccd24af36de29fd15fd336435d51c1dcb987b0f349f75b7b4f150a60b9",
+      "original_mtime_utc": "2026-10-30T16:35:00.582Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "37337eccd24af36de29fd15fd336435d51c1dcb987b0f349f75b7b4f150a60b9",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-contracts.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-contracts.md",
+      "published_committed_sha256": "477913cc928a47ad0bca9781d578cb0b09f20cbe627cfc1c63c22fcaee81667f",
+      "original_observed_sha256": "477913cc928a47ad0bca9781d578cb0b09f20cbe627cfc1c63c22fcaee81667f",
+      "original_mtime_utc": "2026-10-30T16:37:14.016Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "477913cc928a47ad0bca9781d578cb0b09f20cbe627cfc1c63c22fcaee81667f",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-examples.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/tool-examples.json",
+      "published_committed_sha256": "9c04d6c5cf25611a54a960e867e8d5f8f36fc2e895d7e129aa9a8bc3906a809e",
+      "original_observed_sha256": "9c04d6c5cf25611a54a960e867e8d5f8f36fc2e895d7e129aa9a8bc3906a809e",
+      "original_mtime_utc": "2026-10-30T16:42:44.001Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "9c04d6c5cf25611a54a960e867e8d5f8f36fc2e895d7e129aa9a8bc3906a809e",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/contracts/usage-examples.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/contracts/usage-examples.md",
+      "published_committed_sha256": "6e8625938808a23904afaa06770e5680996bf06708953aee65ff7793d43fe176",
+      "original_observed_sha256": "6e8625938808a23904afaa06770e5680996bf06708953aee65ff7793d43fe176",
+      "original_mtime_utc": "2026-10-30T16:40:45.941Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "6e8625938808a23904afaa06770e5680996bf06708953aee65ff7793d43fe176",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/implementation-tasks.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/implementation-tasks.json",
+      "published_committed_sha256": "8cc270481d5fd94ec4b95e8904ab666f5ee0dd657fc848ad51081dd594515d90",
+      "original_observed_sha256": "d4bd1d4aded572d6bd15746e66cdf58bf2a00c4db1009f4f77ec41c77aea8bff",
+      "original_mtime_utc": "2026-10-31T02:39:00.773Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "8cc270481d5fd94ec4b95e8904ab666f5ee0dd657fc848ad51081dd594515d90",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-01-workspace-contracts.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-01-workspace-contracts.md",
+      "published_committed_sha256": "2fa36486a248874400d74c7a24b7c9859ad8e6031051529b1f689beb09a107fa",
+      "original_observed_sha256": "c876401601e4c04fd68aa4d500720704a771574b991ba8453a8e002c5e4dc0a5",
+      "original_mtime_utc": "2026-10-30T17:18:22.687Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "2fa36486a248874400d74c7a24b7c9859ad8e6031051529b1f689beb09a107fa",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-02-design-system-icons.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-02-design-system-icons.md",
+      "published_committed_sha256": "2679962b836b1f9d593e8dd594350177e5e25a98a42b65e2fe3c5a978516b467",
+      "original_observed_sha256": "dd528d16e25d1bb9db85e6f16b1279023512ed716a5ea46bcf18828935b9e2c1",
+      "original_mtime_utc": "2026-10-30T17:18:22.689Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "2679962b836b1f9d593e8dd594350177e5e25a98a42b65e2fe3c5a978516b467",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-03-scenario-graph-simulator.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-03-scenario-graph-simulator.md",
+      "published_committed_sha256": "c35285e9fe225dc916899015b82ee5ffd51c35e53562a23bc3d7851224a3b5f6",
+      "original_observed_sha256": "63be0ff368f3ea429e3eabea3c936ea3bf9abab39c0a0b8131e150b125aef0a8",
+      "original_mtime_utc": "2026-10-30T17:18:22.691Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "c35285e9fe225dc916899015b82ee5ffd51c35e53562a23bc3d7851224a3b5f6",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-04-session-runtime-security.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-04-session-runtime-security.md",
+      "published_committed_sha256": "33901753a5002410c3a77c09fc48469a7d4db9e51f2fb1377058105e36bf7dd0",
+      "original_observed_sha256": "8c6d44f6782983f44c8ec23dcb71588b513e3d724dee4014df7aed73c7d90baa",
+      "original_mtime_utc": "2026-10-30T17:18:22.692Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "33901753a5002410c3a77c09fc48469a7d4db9e51f2fb1377058105e36bf7dd0",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-05-sources-observations-media.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-05-sources-observations-media.md",
+      "published_committed_sha256": "9be00935dd73f6542dee54ad5f28311dbaef1d52e1afb664ca8ae73dc9fb32c7",
+      "original_observed_sha256": "dc0debe872cf6b7540637b8f91a0ce41d118078b80c3ffa1e106b8c72e837611",
+      "original_mtime_utc": "2026-10-30T17:18:22.693Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "9be00935dd73f6542dee54ad5f28311dbaef1d52e1afb664ca8ae73dc9fb32c7",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-06-planning-safety-execution.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-06-planning-safety-execution.md",
+      "published_committed_sha256": "41f2b2a32f6d33dbb919b890c4f86a626f2c24463e9f6756dded4780a7e438e9",
+      "original_observed_sha256": "4b6bd3fc1b424481565490f3860b937ce38db0f113dad4655c6a0b9a7b85b8b6",
+      "original_mtime_utc": "2026-10-30T17:18:22.695Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "41f2b2a32f6d33dbb919b890c4f86a626f2c24463e9f6756dded4780a7e438e9",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-07-review-gaps-rewards.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-07-review-gaps-rewards.md",
+      "published_committed_sha256": "547fcd04606fb0f9faf107952311ffff675ae3087378fc712e84b7338b313e78",
+      "original_observed_sha256": "c1e488c2eb0df31dde1ddd89649e84100a5c8c95a5cb9a0dfbf3397b622c0499",
+      "original_mtime_utc": "2026-10-30T17:18:22.696Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "547fcd04606fb0f9faf107952311ffff675ae3087378fc712e84b7338b313e78",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-08-simulation-results-evaluations.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-08-simulation-results-evaluations.md",
+      "published_committed_sha256": "0aaecf4235aa3920b9aef69916832c24b518d5a4098a98488b27b1d689850cac",
+      "original_observed_sha256": "d27b164699ace63dfebee5c471b31070c371b9bd2a01782769efaf9169d1acfe",
+      "original_mtime_utc": "2026-10-30T17:18:22.698Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "0aaecf4235aa3920b9aef69916832c24b518d5a4098a98488b27b1d689850cac",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-09-react-web-console.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-09-react-web-console.md",
+      "published_committed_sha256": "695edcfcf83d8b58580955eec9bbe0fcd78ecfe3b3af494c570ea4886b728f46",
+      "original_observed_sha256": "74a61137d2b8e9e7f772f5180ccf97a3f832ef692edbaf5ccda9721971a4ad4d",
+      "original_mtime_utc": "2026-10-31T03:11:33.398Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "695edcfcf83d8b58580955eec9bbe0fcd78ecfe3b3af494c570ea4886b728f46",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-10-expo-mobile-application.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-10-expo-mobile-application.md",
+      "published_committed_sha256": "975d5ae9c8f92432ae41d4cc391c25fb0feda498c87cdda5fc0065106ea544a2",
+      "original_observed_sha256": "a1d933eb5e2094e767c5442fc7c78a2b2f213af8a14d35870476371210a0939f",
+      "original_mtime_utc": "2026-10-31T03:11:33.399Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "975d5ae9c8f92432ae41d4cc391c25fb0feda498c87cdda5fc0065106ea544a2",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-11-verification-acceptance.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-11-verification-acceptance.md",
+      "published_committed_sha256": "84176bf9f8373081868fac2a58c1adebd4f40947b1bc21d95a47acfec3228aaf",
+      "original_observed_sha256": "4d967ebdcba6bed62cdcfb8228a7137868260a3d21bb399e72279455e8eea8da",
+      "original_mtime_utc": "2026-10-31T03:11:33.400Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "84176bf9f8373081868fac2a58c1adebd4f40947b1bc21d95a47acfec3228aaf",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/phase-12-cloudflare-eas-release.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/phase-12-cloudflare-eas-release.md",
+      "published_committed_sha256": "f550ceabf02bfb8d5ba8dc60b5596265d43c913ff09f6652f294d31614031e00",
+      "original_observed_sha256": "83fc6f16cc7439c6a2ea31df346261c3c37420e17bedaf1564b0c7ccef7460a9",
+      "original_mtime_utc": "2026-10-30T17:18:22.703Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "f550ceabf02bfb8d5ba8dc60b5596265d43c913ff09f6652f294d31614031e00",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/plan.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/plan.md",
+      "published_committed_sha256": "1d611f6d315e3950fd8d275ee752ca26f0f8586a586497503c1789331974c37f",
+      "original_observed_sha256": "ee9ad4f5d03d8555209354e8ece6aacd2f53f2dacd3893e53002d0060474b135",
+      "original_mtime_utc": "2026-10-31T03:13:08.994Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "1d611f6d315e3950fd8d275ee752ca26f0f8586a586497503c1789331974c37f",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md",
+      "published_committed_sha256": "ca68a4e7b629c54b3d4e0dad9c3aadbcca760b1ca36bbc13a917e67b6d1a7514",
+      "original_observed_sha256": "1b7e0cf7a618f64b416564e657e513054dacf003de7354e96e5b05abea2f8bbb",
+      "original_mtime_utc": "2026-10-31T03:16:47.724Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "ca68a4e7b629c54b3d4e0dad9c3aadbcca760b1ca36bbc13a917e67b6d1a7514",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/plan-validation.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/plan-validation.md",
+      "published_committed_sha256": "29b7e9540c6f551c99f09ec1e1d65c0606a0e656922cf6f153ace91d6d243922",
+      "original_observed_sha256": "29b7e9540c6f551c99f09ec1e1d65c0606a0e656922cf6f153ace91d6d243922",
+      "original_mtime_utc": "2026-10-31T03:14:44.791Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "29b7e9540c6f551c99f09ec1e1d65c0606a0e656922cf6f153ace91d6d243922",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-compatibility.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-compatibility.md",
+      "published_committed_sha256": "92830f40af3b55c26b3bfcf1e1f63c2b96d0c57d60cee6b7b581b09a72aa157d",
+      "original_observed_sha256": "92830f40af3b55c26b3bfcf1e1f63c2b96d0c57d60cee6b7b581b09a72aa157d",
+      "original_mtime_utc": "2026-10-30T16:30:15.547Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "92830f40af3b55c26b3bfcf1e1f63c2b96d0c57d60cee6b7b581b09a72aa157d",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-failure-modes.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-failure-modes.md",
+      "published_committed_sha256": "86a0c60da3bad19cf267eae9ea8ae39041006df8321d5080ebee1f8d6681370f",
+      "original_observed_sha256": "86a0c60da3bad19cf267eae9ea8ae39041006df8321d5080ebee1f8d6681370f",
+      "original_mtime_utc": "2026-10-30T16:32:52.075Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "86a0c60da3bad19cf267eae9ea8ae39041006df8321d5080ebee1f8d6681370f",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-resolution.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-resolution.md",
+      "published_committed_sha256": "b0b5ac39ee091f5c7addef7bdfa5ce73f424ea056d082cbeec7de950525d948f",
+      "original_observed_sha256": "b0b5ac39ee091f5c7addef7bdfa5ce73f424ea056d082cbeec7de950525d948f",
+      "original_mtime_utc": "2026-10-30T16:45:00.584Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "b0b5ac39ee091f5c7addef7bdfa5ce73f424ea056d082cbeec7de950525d948f",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-scope.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-scope.md",
+      "published_committed_sha256": "2b01cd396f6eb3d1b1e7acd55128decc8d0244e1c6218d01d03d71d4c5940412",
+      "original_observed_sha256": "2b01cd396f6eb3d1b1e7acd55128decc8d0244e1c6218d01d03d71d4c5940412",
+      "original_mtime_utc": "2026-10-31T03:16:47.727Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "2b01cd396f6eb3d1b1e7acd55128decc8d0244e1c6218d01d03d71d4c5940412",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-security.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/red-team-security.md",
+      "published_committed_sha256": "8391b0d9700e2c0a5a623f3c1771868721bbd34c1e4b18e9869e8b9439e727fe",
+      "original_observed_sha256": "8391b0d9700e2c0a5a623f3c1771868721bbd34c1e4b18e9869e8b9439e727fe",
+      "original_mtime_utc": "2026-10-30T16:32:33.296Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "8391b0d9700e2c0a5a623f3c1771868721bbd34c1e4b18e9869e8b9439e727fe",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/reports/validation-results.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/reports/validation-results.json",
+      "published_committed_sha256": "34bfa5c9c7edb380cc71b7925ea8d04010697a607e7252b6dd96aee4897e7d4d",
+      "original_observed_sha256": "34bfa5c9c7edb380cc71b7925ea8d04010697a607e7252b6dd96aee4897e7d4d",
+      "original_mtime_utc": "2026-10-30T16:49:42.487Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "34bfa5c9c7edb380cc71b7925ea8d04010697a607e7252b6dd96aee4897e7d4d",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/research/cloudflare-hono-platform.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/research/cloudflare-hono-platform.md",
+      "published_committed_sha256": "faff3baaafd5c76b15b250c031959871bdee2ea579970b36f98220f58959920a",
+      "original_observed_sha256": "faff3baaafd5c76b15b250c031959871bdee2ea579970b36f98220f58959920a",
+      "original_mtime_utc": "2026-10-30T16:37:13.986Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "faff3baaafd5c76b15b250c031959871bdee2ea579970b36f98220f58959920a",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/research/web-expo-design-compatibility.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/research/web-expo-design-compatibility.md",
+      "published_committed_sha256": "5ecf426ea42bdaf259ab821051657cbb23ba6850290567ed7770f16a49846a2c",
+      "original_observed_sha256": "5ecf426ea42bdaf259ab821051657cbb23ba6850290567ed7770f16a49846a2c",
+      "original_mtime_utc": "2026-10-30T16:07:31.326Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "5ecf426ea42bdaf259ab821051657cbb23ba6850290567ed7770f16a49846a2c",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/api-conventions-security.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/api-conventions-security.md",
+      "published_committed_sha256": "1dbdc035899f8c9d51e6ce55e7add5da177f37b8305c8e9244c07d7eb979a5e3",
+      "original_observed_sha256": "1dbdc035899f8c9d51e6ce55e7add5da177f37b8305c8e9244c07d7eb979a5e3",
+      "original_mtime_utc": "2026-10-30T16:37:13.989Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "1dbdc035899f8c9d51e6ce55e7add5da177f37b8305c8e9244c07d7eb979a5e3",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/architecture.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/architecture.md",
+      "published_committed_sha256": "d08cbd36cb5ce6c9725fae6adcf28242b4c7ab1f635bf6319d13c9ec0b4ea8b0",
+      "original_observed_sha256": "8399fd7f0901bdcabae523565e09218ac87cb721d3c0458ae5b92716d8dbfca6",
+      "original_mtime_utc": "2026-10-31T03:13:08.989Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "d08cbd36cb5ce6c9725fae6adcf28242b4c7ab1f635bf6319d13c9ec0b4ea8b0",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/cloudflare-deployment.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/cloudflare-deployment.md",
+      "published_committed_sha256": "bfe50bb809ec9664daa9910da83fff9cdd1e29afb68469cf69dac4bd5bf984a1",
+      "original_observed_sha256": "2a8cce48681063790d0d1e0a8d2e3b263fe52b52ff26e8c87b0ea30fc80026f9",
+      "original_mtime_utc": "2026-10-30T16:40:45.944Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "bfe50bb809ec9664daa9910da83fff9cdd1e29afb68469cf69dac4bd5bf984a1",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/concurrency-realtime.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/concurrency-realtime.md",
+      "published_committed_sha256": "fdf7ce1c959bb353a78f38c06bbbe6fd40e2efd9c00e1ea6913b3b7a13c77756",
+      "original_observed_sha256": "fdf7ce1c959bb353a78f38c06bbbe6fd40e2efd9c00e1ea6913b3b7a13c77756",
+      "original_mtime_utc": "2026-10-30T16:32:52.073Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "fdf7ce1c959bb353a78f38c06bbbe6fd40e2efd9c00e1ea6913b3b7a13c77756",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/decisions-prerequisites.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/decisions-prerequisites.md",
+      "published_committed_sha256": "0d3076a8d75b0dc916866acf1a2337d2420fcd6f855bb64fa6e55ec8e74b6af1",
+      "original_observed_sha256": "4d81a286dc14fb88e4a00cb3246011a7e600d2a93ae2a912b6ab6684a5f1d131",
+      "original_mtime_utc": "2026-10-30T16:03:06.866Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "0d3076a8d75b0dc916866acf1a2337d2420fcd6f855bb64fa6e55ec8e74b6af1",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/design-system.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/design-system.md",
+      "published_committed_sha256": "4e16226ac9b3e5054674842d1aad85dab7ac633000214695cb5c3d91632f86f9",
+      "original_observed_sha256": "4e16226ac9b3e5054674842d1aad85dab7ac633000214695cb5c3d91632f86f9",
+      "original_mtime_utc": "2026-10-30T16:07:24.711Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "4e16226ac9b3e5054674842d1aad85dab7ac633000214695cb5c3d91632f86f9",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/domain-model.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/domain-model.md",
+      "published_committed_sha256": "51ba751f5b1e7963ec4ae01d6ccb6754682e9e5a8cdc32547620b1c8782fb1dc",
+      "original_observed_sha256": "51ba751f5b1e7963ec4ae01d6ccb6754682e9e5a8cdc32547620b1c8782fb1dc",
+      "original_mtime_utc": "2026-10-30T16:03:06.851Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "51ba751f5b1e7963ec4ae01d6ccb6754682e9e5a8cdc32547620b1c8782fb1dc",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/feature-implementation-guide.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/feature-implementation-guide.md",
+      "published_committed_sha256": "5fc11dd7d92c456fd008f5f1333cf3be8e7aa9e731efd1b6eb63b1d41733d142",
+      "original_observed_sha256": "9ae21145c8b947e399c233a1ce95b2437de57329e68b3b54b674314505dff3ec",
+      "original_mtime_utc": "2026-10-30T16:13:10.737Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "5fc11dd7d92c456fd008f5f1333cf3be8e7aa9e731efd1b6eb63b1d41733d142",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/operational-limits.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/operational-limits.md",
+      "published_committed_sha256": "e5a91ce48a4b668b774fa52d566d5fc9dbac24bd8bf0f49766236029af53f37c",
+      "original_observed_sha256": "e5a91ce48a4b668b774fa52d566d5fc9dbac24bd8bf0f49766236029af53f37c",
+      "original_mtime_utc": "2026-10-30T16:37:13.991Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "e5a91ce48a4b668b774fa52d566d5fc9dbac24bd8bf0f49766236029af53f37c",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/policy-rules.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/policy-rules.md",
+      "published_committed_sha256": "8a62b39f0f4d83e91ea9ed5194970262eb5e92a6c5245e558ba9d04967b4f284",
+      "original_observed_sha256": "8a62b39f0f4d83e91ea9ed5194970262eb5e92a6c5245e558ba9d04967b4f284",
+      "original_mtime_utc": "2026-10-30T16:37:13.993Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "8a62b39f0f4d83e91ea9ed5194970262eb5e92a6c5245e558ba9d04967b4f284",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/requirements-coverage.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/requirements-coverage.md",
+      "published_committed_sha256": "53f117d426f1537fdb23c469e02593964f7d117588394ea12e5b0d02620f20a9",
+      "original_observed_sha256": "53f117d426f1537fdb23c469e02593964f7d117588394ea12e5b0d02620f20a9",
+      "original_mtime_utc": "2026-10-30T16:21:11.371Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "53f117d426f1537fdb23c469e02593964f7d117588394ea12e5b0d02620f20a9",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/simulation-calibration.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/simulation-calibration.md",
+      "published_committed_sha256": "2562686682dd775fd61b64dc03de8b0bcd086228e6cd993e5276065af85df0e8",
+      "original_observed_sha256": "2562686682dd775fd61b64dc03de8b0bcd086228e6cd993e5276065af85df0e8",
+      "original_mtime_utc": "2026-10-30T16:25:05.851Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "2562686682dd775fd61b64dc03de8b0bcd086228e6cd993e5276065af85df0e8",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/testing-strategy.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/testing-strategy.md",
+      "published_committed_sha256": "438d03645331ad50e5918a000ec9385d0bc4bf697186ca5cb58773828f4fb466",
+      "original_observed_sha256": "49025e664713dd3b8e09f007b1bb3f3ea6f0bd6a60aaba8f6bd60e09d0618649",
+      "original_mtime_utc": "2026-10-31T02:39:59.145Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "438d03645331ad50e5918a000ec9385d0bc4bf697186ca5cb58773828f4fb466",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/specs/web-mobile-feature-surfaces.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/specs/web-mobile-feature-surfaces.md",
+      "published_committed_sha256": "08bb3dbf28d721ec04d55c2d2fb064788f365c2eec875093a7ce17c760b14152",
+      "original_observed_sha256": "08bb3dbf28d721ec04d55c2d2fb064788f365c2eec875093a7ce17c760b14152",
+      "original_mtime_utc": "2026-10-31T03:11:33.390Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "08bb3dbf28d721ec04d55c2d2fb064788f365c2eec875093a7ce17c760b14152",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/README.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/README.md",
+      "published_committed_sha256": "527d4a8e816b00fa42096154cb58b15878b401fecc1b5901d5077bcc34dd86b0",
+      "original_observed_sha256": "527d4a8e816b00fa42096154cb58b15878b401fecc1b5901d5077bcc34dd86b0",
+      "original_mtime_utc": "2026-10-31T02:44:28.145Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "527d4a8e816b00fa42096154cb58b15878b401fecc1b5901d5077bcc34dd86b0",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/agent-bootstrap.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/agent-bootstrap.md",
+      "published_committed_sha256": "e39a977f34a25a2108ceaac968ff6473e4d0fe16e4edab9b3ecb4c62f14edb9a",
+      "original_observed_sha256": "e39a977f34a25a2108ceaac968ff6473e4d0fe16e4edab9b3ecb4c62f14edb9a",
+      "original_mtime_utc": "2026-10-31T02:35:27.251Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "e39a977f34a25a2108ceaac968ff6473e4d0fe16e4edab9b3ecb4c62f14edb9a",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/execution-waves.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/execution-waves.md",
+      "published_committed_sha256": "4d331e0c190c770d6e59b30cccabc80ee5bcfb307ee9b188418a5532e1525ffb",
+      "original_observed_sha256": "4d331e0c190c770d6e59b30cccabc80ee5bcfb307ee9b188418a5532e1525ffb",
+      "original_mtime_utc": "2026-10-30T17:32:41.761Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "4d331e0c190c770d6e59b30cccabc80ee5bcfb307ee9b188418a5532e1525ffb",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/handoff-schemas.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/handoff-schemas.json",
+      "published_committed_sha256": "4d5ca5eab05c0beef3ce4b5a4e88f3a1cf98de3c74e0347d4de27ef22cbb8b26",
+      "original_observed_sha256": "4d5ca5eab05c0beef3ce4b5a4e88f3a1cf98de3c74e0347d4de27ef22cbb8b26",
+      "original_mtime_utc": "2026-10-31T02:39:00.762Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "4d5ca5eab05c0beef3ce4b5a4e88f3a1cf98de3c74e0347d4de27ef22cbb8b26",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/injection-scenarios.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/injection-scenarios.json",
+      "published_committed_sha256": "8f789b5a07cf190cfb1801b9c38a7a1271ac563d8ee930e7f2960487e237aac0",
+      "original_observed_sha256": "8f789b5a07cf190cfb1801b9c38a7a1271ac563d8ee930e7f2960487e237aac0",
+      "original_mtime_utc": "2026-10-31T02:41:39.566Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "8f789b5a07cf190cfb1801b9c38a7a1271ac563d8ee930e7f2960487e237aac0",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/injection-scenarios.schema.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/injection-scenarios.schema.json",
+      "published_committed_sha256": "a20f550c695341ac40d5f037e4b398563dda2ba727ec52ad0705de1d48a8869d",
+      "original_observed_sha256": "a20f550c695341ac40d5f037e4b398563dda2ba727ec52ad0705de1d48a8869d",
+      "original_mtime_utc": "2026-10-31T02:37:27.766Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "a20f550c695341ac40d5f037e4b398563dda2ba727ec52ad0705de1d48a8869d",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/orchestrator.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/orchestrator.md",
+      "published_committed_sha256": "eaf6bb38d84aca79b6db9615af2a414b8016654145c237a3ccc2ac58d9e660d9",
+      "original_observed_sha256": "c43d7311fb1236ccb758e6d44e7789abfe72e6e39b350f607114855c4bb3cff6",
+      "original_mtime_utc": "2026-10-31T02:38:33.690Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "eaf6bb38d84aca79b6db9615af2a414b8016654145c237a3ccc2ac58d9e660d9",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/ownership.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/ownership.md",
+      "published_committed_sha256": "6b4f3af6120d0726825710d557ee0728606df4cfe0412465cf8022a54f352ac4",
+      "original_observed_sha256": "6b4f3af6120d0726825710d557ee0728606df4cfe0412465cf8022a54f352ac4",
+      "original_mtime_utc": "2026-10-31T02:38:33.689Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "6b4f3af6120d0726825710d557ee0728606df4cfe0412465cf8022a54f352ac4",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/producer-interfaces.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/producer-interfaces.md",
+      "published_committed_sha256": "2969cc9bfde9b25d22b72e14ca72e2bb83b90e78046ba301615ef61258f30c0f",
+      "original_observed_sha256": "2969cc9bfde9b25d22b72e14ca72e2bb83b90e78046ba301615ef61258f30c0f",
+      "original_mtime_utc": "2026-10-30T17:17:48.128Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "2969cc9bfde9b25d22b72e14ca72e2bb83b90e78046ba301615ef61258f30c0f",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/prompt-injection-policy.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/prompt-injection-policy.md",
+      "published_committed_sha256": "f9eb400c73f880eb3134b73292a07549d24234d70dba68b4b251b152f3690d00",
+      "original_observed_sha256": "f9eb400c73f880eb3134b73292a07549d24234d70dba68b4b251b152f3690d00",
+      "original_mtime_utc": "2026-10-31T02:36:17.844Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "f9eb400c73f880eb3134b73292a07549d24234d70dba68b4b251b152f3690d00",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/ownership-review.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/ownership-review.md",
+      "published_committed_sha256": "883868976a8d57ea99036143b00d6e9e353db195cf4e369fc3b478c4945c234d",
+      "original_observed_sha256": "883868976a8d57ea99036143b00d6e9e353db195cf4e369fc3b478c4945c234d",
+      "original_mtime_utc": "2026-10-30T17:31:01.103Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "883868976a8d57ea99036143b00d6e9e353db195cf4e369fc3b478c4945c234d",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/readiness-review.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/readiness-review.md",
+      "published_committed_sha256": "7e43c9fcfca481dd1a4463fb365e467c78f8e4aaf2d8b13f1b5bd966a93b1fe7",
+      "original_observed_sha256": "7e43c9fcfca481dd1a4463fb365e467c78f8e4aaf2d8b13f1b5bd966a93b1fe7",
+      "original_mtime_utc": "2026-10-30T17:34:17.358Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "7e43c9fcfca481dd1a4463fb365e467c78f8e4aaf2d8b13f1b5bd966a93b1fe7",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/review-resolutions.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/review-resolutions.md",
+      "published_committed_sha256": "f596ef59c483d853ff4bb361324d7f96b9064c47971a9f3327d1d96ebaf232c2",
+      "original_observed_sha256": "f596ef59c483d853ff4bb361324d7f96b9064c47971a9f3327d1d96ebaf232c2",
+      "original_mtime_utc": "2026-10-30T17:37:31.361Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "f596ef59c483d853ff4bb361324d7f96b9064c47971a9f3327d1d96ebaf232c2",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-launch-review.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-launch-review.md",
+      "published_committed_sha256": "a9541c49b8647d049c72d195a6f029bf80cb0e66abab88ddec0fb10ac9b43fac",
+      "original_observed_sha256": "a9541c49b8647d049c72d195a6f029bf80cb0e66abab88ddec0fb10ac9b43fac",
+      "original_mtime_utc": "2026-10-31T02:42:57.500Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "a9541c49b8647d049c72d195a6f029bf80cb0e66abab88ddec0fb10ac9b43fac",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-security-review.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-security-review.md",
+      "published_committed_sha256": "fef3c0e233b5784d3ffdfa1e9994e2c3e5d5efb122126b8d8ab9a38677e599f9",
+      "original_observed_sha256": "fef3c0e233b5784d3ffdfa1e9994e2c3e5d5efb122126b8d8ab9a38677e599f9",
+      "original_mtime_utc": "2026-10-31T02:42:31.466Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "fef3c0e233b5784d3ffdfa1e9994e2c3e5d5efb122126b8d8ab9a38677e599f9",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-validation.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-validation.json",
+      "published_committed_sha256": "6414646542bd5d5094b4b0390941192ec2d983e183e4f26d1c3454cad75427bf",
+      "original_observed_sha256": "6414646542bd5d5094b4b0390941192ec2d983e183e4f26d1c3454cad75427bf",
+      "original_mtime_utc": "2026-10-31T02:44:53.306Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "6414646542bd5d5094b4b0390941192ec2d983e183e4f26d1c3454cad75427bf",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-validation.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/strict-policy-validation.md",
+      "published_committed_sha256": "008f720f2f34a9afcd4712aba13947ab9f79305141dfbc11153be02895177234",
+      "original_observed_sha256": "008f720f2f34a9afcd4712aba13947ab9f79305141dfbc11153be02895177234",
+      "original_mtime_utc": "2026-10-31T02:44:19.908Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "008f720f2f34a9afcd4712aba13947ab9f79305141dfbc11153be02895177234",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/validation-results.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/validation-results.json",
+      "published_committed_sha256": "d9d0a150a7aeeca89585fd9e6f4722968c35b9ff9006c6ef5c2125c1d44cce4a",
+      "original_observed_sha256": "d9d0a150a7aeeca89585fd9e6f4722968c35b9ff9006c6ef5c2125c1d44cce4a",
+      "original_mtime_utc": "2026-10-30T17:37:31.369Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "d9d0a150a7aeeca89585fd9e6f4722968c35b9ff9006c6ef5c2125c1d44cce4a",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/validation.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/reports/validation.md",
+      "published_committed_sha256": "f236e6e0f3e3555dc5b9f0ca146d02d3fa93ceba83f9aa930ec4e1c65742aa9e",
+      "original_observed_sha256": "f236e6e0f3e3555dc5b9f0ca146d02d3fa93ceba83f9aa930ec4e1c65742aa9e",
+      "original_mtime_utc": "2026-10-30T17:37:31.370Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "f236e6e0f3e3555dc5b9f0ca146d02d3fa93ceba83f9aa930ec4e1c65742aa9e",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles.json",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles.json",
+      "published_committed_sha256": "5e8c38ce01ff1925390eb5feb3951bced61d96acd2fd0276b4f8461428ad232e",
+      "original_observed_sha256": "922d5d3ea0a370307cb8c5989f3db27f52e4f5e26cab9447548ee88bfc3ac9df",
+      "original_mtime_utc": "2026-10-31T02:39:00.748Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "5e8c38ce01ff1925390eb5feb3951bced61d96acd2fd0276b4f8461428ad232e",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/00-integration-lead.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/00-integration-lead.md",
+      "published_committed_sha256": "8f013d422983ec6c1e6e7fbb29d885d5ce42ba1b45bcc5363dce7b2493de6189",
+      "original_observed_sha256": "09f0028265d6c134f744e317292473377137d4ee226e19a45a292e4565f375e2",
+      "original_mtime_utc": "2026-10-31T02:38:33.645Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "8f013d422983ec6c1e6e7fbb29d885d5ce42ba1b45bcc5363dce7b2493de6189",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/01-contracts-client.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/01-contracts-client.md",
+      "published_committed_sha256": "64e711188359622023a0e53478ef26eeaa275df6b6176d2de45108b687ee92c0",
+      "original_observed_sha256": "64e711188359622023a0e53478ef26eeaa275df6b6176d2de45108b687ee92c0",
+      "original_mtime_utc": "2026-10-31T02:38:33.652Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "64e711188359622023a0e53478ef26eeaa275df6b6176d2de45108b687ee92c0",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/02-design-system.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/02-design-system.md",
+      "published_committed_sha256": "a2a10395e876a344584e3a6d08aebb0c6fbfb42db86e56ae81c7d8f1161d6b0c",
+      "original_observed_sha256": "a2a10395e876a344584e3a6d08aebb0c6fbfb42db86e56ae81c7d8f1161d6b0c",
+      "original_mtime_utc": "2026-10-31T02:38:33.657Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "a2a10395e876a344584e3a6d08aebb0c6fbfb42db86e56ae81c7d8f1161d6b0c",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/03-simulation-data.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/03-simulation-data.md",
+      "published_committed_sha256": "89ee116274249ffd3a72c1eee566f4c4c78a533a8d84e96a6028472315a23642",
+      "original_observed_sha256": "89ee116274249ffd3a72c1eee566f4c4c78a533a8d84e96a6028472315a23642",
+      "original_mtime_utc": "2026-10-31T02:38:33.659Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "89ee116274249ffd3a72c1eee566f4c4c78a533a8d84e96a6028472315a23642",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/04-session-platform.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/04-session-platform.md",
+      "published_committed_sha256": "e9ce120c75cbff303785e077e95d3e65e63cd8e6fbc173197ee0677e9dd299aa",
+      "original_observed_sha256": "e9ce120c75cbff303785e077e95d3e65e63cd8e6fbc173197ee0677e9dd299aa",
+      "original_mtime_utc": "2026-10-31T02:38:33.662Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "e9ce120c75cbff303785e077e95d3e65e63cd8e6fbc173197ee0677e9dd299aa",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/05-sources-media.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/05-sources-media.md",
+      "published_committed_sha256": "919614c228dfae58904e40c71861ae24b9d92e84c03a92b4bd1161eb5ff745da",
+      "original_observed_sha256": "919614c228dfae58904e40c71861ae24b9d92e84c03a92b4bd1161eb5ff745da",
+      "original_mtime_utc": "2026-10-31T02:38:33.666Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "919614c228dfae58904e40c71861ae24b9d92e84c03a92b4bd1161eb5ff745da",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/06-planner-safety.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/06-planner-safety.md",
+      "published_committed_sha256": "48c508e2f882a3293b7c3105020f1d91cc5cf7d28453c31b0ed549049d79ffee",
+      "original_observed_sha256": "48c508e2f882a3293b7c3105020f1d91cc5cf7d28453c31b0ed549049d79ffee",
+      "original_mtime_utc": "2026-10-31T02:38:33.668Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "48c508e2f882a3293b7c3105020f1d91cc5cf7d28453c31b0ed549049d79ffee",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/07-review-rewards.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/07-review-rewards.md",
+      "published_committed_sha256": "623ad4286d0f869dddecd9786e5713360ee1e9b1b4fa58f39ec4cb0e7ccc9ed8",
+      "original_observed_sha256": "623ad4286d0f869dddecd9786e5713360ee1e9b1b4fa58f39ec4cb0e7ccc9ed8",
+      "original_mtime_utc": "2026-10-31T02:38:33.672Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "623ad4286d0f869dddecd9786e5713360ee1e9b1b4fa58f39ec4cb0e7ccc9ed8",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/08-results-evaluation.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/08-results-evaluation.md",
+      "published_committed_sha256": "e6db6149349332ad5a68e1fa664d55ad956529a9f448d22e41e321e00b5d5a49",
+      "original_observed_sha256": "e6db6149349332ad5a68e1fa664d55ad956529a9f448d22e41e321e00b5d5a49",
+      "original_mtime_utc": "2026-10-31T02:38:33.675Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "e6db6149349332ad5a68e1fa664d55ad956529a9f448d22e41e321e00b5d5a49",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/09-web-console.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/09-web-console.md",
+      "published_committed_sha256": "5a1d64a41f1342440257553ea7c4656c0b11e3d7fc9fc83498cce08044e9a2ad",
+      "original_observed_sha256": "5a1d64a41f1342440257553ea7c4656c0b11e3d7fc9fc83498cce08044e9a2ad",
+      "original_mtime_utc": "2026-10-31T03:11:33.402Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "5a1d64a41f1342440257553ea7c4656c0b11e3d7fc9fc83498cce08044e9a2ad",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/10-expo-mobile.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/10-expo-mobile.md",
+      "published_committed_sha256": "6fce8d77c92818397eef3a8def94973f1e2d58d4915150497513943453d4c7e7",
+      "original_observed_sha256": "6fce8d77c92818397eef3a8def94973f1e2d58d4915150497513943453d4c7e7",
+      "original_mtime_utc": "2026-10-31T03:11:33.404Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "6fce8d77c92818397eef3a8def94973f1e2d58d4915150497513943453d4c7e7",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/11-quality-security.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/11-quality-security.md",
+      "published_committed_sha256": "cb69c4aebcf4edbc4405e13c5bab7d8a6a75817b0d340dc99028e6ca1ccf5efe",
+      "original_observed_sha256": "cb69c4aebcf4edbc4405e13c5bab7d8a6a75817b0d340dc99028e6ca1ccf5efe",
+      "original_mtime_utc": "2026-10-31T02:38:33.681Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "cb69c4aebcf4edbc4405e13c5bab7d8a6a75817b0d340dc99028e6ca1ccf5efe",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/12-release-ops.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles/12-release-ops.md",
+      "published_committed_sha256": "c9d2a1386eb96c3206d76f9a64d86bab4ff196fe8762d127967f044baba3e9ee",
+      "original_observed_sha256": "c9d2a1386eb96c3206d76f9a64d86bab4ff196fe8762d127967f044baba3e9ee",
+      "original_mtime_utc": "2026-10-31T02:38:33.684Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "c9d2a1386eb96c3206d76f9a64d86bab4ff196fe8762d127967f044baba3e9ee",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/shared-contracts.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/shared-contracts.md",
+      "published_committed_sha256": "fbea9cbb0789fb254b2d40dff316c5187f8fa31b28964eaf3dec1ada8eafd671",
+      "original_observed_sha256": "fbea9cbb0789fb254b2d40dff316c5187f8fa31b28964eaf3dec1ada8eafd671",
+      "original_mtime_utc": "2026-10-30T17:10:59.655Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "fbea9cbb0789fb254b2d40dff316c5187f8fa31b28964eaf3dec1ada8eafd671",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/start-here.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/start-here.md",
+      "published_committed_sha256": "73a05facf2f1506ca323ed649d1c045beb6d75f136c11a29e8f8dd5be7350ba4",
+      "original_observed_sha256": "e79b2008b272ff1bbf0049698ce4d30cf68aaadff52540fa28c5da8033ba3deb",
+      "original_mtime_utc": "2026-10-31T02:34:43.159Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "73a05facf2f1506ca323ed649d1c045beb6d75f136c11a29e8f8dd5be7350ba4",
+      "matches_published_commit": false
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/work-items-and-handoff.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/work-items-and-handoff.md",
+      "published_committed_sha256": "2034d236deca1b6eca7ffa9de4a78b7ad87e759cd13584353e6eae78a25c3c12",
+      "original_observed_sha256": "2034d236deca1b6eca7ffa9de4a78b7ad87e759cd13584353e6eae78a25c3c12",
+      "original_mtime_utc": "2026-10-31T02:39:59.141Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "2034d236deca1b6eca7ffa9de4a78b7ad87e759cd13584353e6eae78a25c3c12",
+      "matches_published_commit": true
+    },
+    {
+      "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/worktree-runbook.md",
+      "original_source_path": "/Users/vominhlong/seahackathon/plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/worktree-runbook.md",
+      "published_committed_sha256": "7eef660d62a30086c1ba9fd6c8d3f34214a290ef2908548eeec176dff022a626",
+      "original_observed_sha256": "9dd88c1e569968ff2e4f3974ae6d7a63178b5a35cf9fdbf4bf990b6fb2995bb5",
+      "original_mtime_utc": "2026-10-31T02:39:59.142Z",
+      "unchanged_during_individual_read": true,
+      "primary_worktree_sha256": "7eef660d62a30086c1ba9fd6c8d3f34214a290ef2908548eeec176dff022a626",
+      "matches_published_commit": false
+    }
+  ]
+}
