@@ -6,7 +6,7 @@ React web, React Router, Tailwind CSS v4, shadcn, isometric icons, Hono API, Exp
 ## Proposed technical decisions (không giả làm yêu cầu cũ)
 | ID | Quyết định | Lý do / hệ quả |
 |---|---|---|
-| A01 | pnpm workspace, TypeScript strict, web SPA data-router | Một API Hono và static origin, không SSR trùng server |
+| A01 | Bun workspace, TypeScript strict, web SPA data-router | Một API Hono và static origin, không SSR trùng server |
 | A02 | DO SQLite per session, private R2 assets | Delta PRD “no DB”: multi-device consistency/durability, không thêm account DB |
 | A03 | Single-team sessions + scoped opaque capabilities | Bảo vệ public demo và role thật trên server, không SaaS tenancy |
 | A04 | Full mobile dispatcher/driver/contributor | User explicitly requested mobile, không reporting-only foundation |

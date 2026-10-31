@@ -136,27 +136,27 @@ Web and Expo native consume SSE through `fetch` response-body streaming. The off
 
 `apps/api/package.json` (Wrangler, not Vite):
 - `dev`: `wrangler dev --config wrangler.api-local.jsonc --ip 127.0.0.1 --port 8787 --persist-to .wrangler/state/development` (full API-local config phase08, không yêu cầu web build).
-- `build`: `pnpm --filter @floodops/web build && wrangler deploy --dry-run`
-- `preview`: `pnpm --filter @floodops/web build && wrangler dev --ip 127.0.0.1 --port 8787 --env preview --persist-to .wrangler/state/preview`
+- `build`: `bun run --filter @floodops/web build && wrangler deploy --dry-run`
+- `preview`: `bun run --filter @floodops/web build && wrangler dev --ip 127.0.0.1 --port 8787 --env preview --persist-to .wrangler/state/preview`
 - `test`: `vitest run`; `test:watch`: `vitest`; `types`: `wrangler types`
-- `deploy:preview`: `pnpm --filter @floodops/web build && wrangler deploy --env preview`
-- `deploy:production`: `pnpm --filter @floodops/web build && wrangler deploy --env production`
+- `deploy:preview`: `bun run --filter @floodops/web build && wrangler deploy --env preview`
+- `deploy:production`: `bun run --filter @floodops/web build && wrangler deploy --env production`
 
 `apps/api/vitest.config.ts` phase04 dùng `defineWorkersConfig` với `wrangler.configPath: "./wrangler.test.jsonc"` và injected real Hono/SessionDO harness. Phase08 tạo full `src/index.ts` + `wrangler.api-local.jsonc` trước UI. Phase11 tạo `wrangler.jsonc` assets/env và kiểm built-web+API cùng production entrypoint; phase12 chỉ deploy artifacts đã test. Không phụ thuộc late deployment config để chạy early feature tests; không mock DO/R2 thay integration.
 
 Operator setup/deploy commands:
 ```sh
-pnpm --filter @floodops/api exec wrangler types
-pnpm --filter @floodops/api exec wrangler r2 bucket create floodops-media-preview
-pnpm --filter @floodops/api exec wrangler r2 bucket create floodops-scenarios-preview
-pnpm --filter @floodops/api exec wrangler r2 bucket create floodops-media-production
-pnpm --filter @floodops/api exec wrangler r2 bucket create floodops-scenarios-production
-pnpm --filter @floodops/api exec wrangler secret put OPENAI_API_KEY --env preview
-pnpm --filter @floodops/api exec wrangler secret put OPENAI_API_KEY --env production
-pnpm --filter @floodops/api deploy:preview
-pnpm --filter @floodops/api deploy:production
-pnpm --filter @floodops/api exec wrangler versions list
-pnpm --filter @floodops/api exec wrangler rollback --env production
+bun run --cwd apps/api wrangler types
+bun run --cwd apps/api wrangler r2 bucket create floodops-media-preview
+bun run --cwd apps/api wrangler r2 bucket create floodops-scenarios-preview
+bun run --cwd apps/api wrangler r2 bucket create floodops-media-production
+bun run --cwd apps/api wrangler r2 bucket create floodops-scenarios-production
+bun run --cwd apps/api wrangler secret put OPENAI_API_KEY --env preview
+bun run --cwd apps/api wrangler secret put OPENAI_API_KEY --env production
+bun run --cwd apps/api deploy:preview
+bun run --cwd apps/api deploy:production
+bun run --cwd apps/api wrangler versions list
+bun run --cwd apps/api wrangler rollback --env production
 ```
 
 Preview local state uses a separate persistence path. Secret commands are interactive and run only in the matching protected environment; never persist values in logs, `vars`, `.env`, or bundles. Bucket creation is explicit. Class migrations apply through `wrangler deploy`, not merely version upload; see [DO migrations](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/).

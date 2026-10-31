@@ -4,13 +4,16 @@
   },
   "build": {
     "development": {
+      "bun": "1.4.0",
       "developmentClient": true,
       "distribution": "internal"
     },
     "preview": {
+      "bun": "1.4.0",
       "distribution": "internal"
     },
     "production": {
+      "bun": "1.4.0",
       "autoIncrement": true
     }
   }

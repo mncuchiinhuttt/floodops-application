@@ -4,7 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "bun --bun run tsc --noEmit -p tsconfig.json",
+    "dev": "wrangler dev --config wrangler.api-local.jsonc --local --ip 127.0.0.1 --port 8760"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261031.1",
+    "wrangler": "4.156.0"
   }
 }
 

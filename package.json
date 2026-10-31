@@ -3,15 +3,28 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "bun@1.4.0",
+  "workspaces": ["apps/*", "packages/*"],
   "engines": {
-    "node": ">=26.8.1 <27",
-    "pnpm": ">=10.28.0 <11"
+    "bun": "1.4.0"
   },
   "scripts": {
-    "typecheck": "pnpm --recursive --if-present typecheck",
-    "lint": "pnpm --recursive --if-present lint",
-    "test": "pnpm --recursive --if-present test"
+    "typecheck": "bun --bun run tsc -p tooling/tsconfig.json && bun run --workspaces --if-present typecheck",
+    "lint": "bun --bun run eslint . --max-warnings=0",
+    "test": "bun test tooling",
+    "check": "bun run typecheck && bun run lint && bun run test",
+    "api:dev": "bun run --cwd apps/api dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/bun": "1.4.0",
+    "eslint": "10.14.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1"
+  },
+  "trustedDependencies": [],
+  "overrides": {
+    "minimatch": "11.0.1"
   }
 }
 

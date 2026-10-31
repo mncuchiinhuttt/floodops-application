@@ -25,6 +25,7 @@ flowchart LR
 - Native binaries phát hành EAS; Cloudflare chỉ host web/API/assets, không host executable iOS/Android.
 
 ## Workspace và luật import
+- Toolchain dùng Bun 1.4.0, root `package.json.workspaces` và `bun.lock`; ngoại lệ Wrangler/Expo theo [Bun decision](../../../docs/architecture/bun-toolchain.md). Domain/simulation không import Bun API chỉ vì tooling dùng Bun.
 ```text
 apps/
   web/src/{app,features,shared}

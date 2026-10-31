@@ -3,6 +3,8 @@
 Đọc [AGENTS.md gốc](../../../AGENTS.md) trước. Đây là thứ tự chạy **technical agents**, không phải role tài xế/điều phối của sản phẩm. Không phân thời gian; chưa tạo worktree/branch hoặc bắt đầu implementation trong bước viết hướng dẫn.
 
 ## 1. Thứ tự khuyến nghị
+Toolchain hiện dùng Bun theo [decision](../../../docs/architecture/bun-toolchain.md). Default agent model: `gpt-6.1-sol`, effort `max`; helper nhỏ `gpt-6-luna`/`max`, task triển khai sâu `gpt-6.1-terra`/`max`. Helper giữ đúng write scope và cùng một writer tại một thời điểm; worker không tự mở role khác. Init hiện chưa launch implementation agent.
+
 | Đợt | Mở agent nào | Việc cụ thể phải bàn giao | Chỉ mở khi |
 |---|---|---|---|
 | 0 | **IntegrationLead** — giữ session này suốt quá trình | Commit policy/plan khi được user cho phép; tạo integration worktree; chốt toolchain/manifests/lockfile và workspace-bootstrap | User đã yêu cầu execution; policy/plan đã committed, main không là scratchpad |

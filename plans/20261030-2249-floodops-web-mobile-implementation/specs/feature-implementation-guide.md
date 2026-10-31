@@ -29,7 +29,7 @@
 - TanStack Query shared transport/cache semantics; no duplicate UI state store for server snapshot. Form stack React Hook Form + Zod where applicable; native field adapter.
 - `@floodops/icons` internal vector package with web and native entrypoints; controls via licensed vector icon adapter. No invented `@muxa/ui-isometric` public API or unpurchased assets.
 - Vitest/Workerd pool/Testing Library/Jest RN/Playwright/Maestro/axe/fast-check: verify supported versions together, licence/advisories before install.
-- pnpm lockfile frozen CI, Node toolchain pinned, `expo-doctor` and peer deps check; never force-ignore peer mismatch.
+- bun.lock frozen CI, Bun toolchain pinned (Node exceptions trong docs/architecture/bun-toolchain.md), `expo-doctor` and peer deps check; never force-ignore peer mismatch.
 
 ## Data/loading pattern
 - Query key begins session+generation+feature+filters. Response revision stored, not overwritten by older response. On reset abort all requests/query cache, clear old credential.

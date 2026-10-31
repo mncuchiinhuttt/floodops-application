@@ -15,9 +15,8 @@
     ],
     "protected_files": [
       ".gitignore",
-      ".node-version",
-      ".npmrc",
-      ".nvmrc",
+      ".bun-version",
+      ".gitattributes",
       "AGENTS.md",
       "README.md",
       "apps/api/.dev.vars.example",
@@ -68,8 +67,8 @@
       "plans/20261030-2249-floodops-web-mobile-implementation/phase-12-cloudflare-eas-release.md",
       "plans/20261030-2249-floodops-web-mobile-implementation/plan.md",
       "plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md",
-      "pnpm-lock.yaml",
-      "pnpm-workspace.yaml",
+      "bun.lock",
+      "bunfig.toml",
       "tsconfig.base.json"
     ],
     "default": "deny",
@@ -256,7 +255,7 @@
       "deps": [],
       "phases": [],
       "ports": {
-        "api": 8770,
+        "api": 8760,
         "web": 5170,
         "metro": 8070
       },
@@ -288,9 +287,8 @@
       ],
       "include_files": [
         ".gitignore",
-        ".node-version",
-        ".npmrc",
-        ".nvmrc",
+        ".bun-version",
+        ".gitattributes",
         "AGENTS.md",
         "README.md",
         "apps/api/.dev.vars.example",
@@ -341,8 +339,8 @@
         "plans/20261030-2249-floodops-web-mobile-implementation/phase-12-cloudflare-eas-release.md",
         "plans/20261030-2249-floodops-web-mobile-implementation/plan.md",
         "plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md",
-        "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
+        "bun.lock",
+        "bunfig.toml",
         "tsconfig.base.json"
       ],
       "exclude_prefixes": [],
@@ -1138,7 +1136,7 @@
       "paths": [
         "root manifests",
         "all app/package package.json and tsconfig.json",
-        "pnpm-lock.yaml"
+        "bun.lock"
       ],
       "writer": "integration-lead"
     },

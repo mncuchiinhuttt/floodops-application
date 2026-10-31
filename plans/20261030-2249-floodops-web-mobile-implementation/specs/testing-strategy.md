@@ -10,18 +10,18 @@
 ## Test levels và exact target files
 | Level | Future files / command | Proof |
 |---|---|---|
-| Contract | `packages/contracts/test/openapi-contract.test.ts`; `pnpm test:contracts` | OpenAPI structural validity, request/response examples, unknown props, schema/client drift |
-| Domain | `packages/domain/src/**/tests/*.test.ts`; `pnpm test:domain` | POL/I invariants, epochs/conflict, pickup/capacity, exactly-once reward |
-| Simulator | `packages/simulation/src/**/tests/*.test.ts`; `pnpm test:simulation` | event ordering, route direction/turns, baseline isolation, completion metrics/calibration |
-| API integration | `apps/api/test/{capabilities,commands,media,replay,reset}.test.ts`; `pnpm test:api` | actual Hono+DO/R2 transactions/permissions/idempotency, storage restart |
-| Web components | `apps/web/src/features/**/tests/*.test.tsx`; `pnpm test:web` | loading/validation/412/410/disabled commands, projected vs committed |
-| Native components | `apps/mobile/src/features/**/tests/*.test.tsx`; `pnpm test:mobile` | native roles/labels, offline draft persistence, secure-store rejoin |
-| Web E2E | `apps/web/test/e2e/*.spec.ts`; `pnpm test:e2e:web` | built SPA + actual local Worker using deterministic provider adapter |
-| Native E2E | `apps/mobile/.maestro/*.yaml`; `pnpm test:e2e:mobile` | installed iOS/Android dev build against local/preview API; photo permissions/capture/reconnect |
-| Cross-client | `tests/cross-platform/session-sync.spec.ts`; `pnpm test:cross-client` | web review→native plan status/revision; native report→web gap/reward; two dispatchers CAS |
-| Security | `apps/api/test/security/*.test.ts`; `pnpm test:security` | role/resource isolation, CSRF, stale/reset, upload bombs, provider budget/injection |
-| Performance | `tests/performance/scenario-bounds.test.ts`; `pnpm test:performance` | bounded event/graph work, cancellation, stream limits, client geometry rendering |
-| Deploy smoke | `tests/smoke/deployed-session.spec.ts`; `pnpm smoke:preview` | HTTPS API/deep links/create/join/upload/report/review/plan/approve/execute/reset/expiry |
+| Contract | `packages/contracts/test/openapi-contract.test.ts`; `bun run test:contracts` | OpenAPI structural validity, request/response examples, unknown props, schema/client drift |
+| Domain | `packages/domain/src/**/tests/*.test.ts`; `bun run test:domain` | POL/I invariants, epochs/conflict, pickup/capacity, exactly-once reward |
+| Simulator | `packages/simulation/src/**/tests/*.test.ts`; `bun run test:simulation` | event ordering, route direction/turns, baseline isolation, completion metrics/calibration |
+| API integration | `apps/api/test/{capabilities,commands,media,replay,reset}.test.ts`; `bun run test:api` | actual Hono+DO/R2 transactions/permissions/idempotency, storage restart |
+| Web components | `apps/web/src/features/**/tests/*.test.tsx`; `bun run test:web` | loading/validation/412/410/disabled commands, projected vs committed |
+| Native components | `apps/mobile/src/features/**/tests/*.test.tsx`; `bun run test:mobile` | native roles/labels, offline draft persistence, secure-store rejoin |
+| Web E2E | `apps/web/test/e2e/*.spec.ts`; `bun run test:e2e:web` | built SPA + actual local Worker using deterministic provider adapter |
+| Native E2E | `apps/mobile/.maestro/*.yaml`; `bun run test:e2e:mobile` | installed iOS/Android dev build against local/preview API; photo permissions/capture/reconnect |
+| Cross-client | `tests/cross-platform/session-sync.spec.ts`; `bun run test:cross-client` | web review→native plan status/revision; native report→web gap/reward; two dispatchers CAS |
+| Security | `apps/api/test/security/*.test.ts`; `bun run test:security` | role/resource isolation, CSRF, stale/reset, upload bombs, provider budget/injection |
+| Performance | `tests/performance/scenario-bounds.test.ts`; `bun run test:performance` | bounded event/graph work, cancellation, stream limits, client geometry rendering |
+| Deploy smoke | `tests/smoke/deployed-session.spec.ts`; `bun run smoke:preview` | HTTPS API/deep links/create/join/upload/report/review/plan/approve/execute/reset/expiry |
 
 ## T01–T15 acceptance matrix
 | Test | Observable assertions | Suites |

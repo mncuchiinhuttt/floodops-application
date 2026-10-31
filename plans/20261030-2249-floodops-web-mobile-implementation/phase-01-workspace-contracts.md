@@ -23,14 +23,14 @@
 - Phase này không tự đổi API/role/revision contract; interface change phải sửa OpenAPI + client + tests trước consumers.
 
 ## Related code files
-- Create/modify `package.json; pnpm-workspace.yaml; tsconfig.base.json; eslint.config.js (root workspace/import rules)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
+- Create/modify `package.json; bunfig.toml; tsconfig.base.json; eslint.config.js (root workspace/import rules)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
 - Create/modify `packages/contracts/src/** (common + session/scenario/operations/evidence/planning/simulation DTOs)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
 - Create/modify `packages/api-client/src/** (typed HTTP, auth adapter, idempotent command, SSE parser)` trong `/Users/vominhlong/seahackathon/floodops-application/`.
 - Create/modify `packages/contracts/test/**; packages/api-client/test/**` trong `/Users/vominhlong/seahackathon/floodops-application/`.
 - Delete: không có file ứng dụng cũ cần xóa trong repo tài liệu; không xóa PRD/history/user files.
 
 ## Implementation steps
-1. Khởi tạo pnpm workspace private, strict TypeScript/noUncheckedIndexedAccess, app/package naming @floodops/*, ESM exports hẹp; pin toolchain và lockfile sau advisory/licence check.
+1. Khởi tạo Bun workspace private, strict TypeScript/noUncheckedIndexedAccess, app/package naming @floodops/*, ESM exports hẹp; pin toolchain và lockfile sau advisory/licence check.
 2. Chuyển schema thiết kế OpenAPI thành Zod source có cùng required/nullable/enum/finite constraints; generate OpenAPI snapshot và typed API client, CI semantic diff. Không copy 177 schema thành nhiều interfaces viết tay.
 3. Implement error/status catalog, successful envelope, request_id/ETag/If-Match/Cursor, credential delivery web/native; domain types không import cloud runtime.
 4. HTTP client inject fetch/credential provider, bounded GET retry, command key giữ nguyên qua network retry, no auto rebase after412; cancel obsolete session requests.
@@ -38,7 +38,7 @@
 6. Set import boundaries and maximum module size; create fixtures builders explicit known vs invalid payloads, not consumer source-text assertions.
 
 ## Todo list
-- [ ] Step 01.01: Khởi tạo pnpm workspace private, strict TypeScript/noUncheckedIndexedAccess, app/package naming @floodops/*, ESM exports hẹp
+- [ ] Step 01.01: Khởi tạo Bun workspace private, strict TypeScript/noUncheckedIndexedAccess, app/package naming @floodops/*, ESM exports hẹp
 - [ ] Step 01.02: Chuyển schema thiết kế OpenAPI thành Zod source có cùng required/nullable/enum/finite constraints
 - [ ] Step 01.03: Implement error/status catalog, successful envelope, request_id/ETag/If-Match/Cursor, credential delivery web/native
 - [ ] Step 01.04: HTTP client inject fetch/credential provider, bounded GET retry, command key giữ nguyên qua network retry, no auto rebase after412

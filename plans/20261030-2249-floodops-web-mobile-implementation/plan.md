@@ -10,6 +10,7 @@ created: 2026-10-30
 # FloodOps implementation plan
 
 ## Phạm vi và quyết định
+- Toolchain amendment theo user 2026-10-31: Bun 1.4.0 workspace/package manager/scripts, một `bun.lock`; Node ngoại lệ cho Wrangler/Expo, Worker vẫn `workerd`. [Bun toolchain decision](../../docs/architecture/bun-toolchain.md) là chuẩn cho lệnh runtime/tooling.
 - Chuẩn: [PRD v0.3](../../FloodOps/prd.md), toàn bộ34 US gồm P1/P2; web và Expo native đầy đủ, không chỉ companion app.
 - Web: React + React Router Data Mode + Tailwind CSS v4 + shadcn. Native: Expo Router/RN, shared tokens + native components + SVG isometric package adapter.
 - Backend: Hono Worker + static web assets, Session Durable Object/SQLite + private R2; không D1/KV/SaaS accounts/live provider connectors.

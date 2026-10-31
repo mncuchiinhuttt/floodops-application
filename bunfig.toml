@@ -1,0 +1,8 @@
+[install]
+linker = "isolated"
+exact = true
+auto = "disable"
+
+[run]
+# Wrangler/Expo may invoke Node explicitly; do not alias their runtime globally.
+bun = false

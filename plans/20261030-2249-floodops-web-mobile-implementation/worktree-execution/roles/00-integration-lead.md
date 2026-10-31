@@ -46,9 +46,8 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; xác nhận 
 - Include subtree `tooling/`.
 - Include exact `AGENTS.md` chỉ khi user yêu cầu policy revision rõ; policy/hash changes phải review/publish và reauthorize affected workers.
 - Include exact `.gitignore`.
-- Include exact `.node-version`.
-- Include exact `.npmrc`.
-- Include exact `.nvmrc`.
+- Include exact `.bun-version`.
+- Include exact `.gitattributes`.
 - Include exact `README.md`.
 - Include exact `apps/api/.dev.vars.example`.
 - Include exact `apps/api/package.json`.
@@ -98,15 +97,15 @@ Startup REQUIRED: áp dụng root AGENTS.md và agent-bootstrap.md; xác nhận 
 - Include exact `plans/20261030-2249-floodops-web-mobile-implementation/phase-12-cloudflare-eas-release.md`.
 - Include exact `plans/20261030-2249-floodops-web-mobile-implementation/plan.md`.
 - Include exact `plans/20261030-2249-floodops-web-mobile-implementation/planning-contract.md`.
-- Include exact `pnpm-lock.yaml`.
-- Include exact `pnpm-workspace.yaml`.
+- Include exact `bun.lock`.
+- Include exact `bunfig.toml`.
 - Include exact `tsconfig.base.json`.
 - Central protected files trong manifest **luôn** do IntegrationLead ghi, kể cả nằm trong subtree của bạn.
 - Report namespace: `plans/reports/worktree-integration-lead-<work_item_id>.md` bên trong worktree của bạn; không ghi report/status của role khác.
 - File ngoài scope: request assignment/interface/dependency change; không deep-import/copy implementation để né owner.
 
 ## Runtime isolation
-- Assigned local ports: api=8770, web=5170, metro=8070.
+- Assigned local ports: api=8760, web=5170, metro=8070.
 - Servers bind127.0.0.1. Local node_modules/build/.wrangler/.expo state trong chính worktree, không share symlink/manual persistence folder.
 - No env/credential copy; native physical device dùng approved preview/USB mapping, không mở0.0.0.0.
 - Default không remote action. Preview/dev-build/model cần explicit scoped preview-authorized grant có environment/action/budget trước khi lấy evidence; production/store/main cần release-authorized sau acceptance. Permission không là pass.

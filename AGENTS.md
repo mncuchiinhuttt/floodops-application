@@ -30,7 +30,7 @@
 
 ## 4. File ownership và policy integrity
 - MUST dùng matcher trong [ownership](plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/ownership.md). No matching owner = deny; multiple owners = coordination defect, chưa writer nào được sửa.
-- IntegrationLead sở hữu central package manifests, pnpm-lock, root configs/README, API entrypoint/Wrangler/EAS config và plan/gate metadata theo manifest.
+- IntegrationLead sở hữu central package manifests, bun.lock, root configs/README, API entrypoint/Wrangler/EAS config và plan/gate metadata theo manifest.
 - `AGENTS.md`, bootstrap/injection policy, role manifest, receipt schemas và grant records là protected. Worker NEVER sửa chúng, Git config, hooks, memory hoặc tool permissions để tự cấp quyền.
 - User-requested policy revision phải do IntegrationLead/được user giao rõ thực hiện, review rồi publish commit/hash mới; worker đang chạy nhận amendment/resume, không silently dùng policy mới tự sửa.
 - Sửa file ngoài scope, public API/schema/export/fixture/UI primitive của owner khác: gửi minimal request, không deep-import private implementation hoặc copy/fork để lách owner.

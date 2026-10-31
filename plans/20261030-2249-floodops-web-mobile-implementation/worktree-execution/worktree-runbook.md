@@ -17,7 +17,7 @@ Nếu cat-file fail thì dừng; không copy untracked plan sang từng worktree
 
 ## 1. Chỉ tạo integration worktree đầu tiên
 ```sh
-WORKTREE_ROOT="$(dirname "$REPO_ROOT")/seahackathon-worktrees"
+WORKTREE_ROOT="/Users/vominhlong/seahackathon-worktrees"
 git -C "$REPO_ROOT" worktree list --porcelain
 mkdir -p "$WORKTREE_ROOT"
 git -C "$REPO_ROOT" worktree add -b integration/floodops-application "$WORKTREE_ROOT/00-integration" "$PLAN_SHA"
@@ -33,7 +33,7 @@ LAUNCH_SHA="$(git -C "$WORKTREE_ROOT/00-integration" rev-parse HEAD)"
 ROLE_BRANCH="feat/floodops-contracts-client"
 ROLE_PATH="$WORKTREE_ROOT/01-contracts-client"
 git -C "$REPO_ROOT" worktree add -b "$ROLE_BRANCH" "$ROLE_PATH" "$LAUNCH_SHA"
-pnpm --dir "$ROLE_PATH" install --frozen-lockfile
+bun install --cwd "$ROLE_PATH" --frozen-lockfile --ignore-scripts
 ```
 Đây là ví dụ wave1, chỉ chạy sau workspace-bootstrap. Sau khi ContractsClient merged và C1 frozen, **resolve LAUNCH_SHA lại** trước khi tạo wave2:
 ```sh
@@ -49,8 +49,8 @@ Các role khác dùng branch/path chính xác từ [manifest](roles.json), khôn
 - Session không thấy local ignored skills của main là bình thường; dùng global skills nếu có và role prompt đã chứa scope/context. Không copy ignored agent configs vào Git/worktree.
 
 ## 4. Install, ports và local state
-- Mỗi worktree có node_modules/output/.wrangler/.expo riêng; pnpm content store dùng cơ chế chuẩn được phép, không manually symlink node_modules.
-- Frozen install chỉ sau Lead dependency commit. Không `pnpm add`, Expo install hoặc generator đổi protected manifests trong worker.
+- Mỗi worktree có node_modules/output/.wrangler/.expo riêng; Bun cache dùng cơ chế chuẩn được phép, không manually symlink node_modules.
+- Frozen install chỉ sau Lead dependency commit. Không `bun add`, Expo install hoặc generator đổi protected manifests trong worker.
 - Bind dev/test servers127.0.0.1; port assignments ở manifest. Port đang dùng thì báo Lead cấp port mới, không kill process người khác.
 - Worker state path bên trong chính worktree; không dùng absolute persist-to trỏ source main/shared worktree. Preview/prod resources không dùng làm shared scratch state.
 - Android USB dùng explicit adb reverse cho **port của role** nếu cần; iOS/Android physical cần approved HTTPS preview/dev build. Không mở API/Metro0.0.0.0 để xử lý nhanh.

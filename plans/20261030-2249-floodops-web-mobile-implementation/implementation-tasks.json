@@ -10,7 +10,7 @@
       "status": "pending",
       "dependencies": [],
       "ownership": [
-        "package.json; pnpm-workspace.yaml; tsconfig.base.json; eslint.config.js (root workspace/import rules)",
+        "package.json; bunfig.toml; tsconfig.base.json; eslint.config.js (root workspace/import rules)",
         "packages/contracts/src/** (common + session/scenario/operations/evidence/planning/simulation DTOs)",
         "packages/api-client/src/** (typed HTTP, auth adapter, idempotent command, SSE parser)",
         "packages/contracts/test/**; packages/api-client/test/**"

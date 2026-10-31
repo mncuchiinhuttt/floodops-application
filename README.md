@@ -1,28 +1,32 @@
 # FloodOps application
 
-Đây là repository riêng cho source code của FloodOps, được khởi tạo từ implementation plan đã chuẩn bị trong `~/seahackathon`.
+Repository source độc lập cho FloodOps tại `/Users/vominhlong/seahackathon/floodops-application`, khởi tạo từ bộ plan sẵn có. Hiện là nền tảng Wave 0; feature implementation và worker agents bắt đầu sau bàn giao init.
 
-Trạng thái hiện tại là Wave 0 (IntegrationLead): workspace/toolchain, policy, plan và ownership/gate metadata đã được bootstrap. Chưa có implementation agent nào được khởi chạy, chưa có production/store deployment và chưa có production credential nào trong repo.
+PRD/plans gốc đang được user cập nhật trong `~/seahackathon`. Bộ tài liệu trong repo này là snapshot bootstrap; gate `plan-published` và mọi launch đang chờ user báo chỉnh xong, parent đọc lại và đồng bộ bản hoàn chỉnh. Theo dõi hash/delta trong `docs/decisions/document-baseline.json`.
 
-## Bố cục
+## Toolchain
 
-- `apps/api` — Cloudflare Worker/Hono surface (hiện chỉ có bootstrap health entrypoint).
-- `apps/web` — React web console workspace boundary.
-- `apps/mobile` — Expo native workspace boundary.
-- `packages/*` — shared contracts, client, domain, simulation, tokens, icons và UI boundaries.
-- `plans/20261030-2249-floodops-web-mobile-implementation` — plan, specs, role prompts và execution protocol.
-- `FloodOps/prd.md` — PRD v0.3 canonical product source.
+Ưu tiên **Bun 1.4.0** cho package manager, workspace, TypeScript/ESLint scripts và tests. Một lockfile duy nhất: `bun.lock`.
 
-## Execution layout
+```sh
+bun install --frozen-lockfile --ignore-scripts
+bun run check
+bun run api:dev
+```
 
-- Source repository: `/Users/vominhlong/seahackathon/floodops-application`
-- Integration worktree: `/Users/vominhlong/seahackathon-worktrees/00-integration`
-- Worker worktrees: `/Users/vominhlong/seahackathon-worktrees/01-contracts-client` through `12-release-ops`
-- Integration branch: `integration/floodops-application`
+API bootstrap health: `http://127.0.0.1:8760/api/v1/health`. Các checks hiện chỉ kiểm nền tảng bootstrap, chưa chứng minh application acceptance.
 
-Mọi worker phải đọc `AGENTS.md`, `worktree-execution/start-here.md` và receipt được IntegrationLead commit trước khi sửa code. Chỉ IntegrationLead merge/ghi central manifests, lockfile, API composition và release gates.
+Node vẫn là ngoại lệ cho Wrangler CLI và các lệnh Expo yêu cầu Node LTS. Cloudflare Worker chạy trong `workerd`; app native chạy trong React Native runtime. Xem [quyết định Bun/tooling](docs/architecture/bun-toolchain.md) để biết commands, compatibility và nguồn chính thức.
 
-## Safety boundary
+## Bố cục và điều phối
 
-Remote private-repository setup và push chỉ thực hiện khi GitHub authentication hợp lệ. Production, native store và main promotion cần authorization riêng sau QA/release evidence.
+- `apps/{api,web,mobile}` — Worker bootstrap và workspace boundaries cho web/native.
+- `packages/*` — boundaries cho contracts, client, domain, simulation, tokens, icons và UI; public APIs được owner chốt ở gate tương ứng.
+- [PRD v0.3](FloodOps/prd.md) và [active plan](plans/20261030-2249-floodops-web-mobile-implementation/plan.md) — yêu cầu và execution DAG.
+- [AGENTS.md](AGENTS.md) và [role manifest](plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/roles.json) — policy và write ownership.
+- Integration worktree: `/Users/vominhlong/seahackathon-worktrees/00-integration`, branch `integration/floodops-application`.
+
+Mỗi role có một worktree và receipt được Lead commit trước launch. Lead là merger và central manifest/config writer duy nhất. Model mặc định theo yêu cầu user: `gpt-6.1-sol`/`max`; phần hẹp có thể dùng `gpt-6-luna`/`max`, phần triển khai chuyên sâu dùng `gpt-6.1-terra`/`max`, trong phạm vi task được giao.
+
+Remote GitHub phải PRIVATE. Production, store submission và promotion sau implementation cần authorization riêng.
 
