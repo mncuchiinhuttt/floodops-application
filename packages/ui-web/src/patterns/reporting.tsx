@@ -7,6 +7,7 @@ import { StatusBadge } from "../primitives/badge";
 import { Card } from "../primitives/content";
 import { ErrorSummary, Form } from "./form";
 import type { FormError } from "./form";
+
 export function ReportForm({ caption, onCaptionChange, onSubmit, children, state, pending, disabledReason, error, captionRequired = false, errors = [], submissionKey = 0, captionId }: {
   caption: string; onCaptionChange: (caption: string) => void; onSubmit: () => void; children?: ReactNode;
   state: PresentationState; pending?: boolean; disabledReason?: string; error?: string; captionRequired?: boolean;
@@ -25,10 +26,10 @@ export function ReportForm({ caption, onCaptionChange, onSubmit, children, state
     setLocalError(message); setAttempt(value => value + 1);
     if (!message && !pending && !disabledReason) onSubmit();
   }
-  return <Card title="Report"><StatusBadge {...state} /><Form onSubmit={submit} errors={summary} submissionKey={attempt}>
+  return <Card title="Report"><div><StatusBadge {...state} /></div><Form onSubmit={submit} errors={summary} submissionKey={attempt}>
     <TextArea id={id} label="Report caption" value={caption} onChange={event => { setLocalError(undefined); onCaptionChange(event.target.value); }} required={captionRequired} error={fieldError} />
-    {children}<Button {...disabled} type="submit" pending={pending} pendingLabel="Submitting report">Submit report</Button>
-  </Form><p className="fo-hint">Report status does not grant points or approve a route.</p></Card>;
+    {children}<div><Button {...disabled} type="submit" pending={pending} pendingLabel="Submitting report">Submit report</Button></div>
+  </Form><p className="m-0 text-xs text-muted-foreground">Report status does not grant points or approve a route.</p></Card>;
 }
 export function ReviewDecision({ reason, onReasonChange, onDecision, pending = false, disabledReason, reasonRequired = false }: {
   reason: string; onReasonChange: (reason: string) => void; onDecision: (decision: "accept" | "reject", reason: string) => void;
@@ -44,10 +45,10 @@ export function ReviewDecision({ reason, onReasonChange, onDecision, pending = f
     if (reasonRequired && !reason.trim()) { setError("Enter a decision reason."); return; }
     setError(undefined); onDecision(decision, reason);
   }
-  return <Card title="Manual review"><p>Dispatcher decides; points and routing remain server-controlled.</p>
+  return <Card title="Manual review"><p className="m-0 text-muted-foreground">Dispatcher decides; points and routing remain server-controlled.</p>
     <ErrorSummary errors={error ? [{ fieldId: id, message: error }] : []} submissionKey={attempt} />
     <TextArea id={id} label="Decision reason" value={reason} onChange={event => { setError(undefined); onReasonChange(event.target.value); }} required={reasonRequired} error={error} />
-    <div className="fo-actions"><Button {...disabled} variant="secondary" pending={pending} pendingLabel="Accept pending" onClick={() => decide("accept")}>Accept</Button>
+    <div className="flex flex-wrap gap-3"><Button {...disabled} variant="primary" pending={pending} pendingLabel="Accept pending" onClick={() => decide("accept")}>Accept</Button>
       <Button {...disabled} variant="danger" pending={pending} pendingLabel="Reject pending" onClick={() => decide("reject")}>Reject</Button></div>
   </Card>;
 }

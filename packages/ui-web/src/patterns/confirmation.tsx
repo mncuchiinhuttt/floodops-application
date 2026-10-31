@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../primitives/button";
 import { Dialog } from "../primitives/dialog";
+
 export type ConfirmationProps = {
   label: string; title: string; description: string; onConfirm: () => void | Promise<void>;
   disabledReason?: string; pending?: boolean;
@@ -24,11 +25,11 @@ export function ConfirmationControl({ label, title, description, onConfirm, disa
     catch { setError("Action did not complete. Review the current session and try again."); }
     finally { busy.current = false; setWorking(false); }
   }
-  return <div ref={fallback} role="group" aria-label={`${label} control`} tabIndex={-1} className="fo-control-group fo-confirmation"><Button {...disabled} ref={trigger} variant="danger" pending={pending || working} pendingLabel={`${label} pending`}
+  return <div ref={fallback} role="group" aria-label={`${label} control`} tabIndex={-1} className="inline-flex max-w-full outline-none"><Button {...disabled} ref={trigger} variant="danger" pending={pending || working} pendingLabel={`${label} pending`}
     onClick={() => { setError(undefined); setOpen(true); }}>{label}</Button>
     <Dialog open={open} title={title} description={description} onClose={() => { if (!busy.current && !pending) setOpen(false); }} returnFocusRef={disabledReason ? fallback : trigger}
       initialFocusRef={dismiss} dismissRef={dismiss} dismissLabel="Cancel" dismissDisabledReason={working || pending ? `${label} is in progress. Wait for a result.` : undefined}>
-      {error && <p role="alert" className="fo-error">{error}</p>}
+      {error && <p role="alert" className="m-0 text-sm font-medium text-destructive">{error}</p>}
       <Button {...disabled} variant="danger" pending={working || pending} pendingLabel={`${label} pending`} onClick={confirm}>Confirm {label}</Button>
     </Dialog></div>;
 }

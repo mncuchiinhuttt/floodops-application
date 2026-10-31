@@ -20,16 +20,20 @@ test("failed-submit summary takes focus and error links focus the preserved fiel
   expect(document.activeElement).toBe(field);
   expect(field.value).toBe("Preserved text");
 });
-test("native HTML select exposes labels, options and error descriptions", () => {
+test("select field exposes label, options and error descriptions and reports the chosen value", () => {
+  Object.assign(Element.prototype, { hasPointerCapture: () => false, releasePointerCapture: () => undefined, scrollIntoView: () => undefined });
+  globalThis.ResizeObserver ??= class { observe() {} unobserve() {} disconnect() {} };
   const change = vi.fn();
-  render(<SelectField label="Density" required hint="Choose a layout" error="Review choice" onChange={change}
+  render(<SelectField label="Density" required hint="Choose a layout" error="Review choice" onValueChange={change}
     defaultValue="wide" options={[{ value: "wide", label: "Comfortable" }, { value: "small", label: "Compact" }]} />);
-  const field = screen.getByRole("combobox", { name: "Density (required)" }) as HTMLSelectElement;
-  fireEvent.change(field, { target: { value: "small" } });
-  expect(field.value).toBe("small");
-  expect(change).toHaveBeenCalledTimes(1);
+  const field = screen.getByRole("combobox", { name: "Density (required)" });
   expect(field.getAttribute("aria-invalid")).toBe("true");
   expect(field.getAttribute("aria-describedby")!.split(" ").map(id => document.getElementById(id)?.textContent)).toEqual(["Choose a layout", "Review choice"]);
+  expect(field.textContent).toBe("Comfortable");
+  fireEvent.keyDown(field, { key: "Enter" });
+  fireEvent.keyDown(screen.getByRole("option", { name: "Compact" }), { key: "Enter" });
+  expect(change).toHaveBeenCalledExactlyOnceWith("small");
+  expect(field.textContent).toBe("Compact");
 });
 const columns = [{ key: "name", label: "Name", render: (row: { id: string; name: string }) => row.name }];
 test("one semantic table links headers without duplicate cell rendering", () => {
