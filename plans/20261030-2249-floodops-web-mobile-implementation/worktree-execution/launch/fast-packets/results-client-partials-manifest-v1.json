@@ -1,0 +1,36 @@
+{
+  "status": "authorized-partial-code-now",
+  "base_sha": "112d539da6cf36b2b08ff3499b5eb93416a73bb4",
+  "launch_sha": "containing metadata commit supplied out-of-band",
+  "workers": [
+    {
+      "role_id": "results-evaluation",
+      "work_item": "results-evaluation-domain-foundations-v1",
+      "existing_thread_id": "01a19067-7930-716f-ae49-5f01c568f0f8",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/08-results-evaluation",
+      "branch": "feat/floodops-results-evaluation",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/results-evaluation/results-evaluation-domain-foundations-v1.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/results-evaluation-domain-foundations-v1.md"
+    },
+    {
+      "role_id": "web-console",
+      "work_item": "web-console-screen-foundations-v1",
+      "existing_thread_id": "01a19068-0ad0-7386-90ae-8db6b43150cf",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/09-web-console",
+      "branch": "feat/floodops-web-console",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/web-console/web-console-screen-foundations-v1.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/web-console-screen-foundations-v1.md"
+    },
+    {
+      "role_id": "expo-mobile",
+      "work_item": "expo-mobile-screen-foundations-v1",
+      "existing_thread_id": "01a19067-c8ea-7435-9e24-fdaea01120e0",
+      "worktree": "/Users/vominhlong/seahackathon-worktrees/10-expo-mobile",
+      "branch": "feat/floodops-expo-mobile",
+      "receipt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/expo-mobile/expo-mobile-screen-foundations-v1.json",
+      "prompt": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/launch/fast-packets/expo-mobile-screen-foundations-v1.md"
+    }
+  ],
+  "parent_action": "Resume existing three read-only preflight tasks with exact containing SHA; actual sol/ultra/fast; no duplicate tasks. Frozen install and code within partial scope now.",
+  "qualifications": "No backend/UI/device/model/real calibration/full phase gates. Router/SecureStore/photo/native-build wiring deferred to reviewed dependency continuation, no alternate router/fake live backend. Existing thirteen roles/nine waves unchanged."
+}

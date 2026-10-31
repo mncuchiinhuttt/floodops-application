@@ -1,0 +1,44 @@
+{
+  "work_item_id": "web-console-screen-foundations-v1",
+  "role_id": "web-console",
+  "phase_ids": [
+    9
+  ],
+  "base_sha": "112d539da6cf36b2b08ff3499b5eb93416a73bb4",
+  "contract_ref": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/results-client-partials-v1-index.json",
+    "commit_sha": "112d539da6cf36b2b08ff3499b5eb93416a73bb4",
+    "sha256": "bf181e09bb24b462d22ca867a61ff42559d59a3b72d55c20222e08a6f234a688"
+  },
+  "required_gates": [
+    {
+      "gate_id": "contracts-ready",
+      "commit_sha": "1f2b77e88be0a5ebd1644ad11c3cb5c3bfe5f5ca"
+    },
+    {
+      "gate_id": "simulation-ready",
+      "commit_sha": "30e058252d4176c76a8b17b40e25786f34b50b4c"
+    },
+    {
+      "gate_id": "workspace-bootstrap",
+      "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7"
+    },
+    {
+      "gate_id": "plan-published",
+      "commit_sha": "dee4dfb00af173eb3cccc2a0df75e67fa1577734"
+    }
+  ],
+  "expected_branch": "feat/floodops-web-console",
+  "expected_worktree": "/Users/vominhlong/seahackathon-worktrees/09-web-console",
+  "allowed_remote_push": false,
+  "allowed_deployment": false,
+  "status": "authorized",
+  "contract_mode": "approved-amendment",
+  "amendment_id": "results-client-independent-foundations-v1",
+  "remote_authorizations": [],
+  "policy_ref": {
+    "path": "AGENTS.md",
+    "commit_sha": "aea042b5fdb5100e826672111f326d3a03847ee7",
+    "sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a"
+  }
+}
