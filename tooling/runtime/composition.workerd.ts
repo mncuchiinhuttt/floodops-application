@@ -72,7 +72,9 @@ it("resets into a fresh real seed with generation fencing, never fabricated feat
   expect(replaced.session.generation).toBe(1);
   expect(replaced.session.revision).toBe(0);
   expect((await path("/sessions/" + owner.id, { headers: auth(owner.token) })).status).toBe(410);
-  const headers = auth(replaced.credential.access_token);
+  const token = replaced.credential.access_token;
+  if (typeof token !== "string") throw new Error("Native Reset must return a bearer credential");
+  const headers = auth(token);
   expect((await path("/sessions/" + replaced.session.session_id + "/identity", { headers })).status).toBe(200);
   const snapshot = await path("/sessions/" + replaced.session.session_id + "/snapshot", { headers });
   expect(snapshot.status).toBe(503);
