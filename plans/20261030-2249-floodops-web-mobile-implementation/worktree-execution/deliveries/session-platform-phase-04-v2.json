@@ -1,0 +1,40 @@
+{
+  "work_item_id": "session-platform-phase-04-v2",
+  "role_id": "session-platform",
+  "base_sha": "3f796bc0cb78d5d942f923945e73bb9738994134",
+  "observed_launch_sha": "f5a624dcf5106583eb6fa49d7105aaa476c00583",
+  "delivery_sha": "21d9dd831dbe19385bb82d4f7489b8ab25cf41a5",
+  "status": "code-ready-for-integration",
+  "contract_sha256": "dcfe1d17e95d73295cfa76fa0ac93ec9aaae46df1c7b2c325c79b23a729df82e",
+  "source_sha": "b496dc79d95971ed2a5d737e1c55012c02792b81",
+  "policy_sha256": "b0aa40dfbdf06eb631670ec8db0108b87e0a41912de59624af84cff9c4d49b1a",
+  "changed_paths": [
+    "apps/api/src/session-runtime/README.md",
+    "apps/api/src/session-runtime/events.ts",
+    "apps/api/test/replay/image-event-fixtures.ts",
+    "apps/api/test/replay/image-event-isolation.test.ts",
+    "apps/api/test/runtime-worker.ts",
+    "plans/reports/worktree-session-platform-session-platform-phase-04-v2.md"
+  ],
+  "checks": [
+    {
+      "command": "Lead exact verifier/signatures;73 actual Workerd tests, independent privacy fault-injection probe1 pass",
+      "cwd": "/Users/vominhlong/seahackathon-worktrees/00-integration",
+      "result": "pass",
+      "evidence_path": "plans/reports/worktree-session-platform-session-platform-phase-04-v2.md"
+    }
+  ],
+  "smoke": [],
+  "public_exports": [
+    "apps/api/src/app/index.ts",
+    "apps/api/src/session-runtime/index.ts",
+    "apps/api/src/shared/index.ts"
+  ],
+  "integration_requests": [],
+  "blocked_prerequisites": [
+    "Dispatcher-only event correction verified; separate HTTP security/CORS header regression blocks platform-ready until work item phase04v3"
+  ],
+  "out_of_scope_changes": [],
+  "unrequested_remote_actions": false,
+  "integration_merge_sha": "264b0fdaba27fdee65680fa3045fe9530e3698c2"
+}

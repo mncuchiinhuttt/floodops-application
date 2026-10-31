@@ -1,0 +1,22 @@
+{
+  "gate_id": "simulation-ready",
+  "status": "passed",
+  "writer": "integration-lead",
+  "commit_sha": "7d9c390e50e59463b66df40d3ec306e12b9f4ad5",
+  "producer_source_sha": "cba27340af6c7ab35416e96f4a17b403a1f3c2bb",
+  "producer_delivery_sha": "f327ea3120d00042da62a1a700a784c4aedb594e",
+  "producer_merge_sha": "2e7ec031de02298d2893b4b26273fb8dcb7c694c",
+  "contract_index": {
+    "path": "plans/20261030-2249-floodops-web-mobile-implementation/worktree-execution/contracts/simulation-ready-v1-index.json",
+    "sha256": "844a0c8de4b823db4b52ad1c768f53f06b254bde3447e823d2857e1f91470f0d"
+  },
+  "checks": [
+    "Exact delivery verifier60 paths/ancestry/policy/index/ownership/direct C->R and valid signatures",
+    "Lead integrated55 real pure-domain/simulation/fixture tests4979 assertions pass",
+    "Simulation/domain/fixture strict typechecks and scoped lint pass",
+    "Full public executable scenario smoke: projected and observed completion5.75 at commonH20, immutable bundle hash42d25cad85adb3e11939b8496469f0b2ba7891003ae89d0be5049dd54fb7ec46",
+    "Lead composed actual Workerd entrypoint uses supported node:crypto digest, validates scenario and persists reference+mutable state; four scoped runtime behaviors pass",
+    "Central domain/fixture scripts/full simulation smoke and public persistence types supplied; frozen Bun1.4.0 install pass"
+  ],
+  "qualification": "Executable synthetic functional dataset and pure simulator; real D04 provenance, licence, holdout and tolerance calibration unavailable. No K1/K2 efficacy/model/device/full app/security proof."
+}

@@ -1,0 +1,254 @@
+{
+  "mode": "frozen-consumer",
+  "source_commit": "7d9c390e50e59463b66df40d3ec306e12b9f4ad5",
+  "contracts_ready": true,
+  "public_entrypoints": [
+    "@floodops/simulation",
+    "@floodops/domain/operations",
+    "@floodops/domain/public-ports",
+    "@floodops/test-fixtures"
+  ],
+  "artifacts": [
+    {
+      "path": "data/scenarios/functional-v1/README.md",
+      "sha256": "fc7abb05c0c4fe43fa3e38bca247632346a1518a0b82d6f700b656ae3bd6d5fa"
+    },
+    {
+      "path": "data/scenarios/functional-v1/calibration-gaps.md",
+      "sha256": "c3b6a7e8dd6df3cbda524f84aa4ac6d8011fa161ffcfee584d08e200969d65e0"
+    },
+    {
+      "path": "data/scenarios/functional-v1/manifest.json",
+      "sha256": "3c14fcd1b67057028997e4d6ca8de6b9bafeaba710adee6b0448ec40e42cb66f"
+    },
+    {
+      "path": "data/scenarios/functional-v1/synthetic-report.png",
+      "sha256": "1ae5d1b406a5aea5bd6c91a126710100063ad0a96883866c6ced960c3fd027a6"
+    },
+    {
+      "path": "packages/domain/package.json",
+      "sha256": "8cf5d08e57fafcd3ec5e96791de61f9012a6b0f73f843fd2947abcb90e8d1195"
+    },
+    {
+      "path": "packages/domain/src/operations/assignment.ts",
+      "sha256": "0fdfb9368981eaf89ed99cc0cbc460bd3a8e51c116a49c38af0ebeee82ce2346"
+    },
+    {
+      "path": "packages/domain/src/operations/decimal-quantity.ts",
+      "sha256": "66b5255829d14164e4ded416684213fa42618559e87a3102bdf2634c345485ab"
+    },
+    {
+      "path": "packages/domain/src/operations/index.ts",
+      "sha256": "415180e1d7e2ae87062d161eabc5a7ef0b586e2a7dc45f37b9a3999e8989e47a"
+    },
+    {
+      "path": "packages/domain/src/operations/operation-types.ts",
+      "sha256": "ca55d57ec4d9c2f69a3144579981126023dd6d0aa4b5d9550c0404b19e18a85a"
+    },
+    {
+      "path": "packages/domain/src/operations/quantities.ts",
+      "sha256": "70341c23bd6469ca77a8b935491118f7a76bacc406c4dd4cc3de96f38ffa589c"
+    },
+    {
+      "path": "packages/domain/src/operations/validate-operations.ts",
+      "sha256": "3540836ba22aaaf1ff604f420924bc3ec1bdccf13e89a4326dadd88e0f609aa2"
+    },
+    {
+      "path": "packages/domain/src/operations/validate-stops.ts",
+      "sha256": "df894653aeebed033ec2dfba3cef95ee52cec2dfcbca0094f1a1747e139b8786"
+    },
+    {
+      "path": "packages/domain/src/public-ports.ts",
+      "sha256": "3b1138bec06c457333d59d20cab808ab8a6eb55c72aab49d97af8cbac48d087c"
+    },
+    {
+      "path": "packages/simulation/README.md",
+      "sha256": "23e7391104e4e29ea358584b0ffeb00087aa17b7a5c683a25a291e40dbe71e0c"
+    },
+    {
+      "path": "packages/simulation/package.json",
+      "sha256": "b9c0cf83793961dfb0915fbabca09c0e0abebf2b6041d32d51cffbb5ec61cf30"
+    },
+    {
+      "path": "packages/simulation/src/calibration/assess-calibration.ts",
+      "sha256": "5fccab3f3dacaf8012d40a16842add5e8df3e7df227639ec1ab4bc1c8830605e"
+    },
+    {
+      "path": "packages/simulation/src/clock/event-clock.ts",
+      "sha256": "361a72fe0a74a64d22738c3070732ae85943ba3aa2156f5124fa5e1189d06d54"
+    },
+    {
+      "path": "packages/simulation/src/clock/index.ts",
+      "sha256": "fd78e5d8a1920be8a39fbce0f463db37fe22e877f474e3c3de4ad771b1102d9b"
+    },
+    {
+      "path": "packages/simulation/src/clock/simulation-time.ts",
+      "sha256": "926cb8107fc7d3530f78b06f4e0f8da4778dbe2f7dd6519018346c97a945fa0a"
+    },
+    {
+      "path": "packages/simulation/src/graph/create-graph.ts",
+      "sha256": "854ee84c96d257734d9ea7222f83f72ff1be101bed78eb396812e4c7c252da8f"
+    },
+    {
+      "path": "packages/simulation/src/graph/find-route.ts",
+      "sha256": "236eeee03315f58bd45e1f7bf6674b586a3d2821e19318de30063a35f98bb5f8"
+    },
+    {
+      "path": "packages/simulation/src/graph/geometry.ts",
+      "sha256": "6692c9010fd8f1ac62d11e80eb167646aa8c234ecae77ac178f8c8d64ffa3ced"
+    },
+    {
+      "path": "packages/simulation/src/graph/graph-types.ts",
+      "sha256": "9c0b42583ae4ad8451afbf1198b857c9fd9523e0c9f2e704eab0dadaab0489b7"
+    },
+    {
+      "path": "packages/simulation/src/graph/index.ts",
+      "sha256": "d51661d3ad6d7882d0ce656e80ada273202a36554ac8aeca76e52f934b5fd563"
+    },
+    {
+      "path": "packages/simulation/src/graph/travel-profile.ts",
+      "sha256": "d8b529651b9b2c1167df22c6c0ca933b9dc63ef6db656e5b2110f230c24fcf29"
+    },
+    {
+      "path": "packages/simulation/src/index.ts",
+      "sha256": "96fa61b6afce5e7f9dcb0f741de7339e02cb32c58626f1959a409e15539e3651"
+    },
+    {
+      "path": "packages/simulation/src/metrics/observed-metrics.ts",
+      "sha256": "34226187fa63cbebd909adf6d5be7847c166fe4cb0cd8c03993fec80f0c9f622"
+    },
+    {
+      "path": "packages/simulation/src/movement/advance-run.ts",
+      "sha256": "d18b3946da19e4b277b14f75cca9db0a44b2dba4f5e960cb6326601b84b5227f"
+    },
+    {
+      "path": "packages/simulation/src/movement/apply-knowledge-transition.ts",
+      "sha256": "5f950d9993b8838f58359df26f5d77dd78aefc6c52cb4a3795d63880b7def661"
+    },
+    {
+      "path": "packages/simulation/src/movement/create-run.ts",
+      "sha256": "d389da778dd5dc02467e5cd684bd305549a9bbdcea77ab8ea64d1c0bb34e17d0"
+    },
+    {
+      "path": "packages/simulation/src/movement/entry-policy.ts",
+      "sha256": "65a2e3ab659da47b146b51530ba9d09cbb7f89ae0aae87dcd471809ad8561fb5"
+    },
+    {
+      "path": "packages/simulation/src/movement/retry-committed-route.ts",
+      "sha256": "a24d0b61d58abbc602773d92f718446e3b41ba4df49e0bd3593f539f9febbaf5"
+    },
+    {
+      "path": "packages/simulation/src/movement/route-stops.ts",
+      "sha256": "efa0772b722c19e17739ca99f2744034bdd84f4fd70880e7ca917e2d7bd9d749"
+    },
+    {
+      "path": "packages/simulation/src/movement/run-log.ts",
+      "sha256": "58a664e0f2f725b5cf02f4e59346e007c8c74c8332ca61da1be3cff9f9c950bf"
+    },
+    {
+      "path": "packages/simulation/src/movement/run-types.ts",
+      "sha256": "88931a4da64a771a46f9f2c6e8199e28de99886625443d996ee3b7e47af32f8c"
+    },
+    {
+      "path": "packages/simulation/src/movement/settle-driver.ts",
+      "sha256": "c813bdc0684e50c8c96af1180423b9062c4ef0bc6c7b62037ad06b558ef5a6b2"
+    },
+    {
+      "path": "packages/simulation/src/movement/shared-inputs.ts",
+      "sha256": "07989d0b4f8b11dd21aa30d8f57ba248bff4ab4d4d9ad9156b7d19a2650eb4d2"
+    },
+    {
+      "path": "packages/simulation/src/movement/stop-service.ts",
+      "sha256": "a3339ae23fe84aa2baaa4318600723e906cdb78cba8dc92fda992012d0537274"
+    },
+    {
+      "path": "packages/simulation/src/projection/compute-route.ts",
+      "sha256": "345f969c1e4f8d30e4a41ea50a94b3dc50622b5bb64910cf1d43a06cc038bdc1"
+    },
+    {
+      "path": "packages/simulation/src/projection/execute-candidate.ts",
+      "sha256": "674b41f3b7e407923d95cde976520cc68f5ed5da09813d535a91f5a7d2c4221b"
+    },
+    {
+      "path": "packages/simulation/src/projection/objective.ts",
+      "sha256": "f95c717516b24bd3cda3a059f90c63e40d27f8392cf56a1001bd6fec19a0ce4e"
+    },
+    {
+      "path": "packages/simulation/src/projection/project-candidate.ts",
+      "sha256": "51b8bcdfade362ed7433e1759fce739f8f2698510b28e3cfc49a0ed50cd8869c"
+    },
+    {
+      "path": "packages/simulation/src/scenario/author-fixture.ts",
+      "sha256": "2addb2bff57ed6053897679438c10cfd6269c7e9f6f1195aec0a92a781269073"
+    },
+    {
+      "path": "packages/simulation/src/scenario/fingerprint.ts",
+      "sha256": "00062152e12561f9594b50b4996102896aa5fd75f35e145121533fb0ac0c4a89"
+    },
+    {
+      "path": "packages/simulation/src/scenario/load-scenario.ts",
+      "sha256": "726d549b997ba7c0f07333d0672835ce60ed984726e7dfc50cf74e0b61993483"
+    },
+    {
+      "path": "packages/simulation/src/scenario/scenario-types.ts",
+      "sha256": "9a82aafd0d0ca7c5c72fe87164e66e46d76dfeddf572b7d9b21d24cd0d63091f"
+    },
+    {
+      "path": "packages/simulation/src/scenario/validate-knowledge.ts",
+      "sha256": "5bf2bdcba94734a00579e12896df01ff9f270baf49d42b06744093da1c688a74"
+    },
+    {
+      "path": "packages/simulation/src/scenario/validate-manifest.ts",
+      "sha256": "f781912d07c0f7f07205e73581cae95d6b8323c1fd9573df15be6ced3dda1997"
+    },
+    {
+      "path": "packages/simulation/src/scenario/validate-sources.ts",
+      "sha256": "52788ee0c4bdeddbfc66845062c37a7c6cebe00d486588079bc274796e781b75"
+    },
+    {
+      "path": "packages/simulation/src/scenario/wire-graph.ts",
+      "sha256": "fa3e5719c3742d26b74ce6b9ae70a3116ad37160ab483fe278b360112d9ab2e5"
+    },
+    {
+      "path": "packages/test-fixtures/package.json",
+      "sha256": "0499aaad8758d1d19c81b042015c0fb2c31085cff60c72e18ec939a74abbb7a7"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/graph/index.ts",
+      "sha256": "43a9e516e369ffc358e60122a60d655b9d9d6a8b02fbe1e95b10962a12a8f12e"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/graph/turn-aware.ts",
+      "sha256": "0ea683cd996c96bea74804dbdc282bdbc780951ee6f7160fb168e5c4aa10c252"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/scenario/catalog.ts",
+      "sha256": "31bebc7eeaf0703fb79082332a6bfac168692dc09de97674a75625c34fd1760d"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/scenario/functional-scenario.ts",
+      "sha256": "c19488bdb3a15186f308579afe14d40f5d2fb9204c09220d459ce31451ea97e4"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/scenario/graph-fixture.ts",
+      "sha256": "21d0773181525d15272b4cbaae6f41227d21dea5781249e28d779eb2170d60ee"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/scenario/operations-fixture.ts",
+      "sha256": "5ccf7ebe1bae4561a0de384601d485ee56c2cd45ce84b9ee871a8914447d0b0a"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/scenario/report-fixtures.ts",
+      "sha256": "b5f9dd9fb7d757b1c05ead20dd4f9adfb969c84f38139c5c28c7699bb31a0530"
+    },
+    {
+      "path": "packages/test-fixtures/src/functional/scenario/source-fixtures.ts",
+      "sha256": "8f03c19c8075912ed6c6c11f0f0ae53f039830017027399e9e98f6b2b13b650c"
+    },
+    {
+      "path": "packages/test-fixtures/src/index.ts",
+      "sha256": "c260a3b9d6ca4efccd3be0f2eec15d09f4892261551dd539bad1bd349c846962"
+    }
+  ],
+  "qualification": "Executable synthetic functional dataset and pure simulator; real D04 provenance, licence, holdout and tolerance calibration unavailable. No K1/K2 efficacy/model/device/full app/security proof."
+}
