@@ -13,7 +13,13 @@ export interface AdvanceState { currentJobId: string | null; jobs: Record<string
 /** Private RPC result. Routers must expose only job, never execution material. */
 export interface AdvanceReservation { job: AdvanceJob; execution: AdvanceMaterial }
 export interface ChunkInput { job_id: string; lease_id: string; nonce: string }
+export interface AfterAdvanceInput {
+  context: TransitionContext;
+  run: Readonly<SimulationRun>;
+  values: Record<string, unknown>;
+}
 export interface SimulationRuntimeOptions<State> {
+  afterAdvance?: (input: AfterAdvanceInput) => Record<string, unknown>;
   persistence: SimulationPersistence<SimulationRun, State>;
   committedPolicy?: (context: TransitionContext, run: Readonly<SimulationRun>) => SimulationPolicy | undefined;
   material?: () => AdvanceMaterial;
