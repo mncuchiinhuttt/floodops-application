@@ -33,7 +33,7 @@ export function operationFiles(api: ApiDefinition): Map<string, string> {
       const binary = !!content?.["application/octet-stream"];
       if (content?.["application/json"]) {
         fields.body = content["application/json"].schema;
-        if (operation.requestBody.required) requiredFields.push("body");
+        if (operation.requestBody?.required) requiredFields.push("body");
       }
       let input = schemaCode(strict(fields, requiredFields), refs);
       if (binary) input = input.replace(/\n\}\)$/, '\n  body: z.instanceof(Uint8Array).refine(v => v.byteLength > 0 && v.byteLength <= 5242880, "Invalid upload byte length"),\n})');
@@ -70,10 +70,10 @@ export function operationFiles(api: ApiDefinition): Map<string, string> {
       files.set(`src/generated/operations/${kebab(id)}.ts`, text);
     }
   }
-  if (ids.length !== 64) throw new Error(`Expected 64 operations; received ${ids.length}`);
+  if (ids.length !== 66) throw new Error(`Expected 66 operations; received ${ids.length}`);
   files.set("src/generated/operations.ts", ids.map(id => `export { ${id} } from "./operations/${kebab(id)}";`).join("\n") + "\n");
-  files.set("src/generated/operation-types.ts", ids.map(id => `import type { ${pascal(id)}Input, ${pascal(id)}Output } from "./operations/${kebab(id)}";`).join("\n") +
-    "\nexport interface OperationInputs {\n" + ids.map(id => `  ${id}: ${pascal(id)}Input;`).join("\n") + "\n}\n" +
-    "export interface OperationOutputs {\n" + ids.map(id => `  ${id}: ${pascal(id)}Output;`).join("\n") + "\n}\n");
+  files.set("src/generated/operation-types.ts", 'import type { z } from "zod";\nimport type * as operations from "./operations";\n' +
+    'export type OperationInputs = { [I in keyof typeof operations]: z.infer<(typeof operations)[I]["input"]> };\n' +
+    'export interface OperationOutputs {\n' + ids.map(id => `  ${id}: import("./operations/${kebab(id)}").${pascal(id)}Output;`).join("\n") + "\n}\n");
   return files;
 }

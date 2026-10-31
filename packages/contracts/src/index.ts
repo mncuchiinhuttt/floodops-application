@@ -8,4 +8,5 @@ export { ContractValidationError, validate, parseSchema, parseOperationInput, pa
 export type { Validator } from "./validation";
 export { formatEtag, parseEtag, HTTP_ERROR_CATALOG, errorRecovery } from "./transport";
 export type { SessionVersion, ErrorRecovery } from "./transport";
-export { getToolDefinitions, assertStrictToolSchema, UnsupportedToolSchemaError } from "./tool-definitions";
+export { getToolDefinitions, getImageReviewModelOutputSchema, assertStrictToolSchema, UnsupportedToolSchemaError } from "./tool-definitions";
+export { parseConsistentImageReviewAdvice } from "./image-review";

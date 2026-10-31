@@ -17,7 +17,7 @@ export function exactlyOne<T extends readonly [z.ZodType, ...z.ZodType[]]>(varia
 }
 
 export function isUri(value: string): boolean {
-  return /^[A-Za-z][A-Za-z0-9+.-]*:[^\s]*$/.test(value) && !/[\u0000-\u001f\u007f]/.test(value);
+  return /^[A-Za-z][A-Za-z0-9+.-]*:[^\s]*$/.test(value) && ![...value].some(ch => ch.charCodeAt(0) < 32 || ch.charCodeAt(0) === 127);
 }
 
 export function isTimestamp(value: string): boolean {

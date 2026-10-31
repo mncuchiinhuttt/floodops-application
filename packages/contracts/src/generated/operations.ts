@@ -33,6 +33,8 @@ export { submitReport } from "./operations/submit-report";
 export { listReports } from "./operations/list-reports";
 export { getReport } from "./operations/get-report";
 export { reviewReport } from "./operations/review-report";
+export { createReportImageReview } from "./operations/create-report-image-review";
+export { getReportImageReview } from "./operations/get-report-image-review";
 export { reserveMediaUpload } from "./operations/reserve-media-upload";
 export { uploadMediaContent } from "./operations/upload-media-content";
 export { completeMediaUpload } from "./operations/complete-media-upload";

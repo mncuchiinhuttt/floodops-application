@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "description": "Strict model-only output. quality_score, recommendation, confidence, condition, points, accept/reject, and execute fields are forbidden; unknown fields are rejected.",
+  "properties": {
+    "quality_ratings": {
+      "type": "object",
+      "description": "Ordinal image-quality ratings under image-quality-v1. They describe visible image quality only, not authenticity, observation confidence, passability, or safety probability.",
+      "properties": {
+        "sharpness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "0: no readable detail; 1: blurred but partly visible; 2: relatively clear detail."
+        },
+        "lighting": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "0: insufficient light; 1: uneven light with some visibility; 2: enough light for visible content."
+        },
+        "scene_visibility": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "0: relevant road scene absent or obscured; 1: only part visible; 2: relevant scene relatively clear."
+        },
+        "detail": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "0: insufficient detail to assess; 1: few relevant details; 2: details support the visible-content description."
+        }
+      },
+      "required": [
+        "sharpness",
+        "lighting",
+        "scene_visibility",
+        "detail"
+      ],
+      "additionalProperties": false
+    },
+    "visible_summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600
+    },
+    "report_match": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no",
+        "unclear"
+      ],
+      "description": "Whether visible content matches the submitted description; unclear when information is missing or insufficient. It does not establish place, time, authenticity, or passability."
+    },
+    "mismatch_notes": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "reasons": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    }
+  },
+  "required": [
+    "quality_ratings",
+    "visible_summary",
+    "report_match",
+    "mismatch_notes",
+    "reasons"
+  ],
+  "additionalProperties": false
+}

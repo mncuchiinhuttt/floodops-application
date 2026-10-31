@@ -1,4 +1,5 @@
 import definitions from "./generated/provider-tools.json";
+import imageReviewOutput from "./generated/image-review-model-output.json";
 
 export class UnsupportedToolSchemaError extends Error {
   override readonly name = "UnsupportedToolSchemaError";
@@ -28,5 +29,12 @@ export function assertStrictToolSchema(value: unknown, allowedKeywords: Readonly
 export function getToolDefinitions(allowedKeywords?: ReadonlySet<string>): typeof definitions {
   const copy = JSON.parse(JSON.stringify(definitions)) as typeof definitions;
   copy.forEach(tool => assertStrictToolSchema(tool.parameters, allowedKeywords));
+  return copy;
+}
+
+/** Send only the model-output schema to vision providers, never Job/Advice authority. */
+export function getImageReviewModelOutputSchema(allowedKeywords?: ReadonlySet<string>): typeof imageReviewOutput {
+  const copy = JSON.parse(JSON.stringify(imageReviewOutput)) as typeof imageReviewOutput;
+  assertStrictToolSchema(copy, allowedKeywords);
   return copy;
 }

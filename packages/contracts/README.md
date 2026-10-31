@@ -1,17 +1,36 @@
 # Shared wire contracts
 
-Phase 01 implementation in progress. The canonical definition is under `definition/`;
-runtime Zod schemas, DTOs, operation contracts and provider tool registrations are
-generated from it. Design snapshots and examples must remain in sync.
+`definition/contract-definition.json` is the canonical source for the approved
+66-operation / 194-schema / eight-Commander-tool contract. Runtime Zod schemas,
+DTOs, operation descriptors, strict provider definitions and the plan's four JSON
+snapshots are generated together. Do not edit generated files by hand.
 
-IntegrationLead request (baseline does not yet include these dependencies):
+```sh
+bun packages/contracts/scripts/generate.ts
+bun packages/contracts/scripts/generate.ts --check
+bun test packages/contracts/test packages/api-client/test
+bun run --cwd packages/contracts typecheck
+bun run --cwd packages/api-client typecheck
+```
 
-- `@floodops/contracts`: a reviewed, pinned Zod 4.x dependency; ESM export `.` to
-  `./src/index.ts`; `typecheck` script using the package tsconfig.
-- `@floodops/api-client`: dependency `@floodops/contracts: workspace:*`; ESM export
-  `.` to `./src/index.ts`; `typecheck` script using the package tsconfig.
-- Focused checks can use direct Bun commands; no root script change is necessary.
+Public entrypoint: `@floodops/contracts`. It exports named `*Schema` validators and
+DTOs; `schemas`, `operations`, `tools`; `OperationInputs`/`OperationOutputs`;
+validation helpers; strong ETag/error-recovery helpers and source version/hash.
+`getToolDefinitions()` returns eight self-contained strict function definitions.
+`getImageReviewModelOutputSchema()` returns only the vision model's strict bounded
+output schema. Unsupported provider keywords fail closed; no constraints are
+removed to fit a provider dialect. The service owner must verify its actual model.
 
-Only IntegrationLead edits package manifests, package-root tsconfig and lockfile.
-Workers install with Bun 1.4.0, `--frozen-lockfile --ignore-scripts`, after receiving
-the controlled new baseline and receipt. No sibling dependencies are reused.
+`parseSchema("ImageReviewAdvice", value)` validates canonical JSON shape only.
+`parseConsistentImageReviewAdvice(value)` additionally checks rounded rubric and
+recommendation consistency. The server derives those fields from validated model
+output; this wire consistency helper grants no review or operational authority.
+Manual Accept/Reject and Execute remain separate server commands.
+
+All current positive/negative examples are tested. The image-review suite checks
+40 job lifecycle combinations and all 243 rating/match combinations against an
+independent score table. These are deterministic package checks; backend services,
+real model quality, browser adapters and physical devices require later evidence.
+
+Bun 1.4.0 and dependencies are frozen by IntegrationLead. Workers do not modify
+central manifests, lockfiles, export maps or package-root tsconfigs.

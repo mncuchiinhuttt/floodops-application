@@ -5,6 +5,7 @@ const supported = new Set([
   "prefixItems", "anyOf", "oneOf", "const", "enum", "minimum", "maximum",
   "exclusiveMinimum", "minLength", "maxLength", "minItems", "maxItems",
   "uniqueItems", "pattern", "format", "description", "discriminator", "default",
+  "maxProperties", "allOf", "if", "then",
 ]);
 
 export const kebab = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
@@ -29,6 +30,14 @@ export function schemaCode(schema: Schema, refs: Set<string>): string {
   if (schema.enum) return `z.literal(${quote(schema.enum)})`;
   let code: string;
   switch (schema.type) {
+    case undefined:
+      if (!schema.properties && !schema.if) throw new Error("Unsupported partial schema");
+      if (schema.if) { code = "z.unknown()"; break; }
+      // Conditional fragments constrain present properties; the outer object stays strict.
+      code = `z.object({${Object.entries(schema.properties as Record<string, Schema>).map(([k, v]) =>
+        `${quote(k)}: ${schemaCode(v, refs)}.optional()`
+      ).join(", ")}})`;
+      break;
     case "object": {
       if (schema.additionalProperties !== false) throw new Error("Object must be strict");
       const required = schema.required as string[];
@@ -37,6 +46,7 @@ export function schemaCode(schema: Schema, refs: Set<string>): string {
       code = `z.strictObject({\n${Object.entries(properties).map(([k, v]) =>
         `  ${quote(k)}: ${schemaCode(v, refs)}${required.includes(k) ? "" : ".optional()"},`
       ).join("\n")}\n})`;
+      if (schema.maxProperties !== undefined) code += `.refine(v => Object.keys(v).length <= ${schema.maxProperties}, "Too many properties")`;
       break;
     }
     case "array": {
@@ -71,6 +81,13 @@ export function schemaCode(schema: Schema, refs: Set<string>): string {
     case "boolean": code = "z.boolean()"; break;
     case "null": code = "z.null()"; break;
     default: throw new Error(`Unsupported schema type: ${schema.type}`);
+  }
+  for (const rule of (schema.allOf as Schema[] | undefined) ?? []) {
+    code += `.refine(v => ${schemaCode(rule, refs)}.safeParse(v).success, "Conditional constraint")`;
+  }
+  if (schema.if) {
+    if (!schema.then) throw new Error("Conditional requires then");
+    code += `.refine(v => !${schemaCode(schema.if as Schema, refs)}.safeParse(v).success || ${schemaCode(schema.then as Schema, refs)}.safeParse(v).success, "Conditional constraint")`;
   }
   return schema.description ? `${code}.describe(${quote(schema.description)})` : code;
 }

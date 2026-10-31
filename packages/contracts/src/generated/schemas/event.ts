@@ -9,7 +9,7 @@ export const EventSchema = z.strictObject({
   "generation": z.number().finite().refine(Number.isInteger, "Expected integer").min(0),
   "revision": z.number().finite().refine(Number.isInteger, "Expected integer").min(0),
   "sim_minute": z.number().finite().min(0).describe("Finite simulation minutes from scenario T0; fractional minutes allowed. Reject NaN/Infinity."),
-  "type": z.literal(["state_changed","proposal_changed","planning_job_changed","report_changed","award_created","session_reset","session_expired","advance_changed","capability_revoked"]),
+  "type": z.literal(["state_changed","proposal_changed","planning_job_changed","report_changed","award_created","session_reset","session_expired","advance_changed","capability_revoked","image_review_changed"]),
   "actor": z.literal(["system","model","dispatcher","driver","community","external"]),
   "resource_ids": z.array(IdSchema),
   "reason_code": z.union([z.string().refine(v => [...v].length <= 2000, "String too long"), z.null()]),

@@ -9,7 +9,7 @@ export type SchemaOutput<N extends SchemaName> = z.infer<(typeof exportedSchemas
 export const schemas = Object.freeze(Object.fromEntries(Object.entries(exportedSchemas).map(
   ([name, schema]) => [name.slice(0, -6), schema],
 ))) as { readonly [N in SchemaName]: (typeof exportedSchemas)[`${N}Schema`] };
-export const operations = Object.freeze(exportedOperations);
+export const operations = Object.freeze({ ...exportedOperations });
 export type OperationId = keyof typeof operations;
 type ToolByExport = typeof exportedTools;
 export type ToolName = ToolByExport[keyof ToolByExport]["name"];

@@ -21,23 +21,12 @@ function emit(path: string, text: string) {
     writeFileSync(path, text);
   }
 }
-if (process.argv.includes("--bootstrap")) {
-  if (existsSync(canonical)) throw new Error("Canonical definition already exists");
-  const sources = ["openapi.json", "tool-contracts.json", "contract-examples.json", "tool-examples.json"];
-  const expected = ["3fc2ec8d25dd68bcc5d6e9645ea2038c17222b7cefa443d200f1c42766a31e5a", "37337eccd24af36de29fd15fd336435d51c1dcb987b0f349f75b7b4f150a60b9", "b399258dbfabeb85b50f073e6d34e5597e0ee3a03c67688799e7a533e5728bf1", "9c04d6c5cf25611a54a960e867e8d5f8f36fc2e895d7e129aa9a8bc3906a809e"];
-  const values = sources.map((f, i) => {
-    const text = readFileSync(resolve(plan, f), "utf8");
-    if (sha(text) !== expected[i]) throw new Error(`Unapproved bootstrap artifact: ${f}`);
-    return JSON.parse(text);
-  });
-  emit(canonical, json(Object.fromEntries(sources.map((s, i) => [s, values[i]]))));
-}
 const sourceText = readFileSync(canonical, "utf8");
 const definition = JSON.parse(sourceText) as Definition;
 const api = definition["openapi.json"];
 const tools = definition["tool-contracts.json"];
 const schemas = api.components.schemas as Record<string, Schema>;
-if (Object.keys(schemas).length !== 186 || tools.tools.length !== 8) throw new Error("Contract inventory changed");
+if (Object.keys(schemas).length !== 194 || tools.tools.length !== 8) throw new Error("Contract inventory changed");
 for (const [name, schema] of Object.entries(schemas)) {
   const refs = new Set<string>();
   const code = schemaCode(schema, refs);
@@ -73,10 +62,22 @@ for (const tool of tools.tools) {
 }
 emit(resolve(root, "src/generated/tools.ts"), toolExports.join("\n") + "\n");
 emit(resolve(root, "src/generated/provider-tools.json"), json(providerTools));
+emit(resolve(root, "src/generated/image-review-model-output.json"), json(dereference(schemas.ImageReviewModelOutput!)));
 const parameterRefs = new Set<string>();
 const parameterCode = Object.entries(api.components.parameters).map(([name, p]) => `export const ${name}ParameterSchema = ${schemaCode(p.schema, parameterRefs)};`).join("\n");
 // Parameter module is one directory above the individual schema modules.
 emit(resolve(root, "src/generated/parameters.ts"), imports(parameterRefs, "./schemas/", parameterCode).replaceAll('from "../../schema-helpers"', 'from "../schema-helpers"') + "\n" + parameterCode + "\n");
 for (const [file, value] of Object.entries(definition)) emit(resolve(plan, file), json(value));
 emit(resolve(root, "src/generated/version.ts"), `export const CONTRACT_VERSION = ${JSON.stringify(api.info.version)};\nexport const CONTRACT_SOURCE_SHA256 = ${JSON.stringify(sha(sourceText))};\n`);
-console.log(`${check ? "Verified" : "Generated"} 186 schemas, 64 operations, 8 tools; source sha256=${sha(sourceText)}`);
+emit(resolve(root, "contract-surface.json"), json({
+  contract_version: api.info.version,
+  source_sha256: sha(sourceText),
+  schema_names: Object.keys(schemas),
+  operation_ids: Object.values(api.paths).flatMap(methods => Object.values(methods).flatMap(op => op.operationId ? [op.operationId] : [])),
+  commander_tools: tools.tools.map(tool => tool.name),
+  model_output_schema_sha256: sha(json(dereference(schemas.ImageReviewModelOutput!))),
+  public_entrypoints: ["@floodops/contracts", "@floodops/api-client"],
+  contracts_exports_sha256: sha(readFileSync(resolve(root, "src/index.ts"), "utf8")),
+  api_client_exports_sha256: sha(readFileSync(resolve(root, "../api-client/src/index.ts"), "utf8")),
+}));
+console.log(`${check ? "Verified" : "Generated"} 194 schemas, 66 operations, 8 tools; source sha256=${sha(sourceText)}`);
