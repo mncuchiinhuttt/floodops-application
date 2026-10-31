@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { DriverReportInputSchema, CitizenReportInputSchema, type SubmitReportInput } from "@floodops/contracts";
 import { Alert, Button, Form, SelectField, TextArea, TextField, type FormError } from "@floodops/ui-web";
 import { accessReason, type AccessContext } from "../../shared/access";
@@ -8,17 +8,19 @@ import { useCommand } from "../../shared/use-command";
 export interface ReportMediaChoice { id: string; kind: "media" | "fixture"; label: string }
 export interface ReportFormProps {
   kind: "driver" | "citizen"; context: AccessContext;
-  mediaChoices?: readonly ReportMediaChoice[];
+  mediaChoices?: readonly ReportMediaChoice[]; preferredMediaId?: string | null; submissionBlockedReason?: string;
   onSubmit: (input: SubmitReportInput) => Promise<unknown>;
 }
 export function ReportForm(props: ReportFormProps) {
   const { session, participant } = props.context.identity;
   return <ReportFormDetail key={`${session.session_id}:${session.generation}:${participant.participant_id}:${participant.bound_entity_id}:${props.kind}`} {...props} />;
 }
-function ReportFormDetail({ kind, context, mediaChoices = [], onSubmit }: ReportFormProps) {
+function ReportFormDetail({ kind, context, mediaChoices = [], preferredMediaId, submissionBlockedReason, onSubmit }: ReportFormProps) {
   const prefix = useId();
   const [description, setDescription] = useState("");
   const [segment, setSegment] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
   const [capturedAt, setCapturedAt] = useState("");
   const [minute, setMinute] = useState(String(context.identity.session.sim_minute));
   const [mode, setMode] = useState("text");
@@ -27,26 +29,32 @@ function ReportFormDetail({ kind, context, mediaChoices = [], onSubmit }: Report
   const [mediaKey, setMediaKey] = useState("");
   const [errors, setErrors] = useState<FormError[]>([]);
   const [attempt, setAttempt] = useState(0);
+  const [reporterEntity, setReporterEntity] = useState("");
+  useEffect(() => {
+    setMediaKey(value => preferredMediaId ? `media:${preferredMediaId}` : value.startsWith("media:") ? "" : value);
+  }, [preferredMediaId]);
   const command = useCommand(`${context.identity.session.session_id}:${context.identity.session.generation}:${kind}`);
-  const role = kind === "driver" ? "driver" : "contributor";
-  const denied = accessReason(context, "reports:submit", role);
-  const blocked = accessReason(context, "reports:submit", role, true);
+  const simulatedSubmit = context.identity.participant.role === "dispatcher" && kind === "citizen";
+  const role = simulatedSubmit ? "dispatcher" : kind === "driver" ? "driver" : "contributor";
+  const denied = accessReason(context, "reports:submit", role) ?? (simulatedSubmit ? accessReason(context, "simulation:submit_as", "dispatcher") : null);
+  const blocked = submissionBlockedReason ?? accessReason(context, "reports:submit", role, true);
   if (denied) return <Denied reason={denied} />;
   function submit() {
     const media = mediaChoices.find(choice => `${choice.kind}:${choice.id}` === mediaKey);
-    const candidate = { kind, segment_id: segment.trim() || null, coordinate: null, captured_at: capturedAt,
+    const candidate = { kind, ...(simulatedSubmit ? { reporter_entity_id: reporterEntity.trim() } : {}), segment_id: segment.trim() || null, coordinate: longitude.trim() || latitude.trim() ? [longitude.trim() ? Number(longitude) : NaN, latitude.trim() ? Number(latitude) : NaN] : null, captured_at: capturedAt,
       captured_sim_minute: minute.trim() ? Number(minute) : NaN, vehicle_types: vehicle ? [vehicle] : [], description,
       ...(kind === "driver" ? { input_mode: mode, quick_condition: mode === "quick" ? condition : null }
         : { media_id: mediaKey && media?.kind === "media" ? media.id : null, fixture_photo_id: mediaKey && media?.kind === "fixture" ? media.id : null }),
     };
     const result = (kind === "driver" ? DriverReportInputSchema : CitizenReportInputSchema).safeParse(candidate);
     const next: FormError[] = [];
+    if (simulatedSubmit && !reporterEntity.trim()) next.push({ fieldId: `${prefix}-reporter`, message: "Nhập entity giả lập được scenario cho phép." });
     if (!segment.trim()) next.push({ fieldId: `${prefix}-segment`, message: "Chọn đoạn đường thủ công." });
     if (kind === "citizen" && (!mediaKey || !media)) next.push({ fieldId: `${prefix}-media`, message: "Chọn ảnh đã được server cấp hoặc fixture cho phép." });
     if (!result.success) for (const issue of result.error.issues) {
       const name = String(issue.path[0]);
-      const fields: Record<string, string> = { captured_at: "capture", captured_sim_minute: "minute", description: "description", segment_id: "segment", vehicle_types: "vehicle" };
-      const messages: Record<string, string> = { captured_at: "Thời gian ghi nhận cần đúng RFC3339.", captured_sim_minute: "Phút mô phỏng cần là số không âm.", description: "Mô tả dài tối đa 2000 ký tự.", segment_id: "Nhập ID đoạn đường hợp lệ trong phiên.", vehicle_types: "Chọn loại xe quan sát hợp lệ." };
+      const fields: Record<string, string> = { reporter_entity_id: "reporter", captured_at: "capture", captured_sim_minute: "minute", description: "description", segment_id: "segment", coordinate: "coordinate", vehicle_types: "vehicle" };
+      const messages: Record<string, string> = { reporter_entity_id: "Nhập ID entity giả lập hợp lệ.", captured_at: "Thời gian ghi nhận cần đúng RFC3339.", captured_sim_minute: "Phút mô phỏng cần là số không âm.", description: "Mô tả dài tối đa 2000 ký tự.", segment_id: "Nhập ID đoạn đường hợp lệ trong phiên.", coordinate: "Nhập đủ kinh độ −180…180 và vĩ độ −90…90 theo WGS84.", vehicle_types: "Chọn loại xe quan sát hợp lệ." };
       next.push({ fieldId: `${prefix}-${fields[name] ?? "description"}`, message: messages[name] ?? "Kiểm tra nội dung báo cáo." });
     }
     setErrors([...new Map(next.map(error => [error.fieldId, error])).values()]); setAttempt(value => value + 1);
@@ -57,7 +65,10 @@ function ReportFormDetail({ kind, context, mediaChoices = [], onSubmit }: Report
     <h1>{kind === "driver" ? "Báo cáo đường" : "Gửi báo cáo ảnh"}</h1>
     <p>Chưa gửi. Server quyết định validation/review; ảnh và báo cáo chưa cấp quyền mở đường hoặc cộng điểm.</p>
     <Form aria-label="Gửi báo cáo" errors={errors} submissionKey={attempt} onSubmit={submit}>
+      {simulatedSubmit && <TextField id={`${prefix}-reporter`} label="Contributor giả lập (theo scenario)" hint="Simulation submit-as; backend giữ nguyên participant thực đã gửi." error={fieldError("reporter")} value={reporterEntity} onChange={event => setReporterEntity(event.target.value)} required />}
       <TextField id={`${prefix}-segment`} label="Đoạn đường" error={fieldError("segment")} value={segment} onChange={event => setSegment(event.target.value)} required />
+      <TextField id={`${prefix}-coordinate`} label="Kinh độ WGS84" type="number" min="-180" max="180" step="any" error={fieldError("coordinate")} hint="Nhập vị trí quan sát; thiếu tọa độ có thể cần clarification. Không tự lấy vị trí thiết bị." value={longitude} onChange={event => setLongitude(event.target.value)} />
+      <TextField id={`${prefix}-latitude`} label="Vĩ độ WGS84" type="number" min="-90" max="90" step="any" value={latitude} onChange={event => setLatitude(event.target.value)} />
       <TextField id={`${prefix}-capture`} label="Thời gian chụp RFC3339" error={fieldError("capture")} hint="Ví dụ định dạng: YYYY-MM-DDTHH:mm:ssZ" value={capturedAt} onChange={event => setCapturedAt(event.target.value)} required />
       <TextField id={`${prefix}-minute`} label="Phút mô phỏng lúc ghi nhận" error={fieldError("minute")} type="number" min="0" step="any" value={minute} onChange={event => setMinute(event.target.value)} required />
       <SelectField id={`${prefix}-vehicle`} label="Loại xe quan sát" error={fieldError("vehicle")} value={vehicle} onChange={event => setVehicle(event.target.value)} options={[
