@@ -6,7 +6,7 @@ import { scenarioReference, simulationPersistence } from "../../apps/api/src/ind
 afterEach(reset);
 const key = () => crypto.randomUUID();
 const request = (path: string, init?: RequestInit) => SELF.fetch("https://floodops.test/api/v1" + path, init);
-it("v2 actual bound driver quick report accepts low bike evidence without AI, award or assignment mutation", async () => {
+it("v2 actual bound driver quick report remains pending until manual acceptance", async () => {
   expect(scenarioReference.scenario_version).toBe("2");
   const created = await request("/sessions", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": key(), "X-Client-Request-Scope": key(), "CF-Connecting-IP": "192.0.2.51" }, body: JSON.stringify({ scenario_id: scenarioReference.scenario_id, scenario_version: "2", client_type: "native" }) });
   expect(created.status).toBe(201);
@@ -29,13 +29,25 @@ it("v2 actual bound driver quick report accepts low bike evidence without AI, aw
   const config = parseSchema("ScenarioConfigResponse", await (await request(prefix + "/configuration", { headers: auth })).json()).data;
   const submitted = await request(prefix + "/reports", { method: "POST", headers: { Authorization: "Bearer " + driver.credential.access_token, "Content-Type": "application/json", "Idempotency-Key": key(), "If-Match": claimed.headers.get("ETag")! }, body: JSON.stringify({ kind: "driver", input_mode: "quick", quick_condition: "normal", segment_id: "seg_edge27", coordinate: [106.701, 10.7705], captured_at: config.t0, captured_sim_minute: 0, vehicle_types: ["motorbike"], description: "Synthetic MVP driver quick report" }) });
   expect(submitted.status).toBe(201);
-  const report = parseSchema("ReportResponse", await submitted.json()).data;
-  expect(report.status).toBe("accepted");
-  expect(report.award_id).toBeNull();
-  expect(report.observation_ids.length).toBeGreaterThan(0);
+  const pending = parseSchema("ReportResponse", await submitted.json()).data;
+  expect(pending.status).toBe("pending_review");
+  expect(pending.award_id).toBeNull();
+  expect(pending.observation_ids).toEqual([]);
+  expect(await operations()).toBe(before);
+
+  const reviewedResponse = await request(prefix + "/reports/" + pending.report_id + "/reviews", { method: "POST",
+    headers: { ...auth, "Content-Type": "application/json", "Idempotency-Key": key(), "If-Match": submitted.headers.get("ETag")! },
+    body: JSON.stringify({ decision: "accept", reason: "Dispatcher confirms synthetic driver evidence",
+      mapped_segment_id: "seg_edge27", vehicle_types: ["motorbike"], condition: "normal" }) });
+  expect(reviewedResponse.status).toBe(200);
+  const reviewed = parseSchema("ReportReviewResultResponse", await reviewedResponse.json()).data;
+  expect(reviewed.report.status).toBe("accepted");
+  expect(reviewed.report.award_id).toBeNull();
+  expect(reviewed.observations.length).toBeGreaterThan(0);
   const knowledge = parseSchema("KnowledgeResponse", await (await request(prefix + "/knowledge", { headers: auth })).json()).data;
-  const observations = knowledge.observations.filter(item => report.observation_ids.includes(item.observation_id));
+  const observations = knowledge.observations.filter(item => reviewed.report.observation_ids.includes(item.observation_id));
   expect(observations.length).toBeGreaterThan(0);
-  expect(observations.every(item => item.source_id === "src_driver01" && item.confidence_band === "low" && item.vehicle_types.join() === "motorbike" && item.expires_sim_minute === 3)).toBe(true);
+  expect(observations.every(item => item.source_id === "src_driver01" && item.confidence_band === "low"
+    && item.vehicle_types.join() === "motorbike" && item.expires_sim_minute === 3)).toBe(true);
   expect(await operations()).toBe(before);
 });

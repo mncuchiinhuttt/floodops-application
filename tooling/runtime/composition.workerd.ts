@@ -64,7 +64,7 @@ it("binds native driver/contributor invitation identity server-side and rejects 
   const invalid = await path("/sessions/" + owner.id + "/invitations", { method: "POST", headers: { ...auth(owner.token), "Content-Type": "application/json", "Idempotency-Key": key() }, body: JSON.stringify({ role: "driver", bound_entity_id: "drv_missing1", expires_in_seconds: 900 }) });
   expect(invalid.status).toBe(422);
 });
-it("resets into a fresh real seed with generation fencing, never fabricated feature success", async () => {
+it("resets into a fresh composed v2 session with generation fencing and current snapshot", async () => {
   const owner = await create();
   const resetResponse = await path("/sessions/" + owner.id + "/resets", { method: "POST", headers: { ...auth(owner.token), "Content-Type": "application/json", "Idempotency-Key": key(), "If-Match": formatEtag(owner.data.session) }, body: JSON.stringify({ client_type: "native", confirm: true }) });
   expect(resetResponse.status).toBe(201);
@@ -77,8 +77,13 @@ it("resets into a fresh real seed with generation fencing, never fabricated feat
   const headers = auth(token);
   expect((await path("/sessions/" + replaced.session.session_id + "/identity", { headers })).status).toBe(200);
   const snapshot = await path("/sessions/" + replaced.session.session_id + "/snapshot", { headers });
-  expect(snapshot.status).toBe(503);
-  expect(parseSchema("ErrorResponse", await snapshot.json()).error!.code).toBe("CONFIG_INCOMPLETE");
+  expect(snapshot.status).toBe(200);
+  const data = parseSchema("SessionSnapshotResponse", await snapshot.json()).data!;
+  expect(data.session.generation).toBe(1);
+  expect(data.session.revision).toBe(0);
+  expect(data.scenario.version).toBe("2");
+  expect(data.knowledge.segments.length).toBeGreaterThan(0);
+  expect(data.results.calibration_status).toBe("incomplete");
 });
 it("rejects unknown bundle/version and tampered checkpoint fingerprints", async () => {
   await expect(loadSessionScenario("scn_missing1", "1")).rejects.toMatchObject({ code: "NOT_FOUND" });
