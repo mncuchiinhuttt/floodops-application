@@ -1,0 +1,34 @@
+{
+  "amendment_id": "sources-domain-foundations-v1",
+  "status": "authorized",
+  "authority": "User requested continuing end-to-end and parallelizing genuinely independent parts. Lead narrows phase05 to pure source/knowledge/reporting logic with integrated real C1 and SimulationData; no platform gate forged or full-role DAG changed.",
+  "required_gates": [
+    "contracts-ready",
+    "simulation-ready"
+  ],
+  "deferred_gate": "platform-ready",
+  "reason": "SessionPlatform image-event correction verified73+1 Workerd tests; separate response-header defect under authorized phase04v3 correction. Pure domain logic does not import Hono/Worker/DO or observe response headers.",
+  "work_items": [
+    {
+      "role_id": "sources-media",
+      "work_item_id": "sources-media-domain-foundations-v1",
+      "include_prefixes": [
+        "packages/domain/src/sources/",
+        "packages/domain/src/knowledge/",
+        "packages/domain/src/reporting/",
+        "apps/api/test/sources/",
+        "apps/api/test/observations/"
+      ],
+      "include_files": [],
+      "scope": "Pure normalized source envelope/unit/datum/time/geography, context-vs-observation-vs-authority, epoch/vehicle/freshness/TTL, report/pending validation, proposed acceptance/conflict knowledge transitions and actual deterministic tests/public seams. Do not implement review/rewards orchestration. No API feature routes/media/R2/normalization/provider/job/identity/HTTP implementation in this partial slice."
+    }
+  ],
+  "rules": [
+    "Full phase05, sources-ready and dependent Planner/Review launch still require reviewed full SourcesMedia delivery after actual platform-ready.",
+    "Do not import SessionPlatform/app/Cloudflare/Hono/Bun/React into domain or invent wire DTOs/policy defaults. Use frozen schemas/public SimulationData exports; injected explicit time/config.",
+    "No actual image pipeline or image-review provider/normalized-byte port in this partial slice. Media/image-review boundary remains frozen, deferred to full follow-up receipt.",
+    "Only exact own work item report, protected central files excluded. New public entrypoint definitions live inside assigned domains; request Lead export-map addition after source exists.",
+    "No real provider/model calls/device/build/preview/production/account/resource/key/new paid service; worker push/deploy false; no grants or advisory waivers.",
+    "Known root tooling32pass1header failure is documented unrelated baseline, do not weaken tests or attempt platform fixes. New code must pass own real pure tests/typecheck/lint and preserve all safety invariants."
+  ]
+}
